@@ -1,0 +1,28 @@
+dn: cn={4}dcsys,cn=schema,cn=config
+changeType: modify
+replace: olcAttributeTypes
+olcAttributeTypes: ( 2.25.56309950806840367165843754398824165867.2.1.1 NAME 'x-dcsys-uuid' DESC 'uuid del objeto dentro de los sistemas' EQUALITY UUIDMatch ORDERING UUIDOrderingMatch SYNTAX 1.3.6.1.1.16.1 SINGLE-VALUE )
+olcAttributeTypes: ( 2.25.56309950806840367165843754398824165867.2.1.2 NAME 'x-dcsys-legajo' DESC 'Legajo del alumno dentro de la facultad' EQUALITY octetStringMatch ORDERING octetStringOrderingMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.40	SINGLE-VALUE )
+olcAttributeTypes: ( 2.25.56309950806840367165843754398824165867.2.1.3 NAME 'x-dcsys-dni' DESC 'DNI de una persona' EQUALITY octetStringMatch ORDERING octetStringOrderingMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.40	SINGLE-VALUE )
+olcAttributeTypes: ( 2.25.56309950806840367165843754398824165867.2.1.4 NAME 'x-dcsys-gender' DESC 'Genero de una persona' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: ( 2.25.56309950806840367165843754398824165867.2.1.5 NAME 'x-dcsys-birth' DESC 'Fecha de nacimiento de una persona' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: ( 2.25.56309950806840367165843754398824165867.2.1.6 NAME 'x-dcsys-mail' DESC 'mails alternativos' EQUALITY caseIgnoreIA5Match SUBSTR caseIgnoreIA5SubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.26)
+olcAttributeTypes: ( 2.25.56309950806840367165843754398824165867.2.1.7 NAME 'x-dcsys-parent' DESC 'uuid del grupo padre' EQUALITY UUIDMatch ORDERING UUIDOrderingMatch SYNTAX 1.3.6.1.1.16.1 SINGLE-VALUE )
+-
+replace: olcObjectClasses
+olcObjectClasses: ( 2.25.56309950806840367165843754398824165867.2.2.1 NAME 'x-dcsys-entidad'	DESC 'entidad de dcsys' AUXILIARY MUST x-dcsys-uuid MAY ( mail $ x-dcsys-mail ))
+olcObjectClasses: ( 2.25.56309950806840367165843754398824165867.2.2.2 NAME 'x-dcsys-persona'	DESC 'una persona dentro de los sistemas' AUXILIARY MAY ( x-dcsys-dni $ x-dcsys-gender $ x-dcsys-birth $ co $ l) )
+olcObjectClasses: ( 2.25.56309950806840367165843754398824165867.2.2.3 NAME 'x-dcsys-estudiante' DESC 'estudiante' AUXILIARY MAY ( x-dcsys-legajo $ x-dcsys-dni ) )
+olcObjectClasses: ( 2.25.56309950806840367165843754398824165867.2.2.4 NAME 'x-dcsys-docente'	DESC 'docente de la facultad' AUXILIARY )
+olcObjectClasses: ( 2.25.56309950806840367165843754398824165867.2.2.5 NAME 'x-dcsys-no-docente' DESC 'no docente de la facultad' AUXILIARY )
+olcObjectClasses: ( 2.25.56309950806840367165843754398824165867.2.2.6 NAME 'x-dcsys-posgrado' 	DESC 'persona de posgrado' AUXILIARY )
+olcObjectClasses: ( 2.25.56309950806840367165843754398824165867.2.2.7 NAME 'x-dcsys-visitante' 	DESC 'persona de afuera' AUXILIARY )
+olcObjectClasses: ( 2.25.56309950806840367165843754398824165867.2.3.1 NAME 'x-dcsys-alias'	DESC 'grupo que representa un alias' AUXILIARY )
+olcObjectClasses: ( 2.25.56309950806840367165843754398824165867.2.3.2 NAME 'x-dcsys-position' DESC 'grupo que representa un cargo' AUXILIARY )
+olcObjectClasses: ( 2.25.56309950806840367165843754398824165867.2.3.3 NAME 'x-dcsys-office' DESC 'grupo que representa una oficina' AUXILIARY )
+olcObjectClasses: ( 2.25.56309950806840367165843754398824165867.2.3.4 NAME 'x-dcsys-group' 	DESC 'un grupo' AUXILIARY MAY ( x-dcsys-parent $ memberUid $ uniqueMember $ mail $ x-dcsys-mail $ homeDirectory $ uidNumber ) )
+olcObjectClasses: ( 2.25.56309950806840367165843754398824165867.2.3.5 NAME 'x-dcsys-ou' DESC 'grupo que representa una unidad Organizacional' AUXILIARY )
+olcObjectClasses: ( 2.25.56309950806840367165843754398824165867.2.3.6 NAME 'x-dcsys-timetable' DESC 'grupo que representa un horario' AUXILIARY )
+olcObjectClasses: ( 2.25.56309950806840367165843754398824165867.2.3.7 NAME 'x-dcsys-profile' DESC 'grupo que representa un perfil de autorización' AUXILIARY )
+
+

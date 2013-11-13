@@ -1,0 +1,23 @@
+dn: olcDatabase=hdb,cn=config
+objectClass: olcDatabaseConfig
+objectClass: olcHdbConfig
+olcDatabase: hdb
+olcDbDirectory: /var/lib/ldap-econo
+olcSuffix: dc=econo
+olcAccess: to attrs=userPassword,shadowLastChange by self write by anonymous auth by dn="cn=admin,dc=econo" write by * none
+olcAccess: to dn.base="" by * read
+olcAccess: to * by self write by dn="cn=admin,dc=econo" write by * read
+olcLastMod: TRUE
+olcRootDN: cn=admin,dc=econo
+olcRootPW: clave
+olcDbCheckpoint: 1024 10
+olcDbConfig: set_cachesize 0 2097152 0
+olcDbConfig: set_lk_max_objects 10000
+olcDbConfig: set_lk_max_locks 10000
+olcDbConfig: set_lk_max_lockers 10000
+olcDbIndex: objectClass eq
+olcDbIndex: uid,entryUUID,x-dcsys-uuid eq
+olcDbIndex: cn,mail,surname,givenName eq,sub
+olcDbIndex: uidNumber,gidNumber eq
+olcDbIndex: member,memberUid eq
+
