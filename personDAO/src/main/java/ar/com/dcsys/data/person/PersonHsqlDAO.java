@@ -16,6 +16,7 @@ import ar.com.dcsys.data.person.types.PersonType;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.persistence.JdbcConnectionProvider;
 
+@Named
 public class PersonHsqlDAO extends  AbstractPersonDAO {
 
 	private static final long serialVersionUID = 1L;
