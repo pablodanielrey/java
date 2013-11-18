@@ -49,7 +49,6 @@ import ar.com.dcsys.data.person.types.PersonType;
 import ar.com.dcsys.data.person.types.Student;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.persistence.DirContextProvider;
-import ar.com.dcsys.persistence.econo.FCEDirContextProvider;
 
 public class PersonLdapDAO extends AbstractLdapPersonDAO {
 
@@ -81,7 +80,7 @@ public class PersonLdapDAO extends AbstractLdapPersonDAO {
 	private final DirContextProvider cp;
 
 	@Inject
-	public PersonLdapDAO(FCEDirContextProvider cp) {
+	public PersonLdapDAO(DirContextProvider cp) {
 		this.cp = cp;
 	}
 	
