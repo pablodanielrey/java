@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import ar.com.dcsys.data.person.types.PersonType;
 import ar.com.dcsys.exceptions.PersonException;
@@ -20,7 +22,7 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 	private final JdbcConnectionProvider cp;
 
 	@Inject
-	public PersonHsqlDAO(JdbcConnectionProvider cp) {
+	public PersonHsqlDAO(@Named("hsqlConnectionProvider") JdbcConnectionProvider cp) {
 		this.cp = cp;
 	}
 	
@@ -62,19 +64,19 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 	}
 	
 	
-	
-	private void createTables() throws SQLException {
+	@PostConstruct
+	void createTables() throws SQLException {
 		Connection con = cp.getConnection();
 		try {
 			PreparedStatement st = con.prepareStatement("create table if not exists persons (" +
-														"id varchar not null primary key," +
-														"name varchar not null," +
-														"lastName varchar not null," +
-														"dni varchar not null," +
-														"address varchar," +
-														"city varchar," +
-														"country varchar," +
-														"gender varchar");
+														"id longvarchar not null primary key," +
+														"name longvarchar not null," +
+														"lastName longvarchar not null," +
+														"dni longvarchar not null," +
+														"address longvarchar," +
+														"city longvarchar," +
+														"country longvarchar," +
+														"gender longvarchar)");
 			try {
 				st.execute();
 			} finally {
@@ -82,8 +84,8 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 			}
 			
 			st = con.prepareStatement("create table if not exists persons_persontypes (" +
-														"person_id varchar not null," +
-														"persontype_id varchar not null");
+														"person_id longvarchar not null," +
+														"persontype_id longvarchar not null)");
 			try {
 				st.execute();
 			} finally {
@@ -91,9 +93,8 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 			}
 			
 			st = con.prepareStatement("create table if not exists persons_mails (" +
-					"person_id varchar not null," +
-					"mail varchar not null," +
-					"primary boolean default false");
+					"person_id longvarchar not null," +
+					"mail longvarchar not null)");
 			try {
 				st.execute();
 			} finally {
@@ -101,9 +102,8 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 			}			
 			
 			st = con.prepareStatement("create table if not exists persons_telephones (" +
-					"person_id varchar not null," +
-					"telephone varchar not null," +
-					"movile boolean default false");
+					"person_id longvarchar not null," +
+					"telephone longvarchar not null)");
 			try {
 				st.execute();
 			} finally {
@@ -146,7 +146,7 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 			executeSqlQuery("select id from persons where dni = ?", new QueryProcessor() {
 				@Override
 				public void setParams(PreparedStatement st) throws SQLException {
-					st.setString(0, dni);
+					st.setString(1, dni);
 				}
 				@Override
 				public void process(ResultSet rs) throws SQLException, PersonException {
@@ -176,7 +176,7 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 				executeSqlQuery("select person_id from persons_persontypes where persontype_id = ?", new QueryProcessor() {
 					@Override
 					public void setParams(PreparedStatement st)	throws SQLException {
-						st.setString(0, id);
+						st.setString(1, id);
 					}
 					@Override
 					public void process(ResultSet rs) throws SQLException, PersonException {
@@ -207,6 +207,7 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 	private Person getPerson(ResultSet rs) throws SQLException {
 		
 		String id = rs.getString("id");
+		String dni = rs.getString("dni");
 		String address = rs.getString("address");
 		String name = rs.getString("name");
 		String lastName = rs.getString("lastName");
@@ -216,6 +217,7 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 		
 		Person person = new Person();
 		person.setId(id);
+		person.setDni(dni);
 		person.setName(name);
 		person.setLastName(lastName);
 		person.setAddress(address);
@@ -266,7 +268,7 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 			executeSqlQuery(query, new QueryProcessor() {
 				@Override
 				public void setParams(PreparedStatement st) throws SQLException {
-					int i = 0;
+					int i = 1;
 					for (String id : ids) {
 						st.setString(i, id);
 						i++;
@@ -295,7 +297,7 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 			executeSqlQuery("select * from persons where id = ?", new QueryProcessor() {
 				@Override
 				public void setParams(PreparedStatement st) throws SQLException {
-					st.setString(0, id);
+					st.setString(1, id);
 				}
 				@Override
 				public void process(ResultSet rs) throws SQLException, PersonException {
@@ -319,7 +321,7 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 			executeSqlQuery("select * from persons where dni = ?", new QueryProcessor() {
 				@Override
 				public void setParams(PreparedStatement st) throws SQLException {
-					st.setString(0, dni);
+					st.setString(1, dni);
 				}
 				@Override
 				public void process(ResultSet rs) throws SQLException, PersonException {
@@ -348,23 +350,24 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 				
 				StringBuffer sb = new StringBuffer();
 				if (p.getId() == null) {
-					sb.append("insert into persons (name,lastName,address,city,country,gender,id) values (?,?,?,?,?,?,?)");
+					sb.append("insert into persons (dni,name,lastName,address,city,country,gender,id) values (?,?,?,?,?,?,?,?)");
 					String id = UUID.randomUUID().toString();
 					p.setId(id);
 				} else {
-					sb.append("update persons set (name = ?, lastName = ?, address = ?, city = ?, country = ?, gender = ?) where id = ?");
+					sb.append("update persons set (dni = ?, name = ?, lastName = ?, address = ?, city = ?, country = ?, gender = ?) where id = ?");
 				}
 				
 				String query = sb.toString();
 				PreparedStatement st = con.prepareStatement(query);
 				try {
-					st.setString(0,p.getName());
-					st.setString(1,p.getLastName());
-					st.setString(2,p.getAddress());
-					st.setString(3,p.getCity());
-					st.setString(4,p.getCountry());
-					st.setString(5,p.getGender());
-					st.setString(6,p.getId());
+					st.setString(1,p.getDni());
+					st.setString(2,p.getName());
+					st.setString(3,p.getLastName());
+					st.setString(4,p.getAddress());
+					st.setString(5,p.getCity());
+					st.setString(6,p.getCountry());
+					st.setString(7,p.getGender());
+					st.setString(8,p.getId());
 					
 					st.executeUpdate();
 					

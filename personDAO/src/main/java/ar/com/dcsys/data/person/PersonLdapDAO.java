@@ -45,19 +45,13 @@ import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
+import ar.com.dcsys.data.person.types.PersonType;
+import ar.com.dcsys.data.person.types.Student;
+import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.persistence.DirContextProvider;
-import ar.com.dcsys.person.PersonException;
-import ar.com.dcsys.person.entities.Mail;
-import ar.com.dcsys.person.entities.Person;
-import ar.com.dcsys.person.entities.Telephone;
-import ar.com.dcsys.person.entities.types.External;
-import ar.com.dcsys.person.entities.types.PersonType;
-import ar.com.dcsys.person.entities.types.Personal;
-import ar.com.dcsys.person.entities.types.PostGraduate;
-import ar.com.dcsys.person.entities.types.Student;
-import ar.com.dcsys.person.entities.types.Teacher;
+import ar.com.dcsys.persistence.econo.FCEDirContextProvider;
 
-public class PersonLdapDAO implements PersonDAO {
+public class PersonLdapDAO extends AbstractLdapPersonDAO {
 
 	private static final long serialVersionUID = 1L;
 
@@ -87,7 +81,7 @@ public class PersonLdapDAO implements PersonDAO {
 	private final DirContextProvider cp;
 
 	@Inject
-	public PersonLdapDAO(DirContextProvider cp) {
+	public PersonLdapDAO(FCEDirContextProvider cp) {
 		this.cp = cp;
 	}
 	
@@ -425,6 +419,7 @@ public class PersonLdapDAO implements PersonDAO {
 		}
 	}
 	
+	/*
 	@Override
 	public Person findByStudentNumber(String number) throws PersonException {
 		String filter = "(x-dcsys-legajo=" + number + ")";
@@ -434,6 +429,7 @@ public class PersonLdapDAO implements PersonDAO {
 		}
 		return persons.get(0);
 	}
+	*/
 	
 	@Override
 	public Person findById(String id) throws PersonException {
@@ -456,6 +452,7 @@ public class PersonLdapDAO implements PersonDAO {
 		return null;
 	}
 	
+	/*
 	@Override
 	public Person findByUid(String uid) throws PersonException {
 		String filter = "(uid=" + uid + ")";
@@ -465,6 +462,7 @@ public class PersonLdapDAO implements PersonDAO {
 		}
 		return null;
 	}
+	*/
 	
 	/**
 	 * Obtiene todos los ids de las personas.
@@ -602,69 +600,6 @@ public class PersonLdapDAO implements PersonDAO {
 		// TODO Auto-generated method stub
 		
 	}
-
-	
-	//////////////////////////// MANEJO DE LOS TIPOS DE PERSONAS //////////////////////////
-	
-	@Override
-	public List<PersonType> findAllTypes() {
-		List<PersonType> types = new ArrayList<PersonType>();
-		types.add(new Teacher());
-		types.add(new Student());
-		types.add(new Personal());
-		types.add(new External());
-		types.add(new PostGraduate());
-		return types;
-	}
-	
-	private List<PersonType> fromObjectClass(List<String> sTypes) throws PersonException {
-		List<PersonType> types = new ArrayList<PersonType>();
-		for (String s : sTypes) {
-			if (s.contains("x-dcsys-docente")) {
-				types.add(new Teacher());
-			}
-			if (s.contains("x-dcsys-estudiante")) {
-				types.add(new Student());
-			}
-			if (s.contains("x-dcsys-no-docente")) {
-				types.add(new Personal());
-			}
-			if (s.contains("x-dcsys-visitante")) {
-				types.add(new External());
-			}
-			if (s.contains("x-dcsys-posgrado")) {
-				types.add(new PostGraduate());
-			}
-		}
-		return types;
-	}
-	
-	private List<String> toObjectClass(List<PersonType> types) throws PersonException {
-		List<String> t = new ArrayList<>();
-		for (PersonType pt : types) {
-			if (pt instanceof External) {
-				t.add("x-dcsys-visitante");
-				continue;
-			}
-			if (pt instanceof Teacher) {
-				t.add("x-dcsys-docente");
-				continue;
-			}
-			if (pt instanceof Student) {
-				t.add("x-dcsys-estudiante");
-				continue;
-			}
-			if (pt instanceof Personal) {
-				t.add("x-dcsys-no-docente");
-				continue;
-			}
-			if (pt instanceof PostGraduate) {
-				t.add("x-dcsys-posgrado");
-			}
-		}	
-		return t;
-	}
-	
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 	

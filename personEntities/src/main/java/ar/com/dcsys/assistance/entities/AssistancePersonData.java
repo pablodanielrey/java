@@ -3,7 +3,7 @@ package ar.com.dcsys.assistance.entities;
 import java.io.Serializable;
 import java.util.UUID;
 
-import ar.com.dcsys.person.entities.Person;
+import ar.com.dcsys.data.person.Person;
 
 public class AssistancePersonData implements Serializable {
 	private static final long serialVersionUID = 1L;

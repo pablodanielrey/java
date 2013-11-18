@@ -3,8 +3,8 @@ package ar.com.dcsys.data.utils;
 import java.io.Serializable;
 import java.util.List;
 
-import ar.com.dcsys.person.entities.Mail;
-import ar.com.dcsys.person.entities.Person;
+import ar.com.dcsys.data.person.Mail;
+import ar.com.dcsys.data.person.Person;
 
 public class PersonModelUtils implements Serializable {
 
