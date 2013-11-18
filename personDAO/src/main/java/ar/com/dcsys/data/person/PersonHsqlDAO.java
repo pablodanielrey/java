@@ -354,7 +354,7 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 					String id = UUID.randomUUID().toString();
 					p.setId(id);
 				} else {
-					sb.append("update persons set (dni = ?, name = ?, lastName = ?, address = ?, city = ?, country = ?, gender = ?) where id = ?");
+					sb.append("update persons set dni = ?, name = ?, lastName = ?, address = ?, city = ?, country = ?, gender = ? where id = ?");
 				}
 				
 				String query = sb.toString();

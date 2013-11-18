@@ -5,15 +5,13 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
-@Named
-public class HsqlConnectionProvider implements JdbcConnectionProvider {
+public class PostgresSqlConnectionProvider implements JdbcConnectionProvider {
 
 	private final PersistenceData data;
 	
 	@Inject
-	public HsqlConnectionProvider(PersistenceData data) {
+	public PostgresSqlConnectionProvider(PersistenceData data) {
 		this.data = data;
 	}
 	
@@ -22,19 +20,20 @@ public class HsqlConnectionProvider implements JdbcConnectionProvider {
 		try {
 			
 			StringBuilder sb = new StringBuilder();
-			sb.append("jdbc:hsqldb:file:").append(data.getDatabase());
+			sb.append("jdbc:postgresql://").append(data.getServer()).append(":").append(data.getPort()).append("/").append(data.getDatabase());
 			String url = sb.toString();
-			String user = data.getUserName();
-			String pass = data.getPassword();
 			
-			Class.forName("org.hsqldb.jdbc.JDBCDriver" );
-			Connection c = DriverManager.getConnection(url, user, pass);
-			return c;
+			String user = data.getUserName();
+			String password = data.getPassword();
+
+			Class.forName("org.postgresql.Driver");
+			return DriverManager.getConnection(url, user,password);					
 			
 		} catch (ClassNotFoundException e) {
 			throw new SQLException(e);
 		}
 	}
+	
 	
 	@Override
 	public void closeConnection(Connection con) throws SQLException {
