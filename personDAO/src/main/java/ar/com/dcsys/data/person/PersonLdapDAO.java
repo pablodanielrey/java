@@ -84,56 +84,6 @@ public class PersonLdapDAO extends AbstractLdapPersonDAO {
 		this.cp = cp;
 	}
 	
-	@Override
-	public void initialize() throws PersonException {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public void destroy() throws PersonException {
-		// TODO Auto-generated method stub
-		
-	}
-	
-/*
-	private Ehcache getCache(Class clazz) {
-		Ehcache cache = cacheManager.getCache(clazz.getName());
-		if (cache == null) {
-			cacheManager.addCache(clazz.getName());
-		}
-		return cacheManager.getCache(clazz.getName());
-	}
-	
-	
-	private <T> List<T> getCachedObjects(Class<T> clazz) {
-		Ehcache cache = getCache(clazz);
-		List<String> oK = cache.getKeys();
-		if (oK != null && oK.size() > 0) {
-			List<T> objects = new ArrayList<T>(oK.size());
-			for (String k : oK) {
-				objects.add((T)(cache.get(k).getObjectValue()));
-			}
-			return objects;
-		}
-		return null;
-	}
-	
-	private <T> T getCachedObject(Class<T> clazz, String id) {
-		Ehcache cache = getCache(clazz);
-		Element element = cache.get(id);
-		if (element != null) {
-			return (T)element.getObjectValue();
-		}
-		return null;
-	}
-	
-	private <T> void putCachedObject(T o, String id) {
-		Ehcache cache = getCache(o.getClass());
-		cache.put(new Element(id,o));
-	}
-*/
-
 	private String getStringAtt(String name, Attributes attrs) throws NamingException {
 		Attribute att = attrs.get(name);
 		if (att == null) {

@@ -22,8 +22,5 @@ public interface PersonDAO extends Serializable {
 	
 	public void remove(Person p) throws PersonException;
 	public String persist(Person p) throws PersonException;
-
-	public void initialize() throws PersonException;
-	public void destroy() throws PersonException; 
 	
 }

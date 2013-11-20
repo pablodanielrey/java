@@ -384,16 +384,4 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 		}
 	}
 
-	@Override
-	public void initialize() throws PersonException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void destroy() throws PersonException {
-		// TODO Auto-generated method stub
-		
-	}
-
 }
