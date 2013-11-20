@@ -23,7 +23,7 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 	private final JdbcConnectionProvider cp;
 
 	@Inject
-	public PersonHsqlDAO(@Named("hsqlConnectionProvider") JdbcConnectionProvider cp) {
+	public PersonHsqlDAO(JdbcConnectionProvider cp) {
 		this.cp = cp;
 	}
 	
