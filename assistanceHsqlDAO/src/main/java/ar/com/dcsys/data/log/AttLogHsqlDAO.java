@@ -14,7 +14,6 @@ import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import ar.com.dcsys.data.HsqlConnectionProvider;
 import ar.com.dcsys.data.person.Person;
@@ -22,7 +21,6 @@ import ar.com.dcsys.exceptions.AttLogException;
 import ar.com.dcsys.exceptions.DeviceException;
 import ar.com.dcsys.exceptions.PersonException;
 
-@Named
 public class AttLogHsqlDAO implements AttLogDAO {
 
 	private static final long serialVersionUID = 1L;

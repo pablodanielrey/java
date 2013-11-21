@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import ar.com.dcsys.data.HsqlConnectionProvider;
 import ar.com.dcsys.data.person.Person;
@@ -20,7 +19,6 @@ import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.security.Finger;
 import ar.com.dcsys.security.FingerprintCredentials;
 
-@Named
 public class FingerprintHsqlDAO implements FingerprintDAO {
 
 	private final Logger logger = Logger.getLogger(FingerprintHsqlDAO.class.getName());

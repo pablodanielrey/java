@@ -5,12 +5,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import ar.com.dcsys.persistence.JdbcConnectionProvider;
 import ar.com.dcsys.persistence.PersistenceData;
 
-@Named
 public class HsqlConnectionProvider implements JdbcConnectionProvider {
 
 	private final PersistenceData data;
