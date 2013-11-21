@@ -45,6 +45,7 @@ import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
+import ar.com.dcsys.data.OpenLdapContextProvider;
 import ar.com.dcsys.data.person.types.PersonType;
 import ar.com.dcsys.data.person.types.Student;
 import ar.com.dcsys.exceptions.PersonException;
@@ -80,7 +81,7 @@ public class PersonLdapDAO extends AbstractLdapPersonDAO {
 	private final DirContextProvider cp;
 
 	@Inject
-	public PersonLdapDAO(DirContextProvider cp) {
+	public PersonLdapDAO(OpenLdapContextProvider cp) {
 		this.cp = cp;
 	}
 	

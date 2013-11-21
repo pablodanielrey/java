@@ -19,6 +19,7 @@ import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
+import ar.com.dcsys.data.OpenLdapContextProvider;
 import ar.com.dcsys.data.group.types.Alias;
 import ar.com.dcsys.data.group.types.GroupType;
 import ar.com.dcsys.data.group.types.Office;
@@ -95,7 +96,7 @@ public class GroupLdapDAO implements GroupDAO {
 	private final DirContextProvider cp;
 	private final Params params;
 
-	public GroupLdapDAO(DirContextProvider cp, Params params) {
+	public GroupLdapDAO(OpenLdapContextProvider cp, Params params) {
 		this.cp = cp;
 		this.params = params;
 	}

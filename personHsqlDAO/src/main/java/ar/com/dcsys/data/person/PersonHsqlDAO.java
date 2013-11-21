@@ -10,20 +10,18 @@ import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import ar.com.dcsys.data.person.types.PersonType;
 import ar.com.dcsys.exceptions.PersonException;
-import ar.com.dcsys.persistence.JdbcConnectionProvider;
+import ar.com.dcsys.persistence.PostgresSqlConnectionProvider;
 
-@Named
 public class PersonHsqlDAO extends  AbstractPersonDAO {
 
 	private static final long serialVersionUID = 1L;
-	private final JdbcConnectionProvider cp;
+	private final PostgresSqlConnectionProvider cp;
 
 	@Inject
-	public PersonHsqlDAO(JdbcConnectionProvider cp) {
+	public PersonHsqlDAO(PostgresSqlConnectionProvider cp) {
 		this.cp = cp;
 	}
 	
