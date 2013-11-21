@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -17,6 +19,8 @@ import ar.com.dcsys.exceptions.PersonException;
 
 public class PersonHsqlDAO extends  AbstractPersonDAO {
 
+	private final static Logger logger = Logger.getLogger(PersonDAO.class.getName());
+	
 	private static final long serialVersionUID = 1L;
 	private final HsqlConnectionProvider cp;
 
@@ -62,9 +66,16 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 		}
 	}
 	
-	
 	@PostConstruct
-	void createTables() throws SQLException {
+	void init() {
+		try {
+			createTables();
+		} catch (SQLException e) {
+			logger.log(Level.SEVERE,e.getMessage(),e);
+		}
+	}
+	
+	private void createTables() throws SQLException {
 		Connection con = cp.getConnection();
 		try {
 			PreparedStatement st = con.prepareStatement("create table if not exists persons (" +
