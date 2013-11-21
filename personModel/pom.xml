@@ -2,6 +2,13 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <parent>
+	<groupId>ar.com.dcsys</groupId>
+	<artifactId>java</artifactId>
+	<version>1.0</version>
+  </parent>
+
+  
   <groupId>ar.com.dcsys.model</groupId>
   <artifactId>personModel</artifactId>
   <packaging>jar</packaging>
@@ -10,6 +17,10 @@
   <name>personModel</name>
   <url>http://maven.apache.org</url>
 
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>  
+  
   <dependencies>
 
     <dependency>
