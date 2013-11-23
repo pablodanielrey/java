@@ -126,6 +126,41 @@ public class FingerprintHsqlDAO implements FingerprintDAO {
 	
 	
 	@Override
+	public String findIdByFingerprint(FingerprintCredentials fp) throws FingerprintException {
+		try {
+			Connection con = cp.getConnection();
+			try {
+				String query = "select id from fingerprints where codification = ? and finger = ? and algorithm = ? and template = ?";
+				PreparedStatement st = con.prepareStatement(query);
+				try {
+					st.setString(1,fp.getCodification());
+					st.setInt(2,fp.getFinger().getId());
+					st.setString(3,fp.getAlgorithm());
+					st.setBytes(4, fp.getTemplate());
+					
+					ResultSet rs = st.executeQuery();
+					try {
+						if (rs.next()) {
+							String id = rs.getString("id");
+							return id;
+						} else {
+							return null;
+						}
+					} finally {
+						rs.close();
+					}
+				} finally {
+					st.close();
+				}
+			} finally {
+				cp.closeConnection(con);
+			}
+		} catch (SQLException e) {
+			throw new FingerprintException(e);
+		}
+	}
+	
+	@Override
 	public Fingerprint findByFingerprint(FingerprintCredentials fp) throws FingerprintException, PersonException {
 		try {
 			Connection con = cp.getConnection();

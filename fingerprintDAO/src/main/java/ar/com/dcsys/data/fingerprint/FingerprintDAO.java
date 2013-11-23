@@ -10,6 +10,8 @@ import ar.com.dcsys.security.FingerprintCredentials;
 public interface FingerprintDAO {
 
 	public Fingerprint findById(String id) throws FingerprintException;
+	public String findIdByFingerprint(FingerprintCredentials fp) throws FingerprintException;
+	
 	public Fingerprint findByFingerprint(FingerprintCredentials fp) throws FingerprintException, PersonException;
 	public List<Fingerprint> findByPerson(Person person) throws FingerprintException, PersonException;
 	
