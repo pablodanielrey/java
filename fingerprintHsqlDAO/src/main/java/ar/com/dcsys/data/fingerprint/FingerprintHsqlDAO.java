@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -52,7 +53,7 @@ public class FingerprintHsqlDAO implements FingerprintDAO {
 					"codification longvarchar not null, " +
 					"algorithm longvarchar not null, " +
 					"finger int not null, " +
-					"template binary not null)");
+					"template varbinary(1000) not null)");
 			try {
 				st.executeUpdate();
 				
@@ -213,12 +214,20 @@ public class FingerprintHsqlDAO implements FingerprintDAO {
 		String query = "insert into fingerprints (id,person_id,codification,finger,algorithm,template) values (?,?,?,?,?,?)";
 		PreparedStatement st = con.prepareStatement(query);
 		try {
-			st.setString(1, fp.getId());
-			st.setString(2, fp.getPerson().getId());
-			st.setString(2, fp.getFingerprint().getCodification());
-			st.setInt(3, fp.getFingerprint().getFinger().getId());
-			st.setString(4, fp.getFingerprint().getAlgorithm());
-			st.setBytes(5, fp.getFingerprint().getTemplate());
+			
+			String id = fp.getId();
+			String personId = fp.getPerson().getId();
+			String codification = fp.getFingerprint().getCodification();
+			int finger = fp.getFingerprint().getFinger().getId();
+			String algorithm = fp.getFingerprint().getAlgorithm();
+			byte[] templ = fp.getFingerprint().getTemplate();
+			
+			st.setString(1, id);
+			st.setString(2, personId);
+			st.setString(3, codification);
+			st.setInt(4, finger);
+			st.setString(5, algorithm);
+			st.setBytes(6, templ);
 			st.executeUpdate();
 			
 			return fp.getId();
@@ -270,6 +279,7 @@ public class FingerprintHsqlDAO implements FingerprintDAO {
 				cp.closeConnection(con);
 			}
 		} catch (SQLException e) {
+			logger.log(Level.SEVERE,e.getMessage(),e);
 			throw new FingerprintException(e);
 		}
 	}
