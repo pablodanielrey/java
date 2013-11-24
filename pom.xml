@@ -38,6 +38,8 @@
   
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <junit.version>4.11</junit.version>
+    <guava.version>13.0.1</guava.version>
   </properties>  
    
   <dependencies>
