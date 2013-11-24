@@ -48,6 +48,8 @@ public class PersonsManagerTest {
 		///// pruebo que el persist agregue una persona en la base //////////////
 		
 		List<Person> persons = personsManager.findAll();
+		assertNotNull(persons);
+		
 		int count = persons.size();
 		
 		String dni = "123456";
@@ -58,6 +60,8 @@ public class PersonsManagerTest {
 		person.setDni(dni);
 		String id = personsManager.persist(person);
 		assertNotNull(id);
+		assertNotNull(person.getId());
+		assertEquals(person.getId(),id);
 		
 		Person person3 = personsManager.findById(id);
 		assertEquals(person.getId(), person3.getId());
