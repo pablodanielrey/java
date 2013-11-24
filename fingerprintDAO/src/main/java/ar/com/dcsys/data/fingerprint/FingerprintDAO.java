@@ -16,6 +16,7 @@ public interface FingerprintDAO {
 	public List<Fingerprint> findByPerson(Person person) throws FingerprintException, PersonException;
 	
 	public String persist(Fingerprint fp) throws FingerprintException;
+
 	
 	public interface Params {
 		public Person findPersonById(String id) throws PersonException;

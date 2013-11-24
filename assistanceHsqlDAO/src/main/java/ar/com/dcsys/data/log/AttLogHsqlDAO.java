@@ -50,7 +50,7 @@ public class AttLogHsqlDAO implements AttLogDAO {
 		try {
 			PreparedStatement st = con.prepareStatement("create table if not exists attLog (" +
 																"id longvarchar not null primary key, " +
-																"device_id longvarchar not null references device (id)," +
+																"device_id longvarchar not null references devices (id)," +
 																"person_id longvarchar not null, " +
 																"verifyMode bigint not null, " +
 																"date timestamp not null)");

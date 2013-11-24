@@ -52,7 +52,7 @@ public class FingerprintHsqlDAO implements FingerprintDAO {
 					"codification longvarchar not null, " +
 					"algorithm longvarchar not null, " +
 					"finger int not null, " +
-					"template bytea not null)");
+					"template binary not null)");
 			try {
 				st.executeUpdate();
 				
