@@ -10,7 +10,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.inject.Singleton;
 
 import ar.com.dcsys.data.person.Person;
@@ -36,7 +35,7 @@ public class PersonsManagerBean implements PersonsManager {
 	private final PersonDAO personDAO;
 	
 	@Inject
-	public PersonsManagerBean(@Named("personHsqlDAO") PersonDAO personDAO) {
+	public PersonsManagerBean(PersonDAO personDAO) {
 		this.personDAO = personDAO;
 		createCaches();
 	}
