@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Class-Path: gwt-servlet-2.5.1.jar
+
