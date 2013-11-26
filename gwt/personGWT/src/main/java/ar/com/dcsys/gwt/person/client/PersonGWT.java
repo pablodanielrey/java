@@ -1,8 +1,11 @@
 package ar.com.dcsys.gwt.person.client;
 
+import ar.com.dcsys.gwt.person.client.gin.Injector;
+import ar.com.dcsys.gwt.person.client.ui.basicData.PersonDataView;
+
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.core.shared.GWT;
+import com.google.gwt.user.client.ui.RootPanel;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -10,13 +13,18 @@ import com.google.gwt.user.client.Window;
 public class PersonGWT implements EntryPoint {
  
 
-  private final Messages messages = GWT.create(Messages.class);
+//  private final Messages messages = GWT.create(Messages.class);
 
+	
+	private final Injector injector = GWT.create(Injector.class);
+	
   /**
    * This is the entry point method.
    */
   public void onModuleLoad() {
-	  Window.alert(messages.helloWorldFirst());
-	  Window.alert(messages.helloWorldLast());
+
+	  PersonDataView view = injector.personDataView();
+	  RootPanel.get().add(view);
+	  
   }
 }

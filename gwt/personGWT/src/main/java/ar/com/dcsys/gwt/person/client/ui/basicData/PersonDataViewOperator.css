@@ -1,0 +1,18 @@
+@CHARSET "UTF-8";
+
+.name { readOnly: true; visibility: visible }
+.lastName { readOnly: true; visibility: visible }
+.dni { readOnly: true; visibility: visible }
+.mail { readOnly: false; visibility: visible }
+.alternativeMail { readOnly: true; visibility: visible }
+.gender { readOnly: false; visible : true }
+.country { readOnly: false; visibility: visible }
+.city { readOnly: false; visibility: visible }
+.address { readOnly: false; visibility: visible }
+.telephone { readOnly: false; visibility: visible }
+
+.studentData { visibility: hidden }
+.studentNumber { readOnly: false; visibility: visible }
+
+.assistanceData { visibility: visible }
+.pin { readOnly: true; visibility: visible }
