@@ -1,6 +1,7 @@
 package ar.com.dcsys.gwt.person.client.manager;
 
 import ar.com.dcsys.gwt.person.PersonProxy;
+import ar.com.dcsys.gwt.person.client.ws.WebsocketState;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
@@ -22,6 +23,8 @@ public class PersonsManager {
 	private final String url;
 	private final WebsocketListener wsListener;
 	private final Websocket socket;
+	private WebsocketState wsState;
+	
 	
 	public PersonsManager() {
 		personFactory = GWT.create(PersonFactory.class);
@@ -39,6 +42,7 @@ public class PersonsManager {
 			@Override
 			public void onClose() {
 				Window.alert("Se cerro el websocket");
+				wsState = WebsocketState.CLOSED;
 			}
 			@Override
 			public void onMessage(String msg) {
@@ -47,12 +51,13 @@ public class PersonsManager {
 			@Override
 			public void onOpen() {
 				Window.alert("Se abrio el websocket");
+				wsState = WebsocketState.OPEN;
 			}
 		};
 		
 		socket = new Websocket(url);
 		socket.addListener(wsListener);
-		socket.open();
+		wsState = WebsocketState.CLOSED;
 	}
 	
 	
@@ -77,6 +82,9 @@ public class PersonsManager {
 	
 	
 	public void persist(PersonProxy person) {
+		if (wsState == WebsocketState.CLOSED) {
+			socket.open();
+		}
 		String json = serializeToJson(person);
 		socket.send(json);
 	}

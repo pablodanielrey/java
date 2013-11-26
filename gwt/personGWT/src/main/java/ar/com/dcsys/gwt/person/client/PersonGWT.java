@@ -42,8 +42,6 @@ public class PersonGWT implements EntryPoint {
 		  
 		@Override
 		public void persist() {
-			Window.alert("persistiendo persona");
-			
 			PersonProxy person = getPerson();
 			personsManager.persist(person);
 		}
