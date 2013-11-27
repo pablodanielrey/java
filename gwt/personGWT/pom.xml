@@ -45,6 +45,7 @@
       <groupId>com.google.gwt.inject</groupId>
       <artifactId>gin</artifactId>
       <version>2.1.1</version>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
@@ -57,7 +58,18 @@
       <groupId>javax.websocket</groupId>
       <artifactId>javax.websocket-api</artifactId>
       <version>1.0</version>
+      <scope>provided</scope>
     </dependency>
+
+
+    <!-- referencias : http://www.eclipse.org/jetty/documentation/current/framework-weld.html -->
+    <dependency>
+      <groupId>org.jboss.weld.servlet</groupId>
+      <artifactId>weld-servlet</artifactId>
+      <version>2.1.0.Final</version>
+    </dependency>
+
+
 
 
     <dependency>
@@ -73,6 +85,16 @@
       <version>1.0-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
+
+
+
+
+
+
+
+
+
+
 
 
     <dependency>
@@ -132,6 +154,44 @@
         </configuration>
 
       </plugin>
+
+
+
+     <!-- para remover las clases client de gwt asi no tira error la injection -->
+     <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>2.4.1</version>
+        <executions>
+                <execution>
+                        <id>default-clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                                <goal>clean</goal>
+                        </goals>
+                </execution>
+                <execution>
+                        <id>remove-gwt-client-classes</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                                <goal>clean</goal>
+                        </goals>
+                        <configuration>
+                                <excludeDefaultDirectories>true</excludeDefaultDirectories>
+                                <filesets>
+                                        <fileset>
+                                                <directory>${webappDirectory}/WEB-INF/classes/ar/com/dcsys/gwt/person/client</directory>
+                                                <includes>
+                                                        <include>**</include>
+                                                </includes>
+                                        </fileset>
+                                </filesets>
+                        </configuration>
+                </execution>
+        </executions>
+     </plugin>
+
+
+
 
 
       <!-- Copy static web files before executing gwt:run -->
@@ -233,7 +293,19 @@
 
         <!-- para que sea acorde con el gwt-maven-plugin -->
         <configuration>
+		<!--
+		<scanIntervalSeconds>2</scanIntervalSeconds>
+	        <reload>automatic</reload>
+		-->
                 <webAppSourceDirectory>${webappDirectory}</webAppSourceDirectory>
+
+	
+		<!-- referencias : http://agorava.org/news/2012/07/10/Starting-a-CDI-webapp-from-Maven-with-Weld-servlet-and-jetty-plugin/ -->
+		<webApp>
+		  <overrideDescriptor>${webappDirectory}/WEB-INF/web-add.xml</overrideDescriptor>
+		</webApp>
+    		<contextXml>${webappDirectory}/WEB-INF/jetty-context.xml</contextXml>
+
         </configuration>
 
     </plugin>

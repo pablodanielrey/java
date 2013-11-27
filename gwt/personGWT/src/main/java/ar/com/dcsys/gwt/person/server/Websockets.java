@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.inject.Inject;
 import javax.websocket.CloseReason;
 import javax.websocket.EndpointConfig;
 import javax.websocket.OnClose;
@@ -30,6 +31,9 @@ public class Websockets {
 
 	private Map<String,Session> sessions = new HashMap<>();
 	private MessageFactory messageFactory = AutoBeanFactorySource.create(MessageFactory.class);
+
+	@Inject
+	MessageClassifier messageClassifier;
 	
 	@OnOpen
 	public void onOpen(Session session, EndpointConfig config) {
@@ -61,9 +65,7 @@ public class Websockets {
 		
 		// decodifico el mensaje:
 		Message msg = MessageEncoderDecoder.decode(messageFactory, json);
-		logger.log(Level.INFO,"id : " + msg.getId());
-		logger.log(Level.INFO,"Type : " + msg.getType().toString());
-		logger.log(Level.INFO,"Payload : " + msg.getPayload());
+		messageClassifier.classify(msg);
 
 		Message resp = messageFactory.message().as();
 		resp.setId(msg.getId());
