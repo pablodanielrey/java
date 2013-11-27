@@ -10,10 +10,26 @@
   </parent>
 
   <groupId>ar.com.dcsys.gwt</groupId>
-  <artifactId>personEntitiesGWT</artifactId>
+  <artifactId>messageGWT</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>personEntitiesGWT</name>
-
+  <name>messageGWT</name>
   <url>http://maven.apache.org</url>
 
+  <dependencies>
+
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>org.json</artifactId>
+      <version>chargebee-1.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-user</artifactId>
+      <version>${gwtVersion}</version>
+      <scope>compile</scope>
+    </dependency>
+
+	
+  </dependencies>
 </project>

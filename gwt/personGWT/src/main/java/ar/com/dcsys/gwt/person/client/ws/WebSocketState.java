@@ -7,15 +7,15 @@
 package ar.com.dcsys.gwt.person.client.ws;
 
 
-public enum WebsocketState {
+public enum WebSocketState {
 
 	CONNECTING(0), OPEN(1), CLOSING(2), CLOSED(3);
 	
 	private int state;
 	
-	private WebsocketState() { }
+	private WebSocketState() { }
 	
-	private WebsocketState(int i) {
+	private WebSocketState(int i) {
 		state = i;
 	}
 	

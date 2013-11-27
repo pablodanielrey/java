@@ -1,6 +1,6 @@
 package ar.com.dcsys.gwt.person.client.ui.cell;
 
-import ar.com.dcsys.gwt.person.PersonProxy;
+import ar.com.dcsys.gwt.person.shared.PersonProxy;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;

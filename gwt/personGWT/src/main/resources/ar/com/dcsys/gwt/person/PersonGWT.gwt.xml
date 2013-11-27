@@ -9,7 +9,7 @@
 
   <!-- We need the JUnit module in the main module,               -->
   <!-- otherwise eclipse complains (Google plugin bug?)           -->
-  <inherits name='com.google.gwt.junit.JUnit' />
+  <!--   <inherits name='com.google.gwt.junit.JUnit' /> -->
 
   <!-- Inherit the default GWT style sheet.  You can change       -->
   <!-- the theme of your GWT application by uncommenting          -->
@@ -19,7 +19,8 @@
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
 
   <!-- Other module inherits                                      -->
-  <inherits name="ar.com.dcsys.gwt.PersonEntitiesGWT"/>
+  <inherits name="ar.com.dcsys.gwt.message.MessageGWT"/>
+  <inherits name="ar.com.dcsys.gwt.person.PersonEntitiesGWT"/>
   
 
   <!-- Specify the app entry point class.                         -->

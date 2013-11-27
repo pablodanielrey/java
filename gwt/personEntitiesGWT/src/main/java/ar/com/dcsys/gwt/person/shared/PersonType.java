@@ -1,4 +1,4 @@
-package ar.com.dcsys.gwt.person;
+package ar.com.dcsys.gwt.person.shared;
 
 import java.io.Serializable;
 

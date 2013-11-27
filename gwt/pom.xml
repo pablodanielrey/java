@@ -24,10 +24,7 @@
   <modules>
     <module>personEntitiesGWT</module>
     <module>personGWT</module>
+    <module>messageGWT</module>
   </modules>
-
-  <dependencies>
-
-  </dependencies>
 
 </project>

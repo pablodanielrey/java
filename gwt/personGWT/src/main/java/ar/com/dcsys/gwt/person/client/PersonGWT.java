@@ -1,11 +1,12 @@
 package ar.com.dcsys.gwt.person.client;
 
-import ar.com.dcsys.gwt.person.PersonProxy;
 import ar.com.dcsys.gwt.person.client.gin.Injector;
 import ar.com.dcsys.gwt.person.client.manager.PersonsManager;
+import ar.com.dcsys.gwt.person.client.manager.Receiver;
 import ar.com.dcsys.gwt.person.client.ui.UpdatePersonDataView;
 import ar.com.dcsys.gwt.person.client.ui.UpdatePersonDataView.Presenter;
 import ar.com.dcsys.gwt.person.client.ui.basicData.PersonDataView;
+import ar.com.dcsys.gwt.person.shared.PersonProxy;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.shared.GWT;
@@ -43,11 +44,20 @@ public class PersonGWT implements EntryPoint {
 		@Override
 		public void persist() {
 			PersonProxy person = getPerson();
-			personsManager.persist(person);
+			personsManager.persist(person, new Receiver<String>() {
+				@Override
+				public void onSuccess(String t) {
+					Window.alert("Exitosamente persistido");
+				}
+				@Override
+				public void onFailure(Throwable t) {
+					Window.alert("Error persistiendo");
+				}
+			});
 		}
 		
 		private PersonProxy getPerson() {
-			
+
 			String name = view.getName();
 			String lastName = view.getLastName();
 			String dni = view.getDni();

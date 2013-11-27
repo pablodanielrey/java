@@ -3,7 +3,6 @@ package ar.com.dcsys.gwt.person.server;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,6 +15,13 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
+import ar.com.dcsys.gwt.message.shared.Message;
+import ar.com.dcsys.gwt.message.shared.MessageEncoderDecoder;
+import ar.com.dcsys.gwt.message.shared.MessageFactory;
+import ar.com.dcsys.gwt.message.shared.MessageType;
+
+import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
+
 
 @ServerEndpoint(value = "/websockets")
 public class Websockets {
@@ -23,6 +29,7 @@ public class Websockets {
 	private static Logger logger = Logger.getLogger(Websockets.class.getName());
 
 	private Map<String,Session> sessions = new HashMap<>();
+	private MessageFactory messageFactory = AutoBeanFactorySource.create(MessageFactory.class);
 	
 	@OnOpen
 	public void onOpen(Session session, EndpointConfig config) {
@@ -49,13 +56,26 @@ public class Websockets {
 	}
 	
 	@OnMessage
-	public void onMessage(Session session, String msg) {
-		logger.log(Level.INFO,"Msg : " + msg);
+	public void onMessage(Session session, String json) {
+		logger.log(Level.INFO,"Msg : " + json);
+		
+		// decodifico el mensaje:
+		Message msg = MessageEncoderDecoder.decode(messageFactory, json);
+		logger.log(Level.INFO,"id : " + msg.getId());
+		logger.log(Level.INFO,"Type : " + msg.getType().toString());
+		logger.log(Level.INFO,"Payload : " + msg.getPayload());
 
+		Message resp = messageFactory.message().as();
+		resp.setId(msg.getId());
+		resp.setType(MessageType.RETURN);
+		resp.setPayload("funco super");
+		String response = MessageEncoderDecoder.encode(resp);
+		
+		
  		for (Session s1 : sessions.values()) {
 			if (s1.isOpen()) {
 				try {
-					s1.getBasicRemote().sendText("YEA PEPE");
+					s1.getBasicRemote().sendText(response);
 				} catch (IOException e) {
 					logger.log(Level.WARNING,e.getMessage(),e);
 				}
