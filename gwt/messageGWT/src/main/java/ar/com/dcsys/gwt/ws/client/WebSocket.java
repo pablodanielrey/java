@@ -1,4 +1,4 @@
-package ar.com.dcsys.gwt.person.client.ws;
+package ar.com.dcsys.gwt.ws.client;
 
 import java.util.HashMap;
 
@@ -6,7 +6,7 @@ import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageEncoderDecoder;
 import ar.com.dcsys.gwt.message.shared.MessageFactory;
 import ar.com.dcsys.gwt.message.shared.MessageType;
-import ar.com.dcsys.gwt.person.client.utils.GUID;
+import ar.com.dcsys.gwt.utils.client.GUID;
 
 import com.google.gwt.core.client.GWT;
 import com.sksamuel.gwt.websockets.Websocket;

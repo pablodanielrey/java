@@ -1,4 +1,4 @@
-package ar.com.dcsys.gwt.person.client.ws;
+package ar.com.dcsys.gwt.ws.client;
 
 import ar.com.dcsys.gwt.message.shared.Message;
 

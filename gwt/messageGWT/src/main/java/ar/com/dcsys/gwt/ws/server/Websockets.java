@@ -1,4 +1,4 @@
-package ar.com.dcsys.gwt.person.server;
+package ar.com.dcsys.gwt.ws.server;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.inject.Inject;
 import javax.websocket.CloseReason;
 import javax.websocket.EndpointConfig;
 import javax.websocket.OnClose;
@@ -32,9 +31,7 @@ public class Websockets {
 	private Map<String,Session> sessions = new HashMap<>();
 	private MessageFactory messageFactory = AutoBeanFactorySource.create(MessageFactory.class);
 
-	@Inject
-	MessageClassifier messageClassifier;
-	
+
 	@OnOpen
 	public void onOpen(Session session, EndpointConfig config) {
 		logger.log(Level.INFO,"onOpen");
@@ -65,7 +62,7 @@ public class Websockets {
 		
 		// decodifico el mensaje:
 		Message msg = MessageEncoderDecoder.decode(messageFactory, json);
-		messageClassifier.classify(msg);
+
 
 		Message resp = messageFactory.message().as();
 		resp.setId(msg.getId());

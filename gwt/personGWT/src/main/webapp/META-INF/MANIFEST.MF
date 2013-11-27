@@ -1,6 +1,5 @@
 Manifest-Version: 1.0
-Class-Path: gwt-servlet-2.5.1.jar gin-2.1.1.jar guice-3.0.jar javax.in
- ject-1.jar aopalliance-1.0.jar guice-assistedinject-3.0.jar gwt-webso
- ckets-1.0.3.jar javax.websocket-api-1.0.jar messageGWT-1.0-SNAPSHOT.j
- ar personEntitiesGWT-1.0-SNAPSHOT.jar
+Class-Path: gwt-servlet-2.5.1.jar weld-servlet-2.1.0.Final.jar message
+ GWT-1.0-SNAPSHOT.jar org.json-chargebee-1.0.jar gwt-websockets-1.0.3.
+ jar personEntitiesGWT-1.0-SNAPSHOT.jar
 

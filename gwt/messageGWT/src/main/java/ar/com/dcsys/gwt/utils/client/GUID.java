@@ -1,4 +1,4 @@
-package ar.com.dcsys.gwt.person.client.utils;
+package ar.com.dcsys.gwt.utils.client;
 
 /*
  * File: Math.uuid.js

@@ -3,9 +3,9 @@ package ar.com.dcsys.gwt.person.client.manager;
 import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageFactory;
 import ar.com.dcsys.gwt.message.shared.MessageType;
-import ar.com.dcsys.gwt.person.client.ws.WebSocket;
-import ar.com.dcsys.gwt.person.client.ws.WebSocketReceiver;
 import ar.com.dcsys.gwt.person.shared.PersonProxy;
+import ar.com.dcsys.gwt.ws.client.WebSocket;
+import ar.com.dcsys.gwt.ws.client.WebSocketReceiver;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
