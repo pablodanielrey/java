@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
 Class-Path: gwt-servlet-2.5.1.jar weld-servlet-2.1.0.Final.jar message
- GWT-1.0-SNAPSHOT.jar org.json-chargebee-1.0.jar gwt-websockets-1.0.3.
- jar personEntitiesGWT-1.0-SNAPSHOT.jar
+ GWT.jar org.json-chargebee-1.0.jar gwt-websockets-1.0.3.jar personEnt
+ itiesGWT.jar
 

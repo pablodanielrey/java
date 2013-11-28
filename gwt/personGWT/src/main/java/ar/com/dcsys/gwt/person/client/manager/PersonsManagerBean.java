@@ -9,6 +9,7 @@ import ar.com.dcsys.gwt.ws.client.WebSocketReceiver;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
+import com.google.inject.Inject;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.google.web.bindery.autobean.shared.AutoBeanFactory;
@@ -22,24 +23,14 @@ public class PersonsManagerBean implements PersonsManager {
 	
 	private final MessageFactory messageFactory;
 	private final PersonFactory personFactory;
-		
 	private final WebSocket socket;
 	
 	
-	public PersonsManagerBean() {
+	@Inject
+	public PersonsManagerBean(WebSocket ws) {
 		messageFactory = GWT.create(MessageFactory.class);
 		personFactory = GWT.create(PersonFactory.class);
-		
-		String host = GWT.getHostPageBaseURL();
-		int from = 0;
-		if (host.toLowerCase().startsWith("http://")) {
-			from = 5;
-		} else if (host.toLowerCase().startsWith("https://")) {
-			from = 6;
-		}
-		String url = "ws://" + host.substring(from) + "websockets";
-		socket = new WebSocket(url);
-		socket.open();
+		socket = ws;
 	}
 	
 	
@@ -70,6 +61,8 @@ public class PersonsManagerBean implements PersonsManager {
 			Message msg = messageFactory.message().as(); 
 			msg.setType(MessageType.FUNCTION);
 			msg.setPayload(json);
+			
+			socket.open();
 			socket.send(msg, new WebSocketReceiver() {
 				@Override
 				public void onSuccess(Message message) {
