@@ -34,12 +34,13 @@
 	<module>userPasswordCredentials</module>
 	<module>userPasswordDAO</module>
 
+        <module>mapauEntities</module>
+        <module>mapauDAO</module>
+        <module>mapauHsqlDAO</module>
+        <module>mapauModel</module>
+
 	<module>gwt</module>
 	
-	<module>mapauEntities</module>
-	<module>mapauDAO</module>
-	<module>mapauHsqlDAO</module>
-	<module>mapauModel</module>
   </modules>
   
   <properties>
