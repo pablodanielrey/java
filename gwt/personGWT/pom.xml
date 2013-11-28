@@ -15,7 +15,7 @@
   <packaging>war</packaging>
   <version>1.0-SNAPSHOT</version>
 
-  <name>GWT Maven Archetype</name>
+  <name>personGWT</name>
 
   <properties>
     <!-- Convenience property to set the GWT version -->
