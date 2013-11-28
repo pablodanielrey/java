@@ -2,6 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+
   <parent>
     <groupId>ar.com.dcsys</groupId>
     <artifactId>java</artifactId>
@@ -10,16 +11,18 @@
 
 
   <groupId>ar.com.dcsys</groupId>
-  <artifactId>assistance</artifactId>
+  <artifactId>auth</artifactId>
   <packaging>pom</packaging>
   <version>1.0</version>
-  <name>Projectos del sistema de asistencia</name>
+  <name>Auth</name>
 
   <modules>
-	<module>assistanceEntities</module>
-	<module>assistanceDAO</module>
-	<module>assistanceHsqlDAO</module>
-	<module>assistancePostgreSqlDAO</module>
+	<module>fingerprintCredentials</module>
+	<module>fingerprintDAO</module>
+	<module>fingerprintHsqlDAO</module>
+
+	<module>userPasswordCredentials</module>
+	<module>userPasswordDAO</module>
   </modules>
 
 </project>

@@ -8,39 +8,14 @@
   <name>Projectos de Java</name>
 
   <modules>
-	<module>hsql</module>
-	<module>openldap</module>
-	<module>postgresql</module>
-	
 	<module>dcsysUtils</module>
-	
-	<module>firmwareConfig</module>
-	
-	<module>personEntities</module>
-	<module>personDAO</module>
-	<module>personHsqlDAO</module>
-	<module>personLdapDAO</module>
-	<module>personModel</module>
-
-	<module>assistanceEntities</module>
-	<module>assistanceDAO</module>
-	<module>assistanceHsqlDAO</module>
-	<module>assistancePostgreSqlDAO</module>
-	
-	<module>fingerprintCredentials</module>
-	<module>fingerprintDAO</module>
-	<module>fingerprintHsqlDAO</module>
-	
-	<module>userPasswordCredentials</module>
-	<module>userPasswordDAO</module>
-
-        <module>mapauEntities</module>
-        <module>mapauDAO</module>
-        <module>mapauHsqlDAO</module>
-        <module>mapauModel</module>
-
+	<module>data</module>
+	<module>config</module>
+	<module>person</module>
+	<module>auth</module>
+	<module>mapau</module>
+	<module>assistance</module>
 	<module>gwt</module>
-	
   </modules>
   
   <properties>

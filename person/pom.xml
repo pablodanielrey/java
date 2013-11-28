@@ -2,6 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+
   <parent>
     <groupId>ar.com.dcsys</groupId>
     <artifactId>java</artifactId>
@@ -10,16 +11,17 @@
 
 
   <groupId>ar.com.dcsys</groupId>
-  <artifactId>assistance</artifactId>
+  <artifactId>person</artifactId>
   <packaging>pom</packaging>
   <version>1.0</version>
-  <name>Projectos del sistema de asistencia</name>
+  <name>Person</name>
 
   <modules>
-	<module>assistanceEntities</module>
-	<module>assistanceDAO</module>
-	<module>assistanceHsqlDAO</module>
-	<module>assistancePostgreSqlDAO</module>
+	<module>personEntities</module>
+	<module>personDAO</module>
+	<module>personHsqlDAO</module>
+	<module>personLdapDAO</module>
+	<module>personModel</module>
   </modules>
 
 </project>
