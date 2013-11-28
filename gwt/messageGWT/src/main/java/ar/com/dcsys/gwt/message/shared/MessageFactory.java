@@ -6,5 +6,6 @@ import com.google.web.bindery.autobean.shared.AutoBeanFactory;
 public interface MessageFactory extends AutoBeanFactory {
 
 	public AutoBean<Message> message();
+	public AutoBean<Method> method();
 	
 }
