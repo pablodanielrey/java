@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageEncoderDecoder;
+import ar.com.dcsys.gwt.message.shared.MessageException;
 import ar.com.dcsys.gwt.message.shared.MessageFactory;
 import ar.com.dcsys.gwt.message.shared.MessageType;
 import ar.com.dcsys.gwt.utils.client.GUID;
@@ -19,13 +20,12 @@ import com.sksamuel.gwt.websockets.Websocket;
 import com.sksamuel.gwt.websockets.WebsocketListener;
 
 public class WebSocketImpl implements WebSocket {
-
-	private final MessageFactory messageFactory;
 	
 	private String url;
 	private Websocket socket;
 	private WebSocketState wsState;
 	
+	private final MessageEncoderDecoder messageEncoderDecoder;
 	private final EventBus eventBus;
 	private final HashMap<String,WebSocketReceiver> receivers;
 	
@@ -45,7 +45,7 @@ public class WebSocketImpl implements WebSocket {
 		
 		@Override
 		public void onMessage(String json) {
-			Message msg = MessageEncoderDecoder.decode(messageFactory,json);
+			Message msg = messageEncoderDecoder.decode(json);
 			String id = msg.getId();
 			MessageType type = msg.getType();
 
@@ -81,10 +81,10 @@ public class WebSocketImpl implements WebSocket {
 	
 	
 	@Inject
-	public WebSocketImpl(EventBus eventBus) {
+	public WebSocketImpl(EventBus eventBus, MessageEncoderDecoder messageEncoderDecoder) {
 		this.url = getUrl();
 		this.eventBus = eventBus;
-		messageFactory = GWT.create(MessageFactory.class);
+		this.messageEncoderDecoder = messageEncoderDecoder;
 		receivers = new HashMap<String,WebSocketReceiver>();
 		wsState = WebSocketState.CLOSED;		
 	}
@@ -136,12 +136,15 @@ public class WebSocketImpl implements WebSocket {
 			return;
 		}
 
-		String id = GUID.get();
-
-		receivers.put(id, rec);
-		msg.setId(id);
+		if (msg == null) {
+			rec.onFailure(new MessageException());
+		}
 		
-		String json = MessageEncoderDecoder.encode(msg);		
+		String id = GUID.get();
+		msg.setId(id);
+		receivers.put(id, rec);
+		
+		String json = messageEncoderDecoder.encode(msg);		
 		socket.send(json);
 	}
 	

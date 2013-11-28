@@ -21,6 +21,7 @@
   <!-- Other module inherits                                      -->
   <inherits name="ar.com.dcsys.gwt.ws.WsGWT"/>
   <inherits name="ar.com.dcsys.gwt.message.MessageGWT"/>
+  <inherits name="ar.com.dcsys.gwt.utils.UtilsGWT"/>
   <inherits name="ar.com.dcsys.gwt.person.PersonEntitiesGWT"/>
   
 

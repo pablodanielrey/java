@@ -1,5 +1,7 @@
 package ar.com.dcsys.gwt.person.client;
 
+import java.util.List;
+
 import ar.com.dcsys.gwt.person.client.gin.Injector;
 import ar.com.dcsys.gwt.person.client.manager.PersonsManager;
 import ar.com.dcsys.gwt.person.client.manager.Receiver;
@@ -37,6 +39,34 @@ public class PersonGWT implements EntryPoint {
 	  RootPanel.get().add(updv);
 
 	  
+	  
+	  
+	  
+	  PersonsManager personsManager = injector.personsManager();
+	  personsManager.findAll(new Receiver<List<PersonProxy>>() {
+			@Override
+			public void onSuccess(List<PersonProxy> t) {
+				
+				StringBuilder sb = new StringBuilder();
+				for (PersonProxy p : t) {
+					sb.append(p.getDni()).append(";");
+				}
+				Window.alert(sb.toString());
+				
+			}
+			@Override
+			public void onFailure(Throwable t) {
+				if (t == null) {
+					Window.alert("Error persistiendo");						
+				} else {
+					Window.alert(t.getMessage());
+				}
+			}
+	  });
+	  
+	  
+	  
+	  
 	  Presenter p = new UpdatePersonDataView.Presenter() {
 		  
 		  private PersonsManager personsManager = injector.personsManager(); 
@@ -51,7 +81,12 @@ public class PersonGWT implements EntryPoint {
 				}
 				@Override
 				public void onFailure(Throwable t) {
-					Window.alert("Error persistiendo");
+					if (t == null) {
+						Window.alert("Error persistiendo");						
+					} else {
+						Window.alert(t.getMessage());
+					}
+					
 				}
 			});
 		}
@@ -62,7 +97,7 @@ public class PersonGWT implements EntryPoint {
 			String lastName = view.getLastName();
 			String dni = view.getDni();
 			
-			PersonProxy person = personsManager.getPerson();
+			PersonProxy person = injector.personFactory().person().as();
 			person.setName(name);
 			person.setLastName(lastName);
 			person.setDni(dni);

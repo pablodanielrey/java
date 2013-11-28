@@ -1,79 +1,87 @@
 package ar.com.dcsys.gwt.person.client.manager;
 
+import java.util.List;
+
 import ar.com.dcsys.gwt.message.shared.Message;
-import ar.com.dcsys.gwt.message.shared.MessageFactory;
-import ar.com.dcsys.gwt.message.shared.MessageType;
+import ar.com.dcsys.gwt.message.shared.MessagesFactory;
+import ar.com.dcsys.gwt.person.shared.PersonEncoderDecoder;
+import ar.com.dcsys.gwt.person.shared.PersonFactory;
+import ar.com.dcsys.gwt.person.shared.PersonMethods;
 import ar.com.dcsys.gwt.person.shared.PersonProxy;
 import ar.com.dcsys.gwt.ws.client.WebSocket;
 import ar.com.dcsys.gwt.ws.client.WebSocketReceiver;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
-import com.google.web.bindery.autobean.shared.AutoBean;
-import com.google.web.bindery.autobean.shared.AutoBeanCodex;
-import com.google.web.bindery.autobean.shared.AutoBeanFactory;
-import com.google.web.bindery.autobean.shared.AutoBeanUtils;
 
 public class PersonsManagerBean implements PersonsManager {
 
-	interface PersonFactory extends AutoBeanFactory {
-		AutoBean<PersonProxy> person();
-	}
-	
-	private final MessageFactory messageFactory;
+	private final MessagesFactory messagesFactory;
 	private final PersonFactory personFactory;
+	private final PersonEncoderDecoder personEncoderDecoder;
 	private final WebSocket socket;
 	
 	
 	@Inject
-	public PersonsManagerBean(WebSocket ws) {
-		messageFactory = GWT.create(MessageFactory.class);
-		personFactory = GWT.create(PersonFactory.class);
+	public PersonsManagerBean(PersonFactory personFactory, PersonEncoderDecoder personEncoderDecoder, MessagesFactory messagesFactory, WebSocket ws) {
+		this.messagesFactory = messagesFactory;
+		this.personEncoderDecoder = personEncoderDecoder;
+		this.personFactory = personFactory;
 		socket = ws;
 	}
 	
-	
-	private String serializeToJson(PersonProxy person) {
-		AutoBean<PersonProxy> bean = AutoBeanUtils.getAutoBean(person);
-		String json = AutoBeanCodex.encode(bean).getPayload();
-		return json;
-	}
-	
-	private PersonProxy deserializeFromJson(String json) {
-		AutoBean<PersonProxy> bean = AutoBeanCodex.decode(personFactory, PersonProxy.class, json);
-		PersonProxy person = bean.as();
-		return person;
-	}
-	
-	
-	public PersonProxy getPerson() {
-		AutoBean<PersonProxy> bean = personFactory.create(PersonProxy.class); 
-		PersonProxy person = bean.as();
-		return person;
-	}
-	
-	
-	public void persist(PersonProxy person, Receiver<String> receiver) {
+
+	@Override
+	public void persist(PersonProxy person, final Receiver<String> receiver) {
 		try {
-			String json = serializeToJson(person);
 			
-			Message msg = messageFactory.message().as(); 
-			msg.setType(MessageType.FUNCTION);
-			msg.setPayload(json);
-			
+			// serializo los parametros y genero el mensaje
+			String json = personEncoderDecoder.encode(person);
+			Message msg = messagesFactory.method(PersonMethods.persist,json);
+	
+			// envío el mensaje al servidor.
 			socket.open();
 			socket.send(msg, new WebSocketReceiver() {
 				@Override
-				public void onSuccess(Message message) {
-					Window.alert("Mensaje : " + message.getPayload());
+				public void onSuccess(Message response) {
+					receiver.onSuccess(response.getPayload());
 				}
 				@Override
 				public void onFailure(Throwable t) {
-					Window.alert("Error!!");
+					receiver.onFailure(t);
 				}
 			});
 			
+		} catch (Exception e) {
+			receiver.onFailure(e);
+		}
+	}
+	
+	@Override
+	public void findAll(final Receiver<List<PersonProxy>> receiver) {
+		try {
+			Message msg = messagesFactory.method(PersonMethods.findAll);
+			
+			// envío el mensaje al servidor.
+			socket.open();
+			socket.send(msg, new WebSocketReceiver() {
+				@Override
+				public void onSuccess(Message response) {
+					
+					try {
+						String list = response.getPayload();
+						List<PersonProxy> persons = personEncoderDecoder.decodeList(list);
+						
+						receiver.onSuccess(persons);
+					} catch (Exception e) {
+						receiver.onFailure(e);
+					}
+					
+				}
+				@Override
+				public void onFailure(Throwable t) {
+					receiver.onFailure(t);
+				}
+			});
 		} catch (Exception e) {
 			receiver.onFailure(e);
 		}
