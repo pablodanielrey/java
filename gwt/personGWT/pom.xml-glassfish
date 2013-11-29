@@ -194,6 +194,12 @@
         </executions>
         <configuration>
           <webappDirectory>${webappDirectory}</webappDirectory>
+	  <archive>
+	      <manifest>
+                 <addClasspath>false</addClasspath>
+<!--                 <classpathPrefix>lib/</classpathPrefix> -->
+              </manifest>
+	  </archive>
         </configuration>
       </plugin>
 
@@ -280,10 +286,10 @@
 		<version>4.0</version>
 
 		<configuration>
-			<app>${webappDirectory}</app>
+			<app>${project.build.directory}/${project.build.finalName}.war</app>
             		<port>8080</port>
 <!--            		<contextRoot>${project.artifactId}</contextRoot> -->
-			<contextRoot>p</contextRoot>
+			<contextRoot>/</contextRoot>
          	</configuration>
 	</plugin>
 
