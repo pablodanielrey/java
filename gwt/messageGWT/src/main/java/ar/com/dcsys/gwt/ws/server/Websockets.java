@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.inject.Inject;
 import javax.websocket.CloseReason;
 import javax.websocket.EndpointConfig;
 import javax.websocket.OnClose;
@@ -20,10 +21,6 @@ import ar.com.dcsys.gwt.message.shared.MessageEncoderDecoder;
 import ar.com.dcsys.gwt.message.shared.MessageFactory;
 import ar.com.dcsys.gwt.message.shared.MessageType;
 import ar.com.dcsys.gwt.message.shared.MessagesFactory;
-import ar.com.dcsys.gwt.message.shared.MessagesFactoryImpl;
-import ar.com.dcsys.gwt.message.shared.Method;
-
-import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
 
 
 @ServerEndpoint(value = "/websockets")
@@ -32,13 +29,16 @@ public class Websockets {
 	private static Logger logger = Logger.getLogger(Websockets.class.getName());
 
 	private Map<String,Session> sessions = new HashMap<>();
-	private MessageFactory messageFactory = AutoBeanFactorySource.create(MessageFactory.class);
 
+	private final MessageFactory messageFactory; 
+	private final MessageEncoderDecoder messageEncoderDecoder;
+	private final MessagesFactory messagesFactory;
 	
 	////////////////////////
 	//// parche hasta que este CDI 
 	///////////////////////
 	
+	/*
 	private MessageEncoderDecoder getMessageEncoderDecoder() {
 		MessageEncoderDecoder med = new MessageEncoderDecoder(messageFactory);
 		return med;
@@ -48,11 +48,18 @@ public class Websockets {
 		MessagesFactory mf = new MessagesFactoryImpl(messageFactory);
 		return mf;
 	}
-	
+	*/
 	
 	//////////////////////////
 	//////////////////////////
 	
+	
+	@Inject
+	public Websockets(MessageFactory messageFactory, MessageEncoderDecoder messageEncoderDecoder, MessagesFactory messagesFactory) {
+		this.messageFactory = messageFactory;
+		this.messageEncoderDecoder = messageEncoderDecoder;
+		this.messagesFactory = messagesFactory;
+	}
 	
 
 	@OnOpen
@@ -84,7 +91,7 @@ public class Websockets {
 		logger.log(Level.INFO,"Msg : " + json);
 		
 		// decodifico el mensaje:
-		MessageEncoderDecoder med = getMessageEncoderDecoder();
+		MessageEncoderDecoder med = messageEncoderDecoder;
 		Message msg = med.decode(json);
 
 		if (msg.getType().equals(MessageType.FUNCTION)) {

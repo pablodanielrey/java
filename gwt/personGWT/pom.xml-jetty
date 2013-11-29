@@ -48,14 +48,24 @@
       <scope>provided</scope>
     </dependency>
 
-
+    <!-- referencias : http://www.eclipse.org/jetty/documentation/current/framework-weld.html -->
     <dependency>
-      <groupId>javax.enterprise</groupId>
-      <artifactId>cdi-api</artifactId>
-      <version>1.1</version>
-      <scope>provided</scope>
+      <groupId>org.jboss.weld.servlet</groupId>
+      <artifactId>weld-servlet</artifactId>
+      <version>2.1.0.Final</version>
+<!-- funca con la version de jetty-maven-plugin 8.1.3.v20120416 -->
+<!--      <version>1.1.8.Final</version> -->
+      <scope>compile</scope>
     </dependency>
 
+<!--
+<dependency>
+   <groupId>javax.enterprise</groupId>
+   <artifactId>cdi-api</artifactId>
+   <version>1.1</version>
+   <scope>provided</scope>
+</dependency>
+-->
 
     <dependency>
       <groupId>ar.com.dcsys.gwt</groupId>
@@ -98,6 +108,15 @@
     </dependency>
 
   </dependencies>
+
+
+<!--
+  <profiles>
+	<profile>
+		<id>gwt-compile</id>
+		<build>
+			<plugins>
+-->
 
 
   <build>
@@ -179,6 +198,8 @@
 
 
 
+
+
       <!-- Copy static web files before executing gwt:run -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -194,12 +215,6 @@
         </executions>
         <configuration>
           <webappDirectory>${webappDirectory}</webappDirectory>
-	  <archive>
-	      <manifest>
-                 <addClasspath>false</addClasspath>
-<!--                 <classpathPrefix>lib/</classpathPrefix> -->
-              </manifest>
-	  </archive>
         </configuration>
       </plugin>
 
@@ -278,20 +293,36 @@
 
   </plugin>
 
+    <plugin>
+	
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>9.1.0.v20131115</version> 
 
+	<!-- funca con weld-servlet 1.1.8.Final -->	
+<!--
+          <groupId>org.mortbay.jetty</groupId>
+          <artifactId>jetty-maven-plugin</artifactId>
+          <version>8.1.3.v20120416</version>
+-->
+        <!-- para que sea acorde con el gwt-maven-plugin -->
+        <configuration>
+		<!--
+		<scanIntervalSeconds>2</scanIntervalSeconds>
+	        <reload>automatic</reload>
+		-->
+                <webAppSourceDirectory>${webappDirectory}</webAppSourceDirectory>
 
-	<plugin>
-		<groupId>org.glassfish.embedded</groupId>
-		<artifactId>maven-embedded-glassfish-plugin</artifactId>
-		<version>4.0</version>
+	
+		<!-- referencias : http://agorava.org/news/2012/07/10/Starting-a-CDI-webapp-from-Maven-with-Weld-servlet-and-jetty-plugin/ -->
+		<webApp>
+		  <overrideDescriptor>${webappDirectory}/WEB-INF/web-add.xml</overrideDescriptor>
+		</webApp>
+    		<contextXml>${webappDirectory}/WEB-INF/jetty-context.xml</contextXml>
 
-		<configuration>
-			<app>${project.build.directory}/${project.build.finalName}.war</app>
-            		<port>8080</port>
-<!--            		<contextRoot>${project.artifactId}</contextRoot> -->
-			<contextRoot>/</contextRoot>
-         	</configuration>
-	</plugin>
+        </configuration>
+
+    </plugin>
 
     </plugins>
   </build>

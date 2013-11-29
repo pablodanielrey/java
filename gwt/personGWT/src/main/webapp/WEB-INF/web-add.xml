@@ -19,4 +19,11 @@
             javax.enterprise.inject.spi.BeanManager
         </resource-env-ref-type>
     </resource-env-ref>
+
+  <!-- Default page to serve -->
+  <welcome-file-list>
+    <welcome-file>PersonGWT.html</welcome-file>
+  </welcome-file-list>
+
+
 </web-app>
