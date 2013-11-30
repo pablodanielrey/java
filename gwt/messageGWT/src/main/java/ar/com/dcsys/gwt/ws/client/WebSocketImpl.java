@@ -46,19 +46,8 @@ public class WebSocketImpl implements WebSocket {
 		public void onMessage(String json) {
 			Message msg = messageEncoderDecoder.decode(json);
 			String id = msg.getId();
-			MessageType type = msg.getType();
-
-			if (MessageType.RETURN.equals(type)) {
-				
-				WebSocketReceiver rec = receivers.get(id);
-				rec.onSuccess(msg);
-				
-			} else if (MessageType.ERROR.equals(type)) {
-				
-				WebSocketReceiver rec = receivers.get(id);
-				rec.onFailure(null);
-				
-			}
+			WebSocketReceiver rec = receivers.get(id);
+			rec.onSuccess(msg);
 		}
 	};
 	
@@ -136,15 +125,21 @@ public class WebSocketImpl implements WebSocket {
 		}
 
 		if (msg == null) {
-			rec.onFailure(new MessageException());
+			rec.onFailure(new MessageException("msg == null"));
 		}
 		
 		String id = GUID.get();
 		msg.setId(id);
 		receivers.put(id, rec);
 		
-		String json = messageEncoderDecoder.encode(msg);		
-		socket.send(json);
+		String json = messageEncoderDecoder.encode(msg);
+		try {
+			socket.send(json);
+
+		} catch (Exception e) {
+			receivers.remove(id);
+			rec.onFailure(new MessageException(e));
+		}
 	}
 	
 

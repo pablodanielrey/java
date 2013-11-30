@@ -3,6 +3,8 @@ package ar.com.dcsys.gwt.person.client.manager;
 import java.util.List;
 
 import ar.com.dcsys.gwt.message.shared.Message;
+import ar.com.dcsys.gwt.message.shared.MessageException;
+import ar.com.dcsys.gwt.message.shared.MessageType;
 import ar.com.dcsys.gwt.message.shared.MessagesFactory;
 import ar.com.dcsys.gwt.person.shared.PersonEncoderDecoder;
 import ar.com.dcsys.gwt.person.shared.PersonFactory;
@@ -29,7 +31,16 @@ public class PersonsManagerBean implements PersonsManager {
 		socket = ws;
 	}
 	
-
+	
+	private boolean handleError(Message response, Receiver<?> receiver) {
+		if (MessageType.ERROR.equals(response.getType())) {
+			String error = response.getPayload();
+			receiver.onFailure(new MessageException(error));
+			return true;
+		}		
+		return false;
+	}
+	
 	@Override
 	public void persist(PersonProxy person, final Receiver<String> receiver) {
 		try {
@@ -43,6 +54,9 @@ public class PersonsManagerBean implements PersonsManager {
 			socket.send(msg, new WebSocketReceiver() {
 				@Override
 				public void onSuccess(Message response) {
+					if (handleError(response, receiver)) {
+						return;
+					}
 					receiver.onSuccess(response.getPayload());
 				}
 				@Override
@@ -66,6 +80,10 @@ public class PersonsManagerBean implements PersonsManager {
 			socket.send(msg, new WebSocketReceiver() {
 				@Override
 				public void onSuccess(Message response) {
+					
+					if (handleError(response, receiver)) {
+						return;
+					}
 					
 					try {
 						String list = response.getPayload();
