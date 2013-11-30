@@ -5,6 +5,7 @@ import ar.com.dcsys.gwt.person.client.manager.PersonsManager;
 import ar.com.dcsys.gwt.person.client.ui.UpdatePersonDataView;
 import ar.com.dcsys.gwt.person.client.ui.basicData.PersonDataView;
 import ar.com.dcsys.gwt.person.shared.PersonFactory;
+import ar.com.dcsys.gwt.ws.client.WebSocket;
 import ar.com.dcsys.gwt.ws.client.WsGinModule;
 
 import com.google.gwt.inject.client.GinModules;
@@ -18,5 +19,7 @@ public interface Injector extends Ginjector {
 	
 	public PersonFactory personFactory();
 	public PersonsManager personsManager();
+
+	public WebSocket ws();
 	
 }

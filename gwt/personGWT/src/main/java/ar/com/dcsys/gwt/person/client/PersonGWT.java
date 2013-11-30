@@ -9,6 +9,7 @@ import ar.com.dcsys.gwt.person.client.ui.UpdatePersonDataView;
 import ar.com.dcsys.gwt.person.client.ui.UpdatePersonDataView.Presenter;
 import ar.com.dcsys.gwt.person.client.ui.basicData.PersonDataView;
 import ar.com.dcsys.gwt.person.shared.PersonProxy;
+import ar.com.dcsys.gwt.ws.shared.SocketException;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.shared.GWT;
@@ -41,6 +42,32 @@ public class PersonGWT implements EntryPoint {
 	  Presenter p = new UpdatePersonDataView.Presenter() {
 		  
 		  private PersonsManager personsManager = injector.personsManager(); 
+
+		  @Override
+		public void findall() {
+			  personsManager.findAll(new Receiver<List<PersonProxy>>() {
+					@Override
+					public void onSuccess(List<PersonProxy> t) {
+						
+						Window.alert(String.valueOf(t.size()));
+						
+						PersonProxy pp = t.get(2);
+						
+						view.setName(pp.getName());
+						view.setLastName(pp.getLastName());
+						view.setDni(pp.getDni());
+						
+					}
+					@Override
+					public void onFailure(Throwable t) {
+						if (t == null) {
+							Window.alert("findall error = null");
+						} else {
+							Window.alert("error en findAll : " + t.getMessage());
+						}
+					}
+				  });					
+		}
 		  
 		@Override
 		public void persist() {
@@ -80,7 +107,14 @@ public class PersonGWT implements EntryPoint {
 	  
 	  
 	  updv.setPresenter(p);
-	  
+
+
+	  try {
+		injector.ws().open();
+	} catch (SocketException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	  
   }
 }

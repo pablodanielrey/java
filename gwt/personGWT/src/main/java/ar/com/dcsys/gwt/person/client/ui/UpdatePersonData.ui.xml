@@ -31,6 +31,7 @@
 		<g:FlowPanel ui:field="assistancePersonData" styleName="{style.assistancePanel}"/>
 		<g:FlowPanel styleName="{style.panel-button}">
 			<g:Button ui:field="accept" text="Aceptar" styleName="{style.button}"/>
+			<g:Button ui:field="findAll" text="findAll" styleName="{style.button}"/>
 		</g:FlowPanel>
 	</g:FlowPanel>
 
