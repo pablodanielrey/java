@@ -37,35 +37,6 @@ public class PersonGWT implements EntryPoint {
 	  
 	  updv.getBasicPersonData().setWidget(view);
 	  RootPanel.get().add(updv);
-
-	  
-	  
-	  
-	  
-	  PersonsManager personsManager = injector.personsManager();
-	  personsManager.findAll(new Receiver<List<PersonProxy>>() {
-			@Override
-			public void onSuccess(List<PersonProxy> t) {
-				
-				StringBuilder sb = new StringBuilder();
-				for (PersonProxy p : t) {
-					sb.append(p.getDni()).append(";");
-				}
-				Window.alert(sb.toString());
-				
-			}
-			@Override
-			public void onFailure(Throwable t) {
-				if (t == null) {
-					Window.alert("Error persistiendo");						
-				} else {
-					Window.alert(t.getMessage());
-				}
-			}
-	  });
-	  
-	  
-	  
 	  
 	  Presenter p = new UpdatePersonDataView.Presenter() {
 		  
@@ -77,7 +48,7 @@ public class PersonGWT implements EntryPoint {
 			personsManager.persist(person, new Receiver<String>() {
 				@Override
 				public void onSuccess(String t) {
-					Window.alert("Exitosamente persistido");
+					Window.alert(t);
 				}
 				@Override
 				public void onFailure(Throwable t) {

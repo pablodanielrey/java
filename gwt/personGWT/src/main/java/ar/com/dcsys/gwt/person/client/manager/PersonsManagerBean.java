@@ -7,7 +7,6 @@ import ar.com.dcsys.gwt.message.shared.MessageException;
 import ar.com.dcsys.gwt.message.shared.MessageType;
 import ar.com.dcsys.gwt.message.shared.MessagesFactory;
 import ar.com.dcsys.gwt.person.shared.PersonEncoderDecoder;
-import ar.com.dcsys.gwt.person.shared.PersonFactory;
 import ar.com.dcsys.gwt.person.shared.PersonMethods;
 import ar.com.dcsys.gwt.person.shared.PersonProxy;
 import ar.com.dcsys.gwt.ws.client.WebSocket;
@@ -18,16 +17,14 @@ import com.google.inject.Inject;
 public class PersonsManagerBean implements PersonsManager {
 
 	private final MessagesFactory messagesFactory;
-	private final PersonFactory personFactory;
 	private final PersonEncoderDecoder personEncoderDecoder;
 	private final WebSocket socket;
 	
 	
 	@Inject
-	public PersonsManagerBean(PersonFactory personFactory, PersonEncoderDecoder personEncoderDecoder, MessagesFactory messagesFactory, WebSocket ws) {
+	public PersonsManagerBean(PersonEncoderDecoder personEncoderDecoder, MessagesFactory messagesFactory, WebSocket ws) {
 		this.messagesFactory = messagesFactory;
 		this.personEncoderDecoder = personEncoderDecoder;
-		this.personFactory = personFactory;
 		socket = ws;
 	}
 	

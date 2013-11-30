@@ -16,16 +16,45 @@ public class MessagesFactoryImpl implements MessagesFactory {
 		this.messageFactory = messageFactory;
 	}
 	
+	/**
+	 * crea un nuevo mensaje para poder despues cargarle los parametros.
+	 * @return
+	 */
+	private Message message() {
+		AutoBean<Message> bean = messageFactory.message();
+		Message msg = bean.as();
+		return msg;
+	}
+	
+	
+	@Override
+	public Message response(Message request) {
+		Message msg = message();
+		msg.setId(request.getId());
+		msg.setSessionId(request.getSessionId());
+		msg.setType(MessageType.RETURN);
+		return msg;
+	}	
+	
+	
+	@Override
+	public Message error(String error) {
+		Message msg = message();
+		msg.setType(MessageType.ERROR);
+		msg.setPayload(error);
+		return msg;
+	}
+	
 	
 	@Override
 	public Message method(String function) {
+		
 		AutoBean<Method> mbean = messageFactory.method();
 		Method method = mbean.as();
 		method.setName(function);
 		String mjson = AutoBeanCodex.encode(mbean).getPayload();
-		
-		AutoBean<Message> bean = messageFactory.message();
-		Message msg = bean.as();
+
+		Message msg = message();
 		msg.setType(MessageType.FUNCTION);
 		msg.setPayload(mjson);
 		
@@ -41,14 +70,15 @@ public class MessagesFactoryImpl implements MessagesFactory {
 		method.setParams(params);
 		String mjson = AutoBeanCodex.encode(mbean).getPayload();
 		
-		AutoBean<Message> bean = messageFactory.message();
-		Message msg = bean.as();
+		Message msg = message();
 		msg.setType(MessageType.FUNCTION);
 		msg.setPayload(mjson);
 		
 		return msg;
 	}
 
+	
+	
 	
 	@Override
 	public Method method(Message msg) {
