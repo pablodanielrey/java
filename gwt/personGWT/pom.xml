@@ -27,6 +27,26 @@
 
   <dependencies>
 
+
+   <!-- para arreglar el WeldDecorator con la nueva interface de Decorator que jetty 9.1 tiene ahora -->
+
+   <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-servlet</artifactId>
+	<version>9.1.0.v20131115</version>
+	<scope>provided</scope>
+   </dependency>
+
+   <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-server</artifactId>
+	<version>9.1.0.v20131115</version>
+	<scope>provided</scope>
+   </dependency>
+
+   <!--  -->
+	
+
     <dependency>
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-servlet</artifactId>
@@ -53,19 +73,16 @@
       <groupId>org.jboss.weld.servlet</groupId>
       <artifactId>weld-servlet</artifactId>
       <version>2.1.0.Final</version>
-<!-- funca con la version de jetty-maven-plugin 8.1.3.v20120416 -->
-<!--      <version>1.1.8.Final</version> -->
       <scope>compile</scope>
     </dependency>
 
-<!--
-<dependency>
-   <groupId>javax.enterprise</groupId>
-   <artifactId>cdi-api</artifactId>
-   <version>1.1</version>
-   <scope>provided</scope>
-</dependency>
--->
+
+    <dependency>
+      <groupId>javax.websocket</groupId>
+      <artifactId>javax.websocket-api</artifactId>
+      <version>1.0</version>
+      <scope>provided</scope>
+    </dependency>
 
     <dependency>
       <groupId>ar.com.dcsys.gwt</groupId>
@@ -91,7 +108,7 @@
 
 
 
-
+<!--
     <dependency>
       <groupId>javax.validation</groupId>
       <artifactId>validation-api</artifactId>
@@ -106,17 +123,9 @@
       <classifier>sources</classifier>
       <scope>test</scope>
     </dependency>
+-->
 
   </dependencies>
-
-
-<!--
-  <profiles>
-	<profile>
-		<id>gwt-compile</id>
-		<build>
-			<plugins>
--->
 
 
   <build>
@@ -215,6 +224,7 @@
         </executions>
         <configuration>
           <webappDirectory>${webappDirectory}</webappDirectory>
+	  <packagingExcludes>WEB-INF/classes/ar/com/dcsys/person/client/**.class</packagingExcludes>
         </configuration>
       </plugin>
 
@@ -294,17 +304,12 @@
   </plugin>
 
     <plugin>
+
 	
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
-        <version>9.1.0.v20131115</version> 
+	<version>9.1.0.v20131115</version>
 
-	<!-- funca con weld-servlet 1.1.8.Final -->	
-<!--
-          <groupId>org.mortbay.jetty</groupId>
-          <artifactId>jetty-maven-plugin</artifactId>
-          <version>8.1.3.v20120416</version>
--->
         <!-- para que sea acorde con el gwt-maven-plugin -->
         <configuration>
 		<!--
@@ -318,12 +323,13 @@
 		<webApp>
 		  <overrideDescriptor>${webappDirectory}/WEB-INF/web-add.xml</overrideDescriptor>
 		</webApp>
+		<jettyEnvXml>${webappDirectory}/WEB-INF/jetty-env.xml</jettyEnvXml>
     		<contextXml>${webappDirectory}/WEB-INF/jetty-context.xml</contextXml>
 
         </configuration>
 
-    </plugin>
 
+	</plugin>
     </plugins>
   </build>
 

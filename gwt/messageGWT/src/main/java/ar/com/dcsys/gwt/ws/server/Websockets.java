@@ -6,7 +6,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.inject.Inject;
+import javax.enterprise.inject.spi.BeanManager;
+import javax.naming.NamingException;
 import javax.websocket.CloseReason;
 import javax.websocket.EndpointConfig;
 import javax.websocket.OnClose;
@@ -21,6 +22,8 @@ import ar.com.dcsys.gwt.message.shared.MessageEncoderDecoder;
 import ar.com.dcsys.gwt.message.shared.MessageFactory;
 import ar.com.dcsys.gwt.message.shared.MessageType;
 import ar.com.dcsys.gwt.message.shared.MessagesFactory;
+import ar.com.dcsys.gwt.utils.server.BeanManagerLocator;
+import ar.com.dcsys.gwt.utils.server.BeanManagerUtils;
 
 
 @ServerEndpoint(value = "/websockets")
@@ -30,36 +33,60 @@ public class Websockets {
 
 	private Map<String,Session> sessions = new HashMap<>();
 
-	private final MessageFactory messageFactory; 
-	private final MessageEncoderDecoder messageEncoderDecoder;
-	private final MessagesFactory messagesFactory;
+	private MessagesFactory messagesFactory = null;
+	private MessageEncoderDecoder encoderDecoder = null;
+	private MessageFactory messageFactory = null;
 	
-	////////////////////////
-	//// parche hasta que este CDI 
-	///////////////////////
+	private MessageFactory getMessageFactory() {
+		if (messageFactory != null) {
+			return messageFactory;
+		}
+		try {
+			BeanManager bm = BeanManagerLocator.getBeanManager();
+			messageFactory = BeanManagerUtils.lookup(MessageFactory.class,bm);
+			return messageFactory;
+		} catch (NamingException e) {
+			return null;
+		}
+	}
+	
+	private MessagesFactory getMessagesFactory() {
+		if (messagesFactory != null) {
+			return messagesFactory;
+		}
+		try {
+			BeanManager bm = BeanManagerLocator.getBeanManager();
+			messagesFactory = BeanManagerUtils.lookup(MessagesFactory.class,bm);
+			return messagesFactory;
+		} catch (NamingException e) {
+			return null;
+		}
+	}
+	
+	private MessageEncoderDecoder getEncoderDecoder() {
+		if (encoderDecoder != null) {
+			return encoderDecoder;
+		}
+		try {
+			BeanManager bm = BeanManagerLocator.getBeanManager();
+			encoderDecoder = BeanManagerUtils.lookup(MessageEncoderDecoder.class,bm);
+			return encoderDecoder;
+		} catch (NamingException e) {
+			return null;
+		}
+	}	
+	
 	
 	/*
-	private MessageEncoderDecoder getMessageEncoderDecoder() {
-		MessageEncoderDecoder med = new MessageEncoderDecoder(messageFactory);
-		return med;
-	}
-
-	private MessagesFactory getMessagesFactory() {
-		MessagesFactory mf = new MessagesFactoryImpl(messageFactory);
-		return mf;
-	}
-	*/
-	
-	//////////////////////////
-	//////////////////////////
-	
-	
+	 * No se puede usar porque no funca CDI en websockets todavía.
 	@Inject
 	public Websockets(MessageFactory messageFactory, MessageEncoderDecoder messageEncoderDecoder, MessagesFactory messagesFactory) {
+		logger.info("iniciando constructor inyectado");
 		this.messageFactory = messageFactory;
 		this.messageEncoderDecoder = messageEncoderDecoder;
 		this.messagesFactory = messagesFactory;
 	}
+	*/
 	
 
 	@OnOpen
@@ -85,23 +112,19 @@ public class Websockets {
 	public void onError(Session session, Throwable error) {
 		logger.log(Level.WARNING,error.getMessage(),error);
 	}
+
 	
 	@OnMessage
 	public void onMessage(Session session, String json) {
 		logger.log(Level.INFO,"Msg : " + json);
 		
+		
 		// decodifico el mensaje:
-		MessageEncoderDecoder med = messageEncoderDecoder;
+		MessageEncoderDecoder med = getEncoderDecoder();
 		Message msg = med.decode(json);
 
-		if (msg.getType().equals(MessageType.FUNCTION)) {
-
-			// nada
-			
-		}
 		
-		
-		Message resp = messageFactory.message().as();
+		Message resp = getMessageFactory().message().as();
 		resp.setId(msg.getId());
 		resp.setType(MessageType.RETURN);
 		resp.setPayload("funco super");
