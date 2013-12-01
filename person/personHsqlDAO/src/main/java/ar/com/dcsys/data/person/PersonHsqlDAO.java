@@ -14,7 +14,6 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import ar.com.dcsys.data.HsqlConnectionProvider;
-import ar.com.dcsys.data.person.types.PersonType;
 import ar.com.dcsys.exceptions.PersonException;
 
 public class PersonHsqlDAO extends  AbstractPersonDAO {
@@ -181,7 +180,7 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 			final List<String> ids = new ArrayList<>();
 			
 			for (PersonType pt : type) {
-				final String id = pt.getId();
+				final String id = pt.toString();
 				
 				executeSqlQuery("select person_id from persons_persontypes where persontype_id = ?", new QueryProcessor() {
 					@Override
@@ -225,7 +224,7 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 		String country = rs.getString("country");
 		String gender = rs.getString("gender");
 		
-		Person person = new Person();
+		Person person = new PersonBean();
 		person.setId(id);
 		person.setDni(dni);
 		person.setName(name);

@@ -2,13 +2,13 @@ package ar.com.dcsys.gwt.person.client;
 
 import java.util.List;
 
+import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.gwt.person.client.gin.Injector;
 import ar.com.dcsys.gwt.person.client.manager.PersonsManager;
 import ar.com.dcsys.gwt.person.client.manager.Receiver;
 import ar.com.dcsys.gwt.person.client.ui.UpdatePersonDataView;
 import ar.com.dcsys.gwt.person.client.ui.UpdatePersonDataView.Presenter;
 import ar.com.dcsys.gwt.person.client.ui.basicData.PersonDataView;
-import ar.com.dcsys.gwt.person.shared.PersonProxy;
 import ar.com.dcsys.gwt.ws.shared.SocketException;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -45,17 +45,19 @@ public class PersonGWT implements EntryPoint {
 
 		  @Override
 		public void findall() {
-			  personsManager.findAll(new Receiver<List<PersonProxy>>() {
+			  personsManager.findAll(new Receiver<List<Person>>() {
 					@Override
-					public void onSuccess(List<PersonProxy> t) {
+					public void onSuccess(List<Person> t) {
 						
 						Window.alert(String.valueOf(t.size()));
 						
-						PersonProxy pp = t.get(2);
+						if (t.size() > 0) {
+							Person pp = t.get(0);
+							view.setName(pp.getName());
+							view.setLastName(pp.getLastName());
+							view.setDni(pp.getDni());
+						}
 						
-						view.setName(pp.getName());
-						view.setLastName(pp.getLastName());
-						view.setDni(pp.getDni());
 						
 					}
 					@Override
@@ -71,7 +73,7 @@ public class PersonGWT implements EntryPoint {
 		  
 		@Override
 		public void persist() {
-			PersonProxy person = getPerson();
+			Person person = getPerson();
 			personsManager.persist(person, new Receiver<String>() {
 				@Override
 				public void onSuccess(String t) {
@@ -89,13 +91,13 @@ public class PersonGWT implements EntryPoint {
 			});
 		}
 		
-		private PersonProxy getPerson() {
+		private Person getPerson() {
 
 			String name = view.getName();
 			String lastName = view.getLastName();
 			String dni = view.getDni();
 			
-			PersonProxy person = injector.personFactory().person().as();
+			Person person = injector.personFactory().person().as();
 			person.setName(name);
 			person.setLastName(lastName);
 			person.setDni(dni);

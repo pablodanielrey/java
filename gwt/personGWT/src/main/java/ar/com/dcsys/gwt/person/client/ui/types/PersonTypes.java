@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import ar.com.dcsys.gwt.person.shared.PersonType;
+import ar.com.dcsys.data.person.PersonType;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;

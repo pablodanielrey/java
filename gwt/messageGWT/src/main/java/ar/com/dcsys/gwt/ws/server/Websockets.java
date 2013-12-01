@@ -27,7 +27,7 @@ import ar.com.dcsys.gwt.message.shared.MessageException;
 import ar.com.dcsys.gwt.message.shared.MessageFactory;
 import ar.com.dcsys.gwt.message.shared.MessageTransport;
 import ar.com.dcsys.gwt.message.shared.MessageType;
-import ar.com.dcsys.gwt.message.shared.MessagesFactory;
+import ar.com.dcsys.gwt.message.shared.MessageUtils;
 import ar.com.dcsys.gwt.message.shared.Method;
 import ar.com.dcsys.gwt.utils.server.BeanManagerLocator;
 import ar.com.dcsys.gwt.utils.server.BeanManagerUtils;
@@ -66,7 +66,7 @@ public class Websockets {
 	};
 
 	
-	private MessagesFactory messagesFactory = null;
+	private MessageUtils messagesFactory = null;
 	private MessageEncoderDecoder encoderDecoder = null;
 	private MessageFactory messageFactory = null;
 	
@@ -83,13 +83,13 @@ public class Websockets {
 		}
 	}
 	
-	private MessagesFactory getMessagesFactory() {
+	private MessageUtils getMessagesFactory() {
 		if (messagesFactory != null) {
 			return messagesFactory;
 		}
 		try {
 			BeanManager bm = BeanManagerLocator.getBeanManager();
-			messagesFactory = BeanManagerUtils.lookup(MessagesFactory.class,bm);
+			messagesFactory = BeanManagerUtils.lookup(MessageUtils.class,bm);
 			return messagesFactory;
 		} catch (NamingException e) {
 			return null;
@@ -179,7 +179,7 @@ public class Websockets {
 			
 			///////////// METODO ////////////
 			
-			MessagesFactory mf = getMessagesFactory();
+			MessageUtils mf = getMessagesFactory();
 			Method method = mf.method(msg);
 			
 			logger.info("Metodo : " + method.getName());

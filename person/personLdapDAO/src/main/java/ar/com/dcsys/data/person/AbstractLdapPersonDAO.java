@@ -3,12 +3,6 @@ package ar.com.dcsys.data.person;
 import java.util.ArrayList;
 import java.util.List;
 
-import ar.com.dcsys.data.person.types.External;
-import ar.com.dcsys.data.person.types.PersonType;
-import ar.com.dcsys.data.person.types.Personal;
-import ar.com.dcsys.data.person.types.PostGraduate;
-import ar.com.dcsys.data.person.types.Student;
-import ar.com.dcsys.data.person.types.Teacher;
 import ar.com.dcsys.exceptions.PersonException;
 
 public abstract class AbstractLdapPersonDAO extends AbstractPersonDAO {
@@ -19,19 +13,19 @@ public abstract class AbstractLdapPersonDAO extends AbstractPersonDAO {
 		List<PersonType> types = new ArrayList<PersonType>();
 		for (String s : sTypes) {
 			if (s.contains("x-dcsys-docente")) {
-				types.add(new Teacher());
+				types.add(PersonType.TEACHER);
 			}
 			if (s.contains("x-dcsys-estudiante")) {
-				types.add(new Student());
+				types.add(PersonType.STUDENT);
 			}
 			if (s.contains("x-dcsys-no-docente")) {
-				types.add(new Personal());
+				types.add(PersonType.PERSONAL);
 			}
 			if (s.contains("x-dcsys-visitante")) {
-				types.add(new External());
+				types.add(PersonType.EXTERNAL);
 			}
 			if (s.contains("x-dcsys-posgrado")) {
-				types.add(new PostGraduate());
+				types.add(PersonType.POSTGRADUATE);
 			}
 		}
 		return types;
@@ -40,23 +34,23 @@ public abstract class AbstractLdapPersonDAO extends AbstractPersonDAO {
 	protected List<String> toObjectClass(List<PersonType> types) throws PersonException {
 		List<String> t = new ArrayList<>();
 		for (PersonType pt : types) {
-			if (pt instanceof External) {
+			if (pt.equals(PersonType.EXTERNAL)) {
 				t.add("x-dcsys-visitante");
 				continue;
 			}
-			if (pt instanceof Teacher) {
+			if (pt.equals(PersonType.TEACHER)) {
 				t.add("x-dcsys-docente");
 				continue;
 			}
-			if (pt instanceof Student) {
+			if (pt.equals(PersonType.STUDENT)) {
 				t.add("x-dcsys-estudiante");
 				continue;
 			}
-			if (pt instanceof Personal) {
+			if (pt.equals(PersonType.PERSONAL)) {
 				t.add("x-dcsys-no-docente");
 				continue;
 			}
-			if (pt instanceof PostGraduate) {
+			if (pt.equals(PersonType.POSTGRADUATE)) {
 				t.add("x-dcsys-posgrado");
 			}
 		}	

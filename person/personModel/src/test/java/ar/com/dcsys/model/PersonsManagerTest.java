@@ -1,8 +1,9 @@
 package ar.com.dcsys.model;
 
-import java.util.List;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-import static org.junit.Assert.*;
+import java.util.List;
 
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
@@ -11,6 +12,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ar.com.dcsys.data.person.Person;
+import ar.com.dcsys.data.person.PersonBean;
 import ar.com.dcsys.exceptions.PersonException;
 
 public class PersonsManagerTest {
@@ -54,7 +56,7 @@ public class PersonsManagerTest {
 		
 		String dni = "123456";
 		
-		Person person = new Person();
+		Person person = new PersonBean();
 		person.setName("Pablo Daniel");
 		person.setLastName("Rey");
 		person.setDni(dni);

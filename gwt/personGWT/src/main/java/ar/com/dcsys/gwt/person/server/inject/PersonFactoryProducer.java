@@ -9,7 +9,7 @@ import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
 public class PersonFactoryProducer {
 
 	@Produces
-	public PersonFactory personFactory() {
+	public PersonFactory personServerFactory() {
 		PersonFactory personFactory = AutoBeanFactorySource.create(PersonFactory.class);
 		return personFactory;
 	}

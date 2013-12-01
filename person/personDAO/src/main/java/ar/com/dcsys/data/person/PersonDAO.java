@@ -3,7 +3,6 @@ package ar.com.dcsys.data.person;
 import java.io.Serializable;
 import java.util.List;
 
-import ar.com.dcsys.data.person.types.PersonType;
 import ar.com.dcsys.exceptions.PersonException;
 
 public interface PersonDAO extends Serializable {

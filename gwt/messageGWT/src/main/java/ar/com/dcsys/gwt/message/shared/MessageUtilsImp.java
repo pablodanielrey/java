@@ -7,12 +7,12 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 
 
-public class MessagesFactoryImpl implements MessagesFactory {
+public class MessageUtilsImp implements MessageUtils {
 
 	private final MessageFactory messageFactory;
 	
 	@Inject
-	public MessagesFactoryImpl(MessageFactory messageFactory) {
+	public MessageUtilsImp(MessageFactory messageFactory) {
 		this.messageFactory = messageFactory;
 	}
 	
@@ -43,6 +43,14 @@ public class MessagesFactoryImpl implements MessagesFactory {
 		msg.setType(MessageType.ERROR);
 		msg.setPayload(error);
 		return msg;
+	}
+	
+	@Override
+	public Message error(Message msg, String error) {
+		Message e = error(error);
+		e.setId(msg.getId());
+		e.setSessionId(msg.getSessionId());
+		return e;
 	}
 	
 	

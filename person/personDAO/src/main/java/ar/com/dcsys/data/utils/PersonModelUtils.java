@@ -1,15 +1,14 @@
 package ar.com.dcsys.data.utils;
 
 import java.io.Serializable;
-import java.util.List;
 
-import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Person;
 
 public class PersonModelUtils implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	/*
 	public static Mail getMail(Person person) {
 		List<Mail> mails = person.getMails();
 		if (mails == null || mails.size() <= 0) {
@@ -31,6 +30,7 @@ public class PersonModelUtils implements Serializable {
 		}
 		return null;
 	}
+	*/
 	
 	public static String getFullName(Person person) {
 		StringBuffer name = new StringBuffer();

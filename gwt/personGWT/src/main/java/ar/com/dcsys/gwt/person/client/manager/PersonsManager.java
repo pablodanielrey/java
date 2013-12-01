@@ -2,7 +2,7 @@ package ar.com.dcsys.gwt.person.client.manager;
 
 import java.util.List;
 
-import ar.com.dcsys.gwt.person.shared.PersonProxy;
+import ar.com.dcsys.data.person.Person;
 
 public interface PersonsManager {
 
@@ -11,12 +11,12 @@ public interface PersonsManager {
 	 * @param person, persona a crear o actualizar
 	 * @param receiver, receptor de la respuesta.
 	 */
-	public void persist(PersonProxy person, Receiver<String> receiver);
+	public void persist(Person person, Receiver<String> receiver);
 	
 	/**
 	 * Busca en el servidor todas las personas. 
 	 * @param receiver
 	 */
-	public void findAll(Receiver<List<PersonProxy>> receiver);
+	public void findAll(Receiver<List<Person>> receiver);
 	
 }

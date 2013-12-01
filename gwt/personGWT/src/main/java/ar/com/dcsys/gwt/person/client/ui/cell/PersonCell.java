@@ -1,12 +1,12 @@
 package ar.com.dcsys.gwt.person.client.ui.cell;
 
-import ar.com.dcsys.gwt.person.shared.PersonProxy;
+import ar.com.dcsys.data.person.Person;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 
 
-public class PersonCell extends AbstractCell<PersonProxy> {
+public class PersonCell extends AbstractCell<Person> {
 
 	private final String imageHtml;
 	
@@ -16,7 +16,7 @@ public class PersonCell extends AbstractCell<PersonProxy> {
 	}
 	
 	@Override
-	public void render(com.google.gwt.cell.client.Cell.Context context, PersonProxy person, SafeHtmlBuilder sb) {
+	public void render(com.google.gwt.cell.client.Cell.Context context, Person person, SafeHtmlBuilder sb) {
 		if (person == null) {
 			return;
 		}

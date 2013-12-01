@@ -3,7 +3,7 @@ package ar.com.dcsys.model;
 import java.util.List;
 
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.data.person.types.PersonType;
+import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.exceptions.PersonException;
 
 public interface PersonsManager {

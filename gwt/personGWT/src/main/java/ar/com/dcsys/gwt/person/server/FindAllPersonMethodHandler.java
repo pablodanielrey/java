@@ -1,6 +1,5 @@
 package ar.com.dcsys.gwt.person.server;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -9,17 +8,19 @@ import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import ar.com.dcsys.data.person.Person;
+import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.gwt.message.server.MessageHandlers;
 import ar.com.dcsys.gwt.message.server.MethodHandler;
 import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageException;
 import ar.com.dcsys.gwt.message.shared.MessageTransport;
-import ar.com.dcsys.gwt.message.shared.MessagesFactory;
+import ar.com.dcsys.gwt.message.shared.MessageUtils;
 import ar.com.dcsys.gwt.message.shared.Method;
 import ar.com.dcsys.gwt.person.shared.PersonEncoderDecoder;
 import ar.com.dcsys.gwt.person.shared.PersonFactory;
 import ar.com.dcsys.gwt.person.shared.PersonMethods;
-import ar.com.dcsys.gwt.person.shared.PersonProxy;
+import ar.com.dcsys.model.PersonsManager;
 
 @Singleton
 public class FindAllPersonMethodHandler implements MethodHandler {
@@ -27,14 +28,19 @@ public class FindAllPersonMethodHandler implements MethodHandler {
 	private static final Logger logger = Logger.getLogger(FindAllPersonMethodHandler.class.getName());
 
 	private final PersonEncoderDecoder encoderDecoder;
-	private final MessagesFactory mf;
+	private final MessageUtils mf;
 	private final PersonFactory pf;
+	private final PersonsManager personsModel;
 	
 	@Inject
-	public FindAllPersonMethodHandler(PersonEncoderDecoder encoderDecoder, MessagesFactory messagesFactory, PersonFactory personFactory) {
+	public FindAllPersonMethodHandler(PersonEncoderDecoder encoderDecoder, 
+									  MessageUtils messagesFactory, 
+									  PersonFactory personFactory,
+									  PersonsManager personsModel) {
 		this.encoderDecoder = encoderDecoder;
 		this.mf = messagesFactory;
 		this.pf = personFactory;
+		this.personsModel = personsModel;
 	}
 
 	/**
@@ -52,36 +58,32 @@ public class FindAllPersonMethodHandler implements MethodHandler {
 	
 	@Override
 	public void handle(Message msg, Method method, MessageTransport transport) {
-		
-		logger.info("se llamo a " + PersonMethods.findAll);
 
-		List<PersonProxy> persons = generateSampleList();
-		String lpersons = encoderDecoder.encodeList(persons);
+		try {
+			List<Person> persons = personsModel.findAll();
+			String lpersons = encoderDecoder.encodeList(persons);
+			sendResponse(msg, transport, lpersons);
 		
-		sendResponse(msg, transport, lpersons);
-	}
-	
-	private List<PersonProxy> generateSampleList() {
-		
-		List<PersonProxy> persons = new ArrayList<>();
-		for (int i = 0; i < 10; i++) {
-			PersonProxy pp = pf.person().as();
-			pp.setName(String.valueOf(i));
-			pp.setLastName(String.valueOf(i));
-			pp.setDni(String.valueOf(i));
-			persons.add(pp);
+		} catch (PersonException e) {
+			logger.log(Level.SEVERE,e.getMessage(),e);
+			sendError(msg,transport,e.getMessage());
 		}
-		
-		return persons;
 	}
 	
+	
+	private void sendError(Message msg, MessageTransport transport, String error) {
+		Message r = mf.error(error);
+		try {
+			transport.send(r);
+		} catch (MessageException e) {
+			logger.log(Level.SEVERE,e.getMessage(),e);
+		}
+	}	
 	
 	
 	private void sendResponse(Message r, MessageTransport transport, String payload) {
-		
 		Message msg = mf.response(r);
 		msg.setPayload(payload);
-		
 		try {
 			transport.send(msg);
 		} catch (MessageException e) {

@@ -1,28 +1,11 @@
 package ar.com.dcsys.data.person;
 
-import java.io.Serializable;
+public interface Telephone {
 
-public class Telephone implements Serializable {
-
-	private static final long serialVersionUID = 1L;
-
-	private String number;
-	private boolean mobile;
-
-	public String getNumber() {
-		return number;
-	}
+	public String getNumber();
+	public void setNumber(String n);
 	
-	public void setNumber(String number) {
-		this.number = number;
-	}
-	
-	public boolean isMobile() {
-		return mobile;
-	}
-	
-	public void setMobile(boolean mobile) {
-		this.mobile = mobile;
-	}
+	public boolean isMobile();
+	public void setMobile(boolean v);
 	
 }

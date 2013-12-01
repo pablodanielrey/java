@@ -14,7 +14,7 @@ import javax.inject.Singleton;
 
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonDAO;
-import ar.com.dcsys.data.person.types.PersonType;
+import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.exceptions.PersonNotFoundException;
 

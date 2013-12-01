@@ -18,11 +18,10 @@
   <name>personGWT</name>
 
   <properties>
-    <!-- Convenience property to set the GWT version -->
     <gwtVersion>2.5.1</gwtVersion>
-    <!-- GWT needs at least java 1.5 -->
     <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <jetty.version>9.1.0.v20131115</jetty.version>
   </properties>
 
   <dependencies>
@@ -33,14 +32,14 @@
    <dependency>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-servlet</artifactId>
-	<version>9.1.0.v20131115</version>
+	<version>${jetty.version}</version>
 	<scope>provided</scope>
    </dependency>
 
    <dependency>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-server</artifactId>
-	<version>9.1.0.v20131115</version>
+	<version>${jetty.version}</version>
 	<scope>provided</scope>
    </dependency>
 
@@ -84,9 +83,24 @@
       <scope>provided</scope>
     </dependency>
 
+<!--
+    <dependency>
+      <groupId>commons-beanutils</groupId>
+      <artifactId>commons-beanutils-core</artifactId>
+      <version>1.8.3</version>
+    </dependency>
+-->
+
     <dependency>
       <groupId>ar.com.dcsys.gwt</groupId>
       <artifactId>messageGWT</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.data</groupId>
+      <artifactId>personEntities</artifactId>
       <version>1.0-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
@@ -98,13 +112,26 @@
       <scope>compile</scope>
     </dependency>
 
+    <dependency>
+      <groupId>ar.com.dcsys.data</groupId>
+      <artifactId>personHsqlDAO</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
 
+    <dependency>
+      <groupId>ar.com.dcsys.model</groupId>
+      <artifactId>personModel</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
 
-
-
-
-
-
+    <dependency>
+      <groupId>ar.com.dcsys.data</groupId>
+      <artifactId>firmwareConfig</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
 
 
 
@@ -163,6 +190,7 @@
           <compileSourcesArtifacts>
               <artifact>ar.com.dcsys.gwt:messageGWT</artifact>
               <artifact>ar.com.dcsys.gwt:personEntitiesGWT</artifact>
+              <artifact>ar.com.dcsys.data:personEntities</artifact>
           </compileSourcesArtifacts>
 
           <logLevel>INFO</logLevel>
@@ -308,7 +336,7 @@
 	
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
-	<version>9.1.0.v20131115</version>
+	<version>${jetty.version}</version>
 
         <!-- para que sea acorde con el gwt-maven-plugin -->
         <configuration>

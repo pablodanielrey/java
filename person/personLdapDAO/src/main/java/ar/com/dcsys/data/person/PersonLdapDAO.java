@@ -46,8 +46,6 @@ import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
 import ar.com.dcsys.data.OpenLdapContextProvider;
-import ar.com.dcsys.data.person.types.PersonType;
-import ar.com.dcsys.data.person.types.Student;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.persistence.DirContextProvider;
 
@@ -170,7 +168,7 @@ public class PersonLdapDAO extends AbstractLdapPersonDAO {
 						//Person person = getCachedObject(Person.class,uuid);
 						Person person = null;
 						if (person == null) {
-							person = new Person();
+							person = new PersonBean();
 							person.setId(uuid);
 							person.setName(name);
 							person.setLastName(lastName);
@@ -181,7 +179,6 @@ public class PersonLdapDAO extends AbstractLdapPersonDAO {
 							person.setCountry(country);
 							person.setStudentNumber(studentNumber);
 							person.setTypes(types);
-							person.setVersion(version);
 							
 							Attribute tels = attrs.get("telephoneNumber");
 							if (tels != null) {
@@ -189,40 +186,12 @@ public class PersonLdapDAO extends AbstractLdapPersonDAO {
 								while (ntels.hasMore()) {
 									String sTel = (String)ntels.next();
 									if (!(sTel.trim().equals(""))) {
-										Telephone tel = new Telephone();
+										Telephone tel = new TelephoneBean();
 										tel.setNumber(sTel);
 										person.getTelephones().add(tel);
 									}
 								}
 							}
-							
-							Attribute mails = attrs.get("mail");
-							if (mails != null) {
-								NamingEnumeration neMails = mails.getAll();
-								while (neMails.hasMore()) {
-									String sMail = (String)neMails.next();
-									if (!(sMail.trim().equals(""))) {
-										Mail email = new Mail();
-										email.setMail(sMail);
-										email.setPrimary(true);
-										person.getMails().add(email);
-									}
-								}
-							}
-							Attribute xmails = attrs.get("x-dcsys-mail");
-							if (xmails != null) { 
-								NamingEnumeration neMails = xmails.getAll();
-								while (neMails.hasMore()) {
-									String sMail = (String)neMails.next();
-									if (!(sMail.trim().equals(""))) {
-										Mail email = new Mail();
-										email.setMail(sMail);
-										email.setPrimary(false);
-										person.getMails().add(email);
-									}
-								}
-							}
-							//putCachedObject(person, uuid);
 						}
 						
 						users.add(person);
@@ -611,7 +580,7 @@ public class PersonLdapDAO extends AbstractLdapPersonDAO {
 			return false;
 		}
 		for (PersonType t : pts) {
-			if (t.getId().equals(pt.getId())) {
+			if (t.equals(pt)) {
 				return true;
 			}
 		}
@@ -659,7 +628,7 @@ public class PersonLdapDAO extends AbstractLdapPersonDAO {
 					Attribute uid = new BasicAttribute("uid",p.getDni());
 					attrs.put(uid);
 					
-					if (checkType(p, new Student())) {
+					if (checkType(p, PersonType.STUDENT)) {
 						Attribute legajo = new BasicAttribute("x-dcsys-legajo",p.getStudentNumber());
 						attrs.put(legajo);
 					}
@@ -712,23 +681,6 @@ public class PersonLdapDAO extends AbstractLdapPersonDAO {
 						attrs.put(tel);
 					}
 					
-					List<Mail> mails = p.getMails();
-					if (mails != null && mails.size() > 0) {
-						Attribute mail = new BasicAttribute("mail"); boolean primaryAdded = false;
-						Attribute amail = new BasicAttribute("x-dcsys-mail"); boolean secondaryAdded = false;
-						for (Mail m : mails) {
-							if (m.isPrimary()) {
-								mail.add(m.getMail());
-								primaryAdded = true;
-							} else {
-								amail.add(m.getMail());
-								secondaryAdded = true;
-							}
-						}
-						if (primaryAdded) { attrs.put(mail); }
-						if (secondaryAdded) { attrs.put(amail); }
-					}
-					
 					dn = "x-dcsys-uuid=" + sxuuid + "," + userBaseDN;
 					p.setId(sxuuid);
 					
@@ -742,7 +694,7 @@ public class PersonLdapDAO extends AbstractLdapPersonDAO {
 					List<ModificationItem> lMods = new ArrayList<ModificationItem>();
 					
 					Attribute legajo = new BasicAttribute("x-dcsys-legajo");
-					if (checkType(p, new Student())) {
+					if (checkType(p, PersonType.STUDENT)) {
 						String studentNumber = p.getStudentNumber();
 						if (studentNumber != null && (!studentNumber.trim().equals(""))) {
 							legajo.add(studentNumber);
@@ -787,23 +739,6 @@ public class PersonLdapDAO extends AbstractLdapPersonDAO {
 						Attribute tel = new BasicAttribute("telephoneNumber");
 						tel.add(tels.get(0).getNumber());
 						lMods.add(new ModificationItem(DirContext.REPLACE_ATTRIBUTE,tel));
-					}					
-					
-					List<Mail> mails = p.getMails();
-					if (mails != null && mails.size() > 0) {
-						Attribute mail = new BasicAttribute("mail"); boolean primaryAdded = false;
-						Attribute amail = new BasicAttribute("x-dcsys-mail"); boolean secondaryAdded = false;
-						for (Mail m : mails) {
-							if (m.isPrimary()) {
-								mail.add(m.getMail());
-								primaryAdded = true;
-							} else {
-								amail.add(m.getMail());
-								secondaryAdded = true;
-							}
-						}
-						if (primaryAdded) { lMods.add(new ModificationItem(DirContext.REPLACE_ATTRIBUTE,mail)); }
-						if (secondaryAdded) { lMods.add(new ModificationItem(DirContext.REPLACE_ATTRIBUTE,amail)); }
 					}					
 					
 					Attribute objectClass = new BasicAttribute("objectClass");

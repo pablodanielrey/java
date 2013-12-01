@@ -1,6 +1,5 @@
 package ar.com.dcsys.gwt.person.server;
 
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -8,16 +7,18 @@ import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import ar.com.dcsys.data.person.Person;
+import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.gwt.message.server.MessageHandlers;
 import ar.com.dcsys.gwt.message.server.MethodHandler;
 import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageException;
 import ar.com.dcsys.gwt.message.shared.MessageTransport;
-import ar.com.dcsys.gwt.message.shared.MessagesFactory;
+import ar.com.dcsys.gwt.message.shared.MessageUtils;
 import ar.com.dcsys.gwt.message.shared.Method;
 import ar.com.dcsys.gwt.person.shared.PersonEncoderDecoder;
 import ar.com.dcsys.gwt.person.shared.PersonMethods;
-import ar.com.dcsys.gwt.person.shared.PersonProxy;
+import ar.com.dcsys.model.PersonsManager;
 
 @Singleton
 public class PersistPersonMethodHandler implements MethodHandler {
@@ -25,12 +26,16 @@ public class PersistPersonMethodHandler implements MethodHandler {
 	private static final Logger logger = Logger.getLogger(PersistPersonMethodHandler.class.getName());
 
 	private final PersonEncoderDecoder encoderDecoder;
-	private final MessagesFactory mf;
+	private final MessageUtils mf;
+	private final PersonsManager personsModel;
 	
 	@Inject
-	public PersistPersonMethodHandler(PersonEncoderDecoder encoderDecoder, MessagesFactory messagesFactory) {
+	public PersistPersonMethodHandler(PersonEncoderDecoder encoderDecoder, 
+									  MessageUtils messagesFactory,
+									  PersonsManager personsModel) {
 		this.encoderDecoder = encoderDecoder;
 		this.mf = messagesFactory;
+		this.personsModel = personsModel;
 	}
 
 	/**
@@ -49,23 +54,34 @@ public class PersistPersonMethodHandler implements MethodHandler {
 	@Override
 	public void handle(Message msg, Method method, MessageTransport transport) {
 		
-		logger.info("se llamo a " + PersonMethods.persist);
-		
 		String params = method.getParams();
-		PersonProxy person = encoderDecoder.decode(params);
+		Person person = encoderDecoder.decode(params);
 		
-		logger.info("Nombre " + person.getName());
-		logger.info("Appelido : " + person.getLastName());
-		logger.info("DNI : " + person.getDni());
+		try {
+			String id = personsModel.persist(person);
+			sendResponse(msg, transport, id);
+
+		} catch (PersonException e) {
+			logger.log(Level.SEVERE,e.getMessage(),e);
+			sendError(msg,transport,e.getMessage());
+			
+		}
+	}
+	
+	private void sendError(Message msg, MessageTransport transport, String error) {
+		Message r = mf.error(error);
+		r.setSessionId(msg.getSessionId());
+		r.setId(msg.getId());
 		
-		sendResponse(msg, transport);
-		
+		try {
+			transport.send(r);
+		} catch (MessageException e) {
+			logger.log(Level.SEVERE,e.getMessage(),e);
+		}
 	}
 	
 	
-	private void sendResponse(Message r, MessageTransport transport) {
-		String id = UUID.randomUUID().toString();
-		
+	private void sendResponse(Message r, MessageTransport transport, String id) {
 		Message msg = mf.response(r);
 		msg.setPayload(id);
 		

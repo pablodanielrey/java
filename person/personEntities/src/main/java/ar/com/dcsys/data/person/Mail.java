@@ -1,28 +1,12 @@
 package ar.com.dcsys.data.person;
 
-import java.io.Serializable;
+public interface Mail {
 
-public class Mail implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+	public String getMail();
+	public void setMail(String m);
 	
-	private String mail;
-	private boolean primary = false;
+	public boolean isPrimary();
+	public void setPrimary(boolean v);
 	
-	public String getMail() {
-		return mail;
-	}
-
-	public void setMail(String mail) {
-		this.mail = mail;
-	}
-
-	public boolean isPrimary() {
-		return primary;
-	}
-
-	public void setPrimary(boolean primary) {
-		this.primary = primary;
-	}
 	
 }

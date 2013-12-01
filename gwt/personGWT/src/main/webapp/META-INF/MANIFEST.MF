@@ -1,5 +1,8 @@
 Manifest-Version: 1.0
 Class-Path: gwt-servlet-2.5.1.jar weld-servlet-2.1.0.Final.jar message
- GWT-1.0-SNAPSHOT.jar org.json-chargebee-1.0.jar gwt-websockets-1.0.3.
- jar personEntitiesGWT-1.0-SNAPSHOT.jar
+ GWT.jar org.json-chargebee-1.0.jar gwt-websockets-1.0.3.jar personEnt
+ ities-1.0-SNAPSHOT.jar personEntitiesGWT.jar personHsqlDAO-1.0-SNAPSH
+ OT.jar personDAO-1.0-SNAPSHOT.jar dcsysUtils-1.0-SNAPSHOT.jar hsqldb-
+ 2.3.1.jar postgresql-9.3-1100-jdbc41.jar hsql-1.0-SNAPSHOT.jar person
+ Model-1.0-SNAPSHOT.jar firmwareConfig-1.0-SNAPSHOT.jar
 

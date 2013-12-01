@@ -2,7 +2,7 @@ package ar.com.dcsys.gwt.person.client.ui.types;
 
 import java.util.List;
 
-import ar.com.dcsys.gwt.person.shared.PersonType;
+import ar.com.dcsys.data.person.PersonType;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.view.client.MultiSelectionModel;

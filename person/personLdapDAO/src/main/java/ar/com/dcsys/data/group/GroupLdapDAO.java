@@ -28,6 +28,7 @@ import ar.com.dcsys.data.group.types.Position;
 import ar.com.dcsys.data.group.types.Profile;
 import ar.com.dcsys.data.group.types.TimeTable;
 import ar.com.dcsys.data.person.Mail;
+import ar.com.dcsys.data.person.MailBean;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.persistence.DirContextProvider;
@@ -498,7 +499,7 @@ public class GroupLdapDAO implements GroupDAO {
 						
 						String mail = getStringAtt("mail",attrs);
 						if (mail != null && (!"".equals(mail))) {
-							Mail m = new Mail();
+							Mail m = new MailBean();
 							m.setMail(mail);
 							m.setPrimary(true);
 							group.getMails().add(m);
