@@ -11,9 +11,19 @@
 
   <groupId>ar.com.dcsys.data</groupId>
   <artifactId>mapauEntities</artifactId>
+  <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
   <name>mapauEntities</name>
+
   <url>http://maven.apache.org</url>
+
+  <repositories>
+    <repository>
+        <id>java.net-Public</id>
+        <name>Maven Java Net Releases</name>
+        <url>https://maven.java.net/content/repositories/releases/</url>
+    </repository>
+  </repositories>
 
   <dependencies>
 
@@ -29,6 +39,12 @@
         <artifactId>javax.ejb-api</artifactId>
         <version>3.2</version>
         <scope>provided</scope>
+   </dependency>
+
+   <dependency>
+	<groupId>ar.com.dcsys.data</groupId>
+	<artifactId>personEntities</artifactId>
+	<version>1.0-SNAPSHOT</version>
    </dependency>
 
   </dependencies>
