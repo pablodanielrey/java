@@ -5,7 +5,6 @@ import java.util.HashMap;
 import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageEncoderDecoder;
 import ar.com.dcsys.gwt.message.shared.MessageException;
-import ar.com.dcsys.gwt.message.shared.MessageType;
 import ar.com.dcsys.gwt.utils.client.GUID;
 import ar.com.dcsys.gwt.ws.shared.InvalidUrlException;
 import ar.com.dcsys.gwt.ws.shared.SocketClosedException;

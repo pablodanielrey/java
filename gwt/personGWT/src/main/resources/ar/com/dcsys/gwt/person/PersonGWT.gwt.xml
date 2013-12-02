@@ -4,8 +4,6 @@
   <inherits name='com.google.gwt.user.User' />
 
   <inherits name="com.google.gwt.inject.Inject"/>
-  <inherits name="com.sksamuel.gwt.GwtWebsockets" />
-  <inherits name="com.google.web.bindery.autobean.AutoBean"/>
   <inherits name="com.google.gwt.logging.Logging"/>
 
   <!-- We need the JUnit module in the main module,               -->
@@ -20,12 +18,8 @@
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
 
   <!-- Other module inherits                                      -->
-  <inherits name="ar.com.dcsys.gwt.ws.WsGWT"/>
-  <inherits name="ar.com.dcsys.gwt.message.MessageGWT"/>
-  <inherits name="ar.com.dcsys.gwt.utils.UtilsGWT"/>
   <inherits name="ar.com.dcsys.data.PersonEntities"/>
   <inherits name="ar.com.dcsys.gwt.person.PersonEntitiesGWT"/>
-  
 
   <!-- Specify the app entry point class.                         -->
   <entry-point class='ar.com.dcsys.gwt.person.client.PersonGWT' />
