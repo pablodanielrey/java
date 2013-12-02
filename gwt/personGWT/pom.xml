@@ -109,7 +109,7 @@
 
     <dependency>
       <groupId>ar.com.dcsys.gwt</groupId>
-      <artifactId>personEntitiesGWT</artifactId>
+      <artifactId>personModelGWT</artifactId>
       <version>1.0-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
@@ -192,9 +192,9 @@
           <port>8080</port>
 
           <compileSourcesArtifacts>
-              <artifact>ar.com.dcsys.gwt:messageGWT</artifact>
-              <artifact>ar.com.dcsys.gwt:personEntitiesGWT</artifact>
               <artifact>ar.com.dcsys.data:personEntities</artifact>
+              <artifact>ar.com.dcsys.gwt:messageGWT</artifact>
+              <artifact>ar.com.dcsys.gwt:personModelGWT</artifact>
           </compileSourcesArtifacts>
 
           <logLevel>INFO</logLevel>

@@ -19,7 +19,7 @@
 
   <!-- Other module inherits                                      -->
   <inherits name="ar.com.dcsys.data.PersonEntities"/>
-  <inherits name="ar.com.dcsys.gwt.person.PersonEntitiesGWT"/>
+  <inherits name="ar.com.dcsys.gwt.person.PersonModelGWT"/>
 
   <!-- Specify the app entry point class.                         -->
   <entry-point class='ar.com.dcsys.gwt.person.client.PersonGWT' />

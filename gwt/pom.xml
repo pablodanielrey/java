@@ -22,9 +22,9 @@
   </properties>
 
   <modules>
-    <module>personEntitiesGWT</module>
-    <module>personGWT</module>
     <module>messageGWT</module>
+    <module>personModelGWT</module>
+    <module>personGWT</module>
   </modules>
 
 </project>
