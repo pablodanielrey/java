@@ -69,10 +69,7 @@ public class PersistPersonMethodHandler implements MethodHandler {
 	}
 	
 	private void sendError(Message msg, MessageTransport transport, String error) {
-		Message r = mf.error(error);
-		r.setSessionId(msg.getSessionId());
-		r.setId(msg.getId());
-		
+		Message r = mf.error(msg,error);
 		try {
 			transport.send(r);
 		} catch (MessageException e) {

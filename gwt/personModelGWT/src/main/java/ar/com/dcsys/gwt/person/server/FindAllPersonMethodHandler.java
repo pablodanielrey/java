@@ -72,7 +72,7 @@ public class FindAllPersonMethodHandler implements MethodHandler {
 	
 	
 	private void sendError(Message msg, MessageTransport transport, String error) {
-		Message r = mf.error(error);
+		Message r = mf.error(msg,error);
 		try {
 			transport.send(r);
 		} catch (MessageException e) {

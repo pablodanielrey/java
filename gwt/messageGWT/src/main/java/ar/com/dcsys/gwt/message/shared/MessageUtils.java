@@ -40,11 +40,29 @@ public interface MessageUtils {
 	 */
 	public Message response(Message request);
 	
+	/**
+	 * Setea los campos necesarios para indicar que un mensaje es respuessta a otro mensaje recibido.
+	 * Esto es necesario cuando por ejemplo generamos un error y este es respuesta a otro mensaje.
+	 * por ejemplo :
+	 * 		Message error = MessageUtils.error("esto es un error");
+	 * 		MessageUtils.setAsResponse(original, error);
+	 * 
+	 * es equivalente a hacer :
+	 * 
+	 * 		Message error = MessageUtils.error(original,"esto es un error");
+	 * 
+	 * NO setea el tipo de respuesta!!!, ya que eso depende del mesnaje a enviar. en el caso de error, o en el caso de un retorno de una función.
+	 * 
+	 * @param original, mensaje original recibido al cual se esta respondiendo con otro mensaje
+	 * @param response, mensaje de respuesta.
+	 */
+	public void setAsResponse(Message original, Message response);
+	
 	
 	/**
 	 * Retorna el método encapsulado dentro dle mesnaje.
 	 * @param msg, mensaje que contiene adentro el metodo.
-	 * @return
+	 * s@return
 	 */
 	public Method method(Message msg);
 	

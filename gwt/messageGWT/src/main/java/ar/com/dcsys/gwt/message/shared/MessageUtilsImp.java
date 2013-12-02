@@ -30,11 +30,16 @@ public class MessageUtilsImp implements MessageUtils {
 	@Override
 	public Message response(Message request) {
 		Message msg = message();
-		msg.setId(request.getId());
-		msg.setSessionId(request.getSessionId());
+		setAsResponse(request, msg);
 		msg.setType(MessageType.RETURN);
 		return msg;
-	}	
+	}
+	
+	@Override
+	public void setAsResponse(Message original, Message response) {
+		response.setId(original.getId());
+		response.setSessionId(original.getSessionId());
+	}
 	
 	
 	@Override
