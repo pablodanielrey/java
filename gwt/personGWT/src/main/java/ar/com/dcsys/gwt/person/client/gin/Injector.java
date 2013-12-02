@@ -11,7 +11,10 @@ import ar.com.dcsys.gwt.ws.client.WsGinModule;
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
 
-@GinModules(value = {PersonGWTGinModule.class, WsGinModule.class, MessageGinModule.class})
+@GinModules(value = {PersonGWTGinModule.class, 
+					 WsGinModule.class, 
+					 MessageGinModule.class, 
+					 PersonModelGinModule.class })
 public interface Injector extends Ginjector {
 	
 	public PersonDataView personDataView();
