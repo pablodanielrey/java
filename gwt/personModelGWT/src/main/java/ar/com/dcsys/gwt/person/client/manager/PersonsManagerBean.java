@@ -368,8 +368,12 @@ public class PersonsManagerBean implements PersonsManager {
 	@Override
 	public void findAllPersonValue(List<PersonType> types, final Receiver<List<PersonValueProxy>> rec) {
 		try {
-			
-			String params = personEncoderDecoder.encodeTypeList(types);
+
+			// params == null quiere decir que se buscan las personas que no tienen ningun tipo asociado.
+			String params = null;
+			if (types != null) {
+				params = personEncoderDecoder.encodeTypeList(types);
+			}
 			Message msg = messagesFactory.method(PersonMethods.findAllValuesByType,params);
 			
 			// envío el mensaje al servidor.

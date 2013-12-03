@@ -99,7 +99,7 @@ public class FindAllPersonMethodHandler implements MethodHandler {
 			if (PersonMethods.findAll.equals(m)) {
 				lpersons = encoderDecoder.encodePersonList(persons);
 				
-			} else if (PersonMethods.findAllValues.equals(m)) {
+			} else if (PersonMethods.findAllValues.equals(m) || PersonMethods.findAllValuesByType.equals(m)) {
 				List<PersonValueProxy> pvs = new ArrayList<>();
 				for (Person p : persons) {
 					PersonValueProxy pv = personFactory.personValue().as();
