@@ -16,7 +16,10 @@
   <name>proyectos de GWT</name>
 
   <properties>
-    <gwtVersion>2.5.1</gwtVersion>
+    <gwt.version>2.5.1</gwt.version>
+    <jetty.version>9.1.0.v20131115</jetty.version>
+    <gin.version>2.1.1</gin.version>
+    <jetty.version>9.1.0.v20131115</jetty.version>
     <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -25,6 +28,7 @@
     <module>messageGWT</module>
     <module>personModelGWT</module>
     <module>personGWT</module>
+    <module>clientMessagesGWT</module>
   </modules>
 
 </project>

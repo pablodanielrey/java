@@ -12,8 +12,8 @@ import ar.com.dcsys.gwt.ws.shared.SocketException;
 import ar.com.dcsys.gwt.ws.shared.SocketStateEvent;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
-import com.google.web.bindery.event.shared.EventBus;
 import com.sksamuel.gwt.websockets.Websocket;
 import com.sksamuel.gwt.websockets.WebsocketListener;
 

@@ -119,6 +119,9 @@ public class Websockets {
 			logger.info("Detectando handlers");
 			List<MethodHandler> methodHandlers = mh.detectMethodHandlers();
 			logger.info(methodHandlers.size() + " detectados");
+			for (MethodHandler m : methodHandlers) {
+				logger.info("Handler : " + m.getClass().getName() + " registrado");
+			}
 			handlers.addAll(methodHandlers);
 			
 		} catch (NamingException e) {

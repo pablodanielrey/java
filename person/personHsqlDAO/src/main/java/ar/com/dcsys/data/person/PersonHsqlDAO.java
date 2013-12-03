@@ -232,7 +232,7 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 		person.setAddress(address);
 		person.setCity(city);
 		person.setCountry(country);
-		person.setGender(gender);
+		person.setGender(Gender.valueOf(gender));
 		
 		return person;
 	}
@@ -375,7 +375,7 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 					st.setString(4,p.getAddress());
 					st.setString(5,p.getCity());
 					st.setString(6,p.getCountry());
-					st.setString(7,p.getGender());
+					st.setString(7,(p.getGender() == null) ? null : p.getGender().toString());
 					st.setString(8,p.getId());
 					
 					st.executeUpdate();

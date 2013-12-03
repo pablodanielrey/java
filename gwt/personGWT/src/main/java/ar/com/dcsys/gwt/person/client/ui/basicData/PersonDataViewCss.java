@@ -24,11 +24,6 @@ public interface PersonDataViewCss extends CssResource {
 	String mailLabel();
 	String mail();
 	
-	String alternativeMailPanel();
-	String alternativeMailLabel();
-	String alternativeMail();
-	String changeMailLabel();
-	
 	String genderPanel();
 	String genderLabel();
 	String gender();

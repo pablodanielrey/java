@@ -55,7 +55,7 @@ public class PersistPersonMethodHandler implements MethodHandler {
 	public void handle(Message msg, Method method, MessageTransport transport) {
 		
 		String params = method.getParams();
-		Person person = encoderDecoder.decode(params);
+		Person person = encoderDecoder.decodePerson(params);
 		
 		try {
 			String id = personsModel.persist(person);
