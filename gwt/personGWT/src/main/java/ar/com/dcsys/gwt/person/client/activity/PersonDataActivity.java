@@ -138,6 +138,11 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 	private void setPersonTypesInView(List<PersonType> types) {
 		//view.setSelectedTypes(types);
 		typesSelection.clear();
+		
+		if (types == null || types.size() <= 0) {
+			return;
+		}
+		
 		for (PersonType pt : types) {
 			typesSelection.setSelected(pt,true);
 		}

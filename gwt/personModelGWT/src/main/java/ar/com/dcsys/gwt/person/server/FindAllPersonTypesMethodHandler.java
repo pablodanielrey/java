@@ -1,6 +1,5 @@
 package ar.com.dcsys.gwt.person.server;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
@@ -10,8 +9,6 @@ import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import ar.com.dcsys.data.person.Mail;
-import ar.com.dcsys.data.person.MailBean;
 import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.gwt.message.server.MessageHandlers;
 import ar.com.dcsys.gwt.message.server.MethodHandler;

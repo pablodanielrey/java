@@ -59,12 +59,12 @@ public class FindPersonByDniMethodHandler implements MethodHandler {
 	public void handle(Message msg, Method method, MessageTransport transport) {
 
 		try {
-			String dni = msg.getPayload();
+			String dni = method.getParams();
 			Person person = personsModel.findByDni(dni);
 			if (person == null) {
 				sendResponse(msg, transport, null);
 			} else {
-				String lpersons = encoderDecoder.encodePerson(person);
+				String lpersons = encoderDecoder.encode(Person.class,person);
 				sendResponse(msg, transport, lpersons);
 			}
 		

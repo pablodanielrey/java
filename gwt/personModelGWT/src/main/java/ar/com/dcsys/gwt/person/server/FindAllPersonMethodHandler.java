@@ -103,6 +103,7 @@ public class FindAllPersonMethodHandler implements MethodHandler {
 				List<PersonValueProxy> pvs = new ArrayList<>();
 				for (Person p : persons) {
 					PersonValueProxy pv = personFactory.personValue().as();
+					pv.setId(p.getId());
 					pv.setDni(p.getDni());
 					pv.setName(p.getName());
 					pv.setLastName(p.getLastName());

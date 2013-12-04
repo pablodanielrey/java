@@ -53,6 +53,10 @@ public class PersonEncoderDecoder {
 	 */
 	public <T> String encode(Class<T> clazz, T t) {
 		AutoBean<T> bean = AutoBeanUtils.getAutoBean(t);
+		if (bean == null) {
+			// no tiene bean asi que hay que crearlo.
+			bean = personFactory.create(clazz,t);
+		}
 		String json = AutoBeanCodex.encode(bean).getPayload();
 		return json;
 	}
@@ -63,14 +67,14 @@ public class PersonEncoderDecoder {
 	 * @param json
 	 * @return
 	 */
-	public <T> T decodePerson(Class<T> clazz, String json) {
+	public <T> T decode(Class<T> clazz, String json) {
 		AutoBean<T> bean = AutoBeanCodex.decode(personFactory, clazz, json);
 		T t = bean.as();
 		return t;
 	}		
 	
 	
-	
+	/*
 	public String encodePerson(Person person) {
 		AutoBean<Person> bean = AutoBeanUtils.getAutoBean(person);
 		String json = AutoBeanCodex.encode(bean).getPayload();
@@ -97,7 +101,7 @@ public class PersonEncoderDecoder {
 		return m;
 	}	
 	
-	
+	*/
 	
 	
 	

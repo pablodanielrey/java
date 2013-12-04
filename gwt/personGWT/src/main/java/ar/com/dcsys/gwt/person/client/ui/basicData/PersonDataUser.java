@@ -151,6 +151,10 @@ public class PersonDataUser extends Composite implements PersonDataView {
 		masculineGender.setValue(false);
 		femenineGender.setValue(false);
 		
+		if (gender == null) {
+			return;
+		}
+		
 		switch (gender) {
 		case M:
 			masculineGender.setValue(true);

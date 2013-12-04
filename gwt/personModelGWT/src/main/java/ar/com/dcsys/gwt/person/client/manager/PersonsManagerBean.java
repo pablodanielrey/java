@@ -58,7 +58,7 @@ public class PersonsManagerBean implements PersonsManager {
 					try {
 						String personS = response.getPayload();
 						if (personS != null) {
-							person = personEncoderDecoder.decodePerson(personS);
+							person = personEncoderDecoder.decode(Person.class,personS);
 						}
 					} catch (Exception e) {
 						rec.onFailure(e);
@@ -86,9 +86,9 @@ public class PersonsManagerBean implements PersonsManager {
 		try {
 			// codifico los parámetros en base64 tambien ya que no tiene el caracter * que lo uso como separador.
 			StringBuilder sb = new StringBuilder();
-			sb.append(EncoderDecoder.b64encode(personEncoderDecoder.encodePerson(p)));
+			sb.append(EncoderDecoder.b64encode(personEncoderDecoder.encode(Person.class,p)));
 			sb.append("*");
-			sb.append(EncoderDecoder.b64encode(personEncoderDecoder.encodeMail(m)));
+			sb.append(EncoderDecoder.b64encode(personEncoderDecoder.encode(Mail.class,m)));
 			
 			Message msg = messagesFactory.method(PersonMethods.addMail, sb.toString());
 			
@@ -171,7 +171,7 @@ public class PersonsManagerBean implements PersonsManager {
 					try {
 						String personS = response.getPayload();
 						if (personS != null) {
-							person = personEncoderDecoder.decodePerson(personS);
+							person = personEncoderDecoder.decode(Person.class,personS);
 						}
 					} catch (Exception e) {
 						rec.onFailure(e);
@@ -197,7 +197,7 @@ public class PersonsManagerBean implements PersonsManager {
 	public void findMails(Person p, final Receiver<List<Mail>> rec) {
 		try {
 			
-			String json = personEncoderDecoder.encodePerson(p);
+			String json = personEncoderDecoder.encode(Person.class,p);
 			Message msg = messagesFactory.method(PersonMethods.findAllMails, json);
 			
 			// envío el mensaje al servidor.
@@ -263,7 +263,7 @@ public class PersonsManagerBean implements PersonsManager {
 		try {
 			
 			// serializo los parametros y genero el mensaje
-			String json = personEncoderDecoder.encodePerson(person);
+			String json = personEncoderDecoder.encode(Person.class,person);
 			Message msg = messagesFactory.method(PersonMethods.persist,json);
 	
 			// envío el mensaje al servidor.

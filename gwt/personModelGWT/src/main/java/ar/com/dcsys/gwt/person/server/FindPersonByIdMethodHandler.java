@@ -59,12 +59,16 @@ public class FindPersonByIdMethodHandler implements MethodHandler {
 	public void handle(Message msg, Method method, MessageTransport transport) {
 
 		try {
-			String id = msg.getPayload();
+			String id = method.getParams();
+			if (id == null) {
+				sendError(msg,transport,"person.id == null");
+				return;
+			}
 			Person person = personsModel.findById(id);
 			if (person == null) {
 				sendResponse(msg, transport, null);
 			} else {
-				String lpersons = encoderDecoder.encodePerson(person);
+				String lpersons = encoderDecoder.encode(Person.class,person);
 				sendResponse(msg, transport, lpersons);
 			}
 		
