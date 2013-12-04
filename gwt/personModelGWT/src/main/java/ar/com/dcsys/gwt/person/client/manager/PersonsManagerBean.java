@@ -7,19 +7,23 @@ import java.util.logging.Logger;
 import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonType;
+import ar.com.dcsys.gwt.message.shared.Event;
 import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageException;
 import ar.com.dcsys.gwt.message.shared.MessageType;
 import ar.com.dcsys.gwt.message.shared.MessageUtils;
+import ar.com.dcsys.gwt.person.client.manager.events.PersonModifiedEvent;
 import ar.com.dcsys.gwt.person.shared.PersonEncoderDecoder;
 import ar.com.dcsys.gwt.person.shared.PersonFactory;
 import ar.com.dcsys.gwt.person.shared.PersonMethods;
 import ar.com.dcsys.gwt.person.shared.PersonValueProxy;
-import ar.com.dcsys.gwt.person.shared.lists.PersonTypeList;
 import ar.com.dcsys.gwt.utils.client.EncoderDecoder;
 import ar.com.dcsys.gwt.ws.client.WebSocket;
 import ar.com.dcsys.gwt.ws.client.WebSocketReceiver;
+import ar.com.dcsys.gwt.ws.shared.SocketMessageEvent;
+import ar.com.dcsys.gwt.ws.shared.SocketMessageEventHandler;
 
+import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
 
 public class PersonsManagerBean implements PersonsManager {
@@ -235,17 +239,50 @@ public class PersonsManagerBean implements PersonsManager {
 	}
 	
 	
-	//////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////
 	
+	private final EventBus eventBus;
 	
+	private final SocketMessageEventHandler eventHandler = new SocketMessageEventHandler() {
+		@Override
+		public void onMessage(Message msg) {
+			
+			if (!MessageType.EVENT.equals(msg.getType())) {
+				return;
+			}
+			
+			Event event = messagesFactory.event(msg);
+			if (!PersonMethods.personModifiedEvent.equals(event.getName())) {
+				return;
+			}
+			
+			String id = event.getParams();
+			if (id == null) {
+				logger.log(Level.SEVERE,"PersonModifiedEvent but id == null");
+				return;
+			}
+			
+			try {
+				eventBus.fireEvent(new PersonModifiedEvent(id));
+			} catch (Exception e) {
+				logger.log(Level.SEVERE,e.getMessage(),e);
+			}
+		}
+	};
 	
 	
 	@Inject
-	public PersonsManagerBean(PersonFactory personFactory, PersonEncoderDecoder personEncoderDecoder, MessageUtils messagesFactory, WebSocket ws) {
+	public PersonsManagerBean(EventBus eventBus, 
+							  PersonFactory personFactory, PersonEncoderDecoder personEncoderDecoder, 
+							  MessageUtils messagesFactory, 
+							  WebSocket ws) {
+		this.eventBus = eventBus;
 		this.personFactory = personFactory;
 		this.messagesFactory = messagesFactory;
 		this.personEncoderDecoder = personEncoderDecoder;
 		socket = ws;
+		
+		eventBus.addHandler(SocketMessageEvent.TYPE, eventHandler);
 	}
 	
 	

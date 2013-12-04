@@ -3,6 +3,7 @@ package ar.com.dcsys.gwt.message.shared;
 
 
 import javax.inject.Inject;
+
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 
@@ -10,10 +11,13 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 public class MessageUtilsImp implements MessageUtils {
 
 	private final MessageFactory messageFactory;
+	private final MessageEncoderDecoder encoderDecoder;
+	
 	
 	@Inject
-	public MessageUtilsImp(MessageFactory messageFactory) {
+	public MessageUtilsImp(MessageFactory messageFactory, MessageEncoderDecoder encoderDecoder) {
 		this.messageFactory = messageFactory;
+		this.encoderDecoder = encoderDecoder;
 	}
 	
 	/**
@@ -65,7 +69,7 @@ public class MessageUtilsImp implements MessageUtils {
 		AutoBean<Method> mbean = messageFactory.method();
 		Method method = mbean.as();
 		method.setName(function);
-		String mjson = AutoBeanCodex.encode(mbean).getPayload();
+		String mjson = encoderDecoder.encode(Method.class, method);
 
 		Message msg = message();
 		msg.setType(MessageType.FUNCTION);
@@ -81,7 +85,7 @@ public class MessageUtilsImp implements MessageUtils {
 		Method method = mbean.as();
 		method.setName(function);
 		method.setParams(params);
-		String mjson = AutoBeanCodex.encode(mbean).getPayload();
+		String mjson = encoderDecoder.encode(Method.class, method);
 		
 		Message msg = message();
 		msg.setType(MessageType.FUNCTION);
@@ -91,14 +95,34 @@ public class MessageUtilsImp implements MessageUtils {
 	}
 
 	
+	@Override
+	public Message event(String name, String payload) {
+		AutoBean<Event> mbean = messageFactory.event();
+		Event e = mbean.as();
+		e.setName(name);
+		e.setParams(payload);
+		String mjson = encoderDecoder.encode(Event.class, e);
+		
+		Message msg = message();
+		msg.setType(MessageType.EVENT);
+		msg.setPayload(mjson);
+		
+		return msg;
+	}
 	
 	
 	@Override
 	public Method method(Message msg) {
 		String json = msg.getPayload();
-		AutoBean<Method> bean = AutoBeanCodex.decode(messageFactory, Method.class, json);
-		Method method = bean.as();
+		Method method = encoderDecoder.decode(Method.class, json);
 		return method;
+	}
+
+	@Override
+	public Event event(Message msg) {
+		String json = msg.getPayload();
+		Event event = encoderDecoder.decode(Event.class, json);
+		return event;
 	}
 	
 }

@@ -14,5 +14,8 @@ public class PersonMethods {
 	
 	public static final String findAllMails = "findAllPersonMails";
 	public static final String findTypes = "findPersonTypes";
+
+	
+	public static final String personModifiedEvent = "personModifiedEvent";
 	
 }

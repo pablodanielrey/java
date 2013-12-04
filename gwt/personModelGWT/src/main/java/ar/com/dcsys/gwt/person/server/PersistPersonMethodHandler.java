@@ -60,7 +60,7 @@ public class PersistPersonMethodHandler implements MethodHandler {
 		try {
 			String id = personsModel.persist(person);
 			sendResponse(msg, transport, id);
-
+			sendEvent(transport, id);
 		} catch (PersonException e) {
 			logger.log(Level.SEVERE,e.getMessage(),e);
 			sendError(msg,transport,e.getMessage());
@@ -82,6 +82,16 @@ public class PersistPersonMethodHandler implements MethodHandler {
 		Message msg = mf.response(r);
 		msg.setPayload(id);
 		
+		try {
+			transport.send(msg);
+		} catch (MessageException e) {
+			logger.log(Level.SEVERE,e.getMessage(),e);
+		}
+	}
+	
+	
+	private void sendEvent(MessageTransport transport, String id) {
+		Message msg = mf.event(PersonMethods.personModifiedEvent, id);
 		try {
 			transport.send(msg);
 		} catch (MessageException e) {

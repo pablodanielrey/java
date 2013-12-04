@@ -17,14 +17,17 @@ public class MessageEncoderDecoder {
 	}
 	
 	
-	public String encode(Message msg) {
-		AutoBean<Message> bean = AutoBeanUtils.getAutoBean(msg);
+	public <T> String encode(Class<T> clazz, T t) {
+		AutoBean<T> bean = AutoBeanUtils.getAutoBean(t);
+		if (bean == null) {
+			bean = messageFactory.create(clazz, t);
+		}
 		String json = AutoBeanCodex.encode(bean).getPayload();
 		return json;
 	}
 	
-	public Message decode(String json) {
-		AutoBean<Message> bean = AutoBeanCodex.decode(messageFactory, Message.class, json);
+	public <T> T decode(Class<T> clazz, String json) {
+		AutoBean<T> bean = AutoBeanCodex.decode(messageFactory, clazz, json);
 		return bean.as();
 	}	
 	

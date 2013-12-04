@@ -60,10 +60,22 @@ public interface MessageUtils {
 	
 	
 	/**
+	 * REtorna un mensaje de tipo evento con el payload pasado por parámetro para ser enviado por el transport.
+	 * @param name
+	 * @param payload
+	 * @return
+	 */
+	public Message event(String name, String payload);
+	
+	
+	/**
 	 * Retorna el método encapsulado dentro dle mesnaje.
 	 * @param msg, mensaje que contiene adentro el metodo.
 	 * s@return
 	 */
 	public Method method(Message msg);
+
+	
+	public Event event(Message msg);
 	
 }

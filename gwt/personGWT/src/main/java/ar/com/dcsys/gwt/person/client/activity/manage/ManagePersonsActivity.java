@@ -12,6 +12,8 @@ import ar.com.dcsys.gwt.person.client.activity.UpdatePersonDataActivity;
 import ar.com.dcsys.gwt.person.client.manager.AuthManager;
 import ar.com.dcsys.gwt.person.client.manager.PersonsManager;
 import ar.com.dcsys.gwt.person.client.manager.Receiver;
+import ar.com.dcsys.gwt.person.client.manager.events.PersonModifiedEvent;
+import ar.com.dcsys.gwt.person.client.manager.events.PersonModifiedEventHandler;
 import ar.com.dcsys.gwt.person.client.place.ManagePersonsPlace;
 import ar.com.dcsys.gwt.person.client.ui.AcceptsOneWidgetAdapter;
 import ar.com.dcsys.gwt.person.client.ui.UpdatePersonDataView;
@@ -23,6 +25,7 @@ import ar.com.dcsys.gwt.person.shared.PersonValueProxy;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent.Handler;
@@ -72,6 +75,15 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 		}
 	};
 	
+	private HandlerRegistration hr = null;
+	private PersonModifiedEventHandler personModifiedHandler = new PersonModifiedEventHandler() {
+		@Override
+		public void onPersonModified(PersonModifiedEvent event) {
+			updateUsers();
+		}
+	};
+	
+	
 	private void setPersons(List<PersonValueProxy> persons) {
 		view.setPersons(persons);
 	}
@@ -109,6 +121,8 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 		
 //		personToGroupActivity = new PersonToGroupActivity(rf, personGroupsView, groupDataView);
 //		personToGroupActivity.setSelectionModel(personSelection);
+		
+		
 	}
 	
 	@Override
@@ -134,7 +148,6 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 		
 		AcceptsOneWidgetAdapter container = new AcceptsOneWidgetAdapter(view.getPersonDataPanel());
 		updatePersonDataActivity.start(container, eventBus);
-
 		
 //		container = new AcceptsOneWidgetAdapter(view.getPersonGroupsPanel());
 //		personToGroupActivity.start(container, eventBus);
@@ -143,11 +156,18 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 		findAllPersonTypes();
 		
 		panel.setWidget(view);
+		
+		hr = eventBus.addHandler(PersonModifiedEvent.TYPE, personModifiedHandler);
 	}
 	
 	@Override
 	public void onStop() {
 
+		if (hr != null) {
+			hr.removeHandler();
+		}
+		
+		
 		selection.clear();
 		personSelection.clear();
 		
@@ -155,6 +175,9 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 		
 		updatePersonDataActivity.onStop();
 //		personToGroupActivity.onStop();
+		
+		
+		
 		
 		super.onStop();
 	}
@@ -247,6 +270,9 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 	
 	@Override
 	public void updateUsers() {
+		selection.clear();
+		personSelection.clear();
+		
 		List<PersonType> types = view.getSelectedTypes();
 		update(types);
 	}
