@@ -5,11 +5,13 @@
 
   <inherits name="com.google.gwt.inject.Inject"/>
   <inherits name="com.google.gwt.logging.Logging"/>
+  <inherits name='com.google.gwt.activity.Activity'/>
+  <inherits name='com.google.gwt.place.Place'/>
 
   <!-- We need the JUnit module in the main module,               -->
   <!-- otherwise eclipse complains (Google plugin bug?)           -->
-  <!--   <inherits name='com.google.gwt.junit.JUnit' /> -->
-
+  <inherits name='com.google.gwt.junit.JUnit' />
+   
   <!-- Inherit the default GWT style sheet.  You can change       -->
   <!-- the theme of your GWT application by uncommenting          -->
   <!-- any one of the following lines.                            -->
@@ -20,6 +22,7 @@
   <!-- Other module inherits                                      -->
   <inherits name="ar.com.dcsys.data.PersonEntities"/>
   <inherits name="ar.com.dcsys.gwt.person.PersonModelGWT"/>
+  <inherits name="ar.com.dcsys.gwt.clientMessages.ClientMessagesGWT"/>
 
   <!-- Specify the app entry point class.                         -->
   <entry-point class='ar.com.dcsys.gwt.person.client.PersonGWT' />

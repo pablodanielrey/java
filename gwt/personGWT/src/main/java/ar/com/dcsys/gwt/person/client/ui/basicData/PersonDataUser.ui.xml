@@ -53,16 +53,11 @@
 		   	        	<g:TextBox styleName="{res.style.studentNumber}" ui:field="studentNumber"/>
 		   	        </g:FlowPanel>
 		   	        
-		   	        <g:FlowPanel ui:field="primaryMailData" styleName="{res.style.mailPanel}">
-		   	            <g:Label styleName="{res.style.mailLabel}" text="Correo Institucional:"/>
+		   	        <g:FlowPanel ui:field="mailData" styleName="{res.style.mailPanel}">
+		   	            <g:Label styleName="{res.style.mailLabel}" text="Correo :"/>
 		   	            <g:TextBox styleName="{res.style.mail}" ui:field="mail"/>
 		   	        </g:FlowPanel>
 		   	        
-		   	        <g:FlowPanel styleName="{res.style.alternativeMailPanel}">
-		   	            <g:Label styleName="{res.style.alternativeMailLabel}" text="Correo Personal:"/>
-		   	            <g:TextBox styleName="{res.style.alternativeMail}" ui:field="amail"/>
-		   	            <g:Label styleName="{res.style.changeMailLabel}" ui:field="changeMail"/>
-		   	        </g:FlowPanel>
 			    </g:FlowPanel>
 		    </g:CaptionPanel>
 	    </g:FlowPanel>

@@ -7,5 +7,6 @@ public interface MessageFactory extends AutoBeanFactory {
 
 	public AutoBean<Message> message();
 	public AutoBean<Method> method();
+	public AutoBean<Event> event();
 	
 }

@@ -17,7 +17,7 @@ public class PersonBean implements Person, Serializable {
 	private String address;
 	private String city;
 	private String country;
-	private String gender;
+	private Gender gender = Gender.M;
 	private Date birthDate;
 	private String studentNumber;
 
@@ -139,12 +139,12 @@ public class PersonBean implements Person, Serializable {
 	}
 
 	@Override
-	public String getGender() {
+	public Gender getGender() {
 		return gender;
 	}
 
 	@Override
-	public void setGender(String gender) {
+	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
 

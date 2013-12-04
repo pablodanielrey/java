@@ -1,23 +1,29 @@
 package ar.com.dcsys.gwt.ws.client;
 
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageEncoderDecoder;
 import ar.com.dcsys.gwt.message.shared.MessageException;
+import ar.com.dcsys.gwt.message.shared.MessageType;
 import ar.com.dcsys.gwt.utils.client.GUID;
 import ar.com.dcsys.gwt.ws.shared.InvalidUrlException;
 import ar.com.dcsys.gwt.ws.shared.SocketClosedException;
 import ar.com.dcsys.gwt.ws.shared.SocketException;
+import ar.com.dcsys.gwt.ws.shared.SocketMessageEvent;
 import ar.com.dcsys.gwt.ws.shared.SocketStateEvent;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
-import com.google.web.bindery.event.shared.EventBus;
 import com.sksamuel.gwt.websockets.Websocket;
 import com.sksamuel.gwt.websockets.WebsocketListener;
 
 public class WebSocketImpl implements WebSocket {
+	
+	private static final Logger logger = Logger.getLogger(WebSocket.class.getName());
 	
 	private String url;
 	private Websocket socket;
@@ -32,21 +38,59 @@ public class WebSocketImpl implements WebSocket {
 		@Override
 		public void onOpen() {
 			wsState = WebSocketState.OPEN;
-			eventBus.fireEvent(new SocketStateEvent(true));
+			try {
+				eventBus.fireEvent(new SocketStateEvent(true));
+			} catch(Exception e) {
+				logger.log(Level.SEVERE,e.getMessage(),e);
+			}
 		}
 		
 		@Override
 		public void onClose() {
 			wsState = WebSocketState.CLOSED;
-			eventBus.fireEvent(new SocketStateEvent(false));
+			try {
+				eventBus.fireEvent(new SocketStateEvent(false));
+			} catch(Exception e) {
+				logger.log(Level.SEVERE,e.getMessage(),e);
+			}
 		}
 		
 		@Override
 		public void onMessage(String json) {
-			Message msg = messageEncoderDecoder.decode(json);
-			String id = msg.getId();
-			WebSocketReceiver rec = receivers.get(id);
-			rec.onSuccess(msg);
+			Message msg = messageEncoderDecoder.decode(Message.class, json);
+			
+			if (MessageType.RETURN.equals(msg.getType())) {
+			
+				String id = msg.getId();
+				if (id == null) {
+					logger.log(Level.SEVERE,"MensajeType == RETURN and msg.id == null");
+					return;
+				}
+					
+				WebSocketReceiver rec = receivers.get(id);
+				if (rec == null) {
+					logger.log(Level.SEVERE,"MessageTYpe == RETURN and msg.id != null and receiver == null");
+					return;
+				}
+
+				try {
+					rec.onSuccess(msg);
+				} catch(Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+				return;
+			}
+			
+			if (MessageType.EVENT.equals(msg.getType())) {
+				try {
+					eventBus.fireEvent(new SocketMessageEvent(msg));
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+				return;
+			}
+			
+			logger.log(Level.SEVERE,"MessageType unknown");
 		}
 	};
 	
@@ -131,7 +175,7 @@ public class WebSocketImpl implements WebSocket {
 		msg.setId(id);
 		receivers.put(id, rec);
 		
-		String json = messageEncoderDecoder.encode(msg);
+		String json = messageEncoderDecoder.encode(Message.class, msg);
 		try {
 			socket.send(json);
 

@@ -2,9 +2,9 @@ package ar.com.dcsys.gwt.ws.server;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,35 +33,62 @@ import ar.com.dcsys.gwt.utils.server.BeanManagerLocator;
 import ar.com.dcsys.gwt.utils.server.BeanManagerUtils;
 
 
-@ServerEndpoint(value = "/websockets")
+@ServerEndpoint(value = "/websockets", configurator = WebsocketsConfigurator.class)
 public class Websockets {
 
 	private static Logger logger = Logger.getLogger(Websockets.class.getName());
 
-	private Map<String,Session> sessions = new HashMap<>();
+	private Map<String,Session> sessions = new ConcurrentHashMap<>();
 	
 	private final MessageTransport transport = new MessageTransport() {
 		@Override
 		public void send(Message msg) throws MessageException {
-			
-			String sId = msg.getSessionId();
-			if (sId == null) {
-				throw new MessageException("message.sid == null");
-			}
-			
-			Session session = sessions.get(sId);
-			if (!session.isOpen()) {
-				throw new MessageException("message.sid == closed");
+
+			if (msg == null) {
+				throw new MessageException("msg == null");
 			}
 			
 			MessageEncoderDecoder med = getEncoderDecoder();
-			String json = med.encode(msg);
+			String json = med.encode(Message.class, msg);
 			
-			try {
-				session.getBasicRemote().sendText(json);
-			} catch (IOException e) {
-				throw new MessageException(e);
+			if (MessageType.EVENT.equals(msg.getType())) {
+				
+				for (Session session : sessions.values()) {
+					try {
+						if (session != null && session.isOpen()) {
+							session.getBasicRemote().sendText(json);
+						}
+					} catch (IOException e) {
+						throw new MessageException(e);
+					}				
+				}
+				
+				return;
+				
+			} else if (MessageType.RETURN.equals(msg.getType()) ||
+					   MessageType.ERROR.equals(msg.getType())) {
+				
+				String sId = msg.getSessionId();
+				if (sId == null) {
+					throw new MessageException("message.sid == null");
+				}
+				
+				Session session = sessions.get(sId);
+				if (!session.isOpen()) {
+					throw new MessageException("message.sid == closed");
+				}
+				
+				try {
+					session.getBasicRemote().sendText(json);
+				} catch (IOException e) {
+					throw new MessageException(e);
+				}				
+			
+				return;
 			}
+			
+			throw new MessageException("MessageType == unknown");
+
 		}
 	};
 
@@ -119,6 +146,9 @@ public class Websockets {
 			logger.info("Detectando handlers");
 			List<MethodHandler> methodHandlers = mh.detectMethodHandlers();
 			logger.info(methodHandlers.size() + " detectados");
+			for (MethodHandler m : methodHandlers) {
+				logger.info("Handler : " + m.getClass().getName() + " registrado");
+			}
 			handlers.addAll(methodHandlers);
 			
 		} catch (NamingException e) {
@@ -172,7 +202,7 @@ public class Websockets {
 
 		// decodifico el mensaje:
 		MessageEncoderDecoder med = getEncoderDecoder();
-		Message msg = med.decode(json);
+		Message msg = med.decode(Message.class,json);
 		msg.setSessionId(sId);
 
 		if (MessageType.FUNCTION.equals(msg.getType())) {
@@ -214,7 +244,7 @@ public class Websockets {
 		merror.setId(id);
 		merror.setType(MessageType.ERROR);
 		merror.setPayload(error);
-		String response = med.encode(merror);
+		String response = med.encode(Message.class,merror);
 
 		if (!session.isOpen()) {
 			logger.log(Level.SEVERE,"error : " + error + " session cerrada");

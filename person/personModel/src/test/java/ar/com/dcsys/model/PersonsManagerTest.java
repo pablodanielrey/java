@@ -3,6 +3,7 @@ package ar.com.dcsys.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.weld.environment.se.Weld;
@@ -13,6 +14,7 @@ import org.junit.Test;
 
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonBean;
+import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.exceptions.PersonException;
 
 public class PersonsManagerTest {
@@ -101,5 +103,44 @@ public class PersonsManagerTest {
 			assertNotNull(p.getId());
 		}
 	}
+	
+	
+	@Test
+	public void typesTest() throws PersonException {
+		PersonsManager personsManager = getPersonsManager();
+		
+		Person p = new PersonBean();
+		p.setDni("12345");
+		p.setName("PAblo");
+		p.setLastName("Tete");
+		String id = personsManager.persist(p);
+		
+		p = personsManager.findById(id);
+		assertNotNull(p.getTypes());
+		assertEquals(0, p.getTypes().size());
+
+		p.getTypes().add(PersonType.PERSONAL);
+		personsManager.persist(p);
+		
+		p = personsManager.findById(id);
+		assertNotNull(p.getTypes());
+		assertEquals(1, p.getTypes().size());
+		assertEquals(PersonType.PERSONAL,p.getTypes().get(0));
+
+		p.getTypes().add(PersonType.EXTERNAL);
+		personsManager.persist(p);
+		
+		p = personsManager.findById(id);
+		assertNotNull(p.getTypes());
+		assertEquals(2, p.getTypes().size());
+		
+		p.getTypes().clear();
+		personsManager.persist(p);
+		p = personsManager.findById(id);
+		assertNotNull(p.getTypes());
+		assertEquals(0, p.getTypes().size());
+		
+	}
+	
 
 }

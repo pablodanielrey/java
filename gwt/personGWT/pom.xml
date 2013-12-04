@@ -14,15 +14,7 @@
   <artifactId>personGWT</artifactId>
   <packaging>war</packaging>
   <version>1.0-SNAPSHOT</version>
-
   <name>personGWT</name>
-
-  <properties>
-    <gwtVersion>2.5.1</gwtVersion>
-    <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jetty.version>9.1.0.v20131115</jetty.version>
-  </properties>
 
   <dependencies>
 
@@ -49,21 +41,21 @@
     <dependency>
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-servlet</artifactId>
-      <version>${gwtVersion}</version>
+      <version>${gwt.version}</version>
       <scope>runtime</scope>
     </dependency>
 
     <dependency>
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-user</artifactId>
-      <version>${gwtVersion}</version>
+      <version>${gwt.version}</version>
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>com.google.gwt.inject</groupId>
       <artifactId>gin</artifactId>
-      <version>2.1.1</version>
+      <version>${gin.version}</version>
       <scope>provided</scope>
     </dependency>
 
@@ -103,6 +95,13 @@
     <dependency>
       <groupId>ar.com.dcsys.data</groupId>
       <artifactId>personEntities</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.gwt</groupId>
+      <artifactId>clientMessagesGWT</artifactId>
       <version>1.0-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
@@ -193,6 +192,7 @@
 
           <compileSourcesArtifacts>
               <artifact>ar.com.dcsys.data:personEntities</artifact>
+	      <artifact>ar.com.dcsys.gwt:clientMessagesGWT</artifact>
               <artifact>ar.com.dcsys.gwt:messageGWT</artifact>
               <artifact>ar.com.dcsys.gwt:personModelGWT</artifact>
           </compileSourcesArtifacts>

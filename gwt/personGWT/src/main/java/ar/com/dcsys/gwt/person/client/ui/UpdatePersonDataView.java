@@ -20,7 +20,6 @@ public interface UpdatePersonDataView extends IsWidget {
 	
 	public interface Presenter {
 		public void persist();
-		public void findall();
 	}
 	
 }

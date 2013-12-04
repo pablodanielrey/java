@@ -31,6 +31,7 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 	private interface QueryProcessor {
 		public void setParams(PreparedStatement st) throws SQLException;
 		public void process(ResultSet rs) throws SQLException, PersonException;
+		public void postProcess(Connection con) throws SQLException;
 	}
 
 	private abstract class AbstractQueryProcessor implements QueryProcessor {
@@ -40,6 +41,10 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 		
 		@Override
 		public abstract void process(ResultSet rs) throws SQLException, PersonException;
+		
+		@Override
+		public void postProcess(Connection con) throws SQLException {
+		}
 	}
 	
 	private void executeSqlQuery(String query, QueryProcessor rp) throws SQLException, PersonException {
@@ -60,6 +65,9 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 			} finally {
 				st.close();
 			}
+			
+			rp.postProcess(con);
+			
 		} finally {
 			con.close();
 		}
@@ -162,6 +170,9 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 					String id = rs.getString("id");
 					rid[0] = id;
 				}
+				@Override
+				public void postProcess(Connection con) throws SQLException {
+				}
 			});
 
 			return rid[0];
@@ -191,6 +202,9 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 					public void process(ResultSet rs) throws SQLException, PersonException {
 						String id = rs.getString("person_id");
 						ids.add(id);
+					}
+					@Override
+					public void postProcess(Connection con) throws SQLException {
 					}
 				});
 			}
@@ -232,7 +246,7 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 		person.setAddress(address);
 		person.setCity(city);
 		person.setCountry(country);
-		person.setGender(gender);
+		person.setGender((gender != null) ? Gender.valueOf(gender) : null);
 		
 		return person;
 	}
@@ -288,6 +302,12 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 					Person person = getPerson(rs);
 					persons.add(person);
 				}
+				@Override
+				public void postProcess(Connection con) throws SQLException {
+					for (Person p : persons) {
+						loadTypes(con, p);						
+					}
+				}
 			});
 	
 			return persons;
@@ -313,6 +333,13 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 					Person person = getPerson(rs);
 					persons[0] = person;
 				}
+				@Override
+				public void postProcess(Connection con) throws SQLException {
+					if (persons[0] == null) {
+						return;
+					}
+					loadTypes(con, persons[0]);				
+				}
 			});
 	
 			return persons[0];
@@ -337,6 +364,13 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 					Person person = getPerson(rs);
 					persons[0] = person;
 				}
+				@Override
+				public void postProcess(Connection con) throws SQLException {
+					if (persons[0] == null) {
+						return;
+					}
+					loadTypes(con, persons[0]);				
+				}				
 			});
 	
 			return persons[0];
@@ -375,10 +409,12 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 					st.setString(4,p.getAddress());
 					st.setString(5,p.getCity());
 					st.setString(6,p.getCountry());
-					st.setString(7,p.getGender());
+					st.setString(7,(p.getGender() == null) ? null : p.getGender().toString());
 					st.setString(8,p.getId());
 					
 					st.executeUpdate();
+					
+					persistTypes(con, p);
 					
 					return p.getId();
 				} finally {
@@ -392,4 +428,72 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 		}
 	}
 
+	
+	/**
+	 * Persiste los tipos de la persona indicada en el parametro.
+	 * Esa persona ya debe tener un id cargado!!. o sea ya debe estar persistida.
+	 * Deja la base exactametne con el contenido de p.getTypes();
+	 * @param con
+	 * @param p
+	 * @throws SQLException
+	 */
+	private void persistTypes(Connection con, Person p) throws SQLException {
+		
+		String query = "delete from persons_persontypes where person_id = ?";
+		PreparedStatement st = con.prepareStatement(query);
+		st.setString(1, p.getId());
+		try {
+			st.execute();
+		} finally {
+			st.close();
+		}
+		
+		if (p.getTypes() == null || p.getTypes().size() <= 0) {
+			return;
+		}
+		
+		query = "insert into persons_persontypes (person_id, persontype_id) values (?,?)";
+		st = con.prepareStatement(query);
+		try {
+			for (PersonType pt : p.getTypes()) {
+				st.setString(1,p.getId());
+				st.setString(2,pt.toString());
+				st.execute();
+			};
+		} finally {
+			st.close();
+		}
+	}
+	
+	/**
+	 * Carga los tipos de la persona indicada en el parámetro.
+	 * @param con
+	 * @param p
+	 * @throws SQLException
+	 */
+	private void loadTypes(Connection con, Person p) throws SQLException {
+		
+		if (p.getTypes() == null) {
+			p.setTypes(new ArrayList<PersonType>());
+		}
+		
+		String query = "select persontype_id from persons_persontypes where person_id = ?";
+		PreparedStatement st = con.prepareStatement(query);
+		try {
+			st.setString(1,p.getId());
+			ResultSet rs = st.executeQuery();
+			try {
+				while (rs.next()) {
+					String stype = rs.getString("persontype_id");
+					PersonType type = PersonType.valueOf(stype);
+					p.getTypes().add(type);
+				}
+			} finally {
+				rs.close();
+			}
+		} finally {
+			st.close();
+		}
+	}
+	
 }

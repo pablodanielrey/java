@@ -28,8 +28,8 @@ public interface Person {
 	public String getCountry();
 	public void setCountry(String country);
 	
-	public String getGender();
-	public void setGender(String gender);
+	public Gender getGender();
+	public void setGender(Gender gender);
 	
 	public Date getBirthDate();
 	public void setBirthDate(Date d);

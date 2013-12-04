@@ -174,7 +174,7 @@ public class PersonLdapDAO extends AbstractLdapPersonDAO {
 							person.setLastName(lastName);
 							person.setDni(dni);
 							person.setAddress(address);
-							person.setGender(gender);
+							person.setGender(Gender.valueOf(gender));
 							person.setCity(locality);
 							person.setCountry(country);
 							person.setStudentNumber(studentNumber);

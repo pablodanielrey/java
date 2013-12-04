@@ -1,0 +1,74 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:d="urn:import:com.google.gwt.user.cellview.client"
+	xmlns:p="urn:import:ar.com.dcsys.gwt.person.client.ui">
+	
+	<ui:style>
+		.persons {
+			width: 500px;
+			height: 510px;
+			margin-top:1em;
+			margin-bottom:0.5em;
+		}
+
+		.panel-filter-count {
+			display:inline;
+			margin-left:1em;
+		}
+		
+		.personData {
+			float: left; 
+		}
+		
+		.personGroups {
+			float: left;
+		}
+		
+		.person-list{
+			float:left;
+			margin-left:1em;
+			-moz-border-radius: 5px;
+			border-radius: 5px;
+			border: 1px solid #C1C1C1;
+			background-color: #E8EEF7;		
+			margin-top:1em;
+		}
+		.filter-panel,.panel{
+			margin-top:1em;
+			margin-left:1em;
+		}
+		.label-inline,.input-inline{
+			display:inline;
+		}
+
+		.label-inline{
+			color: #47698A;
+			font-weight:bold;
+		}		
+
+		.input-inline{
+			margin-left:1em;
+		}
+	</ui:style>
+	
+	<g:FlowPanel>
+		<g:FlowPanel styleName="{style.person-list}">
+			<g:FlowPanel>
+				<g:FlowPanel styleName="{style.filter-panel}">
+				    <g:Label text="Buscar:" styleName="{style.label-inline}"/> 
+					<g:TextBox ui:field="filter" styleName="{style.input-inline}"/>
+					<g:FlowPanel styleName="{style.panel-filter-count}">
+					    <g:Label text="Total:" styleName="{style.label-inline}"/> 
+						<g:Label ui:field="usersCount" styleName="{style.label-inline}"/>
+					</g:FlowPanel>
+				</g:FlowPanel>
+	   	        <g:FlowPanel ui:field="types"/>
+			</g:FlowPanel>
+			<d:DataGrid ui:field="persons" styleName="{style.persons}"/>
+		</g:FlowPanel>
+		<g:FlowPanel ui:field="personData" styleName="{style.personData}"/>
+		<g:FlowPanel ui:field="personGroups" styleName="{style.personGroups}"/>
+	</g:FlowPanel>
+	
+</ui:UiBinder> 

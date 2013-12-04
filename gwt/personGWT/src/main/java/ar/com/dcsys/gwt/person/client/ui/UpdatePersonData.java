@@ -57,9 +57,4 @@ public class UpdatePersonData extends Composite implements UpdatePersonDataView 
 		presenter.persist();
 	}
 	
-	@UiHandler("findAll")
-	public void onFindAll(ClickEvent event) {
-		presenter.findall();
-	}
-	
 }

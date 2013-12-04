@@ -1,14 +1,11 @@
 package ar.com.dcsys.gwt.person.client.ui.basicData;
 
+import ar.com.dcsys.data.person.Gender;
 import ar.com.dcsys.gwt.person.client.ui.types.PersonTypesView;
 
 import com.google.gwt.user.client.ui.IsWidget;
 
 public interface PersonDataView extends IsWidget {
-
-	public enum Gender {
-		M,F;
-	}
 	
 	public PersonTypesView getPersonTypesView();
 	
@@ -27,9 +24,6 @@ public interface PersonDataView extends IsWidget {
 	public void setMailReadOnly(boolean v);
 	public String getMail();
 	public void setMail(String mail);
-	
-	public String getAlternativeMail();
-	public void setAlternativeMail(String mail);
 	
 	public Gender getGender();
 	public void setGender(Gender gender);
@@ -60,7 +54,6 @@ public interface PersonDataView extends IsWidget {
 	
 	
 	public interface Presenter {
-		public void changeMail();
 		public void persist();
 	}
 	

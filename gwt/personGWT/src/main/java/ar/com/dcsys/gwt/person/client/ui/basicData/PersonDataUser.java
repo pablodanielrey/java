@@ -1,16 +1,14 @@
 package ar.com.dcsys.gwt.person.client.ui.basicData;
 
+import ar.com.dcsys.data.person.Gender;
 import ar.com.dcsys.gwt.person.client.ui.types.PersonTypesView;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -37,10 +35,8 @@ public class PersonDataUser extends Composite implements PersonDataView {
 	@UiField(provided=true) RadioButton femenineGender;
 	
 	@UiField TextBox telephone;
-	@UiField FlowPanel primaryMailData;
+	@UiField FlowPanel mailData;
 	@UiField TextBox mail;
-	@UiField TextBox amail;
-	@UiField Label changeMail;
 	
 	@UiField FlowPanel studentData;					// panel que contiene los datos de la persona tipo alumno
 
@@ -71,13 +67,12 @@ public class PersonDataUser extends Composite implements PersonDataView {
 		
 		telephone.setText("");
 		mail.setText("");
-		amail.setText("");
 	}
 	
 	
 	@Override
 	public void setMailVisible(boolean v) {
-		primaryMailData.setVisible(v);
+		mailData.setVisible(v);
 	}
 		
 	private Presenter p;
@@ -93,65 +88,12 @@ public class PersonDataUser extends Composite implements PersonDataView {
 		this.personTypes = personTypes;
 		
 		initWidget(uiBinder.createAndBindUi(this));
-		
-		prepareMailFields();
 	}
 
-	
-	private void prepareMailFields() {
-		changeMail.addClickHandler(new ClickHandler() {
-			
-			private boolean readOnly = true;
-			private String[] text = new String[]{"Cambiar correo","Confirmar correo"};
-			private int index = 0;
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				String mail = amail.getText();
-				if (!mail.equals("") && !mailExp.test(mail)) {
-					// si no cumple con las propiedades de mail no cambio nada.
-					return;
-				}
-
-				// cambio las propiedades del texto de la ui.
-				index = (index + 1) % text.length;
-				String t = text[index];
-				readOnly = !readOnly;
-				
-				changeMail.setText(t);
-				amail.setReadOnly(readOnly);
-				
-				// si lo cambie entonces disparo la acción en el presenter.
-				if (readOnly) {
-					p.changeMail();
-				}
-			}
-		});
-
-		changeMail.setText("Cambiar correo");
-		amail.setReadOnly(true);
-	}
 	
 	@Override
 	public void setPresenter(Presenter p) {
 		this.p = p;
-	}
-	
-
-	private boolean checkMailSyntax(String mail) {
-		if (mail == null) {
-			return false;
-		}
-		
-		// un error muy muy común.
-		if (mail.trim().endsWith("hotmial.com") ||
-			mail.trim().endsWith("hotmial.com.ar") ||
-			mail.trim().endsWith("hotmia.com") ||
-			mail.trim().endsWith("hotma.com")) {
-			return false;
-		}
-		
-		return mailExp.test(mail);
 	}
 	
 	@Override
@@ -205,19 +147,13 @@ public class PersonDataUser extends Composite implements PersonDataView {
 	}
 	
 	@Override
-	public void setAlternativeMail(String mail) {
-		this.amail.setText(mail);
-	}
-	
-	@Override
-	public String getAlternativeMail() {
-		return amail.getText();
-	}
-	
-	@Override
 	public void setGender(Gender gender) {
 		masculineGender.setValue(false);
 		femenineGender.setValue(false);
+		
+		if (gender == null) {
+			return;
+		}
 		
 		switch (gender) {
 		case M:
