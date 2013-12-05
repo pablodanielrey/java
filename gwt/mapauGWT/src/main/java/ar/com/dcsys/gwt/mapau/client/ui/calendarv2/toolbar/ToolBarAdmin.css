@@ -1,0 +1,60 @@
+@CHARSET "UTF-8";
+
+.toolbar {
+	float:left;
+	width:100%;
+	background-color:black;		
+}	
+
+.filter {
+	display:inline;
+	margin-left:1em;
+	cursor:pointer;
+	color:white;
+}
+
+.datePanel {
+	display:inline;
+}
+
+.datePanelHide {
+	display:none;
+}
+
+.dateLabel {
+	display:inline;
+	margin-right:1em;
+	color:white;
+}
+
+.date {
+	display:inline;
+	width: 5em;
+	cursor:pointer;
+	text-align: center;
+}
+
+.calendarViewTypePanel {
+	display:inline;
+}
+.calendarViewTypePanelHide {
+	display:none;
+}
+.calendarViewTypeLabel {
+	display:inline;
+	margin-right:1em;
+	color:white;
+}
+.calendarViewType {
+	display:inline;
+	cursor:pointer;
+}
+
+.separator {
+	width: 1em;
+	height: 1em;
+	border-right: 2px solid white;
+	margin-right: 1em;
+	margin-left: 1em;
+	display: inline;
+}

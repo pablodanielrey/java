@@ -1,0 +1,228 @@
+@CHARSET "UTF-8";
+
+.contentMain {}
+	
+.title {
+	margin-top: 0.5em;
+	color: #47698a;
+	font-size: medium;
+	font-weight: bold;
+	text-align: center;	
+}
+	
+	
+.dateBlock {
+	margin-top:0.5em;
+}
+.separatorDate {
+	display:inline;
+	margin-left:0.5em;
+	margin-right:0.5em;
+}
+	
+.datePanel {
+	display:inline;
+}
+.dateLabel {
+	display:inline;
+	margin-right:0.5em;
+	font-weight: bold;
+}
+.date {
+	display:inline;
+	text-align:center;
+	width: 5em;
+}
+	
+.startDatePanel {
+	display:inline;
+	margin-left:0.5em;
+}
+.startDateLabel {
+	display:inline;
+	margin-right: 0.5em;
+	font-weight: bold;
+}
+.startDateHours {
+	width: 2em;
+	text-align: center;
+	display:inline;
+}
+.startDateMinutes {
+	width: 2em;
+	text-align: center;
+	display:inline;
+}
+	
+.endDatePanel {
+	display:inline;
+	margin-left:0.5em;
+	font-weight: bold;
+}
+.endDateLabel {
+	display:inline;
+	margin-right: 0.5em;
+}
+.endDateHours {
+	width: 2em;
+	text-align: center;
+	display:inline;
+}
+.endDateMinutes {
+	width: 2em;
+	text-align: center;
+	display:inline;
+}
+	
+	
+.captionDataCourse {
+	font-weight: bold;
+	font-size: small;
+	color: #47698a;	
+	margin-top: 0.5em;
+}
+.dataCoursePanel {}
+	
+.coursePanel {}
+.courseLabel {
+	font-weight: bold;
+	color:black;
+}
+.course {}
+	
+.studentGroupPanel {}
+.studentGroupLabel {
+	font-weight: bold;
+	color:black;
+}
+.studentGroup {}
+	
+.typePanel {}
+.typeLabel {
+	font-weight: bold;
+	color:black;
+}
+.type {}
+	
+.captionCharacteristics {
+	margin-top: 0.5em;
+	font-weight: bold;
+	font-size: small;
+	color: #47698a;
+}
+.blockCharacteristics {}
+	
+.capacityPanel {
+	display:block;
+}
+.capacityHiddenPanel {
+	display:none;
+}
+.capacityLabel {
+	display:inline;
+	font-weight: bold;
+	color:black;
+	margin-right:0.5em;
+}
+.capacity {
+	width: 2em;
+	text-align: center;
+	display:inline;	
+}
+	
+.multimediaPanel {
+	display:block;
+}
+.multimediaHiddenPanel {
+	display:none;
+}
+.multimediaLabel {
+	display:inline;
+	font-weight: bold;
+	color:black;
+	margin-right:0.5em;
+}
+.multimedia {
+	display:inline;
+}
+	
+	
+.captionDataReserve {
+	margin-top: 0.5em;
+	font-weight: bold;
+	font-size: small;
+	color: #47698a;
+}
+.blockDataReserve {}
+	
+.areaPanel {}
+.areaLabel {
+	font-weight: bold;
+	color:black;
+}
+.area {}
+	
+
+.relatedPersonsPanel {}
+.relatedPersonsLabel {
+	font-weight: bold;
+	color:black;
+}
+.relatedPersons {
+	width:100%;
+	height:150px;
+}
+.relatedPersonsData {
+	width:400px;
+	height: 150px;
+}
+	
+.notesPanel {}
+.notesLabel {
+	font-weight: bold;
+	color:black;
+}
+.notes {
+	resize:none;
+	width:95%;
+}
+	
+.panelActions {
+	text-align: center;
+	margin: 1em;
+	border-top: 2px solid;
+	padding: 0.5em;
+}
+
+.commit {
+	display:inline;
+	cursor: pointer;
+	font-weight: bold;
+	font-size:medium;
+}
+
+.commit:hover {
+	color: white;
+	background-color: black;
+}
+
+.cancel {
+	display:inline;
+	cursor: pointer;
+	font-weight: bold;
+	font-size:medium;
+}
+
+.cancel:hover {
+	color: white;
+	background-color: black;
+}
+
+.separator {
+	width: 1em;
+	height: 1em;
+	border-right: 2px solid black;
+	margin-right: 1em;
+	margin-left: 1em;
+	display: inline;
+}

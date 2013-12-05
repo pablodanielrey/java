@@ -1,0 +1,54 @@
+@CHARSET "UTF-8";
+
+.messagePanel {
+	margin:1em;
+}
+.message {
+	color: red;
+	font-size: large;
+	font-weight: bold;	
+}
+	
+.confirmationPanel {
+	margin:1em;
+}
+.confirmation {
+	display:inline;
+}
+.confirmationLabel {
+	display:inline;
+	font-weight: bold;
+}
+	
+.actionsPanel {
+	text-align: center;
+	margin: 1em;
+	border-top: 2px solid;
+	padding: 0.5em;
+}
+.commit {
+	display:inline;
+	cursor: pointer;
+	font-weight: bold;
+}
+.commit:hover {
+	color: white;
+	background-color: black;
+}
+.cancel {
+	display:inline;
+	cursor: pointer;
+	font-weight: bold;
+}
+.cancel:hover {
+	color: white;
+	background-color: black;
+}
+.separator {
+	width: 1em;
+	height: 1em;
+	border-right: 2px solid black;
+	margin-right: 1em;
+	margin-left: 1em;
+	display: inline;
+}	

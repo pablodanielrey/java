@@ -1,0 +1,16 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:fw="urn:import:ar.com.dcsys.gwt.mapau.client.ui.filter.widget"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:with field="res" type="ar.com.dcsys.gwt.mapau.client.ui.calendarv2.filter.FiltersViewResources"/>
+	
+	<g:FlowPanel styleName="{res.style.page}">
+		<fw:FilterWidget ui:field="filtersWidget" styleName="{res.style.filterWidget}"/>
+		
+		<g:FlowPanel styleName="{res.style.panelActions}">
+			<g:Label ui:field="cancelFilters" text="Cancelar" styleName="{res.style.cancel}"/>
+			<g:FlowPanel styleName="{res.style.separator}"/>
+			<g:Label ui:field="saveFilters" text="Aceptar" styleName="{res.style.commit}"/>
+		</g:FlowPanel>	    	    
+	</g:FlowPanel>
+</ui:UiBinder> 

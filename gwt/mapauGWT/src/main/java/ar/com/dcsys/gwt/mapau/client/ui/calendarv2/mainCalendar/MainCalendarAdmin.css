@@ -1,0 +1,10 @@
+@CHARSET "UTF-8";
+
+.toolbar {
+	float:left;
+	width:100%;
+}
+.calendar {
+	float:left;
+	width:100%;
+}

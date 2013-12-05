@@ -1,0 +1,46 @@
+@CHARSET "UTF-8";
+
+.mainContainer {}
+
+.title {
+	font-weight: bold;
+	margin:1em;
+}
+	
+.datePanel {
+	margin:1em;
+}
+.dateLabel {
+	display:inline;
+	font-weight: bold;
+}
+.date {
+	display:inline;
+	margin-left: 1em;
+}
+	
+.actionsPanel {
+	text-align: center;
+	margin: 1em;
+	border-top: 2px solid;
+	padding: 0.5em;
+}
+.actionItem {
+	display:inline;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.actionItem:hover {
+	color: white;
+	background-color: black;
+}
+
+.separator {
+	width: 1em;
+	height: 1em;
+	border-right: 2px solid black;
+	margin-right: 1em;
+	margin-left: 1em;
+	display: inline;
+}

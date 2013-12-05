@@ -1,0 +1,9 @@
+package ar.com.dcsys.gwt.mapau.client.activity.calendarv2.events;
+
+import com.google.gwt.event.shared.EventHandler;
+
+public interface CreateAppointmentEventHandler extends EventHandler {
+
+	public void onCreateAppointment(CreateAppointmentEvent event);
+	
+}

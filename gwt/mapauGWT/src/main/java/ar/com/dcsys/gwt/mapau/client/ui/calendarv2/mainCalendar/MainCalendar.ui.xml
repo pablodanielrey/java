@@ -1,0 +1,10 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:with field="res" type="ar.com.dcsys.gwt.mapau.client.ui.calendarv2.mainCalendar.MainCalendarViewResources"/>
+	
+	<g:FlowPanel>
+		<g:SimplePanel ui:field="toolbarContainer" styleName="{res.style.toolbar}"/>
+		<g:SimplePanel ui:field="calendarContainer" styleName="{res.style.calendar}"/>
+	</g:FlowPanel>
+</ui:UiBinder> 
