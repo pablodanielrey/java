@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='MapauGWT'>
+  <!-- Inherit the core Web Toolkit stuff.                        -->
+  <inherits name='com.google.gwt.user.User' />
+
+  <inherits name="com.google.gwt.inject.Inject"/>
+  <inherits name="com.google.gwt.logging.Logging"/>
+  <inherits name='com.google.gwt.activity.Activity'/>
+  <inherits name='com.google.gwt.place.Place'/>
+
+  <!-- We need the JUnit module in the main module,               -->
+  <!-- otherwise eclipse complains (Google plugin bug?)           -->
+  <inherits name='com.google.gwt.junit.JUnit' />
+
+  <inherits name='com.google.gwt.user.theme.standard.Standard' />
+  <!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
+  <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
+
+  <inherits name="ar.com.dcsys.data.MapauEntities"/>
+  <inherits name="ar.com.dcsys.gwt.mapau.MapauModelGWT"/>
+  <inherits name="ar.com.dcsys.gwt.clientMessages.ClientMessagesGWT"/>
+
+
+  <entry-point class='ar.com.dcsys.gwt.mapau.client.MapauGWT' />
+
+  <source path='client' />
+
+</module>

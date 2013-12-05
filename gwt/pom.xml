@@ -26,9 +26,13 @@
 
   <modules>
     <module>messageGWT</module>
+    <module>clientMessagesGWT</module>
+
     <module>personModelGWT</module>
     <module>personGWT</module>
-    <module>clientMessagesGWT</module>
+
+    <module>mapauModelGWT</module>
+    <module>mapauGWT</module>
   </modules>
 
 </project>

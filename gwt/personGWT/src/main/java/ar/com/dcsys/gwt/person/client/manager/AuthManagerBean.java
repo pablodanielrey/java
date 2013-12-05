@@ -3,6 +3,7 @@ package ar.com.dcsys.gwt.person.client.manager;
 import java.util.List;
 
 import ar.com.dcsys.data.person.Person;
+import ar.com.dcsys.gwt.manager.shared.Receiver;
 
 public class AuthManagerBean implements AuthManager {
 

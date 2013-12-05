@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonType;
+import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.message.shared.Event;
 import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageException;

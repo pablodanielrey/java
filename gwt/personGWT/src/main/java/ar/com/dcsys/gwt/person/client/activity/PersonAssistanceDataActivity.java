@@ -3,12 +3,12 @@ package ar.com.dcsys.gwt.person.client.activity;
 import java.util.List;
 
 import ar.com.dcsys.data.person.Person;
+import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.person.client.manager.AssistancePersonData;
 import ar.com.dcsys.gwt.person.client.manager.AuthManager;
 import ar.com.dcsys.gwt.person.client.manager.DCSysCredentials;
 import ar.com.dcsys.gwt.person.client.manager.DCSysPrincipal;
 import ar.com.dcsys.gwt.person.client.manager.PersonsManager;
-import ar.com.dcsys.gwt.person.client.manager.Receiver;
 import ar.com.dcsys.gwt.person.client.manager.UserPinCredentials;
 import ar.com.dcsys.gwt.person.client.ui.assistance.PersonAssistanceDataView;
 

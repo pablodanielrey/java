@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://xmlns.jcp.org/xml/ns/javaee">
+    <scan>
+        <exclude name="ar.com.dcsys.gwt.person.client.**"/>
+        <exclude name="ar.com.dcsys.gwt.message.client.**"/>
+        <exclude name="ar.com.dcsys.gwt.ws.client.**"/>
+        <exclude name="ar.com.dcsys.gwt.utils.client.**"/>
+    </scan>
+</beans>

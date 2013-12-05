@@ -15,6 +15,7 @@ import ar.com.dcsys.gwt.person.shared.lists.PersonValueList;
 
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
+import com.google.web.bindery.autobean.shared.AutoBeanFactory;
 
 
 public class PersonEncoderDecoder {
@@ -24,8 +25,29 @@ public class PersonEncoderDecoder {
 	@Inject
 	public PersonEncoderDecoder(PersonFactory personFactory) {
 		this.personFactory = personFactory;
-		
 	}
+
+	
+	/**
+	 * Codifcación genérica de una clase a String usando AutoBeanCodex
+	 * @param clazz
+	 * @param t
+	 * @return
+	 */
+	public <T> String encode(Class<T> clazz, T t) {
+		return AutoBeanUtils.encode(personFactory, clazz, t);
+	}
+	
+	/**
+	 * Decodificiacion genérica de una clase desde un String usando AutoBeanCodex.
+	 * @param clazz
+	 * @param json
+	 * @return
+	 */
+	public <T> T decode(Class<T> clazz, String json) {
+		return AutoBeanUtils.decode(personFactory, clazz, json);
+	}			
+	
 	
 	public String encodePersonValueList(List<PersonValueProxy> pt) {
 		AutoBean<PersonValueList> aptl = personFactory.personValueList();
