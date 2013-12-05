@@ -58,4 +58,38 @@ public class AutoBeanUtils {
 	}		
 	
 	
+	/**
+	 * Metodo genérico para codificar una lista de elementos de una clase en especial T.
+	 * @param clazz
+	 * @param list
+	 * @return
+	 */
+/*	
+ * hay que investigar como poder hacerlo funcionar. con alguna categoria, etc.
+ * 
+ * 
+ * public <T> String encodeList(Class<T> clazz, List<T> list) {
+
+		// para manejar el error de autobean cuando los elementos de la lista no tienen wrapping.
+		List<T> wrappedList = wrapList(clazz, list);
+		
+		AutoBean<ListContainer<T>> lc = personFactory.listContainer();
+		ListContainer<T> lcontainer = lc.as();
+		lcontainer.setList(list);
+		
+		String json = AutoBeanCodex.encode(lc).getPayload();
+		return json;
+	}
+	
+	
+	public <T> List<T> decodeList(Class<T> clazz, String list) {
+		AutoBean<ListContainer> bean = AutoBeanCodex.decode(personFactory, ListContainer.class, list);
+		ListContainer lc = bean.as();
+		List<T> rlist = lc.getElements(clazz);
+		return rlist;
+	}
+*/	
+			
+	
+	
 }

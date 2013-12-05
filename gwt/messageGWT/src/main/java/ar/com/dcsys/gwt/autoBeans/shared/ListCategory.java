@@ -1,4 +1,4 @@
-package ar.com.dcsys.gwt.person.shared;
+package ar.com.dcsys.gwt.autoBeans.shared;
 
 import java.util.ArrayList;
 import java.util.List;
