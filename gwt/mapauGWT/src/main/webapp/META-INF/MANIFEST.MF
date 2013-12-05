@@ -4,6 +4,7 @@ Class-Path: gwt-servlet-2.5.1.jar weld-servlet-2.1.0.Final.jar clientM
  ageGWT.jar org.json-chargebee-1.0.jar gwt-websockets-1.0.3.jar mapauE
  ntities-1.0-SNAPSHOT.jar personEntities-1.0-SNAPSHOT.jar mapauModel-1
  .0-SNAPSHOT.jar mapauDAO-1.0-SNAPSHOT.jar dcsysUtils-1.0-SNAPSHOT.jar
-  hsqldb-2.3.1.jar postgresql-9.3-1100-jdbc41.jar mapauHsqlDAO-1.0-SNA
- PSHOT.jar hsql-1.0-SNAPSHOT.jar
+  hsqldb-2.3.1.jar postgresql-9.3-1100-jdbc41.jar personModel-1.0-SNAP
+ SHOT.jar personDAO-1.0-SNAPSHOT.jar mapauHsqlDAO-1.0-SNAPSHOT.jar hsq
+ l-1.0-SNAPSHOT.jar
 
