@@ -35,7 +35,7 @@ public class AutoBeanUtils {
 	 * @param t
 	 * @return
 	 */
-	public <T> String encode(AutoBeanFactory factory, Class<T> clazz, T t) {
+	public static  <T> String encode(AutoBeanFactory factory, Class<T> clazz, T t) {
 		AutoBean<T> bean = com.google.web.bindery.autobean.shared.AutoBeanUtils.getAutoBean(t);
 		if (bean == null) {
 			// no tiene bean asi que hay que crearlo.
@@ -51,7 +51,7 @@ public class AutoBeanUtils {
 	 * @param json
 	 * @return
 	 */
-	public <T> T decode(AutoBeanFactory factory, Class<T> clazz, String json) {
+	public static <T> T decode(AutoBeanFactory factory, Class<T> clazz, String json) {
 		AutoBean<T> bean = AutoBeanCodex.decode(factory, clazz, json);
 		T t = bean.as();
 		return t;
