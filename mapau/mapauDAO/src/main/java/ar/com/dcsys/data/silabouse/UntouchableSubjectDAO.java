@@ -15,8 +15,6 @@ public interface UntouchableSubjectDAO extends Serializable {
 	public List<String> findAllIds() throws MapauException;
 	public String findIdByArea(String id) throws MapauException;
 	
-	public void initialize() throws MapauException;
-	
 	public interface Params {
 		public Course findCourseById(String id) throws MapauException;
 		public Area findAreaById(String id) throws MapauException;

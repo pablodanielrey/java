@@ -43,7 +43,7 @@ public class ReservesManagerBean implements ReservesManager {
 	@Override
 	public List<Reserve> findAllByDates(Date start, Date end) throws MapauException {
 		try {
-			return reserveDAO.findAllByDates(start, end);
+			return reserveDAO.findBy(start, end);
 		} catch (PersonException e) {
 			throw new MapauException(e);
 		}

@@ -1,16 +1,16 @@
 package ar.com.dcsys.data.reserve;
 
+import java.io.Serializable;
+
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.exceptions.MapauException;
 import ar.com.dcsys.exceptions.PersonException;
 
-public interface VisibillityDAO {
+public interface VisibillityDAO extends Serializable {
 
 	public String persist(Visible visible) throws MapauException;
 	public void remove(Visible visible) throws MapauException;
 	public Visible findBy(ReserveAttemptDate date) throws MapauException;
-	
-	public void initialize() throws MapauException;
 	
 	
 	public enum Type {

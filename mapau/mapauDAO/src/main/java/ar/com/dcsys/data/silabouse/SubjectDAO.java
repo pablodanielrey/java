@@ -11,5 +11,4 @@ public interface SubjectDAO  extends Serializable {
 	public List<Subject> findAll() throws MapauException ;
 	public Subject findById(String id) throws MapauException ;
 	
-	public void initialize() throws MapauException;
 }

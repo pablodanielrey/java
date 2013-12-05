@@ -15,7 +15,5 @@ public interface CharacteristicDAO extends Serializable {
 	public List<Characteristic> findAll(Boolean historic) throws MapauException;
 	public List<String> findAllIds() throws MapauException ;
 	public String findIdByName(String name) throws MapauException;
-	
-	public void initialize() throws MapauException;
-	
+		
 }

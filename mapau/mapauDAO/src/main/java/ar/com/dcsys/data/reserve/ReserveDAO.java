@@ -17,7 +17,7 @@ public interface ReserveDAO extends Serializable {
 
 	public Reserve findById(String id) throws MapauException, PersonException;
 	public List<Reserve> findAll() throws MapauException, PersonException;
-	public List<Reserve> findAllByDates(Date start, Date end) throws MapauException, PersonException;
+	public List<Reserve> findBy(Date start, Date end) throws MapauException, PersonException;
 
 	public List<Reserve> findReserveRelatedWithId(String id) throws MapauException;
 	
@@ -26,9 +26,6 @@ public interface ReserveDAO extends Serializable {
 	public List<Reserve> findAllCollidingWith(Date start, Date end, List<ClassRoom> classRooms) throws MapauException;
 	
 	public List<Reserve> findAllCollidingWith(List<DatesRange> dates) throws MapauException, PersonException;
-	
-	
-	public void intialize() throws MapauException;
 	
 	public interface Params {
 		public ReserveAttemptDate findReserveAttemptDateById(String id) throws MapauException;
