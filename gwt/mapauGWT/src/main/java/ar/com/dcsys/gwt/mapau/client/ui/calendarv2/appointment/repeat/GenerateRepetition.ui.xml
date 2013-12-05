@@ -1,0 +1,58 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+ 	xmlns:d='urn:import:com.google.gwt.user.datepicker.client'
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:with type="ar.com.dcsys.gwt.mapau.client.ui.calendarv2.appointment.repeat.GenerateRepetitionViewResources" field="res" />
+	
+	<g:FlowPanel styleName="{res.style.mainContainer}">
+	
+		<g:Label ui:field="title" styleName="{res.style.title}"/>
+		
+		<!-- Tipo de Repetición -->
+		<g:FlowPanel styleName="{res.style.repeatTypePanel}">
+			<g:Label text="Tipo de Repetición:" styleName="{res.style.repeatTypeLabel}"/>
+			<g:ValueListBox ui:field="repeatType" styleName="{res.style.repeatType}" />
+		</g:FlowPanel>
+		
+		<!-- Repetir cada -->
+		<g:FlowPanel styleName="{res.style.repeatedEveryPanel}">
+			<g:Label text="Repetir cada:" styleName="{res.style.repeatedEveryLabel}"/>
+			<g:ListBox ui:field="repeatedEvery" styleName="{res.style.repeatedEvery}"/>
+			<g:Label ui:field="repeatedEveryDescription" styleName="{res.style.repeatedEveryDescription}"/>
+		</g:FlowPanel>
+		
+		<!-- Repetir el -->
+		<g:FlowPanel ui:field="repeatOn" styleName="{res.style.repeatOnPanel}">	</g:FlowPanel>
+		
+		<!-- Empieza -->
+		<g:FlowPanel styleName="{res.style.startRepetitionPanel}">
+			<g:Label text="Empieza:" styleName="{res.style.startRepetitionLabel}"/>
+			<d:DateBox ui:field="startRepetition" styleName="{res.style.startRepetition}"/>
+		</g:FlowPanel>
+		
+		<!-- Finaliza  -->
+		<g:FlowPanel styleName="{res.style.endRepetitionPanel}">
+			
+			<g:Label text="Finaliza:" styleName="{res.style.endRepetitionLabel}"/>
+			
+			<g:FlowPanel styleName="{res.style.endRepetitionCountPanel}">
+				<g:RadioButton ui:field="endRepetitionCount" styleName="{res.style.endRepetitionRadio}" />
+				<g:TextBox ui:field="endRepetitionCountValue" styleName="{res.style.endRepetitionCountValue}"/>
+				<g:Label text="repeticiones" styleName="{res.style.endRepetitionCountDescription}"/>
+			</g:FlowPanel>
+			
+			<g:FlowPanel styleName="{res.style.endRepetitionDatePanel}">
+				<g:RadioButton ui:field="endRepetitionDate" styleName="{res.style.endRepetitionRadio}" />
+				<d:DateBox ui:field="endRepetitionDateValue" styleName="{res.style.endRepetitionDateValue}"/>
+			</g:FlowPanel>
+		</g:FlowPanel>
+		
+		<!-- Actions panel -->
+		<g:FlowPanel styleName="{res.style.actionsPanel}">
+			<g:Label ui:field="cancel" text="Cancelar" styleName="{res.style.cancel}"/>
+			<g:FlowPanel styleName="{res.style.separator}"/>
+			<g:Label ui:field="commit" text="Aceptar" styleName="{res.style.commit}"/>			
+		</g:FlowPanel>
+		
+	</g:FlowPanel>
+</ui:UiBinder> 

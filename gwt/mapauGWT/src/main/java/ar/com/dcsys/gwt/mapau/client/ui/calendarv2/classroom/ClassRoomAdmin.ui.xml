@@ -1,0 +1,52 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:c="urn:import:com.google.gwt.user.cellview.client">
+	
+	<ui:style>
+	.classRoomGrid {
+		width: 500px;
+		height: 300px;
+	}
+
+	.characteristicQuantityGrid {
+		width: 500px;
+		height: 300px;
+	}
+	</ui:style>
+		
+	<g:FlowPanel>
+			<g:Label text="Lista de ClassRoom" />
+			
+			<g:Label text="Buscar:" /> 
+			<g:TextBox ui:field="classRoomGridFilter" />
+				
+			<g:Label text="Total:" /> 
+			<g:Label ui:field="classRoomGridCount" />
+	
+			<c:DataGrid ui:field="classRoomGrid" styleName="{style.classRoomGrid}" />
+	
+			<g:Label text="Datos de ClassRoom" />
+		
+			<g:Label text="name"/>
+			<g:TextBox ui:field="name"/>
+		 	
+        	<g:Label text="Datos de CharacteristicQuantity" />
+		 	
+        	<g:Button ui:field="classRoomAccept" text="Aceptar"/>
+        	
+        	<g:FlowPanel ui:field="characteristicQuantityListForm">
+				<g:Label text="characteristic"/>
+				<g:ValueListBox ui:field="characteristicListBox"/>			
+	
+				<g:Label text="quantity"/>
+				<g:TextBox ui:field="quantity"/>
+	
+				<g:Button ui:field="characteristicQuantityAdd" text="Agregar"/>
+				<g:Label text="Lista de CharacteristicQuantity" />
+				<c:DataGrid ui:field="characteristicQuantityGrid" styleName="{style.characteristicQuantityGrid}"/>
+			</g:FlowPanel>
+			
+        	
+    </g:FlowPanel>
+</ui:UiBinder>

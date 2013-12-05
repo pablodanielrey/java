@@ -1,0 +1,139 @@
+@CHARSET "UTF-8";
+
+.mainContainer {
+	
+}
+
+.title {
+	font-weight: bold;
+	margin:1em;
+}
+
+.repeatTypePanel {
+	margin:1em;
+}
+.repeatTypeLabel {
+	display:inline;
+	margin-right:0.5em;
+	font-weight: bold;
+}
+.repeatType {
+	
+}
+	
+.repeatedEveryPanel {
+	margin:1em;
+}
+.repeatedEveryLabel {
+	display:inline;
+	margin-right:0.5em;
+	font-weight: bold;	
+}
+.repeatedEvery {
+	
+}
+.repeatedEveryDescription {
+	display:inline;
+}
+	
+.repeatOnPanel {
+	display:block;
+	margin:1em;
+}
+.repeatOnPanelHidden {
+	display:none;
+}
+.repeatOnLabel {
+	display:inline;
+	margin-right:0.5em;
+	font-weight: bold;	
+}
+.repeatOnCheck {
+}
+.repeatOnMonthRadio {
+	
+}
+
+	
+.startRepetitionPanel {
+	margin:1em;
+}
+.startRepetitionLabel {
+	display:inline;
+	margin-right:0.5em;
+	font-weight: bold;
+}
+.startRepetition {
+	width:5em;
+	text-align:center;
+}
+	
+.endRepetitionPanel {
+	margin:1em;
+}
+.endRepetitionLabel {
+	margin-right:0.5em;
+	font-weight: bold;
+}
+.endRepetitionRadio {
+	
+}
+	
+.endRepetitionCountPanel {
+	
+}
+.endRepetitionCountValue {
+	width:3em;
+	text-align:center;
+	margin-left:0.5em;
+}
+.endRepetitionCountDescription {
+	display:inline;	
+	margin-left:0.5em;
+}
+	
+.endRepetitionDatePanel {
+	
+}
+.endRepetitionDateValue {
+	width:5em;
+	text-align:center;
+}
+	
+.actionsPanel {
+	text-align: center;
+	margin: 1em;
+	border-top: 2px solid;
+	padding: 0.5em;
+}
+
+.commit {
+	display:inline;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.commit:hover {
+	color: white;
+	background-color: black;
+}
+
+.cancel {
+	display:inline;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.cancel:hover {
+	color: white;
+	background-color: black;
+}
+
+.separator {
+	width: 1em;
+	height: 1em;
+	border-right: 2px solid black;
+	margin-right: 1em;
+	margin-left: 1em;
+	display: inline;
+}

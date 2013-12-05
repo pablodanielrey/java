@@ -1,0 +1,76 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	
+	<ui:with field="res" type="ar.com.dcsys.gwt.mapau.client.ui.calendarv2.appointment.assign.AssignClassroomViewResources"/>
+	
+	<g:FlowPanel styleName="{res.style.mainContainer}">
+		
+		<!-- TITULO -->
+		<g:Label text="Asignación de Aula" styleName="{res.style.title}"/>
+		
+		<g:FlowPanel>
+		
+			<!-- LISTADO DE AULAS DISPONIBLES -->
+			<g:FlowPanel styleName="{res.style.classroomPanel}">
+				<g:CaptionPanel captionText="Aulas Disponibles" styleName="{res.style.classroomCaptionPanel}">
+					<g:FlowPanel>
+						<c:DataGrid ui:field="classroom" styleName="{res.style.classroom}"/>	
+					</g:FlowPanel>
+				</g:CaptionPanel>
+			</g:FlowPanel>
+						
+			<!-- REPETICIONES -->
+			<g:FlowPanel  styleName="{res.style.repetitionsBlock}">
+				<g:CaptionPanel captionText="Repeticiones" styleName="{res.style.repetitionsCaptionBlock}">
+					<g:FlowPanel>
+					
+						<!-- REPETICION SELECCIONADA -->
+						<g:FlowPanel styleName="{res.style.repetitionDescriptionPanel}">
+							<g:Label ui:field="repetitionDescription" styleName="{res.style.repetitionDescription}"/>
+						</g:FlowPanel>
+						
+						<!-- CHEQUEAR MISMO HORARIO -->
+						<g:FlowPanel styleName="{res.style.sameHoursPanel}">
+							<g:CheckBox ui:field="sameHours" styleName="{res.style.sameHours}"/>
+						</g:FlowPanel>
+						
+						<!-- ACTIONS  -->
+						<g:FlowPanel styleName="{res.style.panelActions}">
+							<g:Label ui:field="generateRepetition" styleName="{res.style.generateRepetition}"/>
+						</g:FlowPanel>
+						
+					</g:FlowPanel>
+				</g:CaptionPanel>
+			</g:FlowPanel>
+			
+			
+			<!-- SELECCION DE AULAS A MOSTRAR -->
+			<g:FlowPanel  styleName="{res.style.repetitionsBlock}">
+				<g:CaptionPanel captionText="Aulas a mostrar" >
+					<g:FlowPanel>
+						
+						<!-- MOSTRAR AULAS CON CAPACIDAD -->
+						<g:FlowPanel styleName="{res.style.sameHoursPanel}">
+						    <g:Label text="Deshabilitar chequeo de capacidad en las aulas" />
+							<g:CheckBox ui:field="checkCapacity" />
+						</g:FlowPanel>
+						
+					</g:FlowPanel>
+				</g:CaptionPanel>
+			</g:FlowPanel>
+
+		</g:FlowPanel>
+				
+		<!-- ACTIONS -->
+		<g:FlowPanel styleName="{res.style.actionsBlock}">
+			<g:FlowPanel styleName="{res.style.panelActions}">
+				<g:Label ui:field="cancel" styleName="{res.style.cancel}"/>
+				<g:FlowPanel styleName="{res.style.separator}"/>
+				<g:Label ui:field="commit" styleName="{res.style.commit}" />			
+			</g:FlowPanel>
+		</g:FlowPanel>
+		
+	</g:FlowPanel>
+</ui:UiBinder> 

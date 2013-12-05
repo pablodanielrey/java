@@ -1,0 +1,109 @@
+@CHARSET "UTF-8";
+
+.mainContainer {
+	text-align:center;
+}
+
+.title {
+	font-weight: bold;
+	margin:1em;
+}
+
+/* -------------------------------------- */
+/* --------------- AULAS ---------------- */
+/* -------------------------------------- */
+
+.classroomPanel {
+	width:15em;
+	float:left;
+}
+
+.classroomCaptionPanel {
+	
+}
+
+.classroom {
+	width:100%;
+	height:250px;
+}
+
+/* -------------------------------------- */
+/* ----------- REPETICIONES ------------- */
+/* -------------------------------------- */
+
+.repetitionsCaptionBlock {
+
+}
+
+.repetitionsBlock {
+	float:left;
+	width:20em;
+}
+
+.repetitionDescriptionPanel {
+	
+}
+
+.repetitionDescription {
+	
+}
+
+.sameHoursPanel {
+	
+}
+
+.sameHours {
+	
+}
+
+.generateRepetition {
+	display:inline;
+	cursor: pointer;
+	font-weight: bold;
+}
+.generateRepetition:hover {
+	color: white;
+	background-color: black;
+}
+
+/* -------------------------------------- */
+/* -------------- ACCIONES -------------- */
+/* -------------------------------------- */
+
+.actionsBlock {
+	float:left;
+	width:100%;
+}
+
+.panelActions {
+	text-align: center;
+	margin: 1em;
+	border-top: 2px solid;
+	padding: 0.5em;
+}
+.commit {
+	display:inline;
+	cursor: pointer;
+	font-weight: bold;
+}
+.commit:hover {
+	color: white;
+	background-color: black;
+}
+.cancel {
+	display:inline;
+	cursor: pointer;
+	font-weight: bold;
+}
+.cancel:hover {
+	color: white;
+	background-color: black;
+}
+.separator {
+	width: 1em;
+	height: 1em;
+	border-right: 2px solid black;
+	margin-right: 1em;
+	margin-left: 1em;
+	display: inline;
+}		

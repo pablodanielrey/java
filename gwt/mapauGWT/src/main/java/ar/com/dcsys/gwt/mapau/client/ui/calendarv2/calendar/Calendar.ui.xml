@@ -1,0 +1,13 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:with field="res" type="ar.com.dcsys.gwt.mapau.client.ui.calendarv2.calendar.CalendarViewResources"/>
+	
+	<g:FlowPanel>	    
+	    <g:FlowPanel ui:field="calendarContainer" styleName="{res.style.calendarContainer}" />
+	    <g:FlowPanel styleName="{res.style.panelButton}">
+	    	<g:Button text="Cancelar" ui:field="cancel" styleName="{res.style.cancelButton}"/>
+	    	<g:Button text="Guardar" ui:field="save" styleName="{res.style.saveButton}"/>
+	    </g:FlowPanel>
+	</g:FlowPanel>
+</ui:UiBinder> 

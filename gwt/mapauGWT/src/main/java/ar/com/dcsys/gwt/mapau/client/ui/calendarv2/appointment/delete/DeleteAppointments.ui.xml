@@ -1,0 +1,15 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:with field="res" type="ar.com.dcsys.gwt.mapau.client.ui.calendarv2.appointment.delete.DeleteAppointmentsViewResources"/>
+	<g:FlowPanel styleName="{res.style.mainContainer}">
+		<g:Label ui:field="message" styleName="{res.style.message}"/>
+		<g:FlowPanel styleName="{res.style.panelActions}">
+			<g:Label ui:field="cancel" text="NO" styleName="{res.style.cancel}"/>
+			<g:FlowPanel styleName="{res.style.separator}"/>
+			<g:Label ui:field="onlyOne" text="Solo ésta" styleName="{res.style.onlyOne}" />
+			<g:FlowPanel styleName="{res.style.separator}"/>
+			<g:Label ui:field="relatedAlso" text="Ésta y las relacionadas" styleName="{res.style.relatedAlso}" />
+		</g:FlowPanel>
+	</g:FlowPanel>
+</ui:UiBinder> 

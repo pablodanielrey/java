@@ -1,0 +1,108 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+	xmlns:d='urn:import:com.google.gwt.user.datepicker.client'
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:with field="res" type="ar.com.dcsys.gwt.mapau.client.ui.calendarv2.appointment.update.CreateModifyAppointmentsViewResources"/>
+	
+	<g:FlowPanel styleName="{res.style.contentMain}">
+		<g:Label ui:field="title" styleName="{res.style.title}"/>
+		
+		<!-- Fecha y hora de la reserva -->
+		<g:FlowPanel styleName="{res.style.dateBlock}">
+			<!-- Fecha de la reserva -->
+		    <g:FlowPanel styleName="{res.style.datePanel}">
+		    	<g:Label text="Fecha :" styleName="{res.style.dateLabel}"/>
+		    	<d:DateBox ui:field="date" styleName="{res.style.date}"/>
+		    </g:FlowPanel>
+		    <!-- Hora Inicio -->
+		    <g:FlowPanel styleName="{res.style.startDatePanel}">
+		    	<g:Label text="Hora de inicio:" styleName="{res.style.startDateLabel}"/>
+		    	<g:TextBox ui:field="startDateHours" styleName="{res.style.startDateHours}"/>
+		    	<g:Label text=":" styleName="{res.style.separatorDate}"/>
+		    	<g:TextBox ui:field="startDateMinutes" styleName="{res.style.startDateMinutes}"/>
+		    </g:FlowPanel> 			
+		    <!-- Hora Finalizacion -->
+		    <g:FlowPanel styleName="{res.style.endDatePanel}">
+		    	<g:Label text="Hora de finalización:" styleName="{res.style.endDateLabel}"/>
+		    	<g:TextBox ui:field="endDateHours" styleName="{res.style.endDateHours}"/>
+		    	<g:Label text=":" styleName="{res.style.separatorDate}"/>
+		    	<g:TextBox ui:field="endDateMinutes" styleName="{res.style.endDateMinutes}"/>
+		    </g:FlowPanel> 			
+		</g:FlowPanel>
+		
+		<!-- Datos relacionados a la materia -->
+		<g:CaptionPanel captionText="Datos de la Materia" styleName="{res.style.captionDataCourse}">
+			<g:FlowPanel styleName="{res.style.dataCoursePanel}">
+				<!-- Selección de course -->
+				<g:FlowPanel styleName="{res.style.coursePanel}">
+					<g:Label text="Materia" styleName="{res.style.courseLabel}"/>
+					<g:ValueListBox ui:field="course" styleName="{res.style.course}" />
+				</g:FlowPanel>
+				<!-- Seleccion de la Comision -->
+				<g:FlowPanel styleName="{res.style.studentGroupPanel}">
+					<g:Label text="Comisión:" styleName="{res.style.studentGroupLabel}"/>
+					<g:ListBox ui:field="studentGroup" styleName="{res.style.studentGroup}"/>
+				</g:FlowPanel>
+				<!-- Tipo de course -->
+				<g:FlowPanel styleName="{res.style.typePanel}">
+					<g:Label text="Tipo:" styleName="{res.style.typeLabel}"/>
+					<g:ValueListBox ui:field="type" styleName="{res.style.type}"/>
+				</g:FlowPanel>	
+				<!-- Personas relacionadas -->
+				<g:FlowPanel styleName="{res.style.relatedPersonsPanel}">
+					<g:Label text="Personas relacionadas:" styleName="{res.style.relatedPersonsLabel}"/>
+					
+					<g:FlowPanel>
+						<g:ValueListBox ui:field="selectedPerson"/>
+						<g:Button ui:field="addPerson" text="Agregar"/>
+						<g:Button ui:field="clearPersons" text="Limpiar"/>
+						<c:DataGrid ui:field="persons" styleName="{res.style.relatedPersonsData}"/>
+					</g:FlowPanel>
+					
+				</g:FlowPanel>			
+			</g:FlowPanel>
+		</g:CaptionPanel>
+		
+		<!-- Caracteristicas solicitadas -->
+		<g:CaptionPanel captionText="Características solicitadas" styleName="{res.style.captionCharacteristics}">
+			<g:FlowPanel styleName="{res.style.blockCharacteristics}">
+				<!-- Característica - Capacidad necesaria -->
+				<g:FlowPanel ui:field="capacityPanel" styleName="{res.style.capacityPanel}">
+					<g:Label text="Cantidad de alumnos:" styleName="{res.style.capacityLabel}"/>
+					<g:TextBox ui:field="capacity" styleName="{res.style.capacity}"/>
+				</g:FlowPanel>	
+				
+				<!-- Característica - Multimedia -->
+				<g:FlowPanel ui:field="multimediaPanel" styleName="{res.style.multimediaPanel}">
+					<g:Label text="Multimedia (sonido y micrófono):" styleName="{res.style.multimediaLabel}"/>
+					<g:CheckBox ui:field="multimedia" styleName="{res.style.multimedia}"/>
+				</g:FlowPanel>								
+			</g:FlowPanel>		
+		</g:CaptionPanel>
+		
+		<g:CaptionPanel captionText="Otros datos de la Reserva" styleName="{res.style.captionDataReserve}">
+			<g:FlowPanel styleName="{res.style.blockDataReserve}">
+				<!-- Area a la cual de va a realizar el pedido -->
+				<g:FlowPanel styleName="{res.style.areaPanel}">
+					<g:Label text="Area:" styleName="{res.style.areaLabel}"/>
+					<g:ValueListBox ui:field="area" styleName="{res.style.area}"/>
+				</g:FlowPanel>
+				<!-- Notas adicionales -->
+				<g:FlowPanel styleName="{res.style.notesPanel}">
+					<g:Label text="Notas adicionales:" styleName="{res.style.notesLabel}"/>
+					<g:TextArea ui:field="notes" styleName="{res.style.notes}"/>
+				</g:FlowPanel>	 				
+			</g:FlowPanel>
+		</g:CaptionPanel>
+		
+		<g:FlowPanel styleName="{res.style.panelActions}">
+			<g:Label ui:field="cancel" text="Cancelar" styleName="{res.style.cancel}"/>
+			<g:FlowPanel styleName="{res.style.separator}"/>
+			<g:Label ui:field="commit" text="Aceptar" styleName="{res.style.commit}"/>
+		</g:FlowPanel>
+				
+	
+		
+	</g:FlowPanel>
+</ui:UiBinder> 

@@ -1,0 +1,16 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:with field="res" type="ar.com.dcsys.gwt.mapau.client.ui.calendarv2.appointment.open.OpenAppointmentViewResources"/>
+	
+	<g:FlowPanel styleName="{res.style.mainContainer}">
+		<g:Label ui:field="title" styleName="{res.style.title}"/>	
+		<g:FlowPanel styleName="{res.style.datePanel}">
+			<g:Label text="Fecha:" styleName="{res.style.dateLabel}"/>
+			<g:Label ui:field="date" styleName="{res.style.date}" />
+		</g:FlowPanel>
+		<g:FlowPanel ui:field="actionsPanel" styleName="{res.style.actionsPanel}">
+			
+		</g:FlowPanel>
+	</g:FlowPanel>	
+</ui:UiBinder> 
