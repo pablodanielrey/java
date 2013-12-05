@@ -7,4 +7,7 @@ public interface AssignableUnit extends Serializable {
 	public void setId(String id);
 	public String getId();
 	
+	public void setType(String type);
+	public String getType();
+	
 }
