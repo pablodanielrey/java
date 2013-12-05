@@ -55,7 +55,7 @@ public class ClassRoomHsqlDAO implements ClassRoomDAO {
 			
 			st = con.prepareStatement("create table if not exists classroom_characteristic (" +
 												"characteristic_id longvarchar NOT NULL ," +
-												"count bigint not null," +
+												"quantity bigint not null," +
 												"classroom_id longvarchar NOT NULL REFERENCES classroom (id ))");
 			try {
 				st.executeUpdate();
@@ -75,17 +75,17 @@ public class ClassRoomHsqlDAO implements ClassRoomDAO {
 	 * @throws MapauException
 	 */
 	private void loadAllCharacteristics(ClassRoom classRoom, Connection connection) throws SQLException,MapauException  {
-	  	PreparedStatement st = connection.prepareStatement("SELECT characteristic_id, count FROM classroom_characteristic c_cq WHERE c_cq.classroom_id = ?");
+	  	PreparedStatement st = connection.prepareStatement("SELECT characteristic_id, quantity FROM classroom_characteristic c_cq WHERE c_cq.classroom_id = ?");
 	   	try {
 		  	st.setString(1, classRoom.getId());
 	   		ResultSet rs = st.executeQuery();
 			try {
 			   	while (rs.next()) {
-					Long count = rs.getLong("count");
+					Long quantity = rs.getLong("quantity");
 					String id = rs.getString("characteristic_id");
 					
 					CharacteristicQuantity c = new CharacteristicQuantityBean();
-					c.setQuantity(count);
+					c.setQuantity(quantity);
 					c.setCharacteristic(params.findCharacteristicById(id));
 					
 					classRoom.getCharacteristicQuantity().add(c);
@@ -333,7 +333,7 @@ public class ClassRoomHsqlDAO implements ClassRoomDAO {
 		
 		List<CharacteristicQuantity> chars = classRoom.getCharacteristicQuantity();
 
-		String query = "INSERT INTO classroom_characteristic (characteristic_id, count, classroom_id) VALUES (?, ?, ?);" ;
+		String query = "INSERT INTO classroom_characteristic (characteristic_id, quantity, classroom_id) VALUES (?, ?, ?);" ;
 	   	PreparedStatement st = connection.prepareStatement(query) ;
 	   	try {	   	
 		   	for (CharacteristicQuantity c : chars) {

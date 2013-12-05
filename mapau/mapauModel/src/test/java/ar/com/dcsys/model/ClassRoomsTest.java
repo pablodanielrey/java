@@ -34,15 +34,15 @@ public class ClassRoomsTest {
 			weld.shutdown();
 		}
 	}	
-	/*
+	
 	private ClassRoomsManager getClassRoomsManager() {
 		ClassRoomsManager classRoomsManager = container.instance().select(ClassRoomsManager.class).get();
 		return classRoomsManager;
 	}
-	*/
+	
 	@Test
 	public void persistTest() throws MapauException {
-	/*	ClassRoomsManager classRoomsManager = getClassRoomsManager();
+		ClassRoomsManager classRoomsManager = getClassRoomsManager();
 		
 		////// pueblo que el persist agregue un aula en la base ///////////////
 		
@@ -57,8 +57,41 @@ public class ClassRoomsTest {
 		String id = classRoomsManager.persist(classRoom);
 		assertNotNull(id);
 		assertNotNull(classRoom.getId());
-		assertEquals(classRoom.getId(),id);		*/
-		assertEquals(0,0);	
+		assertEquals(classRoom.getId(),id);
+		
+		ClassRoom classRoom2 = classRoomsManager.findById(id);
+		assertEquals(classRoom.getId(), classRoom2.getId());
+		assertNotNull(classRoom2.getName());
+		assertEquals(classRoom2.getName(),"102");		
+			
+
+		/////////////////// pruebo que las aulas en la base tienen todas diferentes ids ////////////////
+				
+		classRooms = classRoomsManager.findAll();
+		assertEquals(classRooms.size(), count + 1);
+		
+		for (ClassRoom c : classRooms) {
+			String idc = c.getId();
+			int equals = 0;
+			for (ClassRoom c2 : classRooms) {
+				assertNotNull(c2.getId());
+				if (idc.equals(c2.getId())) {
+					equals++;
+				}
+			}
+			assertEquals(equals,1);
+		}		
 	}
+	
+	@Test
+	public void findAllTest() throws MapauException {
+		ClassRoomsManager classRoomsManager = getClassRoomsManager();
+		List<ClassRoom> classrooms = classRoomsManager.findAll();
+		assertNotNull(classrooms);
+		
+		for (ClassRoom c : classrooms) {
+			assertNotNull(c.getId());
+		}
+	}	
 
 }
