@@ -18,7 +18,6 @@ public interface AreaDAO extends Serializable {
 	public List<String> findAllIds() throws MapauException;
 	public List<String> findIdsByGroup(String groupId) throws MapauException;
 	
-	public void initialize() throws MapauException;
 	
 	public interface Params {
 		public Group findGroupById(String id) throws PersonException;

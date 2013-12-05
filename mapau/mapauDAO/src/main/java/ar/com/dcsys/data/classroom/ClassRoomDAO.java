@@ -16,8 +16,6 @@ public interface ClassRoomDAO extends Serializable {
 	
 	public List<String> findAllIds() throws MapauException;
 	public String findIdByName(String name) throws MapauException;
-
-	public void initialize() throws MapauException;
 	
 	public interface Params {
 		public Characteristic findCharacteristicById(String id) throws MapauException;

@@ -15,6 +15,4 @@ public interface ReserveAttemptDateTypeDAO extends Serializable {
 	public ReserveAttemptDateType findByName(String name) throws MapauException;
 	
 	public List<String> findAllIds() throws MapauException;
-	
-	public void initialize() throws MapauException;
 }

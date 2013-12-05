@@ -12,16 +12,19 @@ public interface AssignmentDAO extends Serializable {
 
 	public String persist(Assignment object) throws MapauException;
 	public void remove(Assignment object) throws MapauException;
+	
 	public Assignment findById(String id) throws MapauException;
 	
-	public List<String> findAll() throws MapauException;
-	public List<String> findAllBy(Person person) throws MapauException;
-	public List<String> findAllBy(AssignableUnit assignableUnit) throws MapauException;
+	public List<String> findAllIds() throws MapauException;
+	public List<Assignment> findAll() throws MapauException;
 	
+	public List<String> findIdsBy(Person person) throws MapauException;
 	public List<Assignment> findBy(Person person) throws MapauException;
+	
+	public List<String> findIdsBy(AssignableUnit assignableUnit) throws MapauException;
+	public List<Assignment> findBy(AssignableUnit assignableUnit) throws MapauException;
 	public List<Assignment> findBy(AssignableUnit assignableUnit, String type) throws MapauException;
 	
-	public void initialize() throws MapauException;
 	
 	public interface Params {
 		public Person findPersonBySilegIdentifiers(String id) throws PersonException;

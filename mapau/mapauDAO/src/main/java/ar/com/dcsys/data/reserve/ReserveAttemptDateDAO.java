@@ -1,5 +1,6 @@
 package ar.com.dcsys.data.reserve;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -11,9 +12,7 @@ import ar.com.dcsys.data.utils.DatesRange;
 import ar.com.dcsys.exceptions.MapauException;
 import ar.com.dcsys.exceptions.PersonException;
 
-public interface ReserveAttemptDateDAO {
-	
-	public void initialize() throws MapauException;
+public interface ReserveAttemptDateDAO extends Serializable {
 	
 	public String persist(ReserveAttemptDate date) throws MapauException;
 	public void remove(ReserveAttemptDate date) throws MapauException;

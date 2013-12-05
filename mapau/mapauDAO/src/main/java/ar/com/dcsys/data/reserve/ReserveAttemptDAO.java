@@ -24,8 +24,6 @@ public interface ReserveAttemptDAO extends Serializable {
 	public List<ReserveAttempt> findStandingReserveAttemptsBy(Area area) throws MapauException, PersonException;
 	
 	public boolean updateCommited(ReserveAttempt ra) throws MapauException;
-
-	public void initialize() throws MapauException;
 	
 	public interface Params {
 		public String persist(CharacteristicQuantity c) throws MapauException;
