@@ -256,7 +256,7 @@
         </executions>
         <configuration>
           <webappDirectory>${webappDirectory}</webappDirectory>
-	  <packagingExcludes>WEB-INF/classes/ar/com/dcsys/person/client/**.class</packagingExcludes>
+	  <packagingExcludes>WEB-INF/classes/ar/com/dcsys/gwt/person/client/**.class</packagingExcludes>
         </configuration>
       </plugin>
 
@@ -366,3 +366,4 @@
   </build>
 
 </project>
+
