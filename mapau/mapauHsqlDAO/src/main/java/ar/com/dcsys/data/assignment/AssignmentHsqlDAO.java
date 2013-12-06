@@ -48,7 +48,7 @@ public class AssignmentHsqlDAO implements AssignmentDAO {
 		try {
 			PreparedStatement st = con.prepareStatement("create table if not exists assignment (" +
 															   	"id longvarchar NOT NULL PRIMARY KEY," +
-													   			"notes TEXT," +
+													   			"notes longvarchar," +
 															   	"from_ DATE," +
 													   			"to_ DATE," +
 															   	"type longvarchar," +

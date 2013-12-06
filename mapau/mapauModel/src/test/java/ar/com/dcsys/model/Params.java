@@ -2,17 +2,17 @@ package ar.com.dcsys.model;
 
 import java.util.List;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import ar.com.dcsys.data.assignment.AssignmentDAO;
 import ar.com.dcsys.data.classroom.Characteristic;
-import ar.com.dcsys.data.classroom.CharacteristicDAO;
 import ar.com.dcsys.data.classroom.CharacteristicQuantity;
 import ar.com.dcsys.data.classroom.ClassRoom;
 import ar.com.dcsys.data.classroom.ClassRoomDAO;
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.person.Person;
+import ar.com.dcsys.data.person.PersonDAO;
 import ar.com.dcsys.data.reserve.Reserve;
 import ar.com.dcsys.data.reserve.ReserveAttemptDAO;
 import ar.com.dcsys.data.reserve.ReserveAttemptDate;
@@ -30,34 +30,43 @@ import ar.com.dcsys.data.silabouse.Subject;
 import ar.com.dcsys.data.silabouse.UntouchableSubjectDAO;
 import ar.com.dcsys.exceptions.MapauException;
 import ar.com.dcsys.exceptions.PersonException;
+import ar.com.dcsys.model.classroom.CharacteristicsManager;
+import ar.com.dcsys.model.silabouse.CoursesManager;
+import ar.com.dcsys.model.silabouse.SubjectsManager;
 
-@Singleton
+@ApplicationScoped
 public class Params implements AssignmentDAO.Params,ClassRoomDAO.Params, ReserveAttemptDAO.Params, 
 ReserveAttemptDateDAO.Params,ReserveDAO.Params, VisibillityDAO.Params,AssignableUnitDAO.Params,
 AreaDAO.Params,CourseDAO.Params,UntouchableSubjectDAO.Params {
 
-    private final CharacteristicDAO characteristicDAO;
-	
+    private final CharacteristicsManager characteristicsManager;
+    private final PersonDAO personDAO;
+	private final SubjectsManager subjectsManager;
+	private final CoursesManager coursesManager;
+	private final AssignableUnitDAO assignableUnitDAO;
+    
 	@Inject
-	public Params(CharacteristicDAO characteristicDAO) {
-		this.characteristicDAO = characteristicDAO;
+	public Params(CharacteristicsManager characteristicsManager, PersonDAO personDAO, SubjectsManager subjectsManager,CoursesManager coursesManager, AssignableUnitDAO assignableUnitDAO) {
+		this.characteristicsManager = characteristicsManager;
+		this.personDAO = personDAO;
+		this.subjectsManager = subjectsManager;
+		this.coursesManager = coursesManager;
+		this.assignableUnitDAO = assignableUnitDAO;
     }
       
 	@Override
 	public Characteristic findCharacteristicById(String id)	throws MapauException {
-		return characteristicDAO.findById(id);
+		return characteristicsManager.findById(id);
 	}
 
 	@Override
 	public Course findCourseById(String id) throws MapauException {
-		return null;//courseDAO.findById(id);
+		return coursesManager.findById(id);
 	}
 
 	@Override
-	public Person findPersonBySilegIdentifiers(String id)
-			throws PersonException {
-		// TODO Auto-generated method stub
-		return null;
+	public Person findPersonBySilegIdentifiers(String id) throws PersonException {
+		return personDAO.findByDni(id);
 	}
 
 	@Override
@@ -68,15 +77,12 @@ AreaDAO.Params,CourseDAO.Params,UntouchableSubjectDAO.Params {
 
 	@Override
 	public Person findPersonById(String id) throws PersonException {
-		// TODO Auto-generated method stub
-		return null;
+		return personDAO.findById(id);
 	}
 
 	@Override
-	public AssignableUnit findAssignableUnitById(String assignableUnitId)
-			throws MapauException {
-		// TODO Auto-generated method stub
-		return null;
+	public AssignableUnit findAssignableUnitById(String assignableUnitId) throws MapauException {
+		return assignableUnitDAO.findById(assignableUnitId);
 	}
 
 	@Override
@@ -92,8 +98,7 @@ AreaDAO.Params,CourseDAO.Params,UntouchableSubjectDAO.Params {
 	}
 
 	@Override
-	public CharacteristicQuantity findCharacteristicQuantityById(String id)
-			throws MapauException {
+	public CharacteristicQuantity findCharacteristicQuantityById(String id)	throws MapauException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -105,15 +110,13 @@ AreaDAO.Params,CourseDAO.Params,UntouchableSubjectDAO.Params {
 	}
 
 	@Override
-	public ReserveAttemptDateType findReserveAttemptTypeById(String id)
-			throws MapauException {
+	public ReserveAttemptDateType findReserveAttemptTypeById(String id)	throws MapauException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ReserveAttemptDateType findReserveAttemptDateTypeById(String id)
-			throws MapauException {
+	public ReserveAttemptDateType findReserveAttemptDateTypeById(String id)	throws MapauException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -139,7 +142,6 @@ AreaDAO.Params,CourseDAO.Params,UntouchableSubjectDAO.Params {
 
 	@Override
 	public ClassRoom findClassRoomById(String id) throws MapauException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -161,23 +163,20 @@ AreaDAO.Params,CourseDAO.Params,UntouchableSubjectDAO.Params {
 		return null;
 	}
 
-	@Override
+	
+	/**
+	 * PARAMS COURSESDAO
+	 */
+	
 	public Subject findSubjectById(String id) throws MapauException {
-		// TODO Auto-generated method stub
-		return null;
+		return subjectsManager.findById(id);
 	}
-
-	@Override
 	public String persist(AssignableUnit au) throws MapauException {
-		// TODO Auto-generated method stub
-		return null;
+		return assignableUnitDAO.persist(au);
 	}
-
-	@Override
-	public String findTypeAssignableUnit(AssignableUnit au)
-			throws MapauException {
-		// TODO Auto-generated method stub
-		return null;
+	
+	public String findTypeAssignableUnit(AssignableUnit au) throws MapauException {
+		return assignableUnitDAO.findType(au);
 	}
 
 }
