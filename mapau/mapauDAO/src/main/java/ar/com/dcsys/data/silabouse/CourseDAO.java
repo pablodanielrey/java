@@ -14,7 +14,5 @@ public interface CourseDAO extends Serializable {
 	
 	public interface Params {
 		public Subject findSubjectById(String id) throws MapauException;
-		public String persist(AssignableUnit au) throws MapauException;
-		public String findTypeAssignableUnit(AssignableUnit au) throws MapauException;
 	}
 }

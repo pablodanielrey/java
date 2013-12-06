@@ -73,13 +73,13 @@ public class AssignmentsManagerBean implements AssignmentsManager {
 		List<Assignment> assignmentsRet = new ArrayList<Assignment>();
 		if (type == null) {
 			for (Assignment a : assignments) {
-				if (a.getAssignableUnit().getId().equals(course.getId())) {
+				if (a.getCourse().getId().equals(course.getId())) {
 					assignmentsRet.add(a);
 				}
 			}
 		} else {
 			for (Assignment a : assignments) {
-				if (a.getAssignableUnit().getId().equals(course.getId()) && a.getType().equals(type)) {
+				if (a.getCourse().getId().equals(course.getId()) && a.getType().equals(type)) {
 					assignmentsRet.add(a);
 				}
 			}

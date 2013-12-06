@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.data.silabouse.AssignableUnit;
+import ar.com.dcsys.data.silabouse.Course;
 
 
 public class AssignmentBean implements Serializable, Assignment {
@@ -18,7 +18,7 @@ public class AssignmentBean implements Serializable, Assignment {
 	private Date to;
 	private String notes;
 	private Person person;
-	private AssignableUnit assignableUnit;
+	private Course course;
 	private Assignment relatedAssignment;
 	private String type;
 
@@ -63,12 +63,13 @@ public class AssignmentBean implements Serializable, Assignment {
 		this.person = person;
 	}
 
-	public AssignableUnit getAssignableUnit() {
-		return assignableUnit;
+	public Course getCourse() {
+		return course;
 	}
 
-	public void setAssignableUnit(AssignableUnit assignableUnit) {
-		this.assignableUnit = assignableUnit;
+	@Override
+	public void setCourse(Course course) {
+		this.course = course;
 	}
 
 	public Assignment getRelatedAssignment() {
@@ -102,28 +103,5 @@ public class AssignmentBean implements Serializable, Assignment {
 	public void setTo(Date to) {
 		this.to = to;
 	}
-	
-	public String toString() {
-		String string = new String();
-		string = string.concat("Assignment id " + this.getId() + " ");
-		string = string.concat("Assignment type " + this.getType() + " ");
-		string = string.concat("Assignment notes " + this.getNotes() + " ");
-
-
-		if (this.getPerson() != null) {
-			string = string.concat("Assignment person " + this.getPerson().toString() + " ");
-		} else {
-			string = string.concat("Assignment Person is null ");
-		}
-		
-		if (this.getAssignableUnit() != null) {
-			string = string.concat("Assignment assignableUnit " + this.getAssignableUnit().toString() + " ");
-		} else {
-			string = string.concat("Assignment assignableUnit is null ");
-		}
-		
-		return string;
-	}
-	
 	
 }

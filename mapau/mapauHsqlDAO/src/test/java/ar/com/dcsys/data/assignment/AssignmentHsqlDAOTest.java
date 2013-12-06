@@ -9,7 +9,7 @@ import ar.com.dcsys.data.DatabasePersistenceData;
 import ar.com.dcsys.data.HsqlConnectionProvider;
 import ar.com.dcsys.data.assignment.AssignmentDAO.Params;
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.data.silabouse.AssignableUnit;
+import ar.com.dcsys.data.silabouse.Course;
 import ar.com.dcsys.exceptions.MapauException;
 import ar.com.dcsys.exceptions.PersonException;
 
@@ -42,10 +42,9 @@ public class AssignmentHsqlDAOTest {
 				// TODO Auto-generated method stub
 				return null;
 			}
-
+			
 			@Override
-			public AssignableUnit findAssignableUnitById(String assignableUnitId)
-					throws MapauException {
+			public Course findCourseById(String id) throws MapauException {
 				// TODO Auto-generated method stub
 				return null;
 			}

@@ -26,18 +26,6 @@ public class CourseHsqlDAOTest {
 				// TODO Auto-generated method stub
 				return null;
 			}
-
-			@Override
-			public String persist(AssignableUnit au) throws MapauException {
-				// TODO Auto-generated method stub
-				return null;
-			}
-
-			@Override
-			public String findTypeAssignableUnit(AssignableUnit au)	throws MapauException {
-				// TODO Auto-generated method stub
-				return null;
-			}
 			
 		};
 		dao = new CourseHsqlDAO(cp,params);

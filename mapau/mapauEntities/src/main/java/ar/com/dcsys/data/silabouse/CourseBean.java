@@ -11,7 +11,6 @@ public class CourseBean implements Serializable, Course {
 	private Long version = 1l;
 	private String name;
 	private Subject subject;
-	private String type;
 	
 	public void setId(String id){
 		if (id == null) {
@@ -68,14 +67,5 @@ public class CourseBean implements Serializable, Course {
 		
 		return string;
 	}
-
-	@Override
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	@Override
-	public String getType() {
-		return type;
-	}
+	
 }
