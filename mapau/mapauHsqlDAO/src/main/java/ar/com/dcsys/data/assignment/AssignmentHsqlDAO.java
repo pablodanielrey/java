@@ -100,7 +100,7 @@ public class AssignmentHsqlDAO implements AssignmentDAO {
    		String type = resultSet.getString("type");
    		Long version = resultSet.getLong("version");
    		Person person = params.findPersonById(resultSet.getString("person_id"));
-   		Course course = params.findCourseById(resultSet.getString("assignableunit_id"));
+   		Course course = params.findCourseById(resultSet.getString("course_id"));
    		
 		Assignment assignment = new AssignmentBean();
    		assignment.setId(id);
@@ -277,7 +277,7 @@ public class AssignmentHsqlDAO implements AssignmentDAO {
 	@Override
 	public List<String> findIdsBy(Course course) throws MapauException {
 		if (course == null) {
-			throw new MapauException("assignableUnit == null");
+			throw new MapauException("course == null");
 		}
 		try {
 			Connection con = cp.getConnection();
@@ -311,7 +311,7 @@ public class AssignmentHsqlDAO implements AssignmentDAO {
 	@Override
 	public List<Assignment> findBy(Course course) throws MapauException {
 		if (course == null) {
-			throw new MapauException("assignableUnit == null");
+			throw new MapauException("course == null");
 		}
 		try {
 			Connection con = cp.getConnection();
@@ -345,7 +345,7 @@ public class AssignmentHsqlDAO implements AssignmentDAO {
 	@Override
 	public List<Assignment> findBy(Course course, String type) throws MapauException {
 		if (course == null) {
-			throw new MapauException("assignableUnit == null");
+			throw new MapauException("course == null");
 		}
 		try {
 			Connection con = cp.getConnection();

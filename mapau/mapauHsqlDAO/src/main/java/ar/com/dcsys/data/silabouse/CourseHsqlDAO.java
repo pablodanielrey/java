@@ -73,7 +73,7 @@ public class CourseHsqlDAO implements CourseDAO {
 			ResultSet rs = st.executeQuery();
 			try {
 				if (rs.next()) {
-					String id = rs.getString("id");
+					String id = rs.getString("subject_id");
 					Subject subject = params.findSubjectById(id);
 					course.setSubject(subject);
 				}

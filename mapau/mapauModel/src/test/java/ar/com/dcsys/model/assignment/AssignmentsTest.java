@@ -1,12 +1,25 @@
 package ar.com.dcsys.model.assignment;
 
+import static org.junit.Assert.*;
+
+import java.util.Date;
+import java.util.List;
+
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ar.com.dcsys.data.assignment.Assignment;
+import ar.com.dcsys.data.assignment.AssignmentBean;
+import ar.com.dcsys.data.person.Person;
+import ar.com.dcsys.data.person.PersonBean;
 import ar.com.dcsys.data.person.PersonDAO;
+import ar.com.dcsys.data.silabouse.Course;
+import ar.com.dcsys.data.silabouse.CourseBean;
+import ar.com.dcsys.data.silabouse.Subject;
+import ar.com.dcsys.data.silabouse.SubjectBean;
 import ar.com.dcsys.exceptions.MapauException;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.model.silabouse.CoursesManager;
@@ -55,11 +68,11 @@ public class AssignmentsTest {
 
 	@Test
 	public void persistTest() throws MapauException, PersonException {
-		//AssignmentsManager assignmentsManager = getAssignmentsManager();
+		AssignmentsManager assignmentsManager = getAssignmentsManager();
 		SubjectsManager subjectsManager = getSubjectsManager();
-		//CoursesManager coursesManager = getCoursesManager();
+		CoursesManager coursesManager = getCoursesManager();
         PersonDAO personDAO = getPersonDAO();
-	/*	
+		
 		//creo la persona
         String dni = "123456";
         
@@ -67,7 +80,7 @@ public class AssignmentsTest {
         person.setName("Emanuel Joaquin");
         person.setLastName("Pais");
         person.setDni(dni);
-        String id = personsManager.persist(person);
+        String id = personDAO.persist(person);
         assertNotNull(id);	
 		
 		////// pruebo que el persist agregue una asignacion en la base ///////////////
@@ -98,7 +111,7 @@ public class AssignmentsTest {
 		
 		Assignment assignment = new AssignmentBean();
 		assignment.setFrom(from);
-		assignment.setAssignableUnit(course);
+		assignment.setCourse(course);
 		assignment.setPerson(person);
 		
 		id = assignmentsManager.persist(assignment);
@@ -108,11 +121,12 @@ public class AssignmentsTest {
 		
 		Assignment assignment2 = assignmentsManager.findById(id);
 		assertEquals(assignment.getId(), assignment2.getId());
-		assertNotNull(assignment2.getAssignableUnit());		
+		assertNotNull(assignment2.getCourse());		
 			
 
-		/////////////////// pruebo que las aulas en la base tienen todas diferentes ids ////////////////
-				
+		/////////////////// pruebo que las asignaciones en la base tienen todas diferentes ids ////////////////
+		
+		assertNotNull(person);
 		assignments = assignmentsManager.findBy(person);
 		assertEquals(assignments.size(), count + 1);
 		
@@ -126,7 +140,7 @@ public class AssignmentsTest {
 				}
 			}
 			assertEquals(equals,1);
-		}	*/	
+		}		
 	}
 
 }

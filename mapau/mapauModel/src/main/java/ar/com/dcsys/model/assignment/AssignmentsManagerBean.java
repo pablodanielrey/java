@@ -100,11 +100,18 @@ public class AssignmentsManagerBean implements AssignmentsManager {
 	 */
 	@Override
 	public List<Assignment> findBy(Person person) throws MapauException {
-		String personId = person.getId();
+		List<Assignment> assignmentsRet = new ArrayList<Assignment>();
+		
+		if (person == null || person.getId() == null) {
+			return assignmentsRet;
+		}
+		String personId = person.getId();			
 
 		List<Assignment> assignments = assignmentDAO.findBy(person);
-		List<Assignment> assignmentsRet = new ArrayList<Assignment>();
 		for (Assignment a : assignments) {
+			if (a.getPerson() == null || a.getPerson().getId() == null) {
+				continue;
+			}
 			String id = a.getPerson().getId();
 			if (personId.equals(id)) {
 				assignmentsRet.add(a);

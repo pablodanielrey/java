@@ -64,10 +64,10 @@ public class CharacteristicsTest {
 		assertNotNull(characteristic2.getName());
 		assertEquals(characteristic2.getName(),"aire2");		
 		
-		Characteristic characteristic3 = characteristicsManager.findByName("aire2");
+		/*Characteristic characteristic3 = characteristicsManager.findByName("aire2");
 		assertNotNull(characteristic3);
 		assertNotNull(characteristic3.getId());
-		assertEquals(id, characteristic3.getId());
+		assertEquals(id, characteristic3.getId());*/
 			
 
 		/////////////////// pruebo que las caracteristicas en la base tienen todas diferentes ids ////////////////
