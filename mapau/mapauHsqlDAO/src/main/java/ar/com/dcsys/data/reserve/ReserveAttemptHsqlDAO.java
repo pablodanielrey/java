@@ -63,7 +63,7 @@ public class ReserveAttemptHsqlDAO implements ReserveAttemptDAO {
 												"id longvarchar not null primary key, " +
 												"reserveattempt_id longvarchar not null ," +
 												"description longvarchar," +
-												"notes text not null," +	
+												"notes longvarchar not null," +	
 												"version bigint not null)");
 			try {
 				st.executeUpdate();
