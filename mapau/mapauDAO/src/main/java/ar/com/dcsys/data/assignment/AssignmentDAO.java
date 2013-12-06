@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.data.silabouse.AssignableUnit;
+import ar.com.dcsys.data.silabouse.Course;
 import ar.com.dcsys.exceptions.MapauException;
 import ar.com.dcsys.exceptions.PersonException;
 
@@ -21,9 +21,9 @@ public interface AssignmentDAO extends Serializable {
 	public List<String> findIdsBy(Person person) throws MapauException;
 	public List<Assignment> findBy(Person person) throws MapauException;
 	
-	public List<String> findIdsBy(AssignableUnit assignableUnit) throws MapauException;
-	public List<Assignment> findBy(AssignableUnit assignableUnit) throws MapauException;
-	public List<Assignment> findBy(AssignableUnit assignableUnit, String type) throws MapauException;
+	public List<String> findIdsBy(Course course) throws MapauException;
+	public List<Assignment> findBy(Course course) throws MapauException;
+	public List<Assignment> findBy(Course course, String type) throws MapauException;
 	
 	
 	public interface Params {
@@ -35,6 +35,6 @@ public interface AssignmentDAO extends Serializable {
 		public Person findPersonByUsername(String username) throws PersonException;
 		public Person findPersonById(String id) throws PersonException;
 		
-		public AssignableUnit findAssignableUnitById(String assignableUnitId) throws MapauException;
+		public Course findCourseById(String id) throws MapauException;
 	}
 }

@@ -1,7 +1,7 @@
 package ar.com.dcsys.data.silabouse;
 
 
-public interface Course extends AssignableUnit {
+public interface Course {
 
 	public void setId(String id);	
 	public String getId();

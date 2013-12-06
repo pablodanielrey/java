@@ -39,7 +39,7 @@ public class CourseHsqlDAO implements CourseDAO {
 		}
 	}
 	
-	private void createTables() throws SQLException {
+	public void createTables() throws SQLException {
 		Connection con = cp.getConnection();
 		try {
 			PreparedStatement st = con.prepareStatement("create table if not exists course (" +
@@ -73,7 +73,7 @@ public class CourseHsqlDAO implements CourseDAO {
 			ResultSet rs = st.executeQuery();
 			try {
 				if (rs.next()) {
-					String id = rs.getString("id");
+					String id = rs.getString("subject_id");
 					Subject subject = params.findSubjectById(id);
 					course.setSubject(subject);
 				}
@@ -98,10 +98,6 @@ public class CourseHsqlDAO implements CourseDAO {
 		return course;
 	}
 	
-	private void loadType(Course course) throws MapauException {
-		String type = params.findTypeAssignableUnit(course);
-		course.setType(type);
-	}
 
 	@Override
 	public Course findById(String id) throws MapauException {
@@ -117,7 +113,6 @@ public class CourseHsqlDAO implements CourseDAO {
 						if (rs.next()) {
 							Course course = getCourse(rs);
 							loadSubject(con, course);
-							loadType(course);
 							return course;
 						} else {
 							return null;
@@ -150,7 +145,6 @@ public class CourseHsqlDAO implements CourseDAO {
 						while (rs.next()) {
 							Course course = getCourse(rs);
 							loadSubject(con, course);
-							loadType(course);
 							courses.add(course);
 						}
 						return courses;
@@ -186,7 +180,6 @@ public class CourseHsqlDAO implements CourseDAO {
 						while (rs.next()) {
 							Course course = getCourse(rs);
 							loadSubject(con, course);
-							loadType(course);
 							courses.add(course);
 						}
 						return courses;
@@ -231,7 +224,6 @@ public class CourseHsqlDAO implements CourseDAO {
 				   	st.setString(3, course.getId());
 				   	st.executeUpdate();				
 				   	
-				   	persistAssignableUnit(course);
 				   	persistSubject(con, course);
 				   	
 				   	return course.getId();
@@ -271,9 +263,5 @@ public class CourseHsqlDAO implements CourseDAO {
 		}
 	}
 	
-	private void persistAssignableUnit(Course course) throws MapauException {
-		course.setType(course.getClass().getName());
-		params.persist(course);
-	}
 
 }

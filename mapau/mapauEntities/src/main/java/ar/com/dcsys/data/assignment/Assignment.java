@@ -3,7 +3,7 @@ package ar.com.dcsys.data.assignment;
 import java.util.Date;
 
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.data.silabouse.AssignableUnit;
+import ar.com.dcsys.data.silabouse.Course;
 
 public interface Assignment {
 
@@ -19,8 +19,8 @@ public interface Assignment {
 	public Person getPerson();
 	public void setPerson(Person person);
 	
-	public AssignableUnit getAssignableUnit();
-	public void setAssignableUnit(AssignableUnit assignableUnit);
+	public Course getCourse();
+	public void setCourse(Course course);
 
 	public Assignment getRelatedAssignment();
 	public void setRelatedAssignment(Assignment relatedAssignment);

@@ -1,4 +1,4 @@
-package ar.com.dcsys.model;
+package ar.com.dcsys.model.classroom;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -39,6 +39,7 @@ public class ClassRoomsTest {
 		ClassRoomsManager classRoomsManager = container.instance().select(ClassRoomsManager.class).get();
 		return classRoomsManager;
 	}
+	
 	
 	@Test
 	public void persistTest() throws MapauException {

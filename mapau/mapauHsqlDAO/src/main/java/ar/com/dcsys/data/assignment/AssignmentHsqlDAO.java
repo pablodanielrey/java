@@ -16,7 +16,7 @@ import javax.inject.Inject;
 
 import ar.com.dcsys.data.HsqlConnectionProvider;
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.data.silabouse.AssignableUnit;
+import ar.com.dcsys.data.silabouse.Course;
 import ar.com.dcsys.exceptions.MapauException;
 import ar.com.dcsys.exceptions.PersonException;
 
@@ -43,17 +43,17 @@ public class AssignmentHsqlDAO implements AssignmentDAO {
 		}
 	}
 	
-	private void createTables() throws SQLException {
+	public void createTables() throws SQLException {
 		Connection con = cp.getConnection();
 		try {
 			PreparedStatement st = con.prepareStatement("create table if not exists assignment (" +
 															   	"id longvarchar NOT NULL PRIMARY KEY," +
-													   			"notes TEXT," +
+													   			"notes longvarchar," +
 															   	"from_ DATE," +
 													   			"to_ DATE," +
 															   	"type longvarchar," +
 															   	"person_id longvarchar NOT NULL," +
-													   			"assignableunit_id longvarchar NOT NULL ," +
+													   			"course_id longvarchar NOT NULL ," +
 													   			"version BIGINT NULL);");
 			try {
 				st.executeUpdate();
@@ -100,7 +100,7 @@ public class AssignmentHsqlDAO implements AssignmentDAO {
    		String type = resultSet.getString("type");
    		Long version = resultSet.getLong("version");
    		Person person = params.findPersonById(resultSet.getString("person_id"));
-   		AssignableUnit assignableUnit = params.findAssignableUnitById(resultSet.getString("assignableunit_id"));
+   		Course course = params.findCourseById(resultSet.getString("course_id"));
    		
 		Assignment assignment = new AssignmentBean();
    		assignment.setId(id);
@@ -110,7 +110,7 @@ public class AssignmentHsqlDAO implements AssignmentDAO {
    		assignment.setType(type);
    		assignment.setVersion(version);	   		   		
    		assignment.setPerson(person);	
-   		assignment.setAssignableUnit(assignableUnit);
+   		assignment.setCourse(course);
    	
    		return assignment;		
 	}
@@ -275,17 +275,17 @@ public class AssignmentHsqlDAO implements AssignmentDAO {
 	}
 
 	@Override
-	public List<String> findIdsBy(AssignableUnit assignableUnit) throws MapauException {
-		if (assignableUnit == null) {
-			throw new MapauException("assignableUnit == null");
+	public List<String> findIdsBy(Course course) throws MapauException {
+		if (course == null) {
+			throw new MapauException("course == null");
 		}
 		try {
 			Connection con = cp.getConnection();
 			try {
-				String query = "SELECT assignment.id FROM assignment INNER JOIN assignableunit ON (assignment.assignableunit_id = assignableunit.id) WHERE assignableunit_id = ?";
+				String query = "SELECT assignment.id FROM assignment WHERE course_id = ?";
 				PreparedStatement st = con.prepareStatement(query);
 				try {
-					st.setString(1, assignableUnit.getId());
+					st.setString(1, course.getId());
 					ResultSet rs = st.executeQuery();
 					try {
 						List<String> ids = new ArrayList<String>();
@@ -309,17 +309,17 @@ public class AssignmentHsqlDAO implements AssignmentDAO {
 	}
 
 	@Override
-	public List<Assignment> findBy(AssignableUnit assignableUnit) throws MapauException {
-		if (assignableUnit == null) {
-			throw new MapauException("assignableUnit == null");
+	public List<Assignment> findBy(Course course) throws MapauException {
+		if (course == null) {
+			throw new MapauException("course == null");
 		}
 		try {
 			Connection con = cp.getConnection();
 			try {
-				String query = "SELECT * FROM assignment INNER JOIN assignableunit ON (assignment.assignableunit_id = assignableunit.id) WHERE assignableunit_id = ?";
+				String query = "SELECT * FROM assignment INNER JOIN course ON (assignment.course_id = course.id) WHERE course_id = ?";
 				PreparedStatement st = con.prepareStatement(query);
 				try {
-					st.setString(1, assignableUnit.getId());
+					st.setString(1, course.getId());
 					ResultSet rs = st.executeQuery();
 					try {
 						List<Assignment> assignmetnts = new ArrayList<Assignment>();
@@ -343,17 +343,17 @@ public class AssignmentHsqlDAO implements AssignmentDAO {
 	}
 
 	@Override
-	public List<Assignment> findBy(AssignableUnit assignableUnit, String type) throws MapauException {
-		if (assignableUnit == null) {
-			throw new MapauException("assignableUnit == null");
+	public List<Assignment> findBy(Course course, String type) throws MapauException {
+		if (course == null) {
+			throw new MapauException("course == null");
 		}
 		try {
 			Connection con = cp.getConnection();
 			try {
-				String query = "SELECT * FROM assignment INNER JOIN assignableunit ON (assignment.assignableunit_id = assignableunit.id) WHERE assignableunit_id = ? AND assignment.type = ?";
+				String query = "SELECT * FROM assignment INNER JOIN course ON (assignment.course_id = course.id) WHERE course_id = ? AND assignment.type = ?";
 				PreparedStatement st = con.prepareStatement(query);
 				try {
-					st.setString(1, assignableUnit.getId());
+					st.setString(1, course.getId());
 					st.setString(2, type);
 					ResultSet rs = st.executeQuery();
 					try {
@@ -386,16 +386,16 @@ public class AssignmentHsqlDAO implements AssignmentDAO {
 				if (assignment.getId() == null) {
 					String id = UUID.randomUUID().toString();
 					assignment.setId(id);
-					query ="INSERT INTO assignment (notes, type, version, assignableunit_id, person_id, id) VALUES (?, ?, ?, ?, ?, ?);";
+					query ="INSERT INTO assignment (notes, type, version, course_id, person_id, id) VALUES (?, ?, ?, ?, ?, ?);";
 				} else {
-					query ="UPDATE assignment SET notes = ?, type = ?, version = ?, assignableunit_id = ?, person_id = ? WHERE assignment.id = ?;";
+					query ="UPDATE assignment SET notes = ?, type = ?, version = ?, course_id = ?, person_id = ? WHERE assignment.id = ?;";
 				}
 				PreparedStatement st = con.prepareStatement(query);
 				try {
 					st.setString(1, assignment.getNotes());
 					st.setString(2, assignment.getType());
 					st.setLong(3, assignment.getVersion());
-					st.setString(4, assignment.getAssignableUnit().getId());
+					st.setString(4, assignment.getCourse().getId());
 					st.setString(5, assignment.getPerson().getId());
 					st.setString(6, assignment.getId());
 					
