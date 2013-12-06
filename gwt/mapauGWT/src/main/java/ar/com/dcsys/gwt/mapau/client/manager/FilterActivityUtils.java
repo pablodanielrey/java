@@ -11,6 +11,7 @@ import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.mapau.client.activity.calendar.adapter.MapauAppointment;
 import ar.com.dcsys.gwt.mapau.client.activity.calendar.adapter.MapauAppointment.State;
 import ar.com.dcsys.gwt.mapau.client.filter.FilterConverter;
+import ar.com.dcsys.gwt.mapau.shared.MapauFactory;
 import ar.com.dcsys.gwt.mapau.shared.data.filter.FilterType;
 import ar.com.dcsys.gwt.mapau.shared.data.filter.FilterValue;
 import ar.com.dcsys.gwt.mapau.shared.data.filter.transfer.TransferableFilter.TransferFilterProvider;
@@ -20,11 +21,13 @@ import com.google.inject.Inject;
 
 public class FilterActivityUtils {
 
+	private final MapauFactory mapauFactory;
 	private final MapauManager mapauManager;
 	private final FilterConverter filterConverter;
 	
 	@Inject
-	public FilterActivityUtils(MapauManager mapauManager, FilterConverter filterConverter) {
+	public FilterActivityUtils(MapauFactory mapauFactory, MapauManager mapauManager, FilterConverter filterConverter) {
+		this.mapauFactory = mapauFactory;
 		this.mapauManager = mapauManager;
 		this.filterConverter = filterConverter;
 	}
@@ -63,7 +66,7 @@ public class FilterActivityUtils {
 		TransferFilterProvider tp = new TransferFilterProvider() {
 			@Override
 			public TransferFilter newTransferFilter() {
-				return new TransferFilter();
+				return mapauFactory.transferFilter().as();
 			}
 		};
 		
@@ -96,7 +99,7 @@ public class FilterActivityUtils {
 		TransferFilterProvider tp = new TransferFilterProvider() {
 			@Override
 			public TransferFilter newTransferFilter() {
-				return new TransferFilter();
+				return mapauFactory.transferFilter().as();
 			}
 		};
 		

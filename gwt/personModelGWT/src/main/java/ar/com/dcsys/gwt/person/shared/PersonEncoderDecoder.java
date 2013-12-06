@@ -15,7 +15,6 @@ import ar.com.dcsys.gwt.person.shared.lists.PersonValueList;
 
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
-import com.google.web.bindery.autobean.shared.AutoBeanFactory;
 
 
 public class PersonEncoderDecoder {

@@ -28,8 +28,7 @@ public class MapauManagerBean implements MapauManager {
 	}
 
 	@Override
-	public void findAllAppointmentsBy(AppointmentV2 appv2, List<Date> dates,
-			boolean checkHour, Receiver<List<AppointmentV2>> rec) {
+	public void findAllAppointmentsBy(AppointmentV2 appv2, List<Date> dates, boolean checkHour, Receiver<List<AppointmentV2>> rec) {
 		// TODO Auto-generated method stub
 		
 	}
