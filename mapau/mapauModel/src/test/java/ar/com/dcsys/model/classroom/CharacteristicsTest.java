@@ -52,7 +52,7 @@ public class CharacteristicsTest {
 		int count = characteristics.size();
 		
 		Characteristic characteristic = new CharacteristicBean();
-		characteristic.setName("Aire acondicionado");
+		characteristic.setName("aire2");
 		
 		String id = characteristicsManager.persist(characteristic);
 		assertNotNull(id);
@@ -62,9 +62,9 @@ public class CharacteristicsTest {
 		Characteristic characteristic2 = characteristicsManager.findById(id);
 		assertEquals(characteristic.getId(), characteristic2.getId());
 		assertNotNull(characteristic2.getName());
-		assertEquals(characteristic2.getName(),"Aire acondicionado");		
+		assertEquals(characteristic2.getName(),"aire2");		
 		
-		Characteristic characteristic3 = characteristicsManager.findByName("Aire acondicionado");
+		Characteristic characteristic3 = characteristicsManager.findByName("aire2");
 		assertNotNull(characteristic3);
 		assertNotNull(characteristic3.getId());
 		assertEquals(id, characteristic3.getId());

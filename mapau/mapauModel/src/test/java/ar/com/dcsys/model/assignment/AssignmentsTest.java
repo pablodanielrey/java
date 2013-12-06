@@ -26,9 +26,9 @@ public class AssignmentsTest {
 	
 	@AfterClass
 	public static void destroyEnvironment() {
-		/*if (weld != null) {
+		if (weld != null) {
 			weld.shutdown();
-		}*/
+		}
 	}	
 	
 	private AssignmentsManager getAssignmentsManager() {
@@ -55,7 +55,7 @@ public class AssignmentsTest {
 
 	@Test
 	public void persistTest() throws MapauException, PersonException {
-	//	AssignmentsManager assignmentsManager = getAssignmentsManager();
+		AssignmentsManager assignmentsManager = getAssignmentsManager();
 		SubjectsManager subjectsManager = getSubjectsManager();
 		CoursesManager coursesManager = getCoursesManager();
         PersonDAO personDAO = getPersonDAO();

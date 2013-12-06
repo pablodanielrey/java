@@ -43,7 +43,7 @@ public class AssignmentHsqlDAO implements AssignmentDAO {
 		}
 	}
 	
-	private void createTables() throws SQLException {
+	public void createTables() throws SQLException {
 		Connection con = cp.getConnection();
 		try {
 			PreparedStatement st = con.prepareStatement("create table if not exists assignment (" +
