@@ -30,9 +30,9 @@ public class ClassRoomsTest {
 	
 	@AfterClass
 	public static void destroyEnvironment() {
-		if (weld != null) {
+		/*if (weld != null) {
 			weld.shutdown();
-		}
+		}*/
 	}	
 	
 	private ClassRoomsManager getClassRoomsManager() {
