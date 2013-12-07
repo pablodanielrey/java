@@ -9,6 +9,7 @@ import javax.inject.Singleton;
 
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.exceptions.PersonException;
+import ar.com.dcsys.gwt.manager.shared.ManagerUtils;
 import ar.com.dcsys.gwt.message.server.MessageHandlers;
 import ar.com.dcsys.gwt.message.server.MethodHandler;
 import ar.com.dcsys.gwt.message.shared.Message;
@@ -17,6 +18,7 @@ import ar.com.dcsys.gwt.message.shared.MessageTransport;
 import ar.com.dcsys.gwt.message.shared.MessageUtils;
 import ar.com.dcsys.gwt.message.shared.Method;
 import ar.com.dcsys.gwt.person.shared.PersonEncoderDecoder;
+import ar.com.dcsys.gwt.person.shared.PersonFactory;
 import ar.com.dcsys.gwt.person.shared.PersonMethods;
 import ar.com.dcsys.model.PersonsManager;
 
@@ -28,14 +30,17 @@ public class PersistPersonMethodHandler implements MethodHandler {
 	private final PersonEncoderDecoder encoderDecoder;
 	private final MessageUtils mf;
 	private final PersonsManager personsModel;
+	private final PersonFactory personFactory;
 	
 	@Inject
-	public PersistPersonMethodHandler(PersonEncoderDecoder encoderDecoder, 
+	public PersistPersonMethodHandler(PersonFactory personFactory,
+									  PersonEncoderDecoder encoderDecoder, 
 									  MessageUtils messagesFactory,
 									  PersonsManager personsModel) {
 		this.encoderDecoder = encoderDecoder;
 		this.mf = messagesFactory;
 		this.personsModel = personsModel;
+		this.personFactory = personFactory;
 	}
 
 	/**
@@ -55,7 +60,7 @@ public class PersistPersonMethodHandler implements MethodHandler {
 	public void handle(Message msg, Method method, MessageTransport transport) {
 		
 		String params = method.getParams();
-		Person person = encoderDecoder.decode(Person.class,params);
+		Person person = ManagerUtils.decode(personFactory,Person.class,params);
 		
 		try {
 			String id = personsModel.persist(person);

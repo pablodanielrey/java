@@ -27,27 +27,6 @@ public class PersonEncoderDecoder {
 	}
 
 	
-	/**
-	 * Codifcación genérica de una clase a String usando AutoBeanCodex
-	 * @param clazz
-	 * @param t
-	 * @return
-	 */
-	public <T> String encode(Class<T> clazz, T t) {
-		return AutoBeanUtils.encode(personFactory, clazz, t);
-	}
-	
-	/**
-	 * Decodificiacion genérica de una clase desde un String usando AutoBeanCodex.
-	 * @param clazz
-	 * @param json
-	 * @return
-	 */
-	public <T> T decode(Class<T> clazz, String json) {
-		return AutoBeanUtils.decode(personFactory, clazz, json);
-	}			
-	
-	
 	public String encodePersonValueList(List<PersonValueProxy> pt) {
 		AutoBean<PersonValueList> aptl = personFactory.personValueList();
 		PersonValueList ptl = aptl.as();
@@ -124,21 +103,5 @@ public class PersonEncoderDecoder {
 		List<Person> persons = personList.getList();
 		return persons;
 	}
-	
-	
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 }

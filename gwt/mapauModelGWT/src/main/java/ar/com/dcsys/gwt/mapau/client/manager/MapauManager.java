@@ -13,7 +13,7 @@ public interface MapauManager {
 
 	public void createNewAppointments(List<AppointmentV2> apps, Receiver<Void> rec);
 	public void deleteAppointment(AppointmentV2 app, Receiver<Void> rec);
-	public void modify(AppointmentV2 app, Receiver<Void> rec);
+	public void modifyAppointment(AppointmentV2 app, Receiver<Void> rec);
 	
 	public void findAllAppointmentsBy(AppointmentV2 appv2, List<Date> dates, boolean checkHour, Receiver<List<AppointmentV2>> rec);
 	public void findAllFilters(Receiver<List<TransferFilterType>> rec);

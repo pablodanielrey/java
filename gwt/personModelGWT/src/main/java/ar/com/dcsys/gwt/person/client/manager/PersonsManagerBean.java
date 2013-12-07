@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonType;
+import ar.com.dcsys.gwt.manager.shared.ManagerUtils;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.message.shared.Event;
 import ar.com.dcsys.gwt.message.shared.Message;
@@ -31,6 +32,7 @@ public class PersonsManagerBean implements PersonsManager {
 
 	private static final Logger logger = Logger.getLogger(PersonsManagerBean.class.getName());
 	
+	private final ManagerUtils managerUtils;
 	private final PersonFactory personFactory;
 	private final MessageUtils messagesFactory;
 	private final PersonEncoderDecoder personEncoderDecoder;
@@ -63,7 +65,7 @@ public class PersonsManagerBean implements PersonsManager {
 					try {
 						String personS = response.getPayload();
 						if (personS != null) {
-							person = personEncoderDecoder.decode(Person.class,personS);
+							person = ManagerUtils.decode(personFactory,Person.class,personS);
 						}
 					} catch (Exception e) {
 						rec.onFailure(e);
@@ -90,12 +92,12 @@ public class PersonsManagerBean implements PersonsManager {
 	public void addMail(Person p, Mail m, final Receiver<Void> rec) {
 		try {
 			// codifico los parámetros en base64 tambien ya que no tiene el caracter * que lo uso como separador.
-			StringBuilder sb = new StringBuilder();
-			sb.append(EncoderDecoder.b64encode(personEncoderDecoder.encode(Person.class,p)));
-			sb.append("*");
-			sb.append(EncoderDecoder.b64encode(personEncoderDecoder.encode(Mail.class,m)));
+			String[] params = new String[2];
+			params[0] = ManagerUtils.encode(personFactory, Person.class, p);
+			params[1] = ManagerUtils.encode(personFactory, Mail.class, m);
+			String sparams = ManagerUtils.encodeParams(params);
 			
-			Message msg = messagesFactory.method(PersonMethods.addMail, sb.toString());
+			Message msg = messagesFactory.method(PersonMethods.addMail,sparams);
 			
 			// envío el mensaje al servidor.
 			socket.open();
@@ -176,7 +178,7 @@ public class PersonsManagerBean implements PersonsManager {
 					try {
 						String personS = response.getPayload();
 						if (personS != null) {
-							person = personEncoderDecoder.decode(Person.class,personS);
+							person = ManagerUtils.decode(personFactory,Person.class,personS);
 						}
 					} catch (Exception e) {
 						rec.onFailure(e);
@@ -202,7 +204,7 @@ public class PersonsManagerBean implements PersonsManager {
 	public void findMails(Person p, final Receiver<List<Mail>> rec) {
 		try {
 			
-			String json = personEncoderDecoder.encode(Person.class,p);
+			String json = ManagerUtils.encode(personFactory,Person.class,p);
 			Message msg = messagesFactory.method(PersonMethods.findAllMails, json);
 			
 			// envío el mensaje al servidor.
@@ -274,10 +276,12 @@ public class PersonsManagerBean implements PersonsManager {
 	
 	@Inject
 	public PersonsManagerBean(EventBus eventBus, 
+							  ManagerUtils managerUtils,
 							  PersonFactory personFactory, PersonEncoderDecoder personEncoderDecoder, 
 							  MessageUtils messagesFactory, 
 							  WebSocket ws) {
 		this.eventBus = eventBus;
+		this.managerUtils = managerUtils;
 		this.personFactory = personFactory;
 		this.messagesFactory = messagesFactory;
 		this.personEncoderDecoder = personEncoderDecoder;
@@ -301,7 +305,7 @@ public class PersonsManagerBean implements PersonsManager {
 		try {
 			
 			// serializo los parametros y genero el mensaje
-			String json = personEncoderDecoder.encode(Person.class,person);
+			String json = ManagerUtils.encode(personFactory,Person.class,person);
 			Message msg = messagesFactory.method(PersonMethods.persist,json);
 	
 			// envío el mensaje al servidor.
@@ -408,11 +412,13 @@ public class PersonsManagerBean implements PersonsManager {
 		try {
 
 			// params == null quiere decir que se buscan las personas que no tienen ningun tipo asociado.
-			String params = null;
+			Message msg = null;
 			if (types != null) {
-				params = personEncoderDecoder.encodeTypeList(types);
+				String params = personEncoderDecoder.encodeTypeList(types);
+				msg = messagesFactory.method(PersonMethods.findAllValuesByType,params);
+			} else {
+				msg = messagesFactory.method(PersonMethods.findAllValuesByType);
 			}
-			Message msg = messagesFactory.method(PersonMethods.findAllValuesByType,params);
 			
 			// envío el mensaje al servidor.
 			socket.open();

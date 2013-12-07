@@ -21,29 +21,6 @@ public class ClassRoomsEncoderDecoder {
 	}
 
 	
-	/**
-	 * Codifcación genérica de una clase a String usando AutoBeanCodex
-	 * @param clazz
-	 * @param t
-	 * @return
-	 */
-	public <T> String encode(Class<T> clazz, T t) {
-		return AutoBeanUtils.encode(mapauFactory, clazz, t);
-	}
-	
-	/**
-	 * Decodificiacion genérica de una clase desde un String usando AutoBeanCodex.
-	 * @param clazz
-	 * @param json
-	 * @return
-	 */
-	public <T> T decode(Class<T> clazz, String json) {
-		return AutoBeanUtils.decode(mapauFactory, clazz, json);
-	}			
-	
-	
-	
-	
 	public List<ClassRoom> decodeClassRoomList(String list) {
 		AutoBean<ClassRoomList> bean = AutoBeanCodex.decode(mapauFactory, ClassRoomList.class, list);
 		ClassRoomList l = bean.as();

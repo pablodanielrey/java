@@ -9,6 +9,7 @@ import javax.inject.Singleton;
 
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.exceptions.PersonException;
+import ar.com.dcsys.gwt.manager.shared.ManagerUtils;
 import ar.com.dcsys.gwt.message.server.MessageHandlers;
 import ar.com.dcsys.gwt.message.server.MethodHandler;
 import ar.com.dcsys.gwt.message.shared.Message;
@@ -68,7 +69,7 @@ public class FindPersonByIdMethodHandler implements MethodHandler {
 			if (person == null) {
 				sendResponse(msg, transport, null);
 			} else {
-				String lpersons = encoderDecoder.encode(Person.class,person);
+				String lpersons = ManagerUtils.encode(pf,Person.class,person);
 				sendResponse(msg, transport, lpersons);
 			}
 		

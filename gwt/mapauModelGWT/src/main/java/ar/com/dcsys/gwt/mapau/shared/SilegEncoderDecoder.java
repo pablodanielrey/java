@@ -19,30 +19,6 @@ public class SilegEncoderDecoder {
 	public SilegEncoderDecoder(MapauFactory mapauFactory) {
 		this.mapauFactory = mapauFactory;
 	}
-
-	
-	/**
-	 * Codifcación genérica de una clase a String usando AutoBeanCodex
-	 * @param clazz
-	 * @param t
-	 * @return
-	 */
-	public <T> String encode(Class<T> clazz, T t) {
-		return AutoBeanUtils.encode(mapauFactory, clazz, t);
-	}
-	
-	/**
-	 * Decodificiacion genérica de una clase desde un String usando AutoBeanCodex.
-	 * @param clazz
-	 * @param json
-	 * @return
-	 */
-	public <T> T decode(Class<T> clazz, String json) {
-		return AutoBeanUtils.decode(mapauFactory, clazz, json);
-	}			
-	
-	
-	
 	
 	public List<Course> decodeCourseList(String list) {
 		AutoBean<CourseList> bean = AutoBeanCodex.decode(mapauFactory, CourseList.class, list);

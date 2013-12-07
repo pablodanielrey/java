@@ -9,7 +9,6 @@ import javax.inject.Inject;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.silabouse.Course;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
-import ar.com.dcsys.gwt.mapau.shared.MapauFactory;
 import ar.com.dcsys.gwt.mapau.shared.MapauMethods;
 import ar.com.dcsys.gwt.mapau.shared.SilegEncoderDecoder;
 import ar.com.dcsys.gwt.message.shared.Message;
@@ -28,15 +27,13 @@ public class SilegManagerBean implements SilegManager {
 	
 	private static final Logger logger = Logger.getLogger(SilegManagerBean.class.getName());
 	
-	private final MapauFactory mapauFactory;
 	private final SilegEncoderDecoder encoderDecoder;
 	private final PersonEncoderDecoder pEncoderDecoder;
 	private final MessageUtils messageUtils;
 	private final WebSocket socket;
 
 	@Inject
-	public SilegManagerBean(MapauFactory mapauFactory, 
-							SilegEncoderDecoder encoderDecoder,
+	public SilegManagerBean(SilegEncoderDecoder encoderDecoder,
 							PersonEncoderDecoder pEncoderDecoder,
 							MessageUtils messageUtils,
 							WebSocket ws) {
@@ -44,7 +41,6 @@ public class SilegManagerBean implements SilegManager {
 		this.encoderDecoder = encoderDecoder;
 		this.pEncoderDecoder = pEncoderDecoder;
 		this.messageUtils = messageUtils;
-		this.mapauFactory = mapauFactory;
 	}
 	
 	private boolean handleError(Message response, Receiver<?> receiver) {
@@ -132,6 +128,7 @@ public class SilegManagerBean implements SilegManager {
 			});
 		} catch (Exception e) {
 			rec.onFailure(e);
-		}	}
+		}	
+	}
 
 }
