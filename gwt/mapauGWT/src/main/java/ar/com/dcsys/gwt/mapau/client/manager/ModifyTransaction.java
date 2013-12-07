@@ -37,7 +37,7 @@ public class ModifyTransaction {
 		modify.remove(toModify);
 		AppointmentV2 app = toModify.getAppointment();
 
-		rf.modify(app, new Receiver<Void>() {
+		rf.modifyAppointment(app, new Receiver<Void>() {
 			@Override
 			public void onSuccess(Void arg0) {
 				
