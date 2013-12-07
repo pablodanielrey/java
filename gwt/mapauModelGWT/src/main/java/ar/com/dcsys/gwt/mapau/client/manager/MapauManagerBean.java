@@ -181,7 +181,7 @@ public class MapauManagerBean implements MapauManager {
 	@Override
 	public void findAllFilters(final Receiver<List<TransferFilterType>> rec) {
 		try {
-			Message msg = messageUtils.method(MapauMethods.findAllAppointmentsBy);
+			Message msg = messageUtils.method(MapauMethods.findAllFilters);
 			
 			// envío el mensaje al servidor.
 			socket.open();
