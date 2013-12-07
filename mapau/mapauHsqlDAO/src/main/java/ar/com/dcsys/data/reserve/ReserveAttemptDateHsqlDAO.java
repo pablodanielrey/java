@@ -80,7 +80,7 @@ public class ReserveAttemptDateHsqlDAO implements ReserveAttemptDateDAO {
 			st = con.prepareStatement("create table if not exists reserveattemptdate_characteristic (" +
 												"reserveattemptdate_id longvarchar NOT NULL REFERENCES reserveattemptdate (id )," +
 												"characteristic_id longvarchar NOT NULL," +
-												"count bigint not null)");
+												"quantity bigint not null)");
 			try {
 				st.executeUpdate();
 			} finally {
@@ -92,14 +92,14 @@ public class ReserveAttemptDateHsqlDAO implements ReserveAttemptDateDAO {
 	}
 
 	private void loadCharacteristics(Connection connection, ReserveAttemptDate rad) throws SQLException, MapauException {
-		String query = "SELECT characteristic_id, count FROM reserveattemptdate_characteristic ra_cq WHERE ra_cq.reserveattemptdate_id = ?";
+		String query = "SELECT characteristic_id, quantity FROM reserveattemptdate_characteristic ra_cq WHERE ra_cq.reserveattemptdate_id = ?";
 	   	PreparedStatement st = connection.prepareStatement(query);
 	   	try {
 		   	st.setString(1, rad.getId());
 		   	ResultSet rs = st.executeQuery();
 		   	try {
 				while (rs.next()) {
-					Long count = rs.getLong("count");
+					Long count = rs.getLong("quantity");
 					String id = rs.getString("characteristic_id");
 					
 					CharacteristicQuantity c = new CharacteristicQuantityBean();
@@ -287,7 +287,7 @@ public class ReserveAttemptDateHsqlDAO implements ReserveAttemptDateDAO {
 	   	if (rad.getCharacteristicsQuantity() != null) {
 	   		List<CharacteristicQuantity> chars = rad.getCharacteristicsQuantity();
 		   	
-	   		String query = "INSERT INTO reserveattemptdate_characteristic (characteristic_id, reserveattemptdate_id, count) VALUES (?, ?, ?);" ;
+	   		String query = "INSERT INTO reserveattemptdate_characteristic (characteristic_id, reserveattemptdate_id, quantity) VALUES (?, ?, ?);" ;
 		   	PreparedStatement st = connection.prepareStatement(query) ;
 	   		
 		   	try {
