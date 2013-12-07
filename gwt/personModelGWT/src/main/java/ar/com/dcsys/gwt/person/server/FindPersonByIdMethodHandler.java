@@ -9,6 +9,7 @@ import javax.inject.Singleton;
 
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.exceptions.PersonException;
+import ar.com.dcsys.gwt.manager.server.AbstractMessageHandler;
 import ar.com.dcsys.gwt.manager.shared.ManagerUtils;
 import ar.com.dcsys.gwt.message.server.MessageHandlers;
 import ar.com.dcsys.gwt.message.server.MethodHandler;
@@ -23,7 +24,7 @@ import ar.com.dcsys.gwt.person.shared.PersonMethods;
 import ar.com.dcsys.model.PersonsManager;
 
 @Singleton
-public class FindPersonByIdMethodHandler implements MethodHandler {
+public class FindPersonByIdMethodHandler extends AbstractMessageHandler {
 
 	private static final Logger logger = Logger.getLogger(FindPersonByIdMethodHandler.class.getName());
 
@@ -31,6 +32,17 @@ public class FindPersonByIdMethodHandler implements MethodHandler {
 	private final MessageUtils mf;
 	private final PersonFactory pf;
 	private final PersonsManager personsModel;
+	
+	@Override
+	protected Logger getLogger() {
+		return logger;
+	}
+	
+	@Override
+	protected MessageUtils getMessageUtils() {
+		return mf;
+	}
+		
 	
 	@Inject
 	public FindPersonByIdMethodHandler(PersonEncoderDecoder encoderDecoder, 
@@ -80,24 +92,5 @@ public class FindPersonByIdMethodHandler implements MethodHandler {
 	}
 	
 	
-	private void sendError(Message msg, MessageTransport transport, String error) {
-		Message r = mf.error(msg,error);
-		try {
-			transport.send(r);
-		} catch (MessageException e) {
-			logger.log(Level.SEVERE,e.getMessage(),e);
-		}
-	}	
-	
-	
-	private void sendResponse(Message r, MessageTransport transport, String payload) {
-		Message msg = mf.response(r);
-		msg.setPayload(payload);
-		try {
-			transport.send(msg);
-		} catch (MessageException e) {
-			logger.log(Level.SEVERE,e.getMessage(),e);
-		}
-	}
-	
+
 }

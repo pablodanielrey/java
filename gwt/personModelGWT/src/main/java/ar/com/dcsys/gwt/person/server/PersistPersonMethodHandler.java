@@ -9,9 +9,9 @@ import javax.inject.Singleton;
 
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.exceptions.PersonException;
+import ar.com.dcsys.gwt.manager.server.AbstractMessageHandler;
 import ar.com.dcsys.gwt.manager.shared.ManagerUtils;
 import ar.com.dcsys.gwt.message.server.MessageHandlers;
-import ar.com.dcsys.gwt.message.server.MethodHandler;
 import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageException;
 import ar.com.dcsys.gwt.message.shared.MessageTransport;
@@ -23,7 +23,7 @@ import ar.com.dcsys.gwt.person.shared.PersonMethods;
 import ar.com.dcsys.model.PersonsManager;
 
 @Singleton
-public class PersistPersonMethodHandler implements MethodHandler {
+public class PersistPersonMethodHandler extends AbstractMessageHandler {
 
 	private static final Logger logger = Logger.getLogger(PersistPersonMethodHandler.class.getName());
 
@@ -31,6 +31,17 @@ public class PersistPersonMethodHandler implements MethodHandler {
 	private final MessageUtils mf;
 	private final PersonsManager personsModel;
 	private final PersonFactory personFactory;
+	
+	@Override
+	protected Logger getLogger() {
+		return logger;
+	}
+	
+	@Override
+	protected MessageUtils getMessageUtils() {
+		return mf;
+	}
+		
 	
 	@Inject
 	public PersistPersonMethodHandler(PersonFactory personFactory,
@@ -72,28 +83,6 @@ public class PersistPersonMethodHandler implements MethodHandler {
 			
 		}
 	}
-	
-	private void sendError(Message msg, MessageTransport transport, String error) {
-		Message r = mf.error(msg,error);
-		try {
-			transport.send(r);
-		} catch (MessageException e) {
-			logger.log(Level.SEVERE,e.getMessage(),e);
-		}
-	}
-	
-	
-	private void sendResponse(Message r, MessageTransport transport, String id) {
-		Message msg = mf.response(r);
-		msg.setPayload(id);
-		
-		try {
-			transport.send(msg);
-		} catch (MessageException e) {
-			logger.log(Level.SEVERE,e.getMessage(),e);
-		}
-	}
-	
 	
 	private void sendEvent(MessageTransport transport, String id) {
 		Message msg = mf.event(PersonMethods.personModifiedEvent, id);

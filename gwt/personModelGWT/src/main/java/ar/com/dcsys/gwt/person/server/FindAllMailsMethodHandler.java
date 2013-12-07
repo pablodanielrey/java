@@ -5,16 +5,13 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.MailBean;
-import ar.com.dcsys.gwt.message.server.MessageHandlers;
-import ar.com.dcsys.gwt.message.server.MethodHandler;
+import ar.com.dcsys.gwt.manager.server.AbstractMessageHandler;
 import ar.com.dcsys.gwt.message.shared.Message;
-import ar.com.dcsys.gwt.message.shared.MessageException;
 import ar.com.dcsys.gwt.message.shared.MessageTransport;
 import ar.com.dcsys.gwt.message.shared.MessageUtils;
 import ar.com.dcsys.gwt.message.shared.Method;
@@ -24,7 +21,7 @@ import ar.com.dcsys.gwt.person.shared.PersonMethods;
 import ar.com.dcsys.model.PersonsManager;
 
 @Singleton
-public class FindAllMailsMethodHandler implements MethodHandler {
+public class FindAllMailsMethodHandler extends AbstractMessageHandler {
 
 	private static final Logger logger = Logger.getLogger(FindAllMailsMethodHandler.class.getName());
 
@@ -32,6 +29,16 @@ public class FindAllMailsMethodHandler implements MethodHandler {
 	private final MessageUtils mf;
 	private final PersonFactory pf;
 	private final PersonsManager personsModel;
+	
+	@Override
+	protected Logger getLogger() {
+		return logger;
+	}
+	
+	@Override
+	protected MessageUtils getMessageUtils() {
+		return mf;
+	}
 	
 	@Inject
 	public FindAllMailsMethodHandler(PersonEncoderDecoder encoderDecoder, 
@@ -42,14 +49,6 @@ public class FindAllMailsMethodHandler implements MethodHandler {
 		this.mf = messagesFactory;
 		this.pf = personFactory;
 		this.personsModel = personsModel;
-	}
-
-	/**
-	 * Se registra como handler cuando es llamado por el evento disparado por CDI
-	 * @param mh
-	 */
-	public void register(@Observes MessageHandlers mh) {
-		mh.addHandler(this);
 	}
 	
 	@Override
@@ -75,27 +74,6 @@ public class FindAllMailsMethodHandler implements MethodHandler {
 		} catch (Exception e) {
 			logger.log(Level.SEVERE,e.getMessage(),e);
 			sendError(msg,transport,e.getMessage());
-		}
-	}
-	
-	
-	private void sendError(Message msg, MessageTransport transport, String error) {
-		Message r = mf.error(msg,error);
-		try {
-			transport.send(r);
-		} catch (MessageException e) {
-			logger.log(Level.SEVERE,e.getMessage(),e);
-		}
-	}	
-	
-	
-	private void sendResponse(Message r, MessageTransport transport, String payload) {
-		Message msg = mf.response(r);
-		msg.setPayload(payload);
-		try {
-			transport.send(msg);
-		} catch (MessageException e) {
-			logger.log(Level.SEVERE,e.getMessage(),e);
 		}
 	}
 	
