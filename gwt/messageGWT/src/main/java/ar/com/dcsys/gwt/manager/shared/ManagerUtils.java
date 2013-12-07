@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import ar.com.dcsys.gwt.autoBeans.shared.AutoBeanUtils;
 import ar.com.dcsys.gwt.manager.shared.list.DateList;
 import ar.com.dcsys.gwt.manager.shared.primitive.BooleanContainer;
@@ -67,13 +69,20 @@ public class ManagerUtils {
 	}	
 	
 	
+	private final ManagerFactory managerFactory;
+	
+	@Inject
+	public ManagerUtils(ManagerFactory managerFactory) {
+		this.managerFactory = managerFactory;
+	}
+	
 	/**
 	 * Codifica un booleano a un string.
 	 * @param managerFactory
 	 * @param b
 	 * @return
 	 */
-	public static String encodeBoolean(ManagerFactory managerFactory, Boolean b) {
+	public String encodeBoolean(Boolean b) {
 		BooleanContainer bc = managerFactory.booleanContainer().as();
 		bc.setBoolean(b);
 		String r = AutoBeanUtils.encode(managerFactory, BooleanContainer.class, bc);
@@ -86,7 +95,7 @@ public class ManagerUtils {
 	 * @param b
 	 * @return
 	 */
-	public static Boolean decodeBoolean(ManagerFactory managerFactory, String b) {
+	public Boolean decodeBoolean(String b) {
 		BooleanContainer bc = AutoBeanUtils.decode(managerFactory, BooleanContainer.class, b);
 		return bc.getBoolean();
 	}
@@ -98,7 +107,7 @@ public class ManagerUtils {
 	 * @param list
 	 * @return
 	 */
-	public static List<Date> decodeDateList(ManagerFactory managerFactory, String list) {
+	public List<Date> decodeDateList(String list) {
 		AutoBean<DateList> bean = AutoBeanCodex.decode(managerFactory, DateList.class, list);
 		DateList l = bean.as();
 		List<Date> values = l.getList();
@@ -111,7 +120,7 @@ public class ManagerUtils {
 	 * @param list
 	 * @return
 	 */
-	public static String encodeDateList(ManagerFactory managerFactory, List<Date> list) {
+	public String encodeDateList(List<Date> list) {
 		AutoBean<DateList> al = managerFactory.dateList();
 		DateList l = al.as();
 		
