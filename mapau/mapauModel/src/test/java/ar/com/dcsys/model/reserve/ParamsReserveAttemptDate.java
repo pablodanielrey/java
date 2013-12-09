@@ -1,7 +1,10 @@
 package ar.com.dcsys.model.reserve;
 
+import javax.inject.Inject;
+
 import ar.com.dcsys.data.classroom.Characteristic;
 import ar.com.dcsys.data.person.Person;
+import ar.com.dcsys.data.person.PersonDAO;
 import ar.com.dcsys.data.reserve.ReserveAttemptDateDAO;
 import ar.com.dcsys.data.reserve.ReserveAttemptDateType;
 import ar.com.dcsys.data.silabouse.Area;
@@ -11,15 +14,21 @@ import ar.com.dcsys.exceptions.PersonException;
 
 public class ParamsReserveAttemptDate implements ReserveAttemptDateDAO.Params {
 
+	private final PersonDAO personDAO;
+	
+	
+	@Inject
+	public ParamsReserveAttemptDate(PersonDAO personDAO) {
+		this.personDAO = personDAO;
+	}
+	
 	@Override
 	public Person findPersonById(String id) throws PersonException {
-		// TODO Auto-generated method stub
-		return null;
+		return personDAO.findById(id);
 	}
 
 	@Override
-	public ReserveAttemptDateType findReserveAttemptDateTypeById(String id)
-			throws MapauException {
+	public ReserveAttemptDateType findReserveAttemptDateTypeById(String id)	throws MapauException {
 		// TODO Auto-generated method stub
 		return null;
 	}
