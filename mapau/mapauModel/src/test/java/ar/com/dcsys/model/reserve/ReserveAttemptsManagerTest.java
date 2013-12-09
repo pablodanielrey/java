@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
@@ -16,16 +17,27 @@ import ar.com.dcsys.data.appointment.AppointmentV2;
 import ar.com.dcsys.data.appointment.AppointmentV2Bean;
 import ar.com.dcsys.data.classroom.CharacteristicQuantity;
 import ar.com.dcsys.data.classroom.ClassRoom;
+import ar.com.dcsys.data.group.Group;
+import ar.com.dcsys.data.group.types.GroupType;
+import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonBean;
 import ar.com.dcsys.data.person.PersonDAO;
 import ar.com.dcsys.data.reserve.Reserve;
 import ar.com.dcsys.data.reserve.ReserveAttemptDate;
 import ar.com.dcsys.data.reserve.ReserveAttemptDateType;
+import ar.com.dcsys.data.reserve.ReserveAttemptDateTypeBean;
 import ar.com.dcsys.data.silabouse.Area;
+import ar.com.dcsys.data.silabouse.AreaBean;
 import ar.com.dcsys.data.silabouse.Course;
+import ar.com.dcsys.data.silabouse.CourseBean;
+import ar.com.dcsys.data.silabouse.Subject;
+import ar.com.dcsys.data.silabouse.SubjectBean;
 import ar.com.dcsys.exceptions.MapauException;
 import ar.com.dcsys.exceptions.PersonException;
+import ar.com.dcsys.model.silabouse.AreasManager;
+import ar.com.dcsys.model.silabouse.CoursesManager;
+import ar.com.dcsys.model.silabouse.SubjectsManager;
 
 public class ReserveAttemptsManagerTest {
 
@@ -55,9 +67,56 @@ public class ReserveAttemptsManagerTest {
         PersonDAO personDAO = container.instance().select(PersonDAO.class).get();
         return personDAO;
     }	
+    
+    private SubjectsManager getSubjectsManager() {
+    	SubjectsManager subjectsManager = container.instance().select(SubjectsManager.class).get();
+    	return subjectsManager;
+    }	
+    
+    private CoursesManager getCoursesManager() {
+    	CoursesManager coursesManager = container.instance().select(CoursesManager.class).get();
+    	return coursesManager;
+    }
+    
+    private ReserveAttemptTypesManager getReserveAttemptTypesManager() {
+    	ReserveAttemptTypesManager reserveAttemptTypesManager = container.instance().select(ReserveAttemptTypesManager.class).get();
+    	return reserveAttemptTypesManager;
+    }
+    
+    private AreasManager getAreasManager() {
+    	AreasManager areasManager = container.instance().select(AreasManager.class).get();
+    	return areasManager;
+    }
 	
-	private Area createArea() {
-		return null;
+    private Group createGroup() {
+		Group group = new Group();
+		group.setMails(new ArrayList<Mail>());
+		group.setName("Grupo creado en el test");
+		group.setPersons(new ArrayList<Person>());
+		group.setTypes(new ArrayList<GroupType>());
+		String id = UUID.randomUUID().toString();
+		group.setId(id);    	
+		return group;
+    }
+    
+	private Area createArea() throws MapauException {
+		AreasManager areasManager = getAreasManager();
+
+		Group group = createGroup();
+		List<ClassRoom> classRooms = new ArrayList<ClassRoom>();
+		List<Course> courses = new ArrayList<Course>();
+		
+		Area area = new AreaBean();		
+		area.setName("Detise");		
+		area.setGroup(group);		
+		area.setClassRooms(classRooms);
+		area.setCourses(courses);
+		
+		String id = areasManager.persist(area);
+		assertNotNull(id);
+		assertNotNull(area);
+		
+		return area;
 	}
 	
 	private List<CharacteristicQuantity> createCharacteristics() {
@@ -67,9 +126,36 @@ public class ReserveAttemptsManagerTest {
 	private ClassRoom createClassRoom() {
 		return null;
 	}
+
+	private Subject createSubject() throws MapauException {
+		
+		SubjectsManager subjectsManager = getSubjectsManager();
+		
+		Subject subject = new SubjectBean();
+		subject.setName("Conta 1");
+		
+		String id = subjectsManager.persist(subject);
+		
+		assertNotNull(subject);
+		assertNotNull(id);
+		
+		return subject;
+	}
 	
-	private Course createCourse() {
-		return null;
+	private Course createCourse() throws MapauException {
+		CoursesManager coursesManager = getCoursesManager();
+		
+		Course course = new CourseBean();
+		
+		Subject subject = createSubject();		
+		course.setSubject(subject);
+		course.setName("Catedra B");
+		String id = coursesManager.persist(course);
+		
+		assertNotNull(course);
+		assertNotNull(id);
+		
+		return course;
 	}
 	
 	private Person createPerson() throws PersonException {
@@ -95,8 +181,19 @@ public class ReserveAttemptsManagerTest {
 		return null;
 	}
 	
-	private ReserveAttemptDateType createReserveAttemptType() {
-		return null;
+	private ReserveAttemptDateType createReserveAttemptType() throws MapauException {
+		ReserveAttemptTypesManager reserveAttemptTypesManager = getReserveAttemptTypesManager();
+		
+		ReserveAttemptDateType raType = new ReserveAttemptDateTypeBean();
+		raType.setDescription("Descripcion del reserve attempt date type");
+		raType.setName("Final");
+		
+		String id = reserveAttemptTypesManager.persist(raType);
+		
+		assertNotNull(id);
+		assertNotNull(raType);
+		
+		return raType;
 	}
 	
 	@Test
@@ -141,6 +238,6 @@ public class ReserveAttemptsManagerTest {
 		
 		appointments.add(app);
 		
-		//reserveAttemptsManager.createNewAppointments(appointments);
+		reserveAttemptsManager.createNewAppointments(appointments);
 	}
 }
