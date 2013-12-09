@@ -1,5 +1,6 @@
 package ar.com.dcsys.model.reserve;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import ar.com.dcsys.data.appointment.AppointmentV2;
 import ar.com.dcsys.data.appointment.AppointmentV2Bean;
 import ar.com.dcsys.data.classroom.CharacteristicQuantity;
 import ar.com.dcsys.data.classroom.ClassRoom;
+import ar.com.dcsys.data.filter.TransferFilter;
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.group.types.GroupType;
 import ar.com.dcsys.data.person.Mail;
@@ -199,8 +201,22 @@ public class ReserveAttemptsManagerTest {
 	@Test
 	public void createNewAppointment() throws MapauException, PersonException {
 		ReserveAttemptsManager reserveAttemptsManager = getReserveAttemptsManager();
+		
+		Long hourL = 1000l * 60l * 60l; 
+		Long dayL = 24l * hourL;
+		Date today = new Date();
+		Date begin = new Date(today.getTime() - (dayL*2));
+		Date end = new Date(today.getTime() + (dayL*2));
+		List<TransferFilter> filters = new ArrayList<TransferFilter>();
+		
+		List<AppointmentV2> appointments = reserveAttemptsManager.findAppointmentsV2By(begin, end, filters);
+		
+		assertNotNull(appointments);
+		int count = appointments.size();
+		
+		List<AppointmentV2> appointmentsNew = new ArrayList<>();
 
-		List<AppointmentV2> appointments = new ArrayList<AppointmentV2>();
+		//creo el appointment
 		
 		Area area = createArea();
 		List<CharacteristicQuantity> chars = createCharacteristics();
@@ -208,7 +224,7 @@ public class ReserveAttemptsManagerTest {
 		Course course = createCourse();
 		String description = "Descripción";
 		Date start = new Date();
-		Date end = new Date(start.getTime() + (1000l * 60l * 90l));
+		end = new Date(start.getTime() + (1000l * 60l * 90l));
 		Person owner = createPerson();
 		Reserve reserve = createReserve();
 		ReserveAttemptDate reserveAttemptDate = createReserveAttemptDate();
@@ -236,8 +252,13 @@ public class ReserveAttemptsManagerTest {
 		app.setStudentGroup(studentGroup);
 		app.setVisible(visible);
 		
-		appointments.add(app);
+		appointmentsNew.add(app);
 		
-		reserveAttemptsManager.createNewAppointments(appointments);
+		reserveAttemptsManager.createNewAppointments(appointmentsNew);
+		count += 1;
+		
+		appointments = reserveAttemptsManager.findAppointmentsV2By(begin, end, filters);
+		assertNotNull(appointments);
+		assertEquals(appointments.size(), count);
 	}
 }

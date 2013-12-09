@@ -765,6 +765,7 @@ public class ReserveAttemptsManagerBean implements ReserveAttemptsManager {
 	/**
 	 * Retorno todos los appointmetns determinados por los ReserveAttempts obtenidos entre las fechas y filtros inidcados.
 	 */
+	@Override
 	public List<AppointmentV2> findAppointmentsV2By(Date start, Date end, List<TransferFilter> filters) throws MapauException {
 		
 		if (filters == null) {

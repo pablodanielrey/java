@@ -28,6 +28,7 @@ public interface ReserveAttemptsManager {
 	public List<Appointment> findAppointmentsBy(Date start, Date end, List<TransferFilter> filters) throws MapauException;
 	public List<Appointment> findAppointmentsBy(List<TransferFilter> filters) throws MapauException;
 	public List<AppointmentV2> findAppointmentsV2By(List<TransferFilter> filters) throws MapauException;
+	public List<AppointmentV2> findAppointmentsV2By(Date start, Date end,List<TransferFilter> filters) throws MapauException;
 //	public void createNew(List<Appointment> appointments) throws MapauException;
 	public void createNewAppointments(List<AppointmentV2> appointments) throws MapauException;
 	public void deleteAppointment(AppointmentV2 app) throws MapauException;
@@ -75,5 +76,6 @@ public interface ReserveAttemptsManager {
 	
 	public String persist(ReserveAttemptDeleted rd) throws MapauException;
 	public ReserveAttemptDeleted findReserveAttemptDeletedById(String id) throws MapauException, PersonException;
+	
 	
 }
