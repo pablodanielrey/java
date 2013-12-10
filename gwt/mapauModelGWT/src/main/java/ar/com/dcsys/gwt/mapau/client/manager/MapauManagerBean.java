@@ -17,6 +17,7 @@ import ar.com.dcsys.data.reserve.ReserveAttemptDate;
 import ar.com.dcsys.data.reserve.ReserveAttemptDateType;
 import ar.com.dcsys.data.silabouse.Area;
 import ar.com.dcsys.data.silabouse.Course;
+import ar.com.dcsys.gwt.autoBeans.shared.AutoBeanUtils;
 import ar.com.dcsys.gwt.manager.shared.ManagerUtils;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.mapau.shared.ClassRoomsEncoderDecoder;
@@ -28,6 +29,7 @@ import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageException;
 import ar.com.dcsys.gwt.message.shared.MessageType;
 import ar.com.dcsys.gwt.message.shared.MessageUtils;
+import ar.com.dcsys.gwt.utils.client.EncoderDecoder;
 import ar.com.dcsys.gwt.ws.client.WebSocket;
 import ar.com.dcsys.gwt.ws.client.WebSocketReceiver;
 
@@ -76,7 +78,6 @@ public class MapauManagerBean implements MapauManager {
 		try {
 			Message msg = messageUtils.method(MapauMethods.findAllReserveAttemptTypes);
 			
-			// envío el mensaje al servidor.
 			socket.open();
 			socket.send(msg, new WebSocketReceiver() {
 				@Override
@@ -192,11 +193,12 @@ public class MapauManagerBean implements MapauManager {
 	}
 	
 	@Override
-	public void createReserves(List<ReserveAttemptDate> rads, List<ClassRoom> classRooms, final Receiver<Void> rec) {
+	public void createReserves(List<ReserveAttemptDate> rads, List<ClassRoom> classRooms, String description, final Receiver<Void> rec) {
 		try {
-			String[] params = new String[2];
+			String[] params = new String[3];
 			params[0] = encoderDecoder.encodeReserveAttemptDateList(rads);
 			params[1] = classRoomEncoderDecoder.encodeClassRoomList(classRooms);
+			params[3] = description;
 			String sparams = ManagerUtils.encodeParams(params);
 
 			Message msg = messageUtils.method(MapauMethods.createReserves, sparams);

@@ -210,7 +210,7 @@ public class AssignClassroomActivity extends AbstractActivity implements AssignC
 		List<ClassRoom> classrooms = new ArrayList<ClassRoom>();
 		classrooms.addAll(classroomsSelected);	
 
-		rf.createReserves(appointmentsToReserve, classrooms, new Receiver<Void>() {
+		rf.createReserves(appointmentsToReserve, classrooms, "", new Receiver<Void>() {
 			@Override
 			public void onSuccess(Void arg0) {
 				receiver.onSuccess(null);

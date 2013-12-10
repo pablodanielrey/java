@@ -28,7 +28,7 @@ public interface MapauManager {
 	
 	
 	public void findReservesBy(ReserveAttemptDate rad, Receiver<List<Reserve>> rec);
-	public void createReserves(List<ReserveAttemptDate> rads, List<ClassRoom> classRooms, Receiver<Void> rec);
+	public void createReserves(List<ReserveAttemptDate> rads, List<ClassRoom> classRooms, String description, Receiver<Void> rec);
 	public void findAllClassRoomsAvailableIn(List<ReserveAttemptDate> rads, Boolean checkCapacity, Receiver<List<ClassRoom>> rec);
 	public void getCoursesToCreateReserve(Receiver<List<Course>> rec);
 	public void findAllReserveAttemptType(Receiver<List<ReserveAttemptDateType>> rec);
