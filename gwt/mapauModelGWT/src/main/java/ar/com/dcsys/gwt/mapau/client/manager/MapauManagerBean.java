@@ -9,9 +9,14 @@ import javax.inject.Inject;
 
 import ar.com.dcsys.data.appointment.Appointment;
 import ar.com.dcsys.data.appointment.AppointmentV2;
+import ar.com.dcsys.data.classroom.ClassRoom;
 import ar.com.dcsys.data.filter.TransferFilter;
 import ar.com.dcsys.data.filter.TransferFilterType;
-import ar.com.dcsys.gwt.manager.shared.ManagerFactory;
+import ar.com.dcsys.data.reserve.Reserve;
+import ar.com.dcsys.data.reserve.ReserveAttemptDate;
+import ar.com.dcsys.data.reserve.ReserveAttemptDateType;
+import ar.com.dcsys.data.silabouse.Area;
+import ar.com.dcsys.data.silabouse.Course;
 import ar.com.dcsys.gwt.manager.shared.ManagerUtils;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.mapau.shared.MapauEncoderDecoder;
@@ -51,7 +56,45 @@ public class MapauManagerBean implements MapauManager {
 			return true;
 		}		
 		return false;
-	}	
+	}
+	
+	
+	@Override
+	public void findAllReserveAttemptType(Receiver<List<ReserveAttemptDateType>> rec) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void getCoursesToCreateReserve(Receiver<List<Course>> rec) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void findAllArea(Receiver<List<Area>> rec) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void createReserves(List<ReserveAttemptDate> rads,
+			List<ClassRoom> classRooms, Receiver<Void> rec) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void findAllClassRoomsAvailableIn(List<ReserveAttemptDate> rads,	Boolean checkCapacity, Receiver<List<ClassRoom>> rec) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void findReservesBy(ReserveAttemptDate rad, Receiver<List<Reserve>> rec) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	@Override
 	public void createNewAppointments(List<AppointmentV2> apps,	final Receiver<Void> rec) {

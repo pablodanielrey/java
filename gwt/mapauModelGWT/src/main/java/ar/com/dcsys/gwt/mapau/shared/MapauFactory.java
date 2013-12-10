@@ -5,7 +5,6 @@ import ar.com.dcsys.data.filter.TransferFilter;
 import ar.com.dcsys.data.filter.TransferFilterType;
 import ar.com.dcsys.gwt.mapau.shared.list.AppointmentList;
 import ar.com.dcsys.gwt.mapau.shared.list.AppointmentV2List;
-import ar.com.dcsys.gwt.mapau.shared.list.ClassRoomList;
 import ar.com.dcsys.gwt.mapau.shared.list.CourseList;
 import ar.com.dcsys.gwt.mapau.shared.list.TransferFilterList;
 import ar.com.dcsys.gwt.mapau.shared.list.TransferFilterTypeList;
@@ -19,8 +18,6 @@ public interface MapauFactory extends AutoBeanFactory {
 	public AutoBean<TransferFilter> transferFilter();
 	public AutoBean<TransferFilterType> transferFilterType();
 	
-	public AutoBean<ClassRoomList> classRoomList();
-	public AutoBean<CourseList> courseList();
 	public AutoBean<AppointmentV2List> appointmentV2List();
 	public AutoBean<AppointmentList> appointmentList();
 	public AutoBean<TransferFilterTypeList> transferFilterTypeList();

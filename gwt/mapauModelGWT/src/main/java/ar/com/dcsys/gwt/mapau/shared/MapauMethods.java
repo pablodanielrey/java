@@ -7,8 +7,6 @@ public class MapauMethods {
 	public static final String modifyAppointment = "modifyAppointment";
 	
 	public static final String findAllClassRooms = "findAllClassRooms";
-	public static final String findAllCourses = "findAllCourses";
-	public static final String findAllTeachers = "findAllTeachers";
 	public static final String findAllAppointmentsBy = "findAllAppointmentsBy";
 	public static final String findAllFilters = "findAllFilters";
 	
