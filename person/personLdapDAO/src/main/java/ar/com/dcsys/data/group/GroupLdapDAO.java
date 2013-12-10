@@ -20,13 +20,6 @@ import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
 import ar.com.dcsys.data.OpenLdapContextProvider;
-import ar.com.dcsys.data.group.types.Alias;
-import ar.com.dcsys.data.group.types.GroupType;
-import ar.com.dcsys.data.group.types.Office;
-import ar.com.dcsys.data.group.types.Ou;
-import ar.com.dcsys.data.group.types.Position;
-import ar.com.dcsys.data.group.types.Profile;
-import ar.com.dcsys.data.group.types.TimeTable;
 import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.MailBean;
 import ar.com.dcsys.data.person.Person;
@@ -164,7 +157,7 @@ public class GroupLdapDAO implements GroupDAO {
 	
 	@Override
 	public List<GroupType> findAllTypes() {
-		return Arrays.asList(new Alias(), new Office(), new Position(), new Ou(), new TimeTable(), new Profile());
+		return Arrays.asList(GroupType.values());
 	}
 
 	private List<GroupType> getGroupTypes(List<String> types) {
@@ -176,25 +169,25 @@ public class GroupLdapDAO implements GroupDAO {
 		}
 		for (String g : types) {
 			if (g.equals("x-dcsys-office")) {
-				gt.add(new Office());
+				gt.add(GroupType.OFFICE);
 				continue;
 			}
 			if (g.equals("x-dcsys-alias")) {
-				gt.add(new Alias());
+				gt.add(GroupType.ALIAS);
 				continue;
 			}
 			if (g.equals("x-dcsys-position")) {
-				gt.add(new Position());
+				gt.add(GroupType.POSITION);
 				continue;
 			}
 			if (g.equals("x-dcsys-ou")) {
-				gt.add(new Ou());
+				gt.add(GroupType.OU);
 			}
 			if (g.equals("x-dcsys-timetable")) {
-				gt.add(new TimeTable());
+				gt.add(GroupType.TIMETABLE);
 			}
 			if (g.equals("x-dcsys-profile")) {
-				gt.add(new Profile());
+				gt.add(GroupType.PROFILE);
 			}
 		}
 		
@@ -212,26 +205,25 @@ public class GroupLdapDAO implements GroupDAO {
 			return gt;
 		}
 		for (GroupType g : types) {
-			if (g instanceof Office) {
-				gt.add("x-dcsys-office");
-				continue;
-			}
-			if (g instanceof Alias) {
-				gt.add("x-dcsys-alias");
-				continue;
-			}
-			if (g instanceof Position) {
-				gt.add("x-dcsys-position");
-				continue;
-			}
-			if (g instanceof Ou) {
-				gt.add("x-dcsys-ou");
-			}
-			if (g instanceof TimeTable) {
-				gt.add("x-dcsys-timetable");
-			}
-			if (g instanceof Profile) {
-				gt.add("x-dcsys-profile");
+			switch (g) {
+				case OFFICE:
+					gt.add("x-dcsys-office");
+					break;
+				case ALIAS:
+					gt.add("x-dcsys-alias");
+					break;
+				case POSITION:
+					gt.add("x-dcsys-position");
+					break;
+				case OU:
+					gt.add("x-dcsys-ou");
+					break;
+				case TIMETABLE:
+					gt.add("x-dcsys-timetable");
+					break;
+				case PROFILE:
+					gt.add("x-dcsys-profile");
+					break;
 			}
 		}
 		logger.log(Level.FINE,gt.toString());
@@ -481,7 +473,7 @@ public class GroupLdapDAO implements GroupDAO {
 						// aca sacaría el grupo de la cache en caso de encontrarse por el x-dcsys-uuid
 						Group group = null;
 						if (group == null) {
-							group = new Group();
+							group = new GroupBean();
 						}
 						
 						String uuid = getStringAtt("x-dcsys-uuid", attrs);

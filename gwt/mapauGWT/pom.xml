@@ -123,7 +123,7 @@
         <executions>
           <execution>
             <goals>
-              <!-- <goal>compile</goal> -->
+              <goal>compile</goal>
               <goal>test</goal>
               <goal>i18n</goal>
               <goal>generateAsync</goal>
@@ -142,9 +142,11 @@
           <port>8080</port>
 
           <compileSourcesArtifacts>
+              <artifact>ar.com.dcsys.data:personEntities</artifact>
               <artifact>ar.com.dcsys.data:mapauEntities</artifact>
               <artifact>ar.com.dcsys.gwt:clientMessagesGWT</artifact>
               <artifact>ar.com.dcsys.gwt:messageGWT</artifact>
+              <artifact>ar.com.dcsys.gwt:personModelGWT</artifact>
               <artifact>ar.com.dcsys.gwt:mapauModelGWT</artifact>
           </compileSourcesArtifacts>
 

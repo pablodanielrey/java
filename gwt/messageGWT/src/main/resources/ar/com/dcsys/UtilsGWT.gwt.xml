@@ -1,5 +1,5 @@
 <module>
   <inherits name="com.google.gwt.user.User"/>
-  <source path="person"/>
-  <source path="group"/>
+
+  <source path="utils"/>
 </module>

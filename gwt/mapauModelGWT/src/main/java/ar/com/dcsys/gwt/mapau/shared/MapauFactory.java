@@ -2,7 +2,6 @@ package ar.com.dcsys.gwt.mapau.shared;
 
 import ar.com.dcsys.data.appointment.AppointmentV2;
 import ar.com.dcsys.data.filter.TransferFilter;
-import ar.com.dcsys.data.filter.TransferFilterType;
 import ar.com.dcsys.data.reserve.Reserve;
 import ar.com.dcsys.data.reserve.ReserveAttemptDate;
 import ar.com.dcsys.data.reserve.ReserveAttemptDateType;
@@ -27,7 +26,6 @@ public interface MapauFactory extends AutoBeanFactory {
 	public AutoBean<ReserveAttemptDateType> reserveAttemptDateType();
 	public AutoBean<AppointmentV2> appointmentV2();
 	public AutoBean<TransferFilter> transferFilter();
-	public AutoBean<TransferFilterType> transferFilterType();
 	
 	public AutoBean<AreaList> areaList();
 	public AutoBean<AppointmentV2List> appointmentV2List();
