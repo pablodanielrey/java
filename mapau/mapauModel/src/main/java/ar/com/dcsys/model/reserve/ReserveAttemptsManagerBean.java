@@ -1229,10 +1229,17 @@ public class ReserveAttemptsManagerBean implements ReserveAttemptsManager {
 			List<ReserveAttemptDate> rads = new ArrayList<>();
 			for (AppointmentV2 ap : appointments) {
 
+				/*
+				 * TODO:esto lo agregue para que tenga un owner, luego hay que reemplazarlo por el  comentario de arriba cuando termine pblo lo de principal
+				 */
+				Person owner = ap.getOwner();
+				
+				
+						
 				String description = ap.getDescription();
 				ReserveAttemptDate rad = new ReserveAttemptDateBean();
 				rad.setCreationDate(new Date());
-				//rad.setCreator(owner);
+				rad.setCreator(owner);
 				rad.setDescription(description);
 				rad.setStart(ap.getStart());
 				rad.setEnd(ap.getEnd());
