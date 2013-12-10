@@ -16,16 +16,16 @@ import ar.com.dcsys.gwt.message.shared.MessageUtils;
 import ar.com.dcsys.gwt.message.shared.Method;
 import ar.com.dcsys.model.silabouse.CoursesManager;
 
-public class FindAllCourses extends AbstractMessageHandler {
+public class FindAllCoursesHandler extends AbstractMessageHandler {
 
-	private static Logger logger = Logger.getLogger(FindAllCourses.class.getName());
+	private static Logger logger = Logger.getLogger(FindAllCoursesHandler.class.getName());
 
 	private final SilegEncoderDecoder silegEncoderDecoder;
 	private final CoursesManager coursesManager;
 	private final MessageUtils messageUtils;
 	
 	@Inject
-	public FindAllCourses(MessageUtils messageUtils,
+	public FindAllCoursesHandler(MessageUtils messageUtils,
 						  CoursesManager coursesManager,
 						  SilegEncoderDecoder silegEncoderDecoder) {
 		this.messageUtils = messageUtils;

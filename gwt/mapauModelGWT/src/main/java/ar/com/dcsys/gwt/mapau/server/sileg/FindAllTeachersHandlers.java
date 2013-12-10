@@ -21,9 +21,9 @@ import ar.com.dcsys.model.assignment.AssignmentsManager;
 import ar.com.dcsys.model.silabouse.CoursesManager;
 
 
-public class FindAllTeachers extends AbstractMessageHandler {
+public class FindAllTeachersHandlers extends AbstractMessageHandler {
 
-	private static final Logger logger = Logger.getLogger(FindAllTeachers.class.getName());
+	private static final Logger logger = Logger.getLogger(FindAllTeachersHandlers.class.getName());
 	
 	private final SilegFactory sf;
 	private final MessageUtils messageUtils;
@@ -32,7 +32,7 @@ public class FindAllTeachers extends AbstractMessageHandler {
 	private final PersonEncoderDecoder personEncoderDecoder;
 	
 	@Inject
-	public FindAllTeachers(SilegFactory sf, 
+	public FindAllTeachersHandlers(SilegFactory sf, 
 									   MessageUtils messageUtils,
 									   PersonEncoderDecoder personEncoderDecoder,
 									   AssignmentsManager assignmentsManager,
