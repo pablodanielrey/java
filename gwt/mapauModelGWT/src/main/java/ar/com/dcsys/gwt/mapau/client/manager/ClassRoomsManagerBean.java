@@ -135,7 +135,7 @@ public class ClassRoomsManagerBean implements ClassRoomsManager {
 	@Override
 	public void findAllClassRooms(final Receiver<List<ClassRoom>> rec) {
 		try {
-			Message msg = messageUtils.method(MapauMethods.findAllClassRooms);
+			Message msg = messageUtils.method(ClassRoomMethods.findAllClassRooms);
 			
 			// envío el mensaje al servidor.
 			socket.open();

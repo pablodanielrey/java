@@ -44,7 +44,7 @@ public class FindAllClassRoomsHandler extends AbstractMessageHandler {
 	
 	@Override
 	public boolean handles(Method method) {
-		return ClassRoomMethods.findAllCharacteristics.equals(method.getName());
+		return ClassRoomMethods.findAllClassRooms.equals(method.getName());
 	}
 
 	@Override

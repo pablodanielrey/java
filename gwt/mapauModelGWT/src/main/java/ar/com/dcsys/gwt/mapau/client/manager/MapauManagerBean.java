@@ -19,9 +19,11 @@ import ar.com.dcsys.data.silabouse.Area;
 import ar.com.dcsys.data.silabouse.Course;
 import ar.com.dcsys.gwt.manager.shared.ManagerUtils;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
+import ar.com.dcsys.gwt.mapau.shared.ClassRoomsEncoderDecoder;
 import ar.com.dcsys.gwt.mapau.shared.MapauEncoderDecoder;
 import ar.com.dcsys.gwt.mapau.shared.MapauFactory;
 import ar.com.dcsys.gwt.mapau.shared.MapauMethods;
+import ar.com.dcsys.gwt.mapau.shared.SilegEncoderDecoder;
 import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageException;
 import ar.com.dcsys.gwt.message.shared.MessageType;
@@ -36,14 +38,24 @@ public class MapauManagerBean implements MapauManager {
 	private final ManagerUtils managerUtils;
 	private final MapauFactory mapauFactory;
 	private final MapauEncoderDecoder encoderDecoder;
+	private final SilegEncoderDecoder silegEncoderDecoder;
+	private final ClassRoomsEncoderDecoder classRoomEncoderDecoder;
 	private final MessageUtils messageUtils;
 	private final WebSocket socket;
 	
 	
 	@Inject
-	public MapauManagerBean(ManagerUtils managerUtils, MapauFactory mapauFactory, MapauEncoderDecoder encoderDecoder, MessageUtils messageUtils, WebSocket ws) {
+	public MapauManagerBean(ManagerUtils managerUtils, 
+							MapauFactory mapauFactory, 
+							MapauEncoderDecoder encoderDecoder, 
+							SilegEncoderDecoder silegEncoderDecoder,
+							ClassRoomsEncoderDecoder classRoomEncoderDecoder,
+							MessageUtils messageUtils, 
+							WebSocket ws) {
 		this.socket = ws;
 		this.encoderDecoder = encoderDecoder;
+		this.silegEncoderDecoder = silegEncoderDecoder;
+		this.classRoomEncoderDecoder = classRoomEncoderDecoder;
 		this.messageUtils = messageUtils;
 		this.mapauFactory = mapauFactory;
 		this.managerUtils = managerUtils;
@@ -60,41 +72,248 @@ public class MapauManagerBean implements MapauManager {
 	
 	
 	@Override
-	public void findAllReserveAttemptType(Receiver<List<ReserveAttemptDateType>> rec) {
-		// TODO Auto-generated method stub
-		
+	public void findAllReserveAttemptType(final Receiver<List<ReserveAttemptDateType>> rec) {
+		try {
+			Message msg = messageUtils.method(MapauMethods.findAllReserveAttemptTypes);
+			
+			// envío el mensaje al servidor.
+			socket.open();
+			socket.send(msg, new WebSocketReceiver() {
+				@Override
+				public void onSuccess(Message response) {
+					
+					if (handleError(response, rec)) {
+						return;
+					}
+					
+					List<ReserveAttemptDateType> types = null;
+					try {
+						String list = response.getPayload();
+						types = encoderDecoder.decodeReserveAttemptDateTypeList(list);
+					} catch (Exception e) {
+						rec.onFailure(e);
+						return;
+					}
+					
+					try {
+						rec.onSuccess(types);
+					} catch (Exception e) {
+						logger.log(Level.SEVERE,e.getMessage(),e);
+					}
+				}
+				@Override
+				public void onFailure(Throwable t) {
+					rec.onFailure(t);
+				}
+			});
+		} catch (Exception e) {
+			rec.onFailure(e);
+		}		
 	}
 	
 	@Override
-	public void getCoursesToCreateReserve(Receiver<List<Course>> rec) {
-		// TODO Auto-generated method stub
-		
+	public void getCoursesToCreateReserve(final Receiver<List<Course>> rec) {
+		try {
+			Message msg = messageUtils.method(MapauMethods.findCoursesToCreateReserve);
+			
+			// envío el mensaje al servidor.
+			socket.open();
+			socket.send(msg, new WebSocketReceiver() {
+				@Override
+				public void onSuccess(Message response) {
+					
+					if (handleError(response, rec)) {
+						return;
+					}
+					
+					List<Course> courses = null;
+					try {
+						String list = response.getPayload();
+						courses = silegEncoderDecoder.decodeCourseList(list);
+					} catch (Exception e) {
+						rec.onFailure(e);
+						return;
+					}
+					
+					try {
+						rec.onSuccess(courses);
+					} catch (Exception e) {
+						logger.log(Level.SEVERE,e.getMessage(),e);
+					}
+				}
+				@Override
+				public void onFailure(Throwable t) {
+					rec.onFailure(t);
+				}
+			});
+		} catch (Exception e) {
+			rec.onFailure(e);
+		}		
 	}
 	
 	@Override
-	public void findAllArea(Receiver<List<Area>> rec) {
-		// TODO Auto-generated method stub
-		
+	public void findAllArea(final Receiver<List<Area>> rec) {
+		try {
+			Message msg = messageUtils.method(MapauMethods.findAllAreas);
+			
+			// envío el mensaje al servidor.
+			socket.open();
+			socket.send(msg, new WebSocketReceiver() {
+				@Override
+				public void onSuccess(Message response) {
+					
+					if (handleError(response, rec)) {
+						return;
+					}
+					
+					List<Area> areas = null;
+					try {
+						String list = response.getPayload();
+						areas = encoderDecoder.decodeAreaList(list);
+					} catch (Exception e) {
+						rec.onFailure(e);
+						return;
+					}
+					
+					try {
+						rec.onSuccess(areas);
+					} catch (Exception e) {
+						logger.log(Level.SEVERE,e.getMessage(),e);
+					}
+				}
+				@Override
+				public void onFailure(Throwable t) {
+					rec.onFailure(t);
+				}
+			});
+		} catch (Exception e) {
+			rec.onFailure(e);
+		}		
 	}
 	
 	@Override
-	public void createReserves(List<ReserveAttemptDate> rads,
-			List<ClassRoom> classRooms, Receiver<Void> rec) {
-		// TODO Auto-generated method stub
-		
+	public void createReserves(List<ReserveAttemptDate> rads, List<ClassRoom> classRooms, final Receiver<Void> rec) {
+		try {
+			String[] params = new String[2];
+			params[0] = encoderDecoder.encodeReserveAttemptDateList(rads);
+			params[1] = classRoomEncoderDecoder.encodeClassRoomList(classRooms);
+			String sparams = ManagerUtils.encodeParams(params);
+
+			Message msg = messageUtils.method(MapauMethods.createReserves, sparams);
+			
+			// envío el mensaje al servidor.
+			socket.open();
+			socket.send(msg, new WebSocketReceiver() {
+				@Override
+				public void onSuccess(Message response) {
+					
+					if (handleError(response, rec)) {
+						return;
+					}
+					
+					try {
+						rec.onSuccess(null);
+					} catch (Exception e) {
+						logger.log(Level.SEVERE,e.getMessage(),e);
+					}
+				}
+				@Override
+				public void onFailure(Throwable t) {
+					rec.onFailure(t);
+				}
+			});
+		} catch (Exception e) {
+			rec.onFailure(e);
+		}		
 	}
 	
 	@Override
-	public void findAllClassRoomsAvailableIn(List<ReserveAttemptDate> rads,	Boolean checkCapacity, Receiver<List<ClassRoom>> rec) {
-		// TODO Auto-generated method stub
-		
+	public void findAllClassRoomsAvailableIn(List<ReserveAttemptDate> rads,	Boolean checkCapacity, final Receiver<List<ClassRoom>> rec) {
+		try {
+			String[] params = new String[2];
+			params[0] = encoderDecoder.encodeReserveAttemptDateList(rads);
+			params[1] = managerUtils.encodeBoolean(checkCapacity);
+			String sparams = ManagerUtils.encodeParams(params);	
+			
+			Message msg = messageUtils.method(MapauMethods.findAllClassRoomsAvailableInRads, sparams);
+			
+			// envío el mensaje al servidor.
+			socket.open();
+			socket.send(msg, new WebSocketReceiver() {
+				@Override
+				public void onSuccess(Message response) {
+					
+					if (handleError(response, rec)) {
+						return;
+					}
+					
+					List<ClassRoom> classRooms = null;
+					try {
+						String list = response.getPayload();
+						classRooms = classRoomEncoderDecoder.decodeClassRoomList(list);
+					} catch (Exception e) {
+						rec.onFailure(e);
+						return;
+					}
+					
+					try {
+						rec.onSuccess(classRooms);
+					} catch (Exception e) {
+						logger.log(Level.SEVERE,e.getMessage(),e);
+					}
+				}
+				@Override
+				public void onFailure(Throwable t) {
+					rec.onFailure(t);
+				}
+			});
+		} catch (Exception e) {
+			rec.onFailure(e);
+		}		
 	}
 	
 	@Override
-	public void findReservesBy(ReserveAttemptDate rad, Receiver<List<Reserve>> rec) {
-		// TODO Auto-generated method stub
-		
+	public void findReservesBy(ReserveAttemptDate rad, final Receiver<List<Reserve>> rec) {
+		try {
+			String param = ManagerUtils.encode(mapauFactory, ReserveAttemptDate.class, rad);
+			Message msg = messageUtils.method(MapauMethods.findReservesByRad, param);
+			
+			// envío el mensaje al servidor.
+			socket.open();
+			socket.send(msg, new WebSocketReceiver() {
+				@Override
+				public void onSuccess(Message response) {
+					
+					if (handleError(response, rec)) {
+						return;
+					}
+					
+					List<Reserve> reserves = null;
+					try {
+						String list = response.getPayload();
+						reserves = encoderDecoder.decodeReserveList(list);
+					} catch (Exception e) {
+						rec.onFailure(e);
+						return;
+					}
+					
+					try {
+						rec.onSuccess(reserves);
+					} catch (Exception e) {
+						logger.log(Level.SEVERE,e.getMessage(),e);
+					}
+				}
+				@Override
+				public void onFailure(Throwable t) {
+					rec.onFailure(t);
+				}
+			});
+		} catch (Exception e) {
+			rec.onFailure(e);
+		}				
 	}
+	
+	
 	
 	@Override
 	public void createNewAppointments(List<AppointmentV2> apps,	final Receiver<Void> rec) {
@@ -203,6 +422,7 @@ public class MapauManagerBean implements MapauManager {
 						l = encoderDecoder.decodeAppointmentV2List(list);
 					} catch (Exception e) {
 						rec.onFailure(e);
+						return;
 					}
 					
 					try {
