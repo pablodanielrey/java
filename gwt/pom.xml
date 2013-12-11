@@ -16,6 +16,7 @@
   <name>proyectos de GWT</name>
 
   <properties>
+    <shiro.version>1.2.2</shiro.version>
     <gwt.version>2.5.1</gwt.version>
     <jetty.version>9.1.0.v20131115</jetty.version>
     <gin.version>2.1.1</gin.version>

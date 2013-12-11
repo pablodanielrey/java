@@ -1,4 +1,4 @@
-package ar.com.dcsys.gwt.mapau.server;
+package ar.com.dcsys.gwt.mapau.server.mapau;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
