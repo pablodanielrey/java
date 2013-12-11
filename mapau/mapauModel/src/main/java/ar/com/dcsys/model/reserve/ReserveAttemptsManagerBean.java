@@ -1290,6 +1290,7 @@ public class ReserveAttemptsManagerBean implements ReserveAttemptsManager {
 	@Override
 	public List<AppointmentV2> findAllAppointmentsBy(AppointmentV2 app, List<Date> dates, boolean checkHour) throws MapauException {
 		ReserveAttemptDate rad = app.getRad();
+
 		List<ReserveAttemptDate> rads = findAllAppointmentsBy(rad, dates, checkHour);
 		List<AppointmentV2> appointments = new ArrayList<AppointmentV2>();
 		for (ReserveAttemptDate r : rads) {
@@ -1320,7 +1321,7 @@ public class ReserveAttemptsManagerBean implements ReserveAttemptsManager {
 		
 			List<DatesRange> rdates = new ArrayList<DatesRange>();
 			
-			if (checkHour) {
+			if (checkHour) {				
 				
 				// tengo que ajustar las fechas para que sean iguales a las del Appointment pasado como parámetro.
 				
@@ -1359,7 +1360,7 @@ public class ReserveAttemptsManagerBean implements ReserveAttemptsManager {
 				}
 			} else {
 				
-				// se tiene en cuenta cualquier appointment que surga en el día indicado por la fecha
+				// se tiene en cuenta cualquier appointment que surja en el día indicado por la fecha				
 				
 				Calendar c = Calendar.getInstance();
 				
@@ -1370,7 +1371,7 @@ public class ReserveAttemptsManagerBean implements ReserveAttemptsManager {
 					c.set(Calendar.SECOND,0);
 					c.set(Calendar.MILLISECOND,0);
 					Date newStart = c.getTime();
-					
+										
 					c.set(Calendar.HOUR_OF_DAY,23);
 					c.set(Calendar.MINUTE,59);
 					c.set(Calendar.SECOND,59);
@@ -1380,7 +1381,6 @@ public class ReserveAttemptsManagerBean implements ReserveAttemptsManager {
 					rdates.add(new DatesRange(newStart, newEnd));
 				}
 			}
-			
 			
 			 List<ReserveAttemptDate> rads2 = findAll(app,rdates);
 			 if (rads2 != null && rads2.size() > 0) {
@@ -1409,12 +1409,14 @@ public class ReserveAttemptsManagerBean implements ReserveAttemptsManager {
 			throw new MapauException("rad.studentGroup == null");
 		}
 		
+		
+		
 		List<ReserveAttemptDate> rads = new ArrayList<ReserveAttemptDate>();
 		for (DatesRange dr : dates) {
 			List<ReserveAttemptDate> rads2 = reserveAttemptDateDAO.findBy(dr.getStart(), dr.getEnd());
 			for (ReserveAttemptDate rd : rads2) {
 				// el curso, tipo y comisión deben ser iguales.
-				if (rad.getCourse().equals(rd.getCourse()) && rad.getType().equals(rd.getType()) && rad.getStudentGroup().equals(rd.getStudentGroup())) {
+				if (rad.getCourse().getId().equals(rd.getCourse().getId()) && rad.getType().getId().equals(rd.getType().getId()) && rad.getStudentGroup().equals(rd.getStudentGroup())) {
 					rads.add(rd);
 				}
 			}
