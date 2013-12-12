@@ -23,7 +23,8 @@ import ar.com.dcsys.data.classroom.ClassRoomBean;
 import ar.com.dcsys.data.filter.TransferFilter;
 import ar.com.dcsys.data.filter.TransferFilterType;
 import ar.com.dcsys.data.group.Group;
-import ar.com.dcsys.data.group.types.GroupType;
+import ar.com.dcsys.data.group.GroupBean;
+import ar.com.dcsys.data.group.GroupType;
 import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonBean;
@@ -104,7 +105,7 @@ public class ReserveAttemptsManagerTest {
     }
 	
     private Group createGroup() {
-		Group group = new Group();
+		Group group = new GroupBean();
 		group.setMails(new ArrayList<Mail>());
 		group.setName("Grupo creado en el test");
 		group.setPersons(new ArrayList<Person>());

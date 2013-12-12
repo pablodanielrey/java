@@ -2,10 +2,11 @@ package ar.com.dcsys.gwt.mapau.client.activity.calendarv2.events;
 
 import java.util.Date;
 
+import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.mapau.client.ui.calendarv2.GenerateRepetitionView.RepetitionData;
 
 import com.google.gwt.event.shared.GwtEvent;
-import com.google.web.bindery.requestfactory.shared.Receiver;
+
 
 public class GenerateRepetitionEvent extends GwtEvent<GenerateRepetitionEventHandler> {
 

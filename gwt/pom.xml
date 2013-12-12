@@ -16,10 +16,6 @@
   <name>proyectos de GWT</name>
 
   <properties>
-    <gwt.version>2.5.1</gwt.version>
-    <jetty.version>9.1.0.v20131115</jetty.version>
-    <gin.version>2.1.1</gin.version>
-    <jetty.version>9.1.0.v20131115</jetty.version>
     <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -33,6 +29,8 @@
 
     <module>mapauModelGWT</module>
     <module>mapauGWT</module>
+
+    <module>authGWT</module>
   </modules>
 
 </project>

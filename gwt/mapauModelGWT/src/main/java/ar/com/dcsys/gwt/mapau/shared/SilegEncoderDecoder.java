@@ -13,25 +13,25 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 
 public class SilegEncoderDecoder {
 
-	private final MapauFactory mapauFactory;
+	private final SilegFactory silegFactory;
 	
 	@Inject
-	public SilegEncoderDecoder(MapauFactory mapauFactory) {
-		this.mapauFactory = mapauFactory;
+	public SilegEncoderDecoder(SilegFactory silegFactory) {
+		this.silegFactory = silegFactory;
 	}
 	
 	public List<Course> decodeCourseList(String list) {
-		AutoBean<CourseList> bean = AutoBeanCodex.decode(mapauFactory, CourseList.class, list);
+		AutoBean<CourseList> bean = AutoBeanCodex.decode(silegFactory, CourseList.class, list);
 		CourseList l = bean.as();
 		List<Course> values = l.getList();
 		return values;
 	}
 	
 	public String encodeCourseList(List<Course> list) {
-		AutoBean<CourseList> al = mapauFactory.courseList();
+		AutoBean<CourseList> al = silegFactory.courseList();
 		CourseList l = al.as();
 		
-		List<Course> cl = AutoBeanUtils.wrapList(mapauFactory, Course.class, list);
+		List<Course> cl = AutoBeanUtils.wrapList(silegFactory, Course.class, list);
 		l.setList(cl);
 		
 		String json = AutoBeanCodex.encode(al).getPayload();

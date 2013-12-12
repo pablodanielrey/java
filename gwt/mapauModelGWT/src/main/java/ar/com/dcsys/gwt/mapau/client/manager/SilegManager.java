@@ -10,5 +10,6 @@ public interface SilegManager {
 
 	public void findAllCourses(Receiver<List<Course>> courses);
 	public void findAllTeachers(Receiver<List<Person>> persons);
+	public void findTeachers(Course c, Receiver<List<Person>> rec);
 	
 }

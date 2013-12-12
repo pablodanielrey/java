@@ -93,7 +93,7 @@ public class FilterActivityUtils {
 	 * @param filters
 	 * @param rec
 	 */
-	public void findAppointments(MapauManager rf, List<FilterValue<?>> filters, final Receiver<List<Appointment>> rec) {
+	public void findAppointments(List<FilterValue<?>> filters, final Receiver<List<Appointment>> rec) {
 		
 		// convierto los filtros del modelo del cliente para ser transferidos por RequestFactory
 		TransferFilterProvider tp = new TransferFilterProvider() {

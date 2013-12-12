@@ -3,7 +3,6 @@ package ar.com.dcsys.data.group;
 import java.io.Serializable;
 import java.util.List;
 
-import ar.com.dcsys.data.group.types.GroupType;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.exceptions.PersonException;
 

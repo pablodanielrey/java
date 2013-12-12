@@ -1,13 +1,13 @@
 package ar.com.dcsys.model.silabouse;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 import javax.inject.Inject;
 
 import ar.com.dcsys.data.classroom.ClassRoom;
 import ar.com.dcsys.data.group.Group;
-import ar.com.dcsys.data.group.types.GroupType;
+import ar.com.dcsys.data.group.GroupBean;
+import ar.com.dcsys.data.group.GroupType;
 import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.silabouse.AreaDAO;
@@ -33,7 +33,7 @@ public class ParamsArea implements AreaDAO.Params {
 	 */
 	@Override
 	public Group findGroupById(String id) throws PersonException {
-		Group group = new Group();
+		Group group = new GroupBean();
 		group.setMails(new ArrayList<Mail>());
 		group.setName("Grupo creado en el params de area");
 		group.setPersons(new ArrayList<Person>());

@@ -18,6 +18,7 @@
 
   <modules>
 	<module>firmwareConfig</module>
+    	<module>weld-jetty9</module>
   </modules>
 
 </project>

@@ -1,9 +1,14 @@
 Manifest-Version: 1.0
-Class-Path: gwt-servlet-2.5.1.jar weld-servlet-2.1.0.Final.jar gwt-cal
- -0.9.3.1.jar gwt-dnd-3.1.2.jar clientMessagesGWT.jar firmwareConfig.j
- ar mapauModelGWT.jar messageGWT.jar org.json-chargebee-1.0.jar gwt-we
- bsockets-1.0.3.jar personModelGWT.jar personEntities.jar personModel.
- jar personDAO.jar dcsysUtils.jar hsqldb-2.3.1.jar postgresql-9.3-1100
- -jdbc41.jar mapauEntities.jar mapauModel.jar mapauDAO.jar mapauHsqlDA
- O.jar hsql.jar
+Class-Path: shiro-core-1.2.2.jar slf4j-api-1.7.5.jar commons-beanutils
+ -1.8.3.jar shiro-web-1.2.2.jar jcl-over-slf4j-1.7.5.jar logback-class
+ ic-1.0.13.jar logback-core-1.0.13.jar gwt-servlet-2.5.1.jar gwt-cal-0
+ .9.3.1.jar gwt-dnd-3.1.2.jar clientMessagesGWT-1.0-SNAPSHOT.jar firmw
+ areConfig-1.0-SNAPSHOT.jar mapauModelGWT-1.0-SNAPSHOT.jar messageGWT-
+ 1.0-SNAPSHOT.jar org.json-chargebee-1.0.jar gwt-websockets-1.0.3.jar 
+ personModelGWT-1.0-SNAPSHOT.jar personEntities-1.0-SNAPSHOT.jar perso
+ nModel-1.0-SNAPSHOT.jar personDAO-1.0-SNAPSHOT.jar dcsysUtils-1.0-SNA
+ PSHOT.jar hsqldb-2.3.1.jar postgresql-9.3-1100-jdbc41.jar mapauEntiti
+ es-1.0-SNAPSHOT.jar mapauModel-1.0-SNAPSHOT.jar mapauDAO-1.0-SNAPSHOT
+ .jar mapauHsqlDAO-1.0-SNAPSHOT.jar hsql-1.0-SNAPSHOT.jar personHsqlDA
+ O-1.0-SNAPSHOT.jar
 

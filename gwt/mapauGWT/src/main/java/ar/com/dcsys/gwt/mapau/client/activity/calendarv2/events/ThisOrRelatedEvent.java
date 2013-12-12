@@ -1,7 +1,10 @@
 package ar.com.dcsys.gwt.mapau.client.activity.calendarv2.events;
 
+import ar.com.dcsys.gwt.manager.shared.Receiver;
+
 import com.google.gwt.event.shared.GwtEvent;
-import com.google.web.bindery.requestfactory.shared.Receiver;
+
+
 
 public class ThisOrRelatedEvent extends GwtEvent<ThisOrRelatedEventHandler> {
 

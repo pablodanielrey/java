@@ -1,8 +1,11 @@
 <module>
   <inherits name="com.google.gwt.user.User"/>
 
+  <source path="filter"/>
+  <source path="appointment"/>
   <source path="assignment"/>
   <source path="classroom"/>
   <source path="reserve"/>
   <source path="silabouse"/>
+
 </module>

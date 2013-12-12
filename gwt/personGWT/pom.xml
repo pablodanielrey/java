@@ -20,7 +20,7 @@
 
 
    <!-- para arreglar el WeldDecorator con la nueva interface de Decorator que jetty 9.1 tiene ahora -->
-
+<!--
    <dependency>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-servlet</artifactId>
@@ -34,7 +34,7 @@
 	<version>${jetty.version}</version>
 	<scope>provided</scope>
    </dependency>
-
+-->
    <!--  -->
 	
 
@@ -60,13 +60,14 @@
     </dependency>
 
     <!-- referencias : http://www.eclipse.org/jetty/documentation/current/framework-weld.html -->
+<!--
     <dependency>
       <groupId>org.jboss.weld.servlet</groupId>
       <artifactId>weld-servlet</artifactId>
       <version>2.1.0.Final</version>
       <scope>compile</scope>
     </dependency>
-
+-->
 
     <dependency>
       <groupId>ar.com.dcsys.data</groupId>
@@ -121,7 +122,7 @@
         <executions>
           <execution>
             <goals>
-	      <!--  <goal>compile</goal> -->
+	      <goal>compile</goal>
               <goal>test</goal>
               <goal>i18n</goal>
               <goal>generateAsync</goal>

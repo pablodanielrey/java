@@ -8,6 +8,10 @@
   <inherits name='com.google.gwt.activity.Activity'/>
   <inherits name='com.google.gwt.place.Place'/>
 
+  <inherits name='com.bradrydzewski.gwt.calendar.Calendar' />
+  <inherits name='com.bradrydzewski.gwt.calendar.theme.google.Google' />  
+  <inherits name='com.allen_sauer.gwt.dnd.gwt-dnd'/>
+
   <!-- We need the JUnit module in the main module,               -->
   <!-- otherwise eclipse complains (Google plugin bug?)           -->
   <inherits name='com.google.gwt.junit.JUnit' />
@@ -15,11 +19,23 @@
   <inherits name='com.google.gwt.user.theme.standard.Standard' />
   <!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
+  <inherits name="ar.com.dcsys.gwt.clientMessages.ClientMessagesGWT"/>
+  <inherits name="ar.com.dcsys.gwt.utils.UtilsGWT"/>
+  <inherits name="ar.com.dcsys.UtilsGWT"/>
 
+  
+  <inherits name="ar.com.dcsys.data.PersonEntities"/>
+  <inherits name="ar.com.dcsys.gwt.person.PersonModelGWT"/>
+  
   <inherits name="ar.com.dcsys.data.MapauEntities"/>
   <inherits name="ar.com.dcsys.gwt.mapau.MapauModelGWT"/>
-  <inherits name="ar.com.dcsys.gwt.clientMessages.ClientMessagesGWT"/>
 
+
+   <!-- only build for Chrome -->
+   <set-property name="user.agent" value="safari" />
+  <extend-property name="locale" values="en"/> 
+  <set-property name="locale" value="en" /> 
+  <set-property-fallback name="locale" value="en"/> 
 
   <entry-point class='ar.com.dcsys.gwt.mapau.client.MapauGWT' />
 
