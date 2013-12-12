@@ -39,22 +39,4 @@ public class ParamsReserve implements ReserveDAO.Params {
 		return null;
 	}
 
-	@Override
-	public Reserve findReserveById(String id) throws MapauException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Reserve> findReserveByRelated(String id) throws MapauException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String persistReserve(Reserve res) throws MapauException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
