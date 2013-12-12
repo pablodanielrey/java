@@ -24,8 +24,7 @@ public class AssignmentDAOParams implements AssignmentDAO.Params {
 	
 	@Override
 	public Person findPersonBySilegIdentifiers(String id) throws PersonException {
-		// TODO Auto-generated method stub
-		return null;
+		return personsManager.findByDni(id);
 	}
 
 	@Override
@@ -35,14 +34,12 @@ public class AssignmentDAOParams implements AssignmentDAO.Params {
 
 	@Override
 	public Person findPersonById(String id) throws PersonException {
-		// TODO Auto-generated method stub
-		return null;
+		return personsManager.findById(id);
 	}
 
 	@Override
 	public Course findCourseById(String id) throws MapauException {
-		// TODO Auto-generated method stub
-		return null;
+		return coursesManager.findById(id);
 	}
 
 }
