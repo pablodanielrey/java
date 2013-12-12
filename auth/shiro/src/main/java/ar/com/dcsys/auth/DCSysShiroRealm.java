@@ -1,4 +1,4 @@
-package ar.com.dcsys.gwt.mapau.server;
+package ar.com.dcsys.auth.shiro;
 
 import java.security.Principal;
 import java.util.Arrays;

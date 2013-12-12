@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='AuthGWT'>
+  <!-- Inherit the core Web Toolkit stuff.                        -->
+  <inherits name='com.google.gwt.user.User' />
+
+  <!-- We need the JUnit module in the main module,               -->
+  <!-- otherwise eclipse complains (Google plugin bug?)           -->
+  <inherits name='com.google.gwt.junit.JUnit' />
+
+
+  <inherits name="com.google.gwt.inject.Inject"/>
+  <inherits name="com.google.gwt.logging.Logging"/>
+  <inherits name='com.google.gwt.activity.Activity'/>
+  <inherits name='com.google.gwt.place.Place'/>
+
+
+  <!-- Inherit the default GWT style sheet.  You can change       -->
+  <!-- the theme of your GWT application by uncommenting          -->
+  <!-- any one of the following lines.                            -->
+  <inherits name='com.google.gwt.user.theme.standard.Standard' />
+  <!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
+  <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
+
+  <inherits name="ar.com.dcsys.gwt.clientMessages.ClientMessagesGWT"/>
+  <inherits name="com.google.gwt.http.HTTP"/>  
+
+  <!-- Specify the app entry point class.                         -->
+  <entry-point class='ar.com.dcsys.gwt.auth.client.AuthGWT' />
+
+  <!-- Specify the paths for translatable code                    -->
+  <source path='client' />
+  <source path='shared' />
+
+</module>

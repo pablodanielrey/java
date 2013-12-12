@@ -20,9 +20,9 @@
 	<module>fingerprintCredentials</module>
 	<module>fingerprintDAO</module>
 	<module>fingerprintHsqlDAO</module>
-
 	<module>userPasswordCredentials</module>
 	<module>userPasswordDAO</module>
+	<module>shiro</module>
   </modules>
 
 </project>

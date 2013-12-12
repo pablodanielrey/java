@@ -38,26 +38,26 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.5</version>
+            <version>${slf4j.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
-            <version>1.7.5</version>
+            <version>${slf4j.version}</version>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.0.13</version>
+            <version>${logback.version}</version>
             <scope>runtime</scope>
         </dependency>
 
 
    <!-- para arreglar el WeldDecorator con la nueva interface de Decorator que jetty 9.1 tiene ahora -->
-
+<!--
    <dependency>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-servlet</artifactId>
@@ -71,7 +71,7 @@
         <version>${jetty.version}</version>
         <scope>provided</scope>
    </dependency>
-
+-->
    <!--  -->
         
 
@@ -97,13 +97,14 @@
     </dependency>
 
     <!-- referencias : http://www.eclipse.org/jetty/documentation/current/framework-weld.html -->
+<!--
     <dependency>
       <groupId>org.jboss.weld.servlet</groupId>
       <artifactId>weld-servlet</artifactId>
-      <version>2.1.0.Final</version>
+      <version>${weld.version}</version>
       <scope>compile</scope>
     </dependency>
-
+-->
     <dependency>
       <groupId>com.bradrydzewski</groupId>
       <artifactId>gwt-cal</artifactId>

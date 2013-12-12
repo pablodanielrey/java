@@ -1,0 +1,105 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+<ui:style>
+	.flowContenedor {
+		background-color: #ffffff;
+		margin: 0.5em auto;
+		padding: 0.25em;
+		width: 90%;
+	}
+	
+	.flowHeader{
+		/*background: rgb(247, 247, 247);
+        border: 1px solid #ccc;
+        -webkit-box-shadow: 0pt 2px 5px rgba(105, 108, 109,  0.7), 0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+        -moz-box-shadow: 0pt 2px 5px rgba(105, 108, 109,  0.7), 0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+        box-shadow: 0pt 2px 5px rgba(105, 108, 109,  0.7), 0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+        -webkit-box-shadow: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;*/
+        margin-bottom: 8%;
+		padding: 0.25em; 
+		width: 100%;
+	}
+	
+	
+	.flowLogin {
+		background-color: #ffffff;
+		border: 2px solid #cccccc;
+		margin: 0.5em auto;
+		padding: 0.25em; 
+		width: 35%;
+	}
+	
+	.flowUsuario {
+		padding: 3.5em 0em 1em 1em;
+		text-align: left;
+	}
+	
+	.flowPassword {
+		padding: 1em;
+		text-align: left;
+	}
+	
+	.labelUsuario{
+		display: inline-block;
+		font-family: arial;
+		font-size: 1.2em;
+		margin-right: 1.7em;
+	}
+	
+	.labelPassword{
+		display: inline-block;
+		font-family: arial;
+		font-size: 1.2em;
+		margin-right: 1em;
+	}
+	
+	
+	.flowBotonIngresar {
+		padding: 2em;
+		text-align: center;
+	}
+	
+	.botonIngresar {
+		background-color: #f1f1f1;
+		color: #212121;
+		font-family: arial;
+		font-size: 1.3em;
+		padding: 0.5em 1em;
+	}
+	
+	.txtPassword{
+		background-color: #f1f1f1;
+		width: 17em;
+	}
+	
+	.txtUsuario{
+		background-color: #f1f1f1;
+		width: 17em;
+	}
+
+</ui:style>
+
+<g:FlowPanel styleName="{style.flowContenedor}">
+	<g:FlowPanel styleName="{style.flowHeader}">
+		<g:Image url="logoMapau.png" title="Logo Mapau" altText="Logo Mapau"/>
+	</g:FlowPanel>
+	<g:FlowPanel styleName="{style.flowLogin}">
+		<g:FlowPanel styleName="{style.flowUsuario}">
+			<g:Label text="Usuario" styleName="{style.labelUsuario}"/>
+			<g:TextBox ui:field="user" styleName="{style.txtUsuario}"/>
+		</g:FlowPanel>
+		<g:FlowPanel styleName="{style.flowPassword}">
+			<g:Label text="Clave" styleName="{style.labelPassword}"/>
+			<g:PasswordTextBox ui:field="password" styleName="{style.txtPassword}"/>
+		</g:FlowPanel>
+		<g:FlowPanel styleName="{style.flowBotonIngresar}">
+			<g:Button ui:field="accept" text="Ingresar" styleName="{style.botonIngresar}"/>
+		</g:FlowPanel>
+	</g:FlowPanel>
+</g:FlowPanel>
+
+</ui:UiBinder> 
