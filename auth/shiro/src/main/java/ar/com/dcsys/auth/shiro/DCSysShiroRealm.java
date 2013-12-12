@@ -17,6 +17,10 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 
+/**
+* Implementacion de una realm basica de shiro para poder ser usada en las aplicaciones
+*/
+
 public class DCSysShiroRealm extends AuthorizingRealm {
 
 	private static final Logger logger = Logger.getLogger(DCSysShiroRealm.class.getName());
