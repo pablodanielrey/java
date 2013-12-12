@@ -30,6 +30,13 @@
   <inherits name="ar.com.dcsys.data.MapauEntities"/>
   <inherits name="ar.com.dcsys.gwt.mapau.MapauModelGWT"/>
 
+
+   <!-- only build for Chrome -->
+   <set-property name="user.agent" value="safari" />
+  <extend-property name="locale" values="en"/> 
+  <set-property name="locale" value="en" /> 
+  <set-property-fallback name="locale" value="en"/> 
+
   <entry-point class='ar.com.dcsys.gwt.mapau.client.MapauGWT' />
 
   <source path='client' />

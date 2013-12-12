@@ -47,7 +47,7 @@
 
   <!-- Default page to serve -->
   <welcome-file-list>
-    <welcome-file>PersonGWT.html</welcome-file>
+    <welcome-file>MapauGWT.html</welcome-file>
   </welcome-file-list>
 
 
