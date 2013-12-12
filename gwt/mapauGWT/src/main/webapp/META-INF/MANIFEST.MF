@@ -1,9 +1,11 @@
 Manifest-Version: 1.0
-Class-Path: gwt-servlet-2.5.1.jar weld-servlet-2.1.0.Final.jar gwt-cal
- -0.9.3.1.jar gwt-dnd-3.1.2.jar clientMessagesGWT.jar firmwareConfig.j
- ar mapauModelGWT.jar messageGWT.jar org.json-chargebee-1.0.jar gwt-we
- bsockets-1.0.3.jar personModelGWT.jar personEntities.jar personModel.
- jar personDAO.jar dcsysUtils.jar hsqldb-2.3.1.jar postgresql-9.3-1100
- -jdbc41.jar mapauEntities.jar mapauModel.jar mapauDAO.jar mapauHsqlDA
- O.jar hsql.jar
+Class-Path: shiro-core-1.2.2.jar slf4j-api-1.7.5.jar commons-beanutils
+ -1.8.3.jar shiro-web-1.2.2.jar jcl-over-slf4j-1.7.5.jar logback-class
+ ic-1.0.13.jar logback-core-1.0.13.jar gwt-servlet-2.5.1.jar weld-serv
+ let-2.1.0.Final.jar gwt-cal-0.9.3.1.jar gwt-dnd-3.1.2.jar clientMessa
+ gesGWT.jar firmwareConfig.jar mapauModelGWT.jar messageGWT.jar org.js
+ on-chargebee-1.0.jar gwt-websockets-1.0.3.jar personModelGWT.jar pers
+ onEntities.jar personModel.jar personDAO.jar dcsysUtils.jar hsqldb-2.
+ 3.1.jar postgresql-9.3-1100-jdbc41.jar mapauEntities.jar mapauModel.j
+ ar mapauDAO.jar mapauHsqlDAO.jar hsql.jar personHsqlDAO.jar
 

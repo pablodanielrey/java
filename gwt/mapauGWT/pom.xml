@@ -24,12 +24,14 @@
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-core</artifactId>
             <version>${shiro.version}</version>
+	    <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-web</artifactId>
             <version>${shiro.version}</version>
+	    <scope>compile</scope>
         </dependency>
 
         <!-- Logging API + implementation: para shiro -->
