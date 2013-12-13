@@ -31,9 +31,6 @@ public interface ReserveDAO extends Serializable {
 		public ReserveAttemptDate findReserveAttemptDateById(String id) throws MapauException;
 		public ClassRoom findClassRoomById(String id) throws MapauException;
 		public Person findPersonById(String id) throws PersonException;
-		public Reserve findReserveById(String id) throws MapauException;
-		public List<Reserve> findReserveByRelated(String id) throws MapauException;
-		public String persistReserve(Reserve res) throws MapauException;
 	}
 
 }

@@ -127,6 +127,7 @@ public class FiltersProcessor {
 		
 		List<ReserveAttemptDate> filtered = new ArrayList<>();
 		for (ReserveAttemptDate ra : ras) {
+
 			if (root.filter(ra)) {
 				filtered.add(ra);
 			}
