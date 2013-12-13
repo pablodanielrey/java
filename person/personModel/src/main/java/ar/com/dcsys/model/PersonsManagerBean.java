@@ -1,5 +1,6 @@
 package ar.com.dcsys.model;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -239,6 +240,61 @@ public class PersonsManagerBean implements PersonsManager {
 	@Override
 	public List<PersonType> findAllTypes() throws PersonException {
 		return personDAO.findAllTypes();
+	}
+	
+	
+	@Override
+	public Person findByPrincipal(Principal principal) throws PersonException {
+
+		String id = principal.getName();
+		Person person = findById(id);
+		if (person == null) {
+
+			person = findByDni(id);
+			if (person == null) {
+
+				// el caso de nombre.apellido no lo tengo en cuenta por ahora.
+				
+				throw new PersonException("No se puede encontrar la persona dado ese principal");
+				
+			}
+		}
+		return person;
+		
+	}
+	
+	
+	private class SimplePrincipal implements Principal {
+		private final String name;
+		
+		public SimplePrincipal(String name) {
+			this.name = name;
+		}
+		
+		@Override
+		public String getName() {
+			return null;
+		}
+	}
+	
+	@Override
+	public List<Principal> getPrincipals(Person person) throws PersonException {
+		
+		List<Principal> principals = new ArrayList<>();
+		
+		String id = person.getId();
+		principals.add(new SimplePrincipal(id));
+		
+		String dni = person.getDni();
+		principals.add(new SimplePrincipal(dni));
+		
+		String name = person.getName();
+		String lastName = person.getLastName();
+		if (name != null && lastName != null) {
+			principals.add(new SimplePrincipal(name.toLowerCase().trim() + "." + lastName.toLowerCase().trim()));
+		}
+		
+		return principals;
 	}
 	
 	/*

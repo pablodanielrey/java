@@ -1,4 +1,4 @@
-package ar.com.dcsys.gwt.utils.server;
+package ar.com.dcsys.utils;
 
 import javax.enterprise.inject.spi.BeanManager;
 import javax.naming.InitialContext;

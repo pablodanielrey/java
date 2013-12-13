@@ -10,12 +10,14 @@ import java.util.logging.Logger;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+
+import ar.com.dcsys.model.auth.AuthManager;
+import ar.com.dcsys.utils.BeanManagerUtils;
 
 /**
 * Implementacion de una realm basica de shiro para poder ser usada en las aplicaciones
@@ -27,7 +29,7 @@ public class DCSysShiroRealm extends AuthorizingRealm {
 	
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection pc) {
-		
+
 		logger.info("autorizando");
 		
 		List<Principal> principals = pc.asList();
@@ -46,22 +48,24 @@ public class DCSysShiroRealm extends AuthorizingRealm {
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken pc) throws AuthenticationException {
 		
 		logger.info("autenticando");
+		
 				
 		if (!(pc instanceof UsernamePasswordToken)) {
 			throw new AuthenticationException("AuthenticationToken not supported");
 		}
 		
-		
-		UsernamePasswordToken ut = (UsernamePasswordToken)pc;
-		String userName = ut.getUsername();
-		String password = new String(ut.getPassword());
+		AuthManager authManager = BeanManagerUtils.lookup(AuthManager.class);
+		if (authManager == null) {
+			throw new AuthenticationException("No se pudo encontrar el manager de autentificacion");
+		}
 
-		// chequear las credenciales a ver si existe el usuario.
-		// si no existe tirar un AuthenticationException
-		
-		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(ut.getPrincipal(),ut.getCredentials(),getName());
-		
-		return info;
+		try {
+			AuthenticationInfo info = authManager.autentificate(pc);
+			return info;
+			
+		} catch (Exception e) {
+			throw new AuthenticationException(e);
+		}
 	}
 
 }
