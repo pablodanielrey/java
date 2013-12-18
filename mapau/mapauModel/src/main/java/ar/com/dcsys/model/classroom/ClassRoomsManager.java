@@ -5,6 +5,7 @@ import java.util.List;
 import ar.com.dcsys.data.classroom.ClassRoom;
 import ar.com.dcsys.exceptions.MapauException;
 
+
 public interface ClassRoomsManager {
 	public ClassRoom findById(String id) throws MapauException;
 	public List<ClassRoom> findAll() throws MapauException;
