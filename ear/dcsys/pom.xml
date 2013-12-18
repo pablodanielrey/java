@@ -124,7 +124,7 @@
     </dependency>
 
     <!-- mapau -->
-
+<!--
     <dependency>
       <groupId>ar.com.dcsys.gwt</groupId>
       <artifactId>mapauGWT</artifactId>
@@ -155,7 +155,7 @@
       <artifactId>mapauModel</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
-
+-->
 
    <!-- utilidades usadas en todos los proyectos -->
 
@@ -198,6 +198,8 @@
                         <port>8080</port>
 <!--                            <contextRoot>${project.artifactId}</contextRoot> -->
                         <contextRoot>/</contextRoot>
+			<debug>true</debug>
+			<autoCreate>true</autoCreate>
                 </configuration>
 		<executions>
           	<execution>

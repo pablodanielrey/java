@@ -13,6 +13,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -31,12 +33,37 @@ public class HsqlDCSysSessionDAO implements SessionDAO {
 	private static final String db = "jdbc:hsqldb:file:" + pathdb;
 	private static final String user = "SA";
 	private static final String pass = "";
+
+	
+	private boolean tablesCreated = false;
 	
 	public HsqlDCSysSessionDAO() {
+		
+		createTables();
+		
+	}
+	
+	private void createTables() {
+		
+		if (tablesCreated) {
+			return;
+		}
+		
 		try {
+			Class.forName("org.hsqldb.jdbc.JDBCDriver" );
 			Connection con = getConnection();
 			try {
-				createTables(con);
+				PreparedStatement st = con.prepareStatement("create table if not exists sessions (" +
+						"id longvarchar not null primary key," +
+						"session varbinary(524288000) not null" +			// 500MB
+						")");
+				try {
+					st.execute();
+					tablesCreated = true;
+					
+				} finally {
+					st.close();
+				}
 				
 			} finally {
 				con.close();
@@ -44,20 +71,8 @@ public class HsqlDCSysSessionDAO implements SessionDAO {
 		} catch (Exception e) {
 			logger.log(Level.SEVERE,e.getMessage(),e);
 		}
-	}
-	
-	private void createTables(Connection con) throws SQLException {
 		
-		PreparedStatement st = con.prepareStatement("create table if not exists sessions (" +
-				"id longvarchar not null primary key," +
-				"session varbinary(524288000) not null" +			// 500MB
-				")");
-		try {
-			st.execute();
-			
-		} finally {
-			st.close();
-		}
+		
 		
 	}
 	
@@ -65,9 +80,27 @@ public class HsqlDCSysSessionDAO implements SessionDAO {
 		return DriverManager.getConnection(db,user,pass);
 	}
 	
+	private boolean isSerializable(Object v) {
+		return (v instanceof Serializable);
+	}
 	
 	
 	private byte[] serializeSession(Session s) throws IOException {
+
+		/*
+		Date lastAccessTime = s.getLastAccessTime();
+		Date startTime = s.getStartTimestamp();
+		HashMap<Object,Object> data = new HashMap<>();
+		
+		for (Object k : s.getAttributeKeys()) {
+			Object v = s.getAttribute(k);
+			
+			if (isSerializable(k) && isSerializable(v)) {
+				data.put(k, v);
+			}
+		}
+		*/
+		
 		ByteArrayOutputStream bo = new ByteArrayOutputStream();
 		ObjectOutputStream oo = new ObjectOutputStream(bo);
 		oo.writeObject(s);
@@ -85,7 +118,6 @@ public class HsqlDCSysSessionDAO implements SessionDAO {
 	
 	@Override
 	public Serializable create(Session session) {
-
 		try {
 			String id = UUID.randomUUID().toString();
 			((SimpleSession)session).setId(id);					// como lo hace en otras partes de shiro.
