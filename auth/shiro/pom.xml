@@ -23,6 +23,21 @@
             <scope>compile</scope>
         </dependency>
 
+        <dependency>
+            <groupId>ar.com.dcsys.model</groupId>
+            <artifactId>authModel</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>ar.com.dcsys</groupId>
+            <artifactId>cdiUtils</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+
   </dependencies>
 
 

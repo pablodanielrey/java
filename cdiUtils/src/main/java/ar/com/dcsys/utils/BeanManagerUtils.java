@@ -1,4 +1,4 @@
-package ar.com.dcsys.gwt.utils.server;
+package ar.com.dcsys.utils;
 
 import java.lang.reflect.Type;
 import java.util.Iterator;

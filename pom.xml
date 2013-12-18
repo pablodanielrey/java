@@ -17,6 +17,7 @@
 	<module>assistance</module>
 	<module>gwt</module>
 	<module>ear</module>
+    <module>cdiUtils</module>
   </modules>
   
   <properties>

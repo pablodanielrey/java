@@ -1,5 +1,6 @@
 package ar.com.dcsys.model;
 
+import java.security.Principal;
 import java.util.List;
 
 import ar.com.dcsys.data.person.Person;
@@ -9,6 +10,10 @@ import ar.com.dcsys.exceptions.PersonException;
 public interface PersonsManager {
 
 //	public Person findByPrincipal(DCSysPrincipal principal) throws PersonException;
+	
+	public Person findByPrincipal(Principal principal) throws PersonException;
+	public List<Principal> getPrincipals(Person person) throws PersonException;
+	
 	
 	public List<Person> findAll() throws PersonException;
 	public List<Person> findAllBy(List<PersonType> types) throws PersonException;

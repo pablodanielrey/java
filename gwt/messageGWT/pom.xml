@@ -62,6 +62,13 @@
       <version>1.1</version>
       <scope>provided</scope>
    </dependency>
+
+   <dependency>
+      <groupId>ar.com.dcsys</groupId>
+      <artifactId>cdiUtils</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+   </dependency>
 	
   </dependencies>
 

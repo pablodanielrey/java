@@ -25,7 +25,11 @@ public class ReserveAttemptDateDAOParams implements ReserveAttemptDateDAO.Params
 	private final CharacteristicsManager characteristicsManager;	
 	
 	@Inject
-	public ReserveAttemptDateDAOParams(PersonsManager personsManager, CoursesManager coursesManager, ReserveAttemptTypesManager reserveAttemptTypesManager, AreasManager areasManager, CharacteristicsManager characteristicsManager) {
+	public ReserveAttemptDateDAOParams(PersonsManager personsManager, 
+									   CoursesManager coursesManager, 
+									   ReserveAttemptTypesManager reserveAttemptTypesManager, 
+									   AreasManager areasManager, 
+									   CharacteristicsManager characteristicsManager) {
 		this.personsManager = personsManager;
 		this.coursesManager = coursesManager;
 		this.reserveAttemptTypesManager = reserveAttemptTypesManager;

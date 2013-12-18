@@ -59,14 +59,6 @@
         </dependency>
 
 
-    <!-- utilidades de shiro -->
-
-	<dependency>
-	  <groupId>ar.com.dcsys.auth</groupId>
-	  <artifactId>shiro</artifactId>
-	  <version>1.0-SNAPSHOT</version>
-	</dependency>
-
 
    <!-- auth -->
 
@@ -76,6 +68,19 @@
 	<version>1.0-SNAPSHOT</version>
 	 <type>war</type>
     </dependency>
+
+    <dependency>
+        <groupId>ar.com.dcsys.auth</groupId>
+        <artifactId>shiro</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+        <groupId>ar.com.dcsys.auth</groupId>
+        <artifactId>userPasswordAuthModule</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </dependency>
+
 
     <!-- persona -->
 

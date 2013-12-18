@@ -29,8 +29,8 @@ import ar.com.dcsys.gwt.message.shared.MessageTransport;
 import ar.com.dcsys.gwt.message.shared.MessageType;
 import ar.com.dcsys.gwt.message.shared.MessageUtils;
 import ar.com.dcsys.gwt.message.shared.Method;
-import ar.com.dcsys.gwt.utils.server.BeanManagerLocator;
-import ar.com.dcsys.gwt.utils.server.BeanManagerUtils;
+import ar.com.dcsys.utils.BeanManagerLocator;
+import ar.com.dcsys.utils.BeanManagerUtils;
 
 
 @ServerEndpoint(value = "/websockets", configurator = WebsocketsConfigurator.class)
