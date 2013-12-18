@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import ar.com.dcsys.data.classroom.Characteristic;
+import ar.com.dcsys.data.classroom.CharacteristicQuantity;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.silabouse.Area;
 import ar.com.dcsys.data.silabouse.Course;
@@ -32,7 +33,16 @@ public interface ReserveAttemptDateDAO extends Serializable {
 	 */
 	public List<ReserveAttemptDate> findBy(Date start, Date end) throws MapauException, PersonException;
 	
-	public List<ReserveAttemptDate> findAllCollidingWith(List<DatesRange> dates) throws MapauException, PersonException;	
+	public List<ReserveAttemptDate> findAllCollidingWith(List<DatesRange> dates) throws MapauException, PersonException;
+	
+
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////// CHARACTERISTICS /////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////	
+	
+	public void persist(CharacteristicQuantity characteristicQuantity, ReserveAttemptDate reserveAttemptDate) throws MapauException;
+	public void remove(CharacteristicQuantity characteristicQuantity, ReserveAttemptDate reserveAttemptDate) throws MapauException;
+	public void removeAllCharacteristics(ReserveAttemptDate reserveAttemptDate) throws MapauException;	
 	
 	public interface Params {
 		public Person findPersonById(String id) throws PersonException;

@@ -82,11 +82,12 @@ public class ClassRoomHsqlDAO implements ClassRoomDAO {
 			try {
 			   	while (rs.next()) {
 					Long quantity = rs.getLong("quantity");
-					String id = rs.getString("characteristic_id");
+					String idCharacteristic = rs.getString("characteristic_id");
+					Characteristic chars = params.findCharacteristicById(idCharacteristic);
 					
 					CharacteristicQuantity c = new CharacteristicQuantityBean();
 					c.setQuantity(quantity);
-					c.setCharacteristic(params.findCharacteristicById(id));
+					c.setCharacteristic(chars);
 					
 					classRoom.getCharacteristicQuantity().add(c);
 			   	}			   	
@@ -347,6 +348,74 @@ public class ClassRoomHsqlDAO implements ClassRoomDAO {
 	   	}
 	}	
 	
+	private CharacteristicQuantity findCharacteristic(Connection con, Characteristic chars, ClassRoom classRoom) throws SQLException, MapauException {
+		if (classRoom == null || classRoom.getId() == null) {
+			throw new MapauException("classRoom == null");
+		}
+		
+		if (chars == null || chars.getId() == null) {
+			throw new MapauException("characteristic == null");
+		}
+		
+		
+		String idClassRoom = classRoom.getId();
+		String idChars = chars.getId();
+		
+		String query = "select quantity from classroom_characteristic where classroom_id = ? and characteristic_id = ?";
+		PreparedStatement st = con.prepareStatement(query);
+		try {
+			st.setString(1, idClassRoom);
+			st.setString(2, idChars);
+			ResultSet rs = st.executeQuery();
+			try {
+				if (rs.next()) {
+					Long quantity = rs.getLong("quantity");
+					CharacteristicQuantity cq = new CharacteristicQuantityBean();
+					cq.setCharacteristic(chars);
+					cq.setQuantity(quantity);
+					return cq;
+				} else {
+					return null;
+				}					
+			} finally {
+				rs.close();
+			}			
+		} finally {
+			st.close();
+		}
+	}
+	
+	@Override
+	public void persist(CharacteristicQuantity charsQuantity, ClassRoom classRoom) throws MapauException {		
+		try {
+			Connection con = cp.getConnection();
+			try {
+				Characteristic chars = charsQuantity.getCharacteristic();
+				CharacteristicQuantity cq = findCharacteristic(con, chars, classRoom);
+				String query;
+				if (cq == null) {
+					query = "INSERT INTO classroom_characteristic (quantity,classroom_id,characteristic_id) VALUES (?, ?, ?);";
+				} else {
+					query = "UPDATE classroom_characteristic SET quantity = ? WHERE classroom_id = ? and characteristic_id = ?;";
+				}
+				PreparedStatement st = con.prepareStatement(query);
+				try {
+					Long quantity = charsQuantity.getQuantity();
+					st.setLong(1, quantity);
+					st.setString(2, classRoom.getId());
+					st.setString(3, chars.getId());
+					st.executeUpdate();
+				} finally {
+					st.close();
+				}
+			} finally {
+				con.close();
+			}
+		} catch (SQLException e) {
+			throw new MapauException(e);
+		}
+	}
+	
 	private void removeCharacteristics(Connection connection, ClassRoom classRoom) throws SQLException {
 		String query = "delete from classroom_characteristic where classroom_id = ?";
 	   	PreparedStatement st = connection.prepareStatement(query);
@@ -357,7 +426,8 @@ public class ClassRoomHsqlDAO implements ClassRoomDAO {
 	   		st.close();
 	   	}
 	}	
-
+	
+	
 	@Override
 	public void remove(ClassRoom classroom) throws MapauException {
 		try {
@@ -373,6 +443,46 @@ public class ClassRoomHsqlDAO implements ClassRoomDAO {
 				} finally {
 					st.close();
 				}
+			} finally {
+				con.close();
+			}
+		} catch (SQLException e) {
+			throw new MapauException(e);
+		}
+	}
+	
+	
+	@Override
+	public void remove(CharacteristicQuantity charsQuantity, ClassRoom classRoom) throws MapauException {
+		try {
+			Connection con = cp.getConnection();
+			try {
+				String query = "delete from classroom_characteristic where classroom_id = ? and characteristic_id = ?";
+				PreparedStatement st = con.prepareStatement(query);
+				try {
+					Characteristic chars = charsQuantity.getCharacteristic();
+					st.setString(1, classRoom.getId());
+					st.setString(2, chars.getId());
+					st.executeUpdate();
+				} finally {
+					st.close();
+				}
+				
+			} finally {
+				con.close();
+			}
+		} catch(SQLException e) {
+			throw new MapauException(e);
+		}
+		
+	}
+	
+	@Override
+	public void removeAllCharacteristics(ClassRoom classRoom) throws MapauException {		
+		try {
+			Connection con = cp.getConnection();
+			try {
+				removeCharacteristics(con, classRoom);
 			} finally {
 				con.close();
 			}

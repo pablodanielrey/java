@@ -15,17 +15,17 @@ public interface ReserveDAO extends Serializable {
 	public String persist(Reserve object) throws MapauException;
 	public void remove(Reserve object) throws MapauException;	
 
-	public Reserve findById(String id) throws MapauException, PersonException;
-	public List<Reserve> findAll() throws MapauException, PersonException;
-	public List<Reserve> findBy(Date start, Date end) throws MapauException, PersonException;
+	public Reserve findById(String id) throws MapauException;
+	public List<Reserve> findAll() throws MapauException;
+	public List<Reserve> findBy(Date start, Date end) throws MapauException;
 
 	public List<Reserve> findReserveRelatedWithId(String id) throws MapauException;
 	
-	public List<Reserve> findBy(ReserveAttemptDate date) throws MapauException, PersonException;
+	public List<Reserve> findBy(ReserveAttemptDate date) throws MapauException;
 	
 	public List<Reserve> findAllCollidingWith(Date start, Date end, List<ClassRoom> classRooms) throws MapauException;
 	
-	public List<Reserve> findAllCollidingWith(List<DatesRange> dates) throws MapauException, PersonException;
+	public List<Reserve> findAllCollidingWith(List<DatesRange> dates) throws MapauException;
 	
 	public interface Params {
 		public ReserveAttemptDate findReserveAttemptDateById(String id) throws MapauException;

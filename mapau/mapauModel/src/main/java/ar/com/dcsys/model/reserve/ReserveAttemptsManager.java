@@ -5,14 +5,17 @@ import java.util.List;
 
 import ar.com.dcsys.data.appointment.Appointment;
 import ar.com.dcsys.data.appointment.AppointmentV2;
+import ar.com.dcsys.data.classroom.CharacteristicQuantity;
 import ar.com.dcsys.data.classroom.ClassRoom;
 import ar.com.dcsys.data.filter.TransferFilter;
 import ar.com.dcsys.data.filter.TransferFilterType;
 import ar.com.dcsys.data.group.Group;
+import ar.com.dcsys.data.reserve.Reserve;
 import ar.com.dcsys.data.reserve.ReserveAttempt;
 import ar.com.dcsys.data.reserve.ReserveAttemptDate;
 import ar.com.dcsys.data.reserve.ReserveAttemptDeleted;
 import ar.com.dcsys.data.silabouse.Course;
+import ar.com.dcsys.data.utils.DatesRange;
 import ar.com.dcsys.exceptions.MapauException;
 import ar.com.dcsys.exceptions.PersonException;
 
@@ -77,5 +80,39 @@ public interface ReserveAttemptsManager {
 	public String persist(ReserveAttemptDeleted rd) throws MapauException;
 	public ReserveAttemptDeleted findReserveAttemptDeletedById(String id) throws MapauException, PersonException;
 	
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////// RESERVES /////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	
+	public Reserve createNewReserve(ReserveAttemptDate date, ClassRoom classRoom, String description) throws MapauException;
+	public List<Reserve> findAllCollidingWith(Date start, Date end, List<ClassRoom> classRooms) throws MapauException;
+	public List<Reserve> findReservesBy(ReserveAttemptDate date) throws MapauException;
+	
+	
+	public String persist(Reserve reserve) throws MapauException;
+	public void remove(Reserve reserve) throws MapauException;
+	public Reserve findReserveById(String id) throws MapauException;
+	public List<Reserve> findAllReservesByDates(Date start, Date end) throws MapauException;
+	
+	
+	/**
+	 * Obtiene todas las Reservas realizadas que colisionen en algún punto con las fechas indicadas.
+	 * 
+	 * @param rad
+	 * @param dates
+	 * @return
+	 * @throws MapauException
+	 */
+	public List<Reserve> findAllCollidingWith(List<DatesRange> dates) throws MapauException;	
+	
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////// CHARACTERISTICS /////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////	
+	
+	public void persist(CharacteristicQuantity characteristicQuantity, ReserveAttemptDate reserveAttemptDate) throws MapauException;
+	public void remove(CharacteristicQuantity characteristicQuantity, ReserveAttemptDate reserveAttemptDate) throws MapauException;
+	public void removeAllCharacteristics(ReserveAttemptDate reserveAttemptDate) throws MapauException;	
 	
 }

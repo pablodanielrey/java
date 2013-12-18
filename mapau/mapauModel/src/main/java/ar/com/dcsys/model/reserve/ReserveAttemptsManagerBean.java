@@ -33,6 +33,7 @@ import ar.com.dcsys.data.reserve.ReserveAttemptDateDAO;
 import ar.com.dcsys.data.reserve.ReserveAttemptDateType;
 import ar.com.dcsys.data.reserve.ReserveAttemptDeleted;
 import ar.com.dcsys.data.reserve.ReserveBean;
+import ar.com.dcsys.data.reserve.ReserveDAO;
 import ar.com.dcsys.data.silabouse.Area;
 import ar.com.dcsys.data.silabouse.Course;
 import ar.com.dcsys.data.silabouse.UntouchableSubject;
@@ -63,9 +64,10 @@ public class ReserveAttemptsManagerBean implements ReserveAttemptsManager {
 
 	private final ClassRoomsManager classRoomsManager;
 	private final CoursesManager coursesManager;
-	private final ReservesManager reservesManager;
+	private final ReserveDAO reserveDAO;
 	private final PersonsManager personsManager;
 	private final UntouchableSubjectsManager untouchableSubjectsManager;
+	
 
 	
 	private CoursesForPerson[] coursesForPersons;		// para analizar los permisos de administración y visión de cursos.
@@ -73,7 +75,7 @@ public class ReserveAttemptsManagerBean implements ReserveAttemptsManager {
 	
 	@Inject
 	public ReserveAttemptsManagerBean(ReserveAttemptDAO reserveAttemptDAO, ReserveAttemptDateDAO reserveAttemptDateDAO, 
-									  ClassRoomsManager classRoomsManager, CoursesManager coursesManager, ReservesManager reservesManager,
+									  ClassRoomsManager classRoomsManager, CoursesManager coursesManager, ReserveDAO reserveDAO,
 									  PersonsManager personsManager, UntouchableSubjectsManager untouchableSubjectsManager) {
 
 		this.reserveAttemptDAO = reserveAttemptDAO;  
@@ -81,7 +83,7 @@ public class ReserveAttemptsManagerBean implements ReserveAttemptsManager {
 		
 		this.classRoomsManager = classRoomsManager;
 		this.coursesManager = coursesManager;
-		this.reservesManager = reservesManager;
+		this.reserveDAO = reserveDAO;
 		this.personsManager = personsManager;
 		this.untouchableSubjectsManager = untouchableSubjectsManager;
 		
@@ -263,7 +265,7 @@ public class ReserveAttemptsManagerBean implements ReserveAttemptsManager {
 					@Override
 					public List<ClassRoom> getProperties(ReserveAttemptDate ra) throws FilterException {
 						try {
-							List<Reserve> reserves = reservesManager.findBy(ra);
+							List<Reserve> reserves = findReservesBy(ra);
 							if (reserves == null) {
 								return null;
 							}
@@ -575,7 +577,7 @@ public class ReserveAttemptsManagerBean implements ReserveAttemptsManager {
 		// muto el appointment de acuerdo a las reservas que tenga realizada.
 		
 		List<Appointment> aps = new ArrayList<>();
-		List<Reserve> reserves = reservesManager.findBy(rad);
+		List<Reserve> reserves = findReservesBy(rad);
 
 		if (reserves == null || reserves.size() <= 0) {
 			// solo retorno 1 solo appointment.
@@ -656,7 +658,7 @@ public class ReserveAttemptsManagerBean implements ReserveAttemptsManager {
 		// muto el appointment de acuerdo a las reservas que tenga realizada.
 		
 		List<AppointmentV2> aps = new ArrayList<>();
-		List<Reserve> reserves = reservesManager.findBy(rad);
+		List<Reserve> reserves = findReservesBy(rad);
 
 		if (reserves == null || reserves.size() <= 0) {
 			// solo retorno 1 solo appointment.
@@ -906,13 +908,13 @@ public class ReserveAttemptsManagerBean implements ReserveAttemptsManager {
 			throw new MapauException("ReserveAttemptDate == not existent");
 		}
 		
-		List<Reserve> reserves = reservesManager.findBy(rad);
+		List<Reserve> reserves = findReservesBy(rad);
 		if (reserves == null || reserves.size() <= 0) {
 			return;
 		}
 		
 		for (Reserve r : reserves) {
-			reservesManager.remove(r);
+			remove(r);
 		}
 		
 	}
@@ -945,7 +947,7 @@ public class ReserveAttemptsManagerBean implements ReserveAttemptsManager {
 			throw new MapauException("ReserveAttemptDate == not existent");
 		}
 		
-		List<Reserve> reserves = reservesManager.findBy(rad);
+		List<Reserve> reserves = findReservesBy(rad);
 		if (reserves != null && reserves.size() > 0) {
 			throw new MapauException("La fecha ya tiene reservas asignadas, debe eliminarlas antes de poder realizar una nueva");
 		}
@@ -960,7 +962,7 @@ public class ReserveAttemptsManagerBean implements ReserveAttemptsManager {
 		//	r.setOwner(owner);
 			r.setCreated(new Date());
 			r.setReserveAttemptDate(rad);
-			reservesManager.persist(r);
+			persist(r);
 		}
 	}
 	
@@ -991,7 +993,7 @@ public class ReserveAttemptsManagerBean implements ReserveAttemptsManager {
 		
 		if (!(start.equals(rad.getStart())) || (!(end.equals(rad.getEnd())))) {
 			// fechas diferentes NO DEBE TENER RESERVAS REALIZADAS.
-			List<Reserve> reserves = reservesManager.findBy(rad);		
+			List<Reserve> reserves = findReservesBy(rad);		
 			if (reserves != null && reserves.size() > 0) {
 				throw new MapauException("No se puede modificar una reserva que tenga aula asignada");
 			}
@@ -1569,7 +1571,7 @@ public class ReserveAttemptsManagerBean implements ReserveAttemptsManager {
 			}
 			
 			for (ReserveAttemptDate r : collidingRads) {
-				List<Reserve> res = reservesManager.findBy(r);
+				List<Reserve> res = findReservesBy(r);
 				if (res != null && res.size() > 0) {
 					for (Reserve reserve : res) {
 						usedClassRooms.add(reserve.getClassRoom());
@@ -1586,6 +1588,191 @@ public class ReserveAttemptsManagerBean implements ReserveAttemptsManager {
 		} catch (UnsupportedOperationException e) {
 			throw new MapauException(e);
 		}
+	}
+	
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////// RESERVES ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	
+	@Override
+	public Reserve createNewReserve(ReserveAttemptDate date,ClassRoom classRoom, String description) throws MapauException {
+		if (date == null || date.getId() == null) {
+			throw new MapauException("reserveattemptdate == null");
+		}
+
+		if (classRoom == null || classRoom.getId() == null) {
+			throw new MapauException("classRoom == null");
+		}
+		
+		//try {
+		
+			List<Reserve> reserves = findReservesBy(date);
+			if (reserves != null && reserves.size() > 0) {
+				
+				String cid = classRoom.getId();
+				for (Reserve related : reserves) {
+					if (related.getClassRoom().getId().equals(cid)) {
+						throw new MapauException("Aula ya reservada para esa fecha y horario");
+					}
+				}
+			}
+			
+			/*
+			 * TODO: falta ver lo del principal en el nuevo modelo
+			 */
+		/*	DCSysPrincipal principal = authsManager.getUserPrincipal();
+			Person owner = personsManager.findByPrincipal(principal);*/
+			
+			Reserve reserve = new ReserveBean();
+			reserve.setClassRoom(classRoom);
+			reserve.setReserveAttemptDate(date);
+			reserve.setCreated(new Date());
+		//	reserve.setOwner(owner);
+			reserve.setDescription(description);
+			
+			persist(reserve);
+			
+			return reserve;
+			
+	/*	} catch (PersonException e) {
+			throw  new MapauException(e);
+		}*/
+	}
+
+	@Override
+	public List<Reserve> findAllReservesByDates(Date start, Date end) throws MapauException {
+		return reserveDAO.findBy(start, end);
+	}
+	
+	@Override
+	public List<Reserve> findAllCollidingWith(Date start, Date end,	List<ClassRoom> classRooms) throws MapauException {
+		return reserveDAO.findAllCollidingWith(start, end, classRooms);
+	}
+	
+	/**
+	 * Retorna las reservas ULTIMAS para un date específico.
+	 * no trae las reservas que representan el historial de modificaciones de reservas de esa fecha.
+	 */
+	@Override
+	public List<Reserve> findReservesBy(ReserveAttemptDate date) throws MapauException {
+		List<Reserve> reserves = reserveDAO.findBy(date);
+		Iterator<Reserve> it = reserves.iterator();
+		while (it.hasNext()) {
+			if (it.next().getRelated() != null) {
+				it.remove();
+			}
+		}
+		return reserves;
+	}
+	
+	@Override
+	public Reserve findReserveById(String id) throws MapauException {
+		return reserveDAO.findById(id);
+	}
+	
+	@Override
+	public String persist(Reserve reserve) throws MapauException {
+		return reserveDAO.persist(reserve);
+	}
+	
+	@Override
+	public void remove(Reserve reserve) throws MapauException {
+		reserveDAO.remove(reserve);
+	}
+	
+	@Override
+	public List<Reserve> findAllCollidingWith(List<DatesRange> dates) throws MapauException {
+		return reserveDAO.findAllCollidingWith(dates);
+	}
+	
+	/**
+	 * TODO:!!!! chequearrrr porque comente para que funque con la borrada del manager 
+	 * @param dates
+	 * @return
+	 * @throws MapauException
+	 */
+	public List<ClassRoom> getClassRoomsEmtyIn(List<ReserveAttemptDate> dates) throws MapauException {
+		
+
+			// obtengo los grupos de la persona.
+			
+			/*
+			 * TODO: comente para que compile 3/12
+			 */
+		/*	DCSysPrincipal principal = authsManager.getUserPrincipal();
+			Person person = personsManager.findByPrincipal(principal);
+			List<Group> groups = groupsManager.findByPerson(person);
+			*/
+			// FIN del comentario 3/12
+			
+			// obtengo las aulas que me están permitido administrar.
+			//List<ClassRoomGroup> cgroups = classRoomGroupsManager.findBy(groups);
+			List<ClassRoom> classRooms = new ArrayList<>();
+			
+			/*
+			for (ClassRoomGroup crg : cgroups) {
+				for (ClassRoom cr : crg.getClassrooms()) {
+					boolean found = false;
+					for (ClassRoom craux : classRooms) {
+						if (cr.getId().equals(craux.getId())) {
+							found = true;
+							break;
+						}
+					}
+					if (!found) {
+						classRooms.add(cr);
+					}
+				}
+			}*/
+		
+			// obtengo las aulas que tienen reservas en los horarios de las fechas pasadas por parámetro.
+			List<ClassRoom> notEmpty = new ArrayList<>();
+			for (ReserveAttemptDate date : dates) {
+				List<Reserve> colliding = findAllCollidingWith(date.getStart(),date.getEnd(),classRooms);
+				for (Reserve r : colliding) {
+					notEmpty.add(r.getClassRoom());
+				}
+			}
+			
+			// remuevo las que tienen reservas.
+			Iterator<ClassRoom> it = classRooms.iterator();
+			while (it.hasNext()) {
+				ClassRoom c = it.next();
+				for (ClassRoom c2 : notEmpty) {
+					if (c.getId().equals(c2.getId())) {
+						it.remove();
+					}
+				}
+			}
+			
+			return classRooms;
+
+	}	
+	
+	
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////// CHARACTERISTICS /////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	
+	
+	@Override
+	public void persist(CharacteristicQuantity characteristicQuantity, ReserveAttemptDate reserveAttemptDate) throws MapauException {
+		reserveAttemptDateDAO.persist(characteristicQuantity, reserveAttemptDate);
+	}
+	
+	
+	@Override
+	public void remove(CharacteristicQuantity characteristicQuantity, ReserveAttemptDate reserveAttemptDate) throws MapauException {
+		reserveAttemptDateDAO.remove(characteristicQuantity, reserveAttemptDate);
+	}
+	
+	
+	@Override
+	public void removeAllCharacteristics(ReserveAttemptDate reserveAttemptDate)	throws MapauException {
+		reserveAttemptDateDAO.removeAllCharacteristics(reserveAttemptDate);
 	}
 	
 	

@@ -459,13 +459,14 @@ public class ReserveAttemptsManagerTest {
 		
 		reserveAttemptsManager.createNewAppointments(appointmentsNew);				
 		
-		// realizo la busqueda nuevamente con el checkHour en false y verifico que no se haya incrementado countNotCheckHour
+		// realizo la busqueda nuevamente con el checkHour en false y verifico que  se haya incrementado countNotCheckHour
 		appointments = reserveAttemptsManager.findAllAppointmentsBy(appOriginal, dates, false);
 		assertNotNull(appointments);
+		
 		assertEquals(appointments.size(), countNotCheckHour + 1);
 		countNotCheckHour ++;
 		
-		// realizo la busqueda nuevamente con el checkHour en true y verifico que no se haya incrementado countCheckHour NotCheckHour
+		// realizo la busqueda nuevamente con el checkHour en true y verifico que no se haya incrementado countCheckHour
 		appointments = reserveAttemptsManager.findAllAppointmentsBy(appOriginal, dates, true);
 		assertNotNull(appointments);
 		assertEquals(appointments.size(), countCheckHour);
