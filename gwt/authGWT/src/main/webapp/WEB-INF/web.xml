@@ -2,6 +2,15 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 
 
+<!--  para pax-shiro -->
+
+<!-- 
+	<context-param>
+    	<param-name>shiroEnvironmentClass</param-name>
+    	<param-value>org.ops4j.pax.shiro.cdi.web.CdiIniWebEnvironment</param-value>
+	</context-param>
+ -->	
+
 <!--  para shiro  -->
 
 	<listener>

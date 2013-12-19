@@ -2,13 +2,12 @@ Manifest-Version: 1.0
 Class-Path: shiro-core-1.2.2.jar slf4j-api-1.7.5.jar commons-beanutils
  -1.8.3.jar shiro-web-1.2.2.jar jcl-over-slf4j-1.7.5.jar logback-class
  ic-1.0.13.jar logback-core-1.0.13.jar gwt-servlet-2.5.1.jar gwt-cal-0
- .9.3.1.jar gwt-dnd-3.1.2.jar clientMessagesGWT-1.0-SNAPSHOT.jar firmw
- areConfig-1.0-SNAPSHOT.jar mapauModelGWT-1.0-SNAPSHOT.jar messageGWT-
- 1.0-SNAPSHOT.jar org.json-chargebee-1.0.jar gwt-websockets-1.0.3.jar 
- personModelGWT-1.0-SNAPSHOT.jar personEntities-1.0-SNAPSHOT.jar perso
- nModel-1.0-SNAPSHOT.jar personDAO-1.0-SNAPSHOT.jar dcsysUtils-1.0-SNA
- PSHOT.jar hsqldb-2.3.1.jar postgresql-9.3-1100-jdbc41.jar mapauEntiti
- es-1.0-SNAPSHOT.jar mapauModel-1.0-SNAPSHOT.jar mapauDAO-1.0-SNAPSHOT
- .jar mapauHsqlDAO-1.0-SNAPSHOT.jar hsql-1.0-SNAPSHOT.jar personHsqlDA
- O-1.0-SNAPSHOT.jar
+ .9.3.1.jar gwt-dnd-3.1.2.jar clientMessagesGWT.jar firmwareConfig-1.0
+ -SNAPSHOT.jar mapauModelGWT.jar messageGWT.jar org.json-chargebee-1.0
+ .jar gwt-websockets-1.0.3.jar cdiUtils-1.0-SNAPSHOT.jar personModelGW
+ T.jar personEntities-1.0-SNAPSHOT.jar personModel-1.0-SNAPSHOT.jar pe
+ rsonDAO-1.0-SNAPSHOT.jar dcsysUtils-1.0-SNAPSHOT.jar hsqldb-2.3.1.jar
+  postgresql-9.3-1100-jdbc41.jar mapauEntities-1.0-SNAPSHOT.jar mapauM
+ odel-1.0-SNAPSHOT.jar mapauDAO-1.0-SNAPSHOT.jar mapauHsqlDAO-1.0-SNAP
+ SHOT.jar hsql-1.0-SNAPSHOT.jar personHsqlDAO-1.0-SNAPSHOT.jar
 

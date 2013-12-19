@@ -1,5 +1,7 @@
 target/
+target/*
 .classpath
 .project
 .settings/*
 *.launch
+src/main/webapp/WEB-INF/lib/*

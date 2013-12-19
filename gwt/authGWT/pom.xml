@@ -45,38 +45,6 @@
             <scope>provided</scope>
         </dependency>
 
-<!--
-        <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-web</artifactId>
-            <version>${shiro.version}</version>
-            <scope>provided</scope>
-        </dependency>
--->
-        <!-- Logging API + implementation: para shiro -->
-<!--
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-	    <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
-            <version>${slf4j.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>${logback.version}</version>
-            <scope>runtime</scope>
-        </dependency>
--->
-
     <dependency>
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-servlet</artifactId>
@@ -108,6 +76,12 @@
     </dependency>
 -->
 
+    <dependency>
+      <groupId>ar.com.dcsys.gwt</groupId>
+      <artifactId>authModelGWT</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
 
     <dependency>
       <groupId>ar.com.dcsys.gwt</groupId>
@@ -163,8 +137,8 @@
           <compileSourcesArtifacts>
 <!--              <artifact>ar.com.dcsys.data:personEntities</artifact> -->
               <artifact>ar.com.dcsys.gwt:clientMessagesGWT</artifact>
-<!--              <artifact>ar.com.dcsys.gwt:messageGWT</artifact>
-              <artifact>ar.com.dcsys.gwt:personModelGWT</artifact> -->
+              <artifact>ar.com.dcsys.gwt:messageGWT</artifact>
+              <artifact>ar.com.dcsys.gwt:authModelGWT</artifact>
           </compileSourcesArtifacts>
 
           <logLevel>INFO</logLevel>

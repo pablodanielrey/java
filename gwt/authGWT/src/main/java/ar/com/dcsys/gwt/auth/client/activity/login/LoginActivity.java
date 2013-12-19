@@ -23,7 +23,7 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
 	private EventBus eventBus;
 
 	@Inject
-	public LoginActivity(LoginView view){
+	public LoginActivity(LoginView view) {
 		this.view = view;
 	}
 	
@@ -37,9 +37,8 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
         view.setPresenter(this);
     }
 	
-	
 	private String getModuleUrl() {
-		return "/MapauGWT/";
+		return "/personGWT/";
 	}
 	
 	private String getAuthUrl() {

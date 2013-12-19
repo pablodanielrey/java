@@ -21,6 +21,14 @@
 
   <dependencies>
 
+  <!-- para tener shiro con cdi -->
+
+	<dependency>
+	    <groupId>org.ops4j.pax.shiro</groupId>
+	    <artifactId>pax-shiro-cdi-web</artifactId>
+	    <version>0.1.0</version>
+	</dependency>
+
   <!-- para tener shiro -->
 
         <dependency>
@@ -67,6 +75,12 @@
 	<artifactId>authGWT</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	 <type>war</type>
+    </dependency>
+
+    <dependency>
+        <groupId>ar.com.dcsys.gwt</groupId>
+        <artifactId>authModelGWT</artifactId>
+        <version>1.0-SNAPSHOT</version>
     </dependency>
 
     <dependency>

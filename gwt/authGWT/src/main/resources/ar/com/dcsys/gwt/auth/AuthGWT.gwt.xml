@@ -22,6 +22,9 @@
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
 
   <inherits name="ar.com.dcsys.gwt.clientMessages.ClientMessagesGWT"/>
+  
+  <inherits name="ar.com.dcsys.gwt.auth.AuthModelGWT"/>
+  
   <inherits name="com.google.gwt.http.HTTP"/>  
 
   <!-- Specify the app entry point class.                         -->

@@ -1,7 +1,9 @@
 Manifest-Version: 1.0
-Class-Path: gwt-servlet-2.5.1.jar weld-servlet-2.1.0.Final.jar personE
- ntities.jar clientMessagesGWT.jar personModelGWT.jar messageGWT.jar o
- rg.json-chargebee-1.0.jar gwt-websockets-1.0.3.jar personModel.jar pe
- rsonDAO.jar dcsysUtils.jar hsqldb-2.3.1.jar postgresql-9.3-1100-jdbc4
- 1.jar personHsqlDAO.jar hsql.jar firmwareConfig.jar
+Class-Path: gwt-servlet-2.5.1.jar personEntities-1.0-SNAPSHOT.jar clie
+ ntMessagesGWT.jar personModelGWT.jar messageGWT.jar org.json-chargebe
+ e-1.0.jar gwt-websockets-1.0.3.jar cdiUtils-1.0-SNAPSHOT.jar personMo
+ del-1.0-SNAPSHOT.jar personDAO-1.0-SNAPSHOT.jar dcsysUtils-1.0-SNAPSH
+ OT.jar hsqldb-2.3.1.jar postgresql-9.3-1100-jdbc41.jar personHsqlDAO-
+ 1.0-SNAPSHOT.jar hsql-1.0-SNAPSHOT.jar firmwareConfig-1.0-SNAPSHOT.ja
+ r
 

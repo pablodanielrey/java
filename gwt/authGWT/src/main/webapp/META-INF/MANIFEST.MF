@@ -1,7 +1,5 @@
 Manifest-Version: 1.0
-Class-Path: shiro-core-1.2.2.jar slf4j-api-1.7.5.jar commons-beanutils
- -1.8.3.jar shiro-web-1.2.2.jar jcl-over-slf4j-1.7.5.jar logback-class
- ic-1.0.13.jar logback-core-1.0.13.jar gwt-servlet-2.5.1.jar weld-serv
- let-2.1.0.Final.jar clientMessagesGWT-1.0-SNAPSHOT.jar personEntities
- -1.0-SNAPSHOT.jar
+Class-Path: gwt-servlet-2.5.1.jar authModelGWT.jar messageGWT.jar org.
+ json-chargebee-1.0.jar gwt-websockets-1.0.3.jar cdiUtils-1.0-SNAPSHOT
+ .jar clientMessagesGWT.jar
 

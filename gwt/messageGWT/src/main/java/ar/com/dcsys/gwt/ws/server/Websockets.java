@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 
 import javax.enterprise.inject.spi.BeanManager;
 import javax.naming.NamingException;
+import javax.servlet.http.HttpSession;
 import javax.websocket.CloseReason;
 import javax.websocket.EndpointConfig;
 import javax.websocket.OnClose;
@@ -173,10 +174,17 @@ public class Websockets {
 	public void onOpen(Session session, EndpointConfig config) {
 		logger.log(Level.INFO,"onOpen");
 
+		// paso la session desde la config a la session de websockets.
+		Object o = config.getUserProperties().get(HttpSession.class.getName());
+		session.getUserProperties().put(HttpSession.class.getName(),o);
+		
+		sessions.put(session.getId(),session);
+		/*
 		Session s = sessions.get(session.getId());
 		if (s == null) {
 			sessions.put(session.getId(), session);
 		}
+		*/
 	}
 	
 	@OnClose
