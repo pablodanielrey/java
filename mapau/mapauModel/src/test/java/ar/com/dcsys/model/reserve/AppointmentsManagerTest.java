@@ -45,7 +45,7 @@ import ar.com.dcsys.model.silabouse.AreasManager;
 import ar.com.dcsys.model.silabouse.CoursesManager;
 import ar.com.dcsys.model.silabouse.SubjectsManager;
 
-public class ReserveAttemptsManagerTest {
+public class AppointmentsManagerTest {
 
 	private static Weld weld;
 	private static WeldContainer container;
@@ -69,9 +69,9 @@ public class ReserveAttemptsManagerTest {
 		}
 	}
 	
-	private ReserveAttemptsManager getReserveAttemptsManager() {
-		ReserveAttemptsManager reserveAttemptsManager = container.instance().select(ReserveAttemptsManager.class).get();
-		return reserveAttemptsManager;
+	private AppointmentsManager getAppointmentsManager() {
+		AppointmentsManager appointmentsManager = container.instance().select(AppointmentsManager.class).get();
+		return appointmentsManager;
 	}
 	
     private PersonDAO getPersonDAO() {
@@ -247,7 +247,7 @@ public class ReserveAttemptsManagerTest {
 	
 	@Test
 	public void createNewAppointment() throws MapauException, PersonException {
-		ReserveAttemptsManager reserveAttemptsManager = getReserveAttemptsManager();
+		AppointmentsManager appointmentsManager = getAppointmentsManager();
 
 		List<TransferFilter> filters = new ArrayList<TransferFilter>();
 		Course course = createCourse("Conta I", "Catedra A");
@@ -268,7 +268,7 @@ public class ReserveAttemptsManagerTest {
 		c.set(Calendar.MILLISECOND,0);
 		end = c.getTime();			
 		
-		List<AppointmentV2> appointments = reserveAttemptsManager.findAppointmentsV2By(start, end, filters);
+		List<AppointmentV2> appointments = appointmentsManager.findAppointmentsV2By(start, end, filters);
 		
 		assertNotNull(appointments);
 		int count = appointments.size();
@@ -308,10 +308,10 @@ public class ReserveAttemptsManagerTest {
 		
 		appointmentsNew.add(app);
 		
-		reserveAttemptsManager.createNewAppointments(appointmentsNew);
+		appointmentsManager.createNewAppointments(appointmentsNew);
 		
 		// verifico que lo agrego a la base
-		appointments = reserveAttemptsManager.findAppointmentsV2By(start, end, filters);
+		appointments = appointmentsManager.findAppointmentsV2By(start, end, filters);
 		assertNotNull(appointments);
 		assertEquals(appointments.size(), count + 1);
 		
@@ -347,7 +347,7 @@ public class ReserveAttemptsManagerTest {
 	
 	@Test
 	public void findAllAppointmentsBy() throws MapauException, PersonException {
-		ReserveAttemptsManager reserveAttemptsManager = getReserveAttemptsManager();
+		AppointmentsManager appointmentsManager = getAppointmentsManager();
 		
 		
 		List<AppointmentV2> appointmentsNew = new ArrayList<>();
@@ -389,11 +389,11 @@ public class ReserveAttemptsManagerTest {
 
 		AppointmentV2 app = createAppointment(start,end,course,reserveAttemptTypeFinal);		
 		appointmentsNew.add(app);		
-		reserveAttemptsManager.createNewAppointments(appointmentsNew);	
+		appointmentsManager.createNewAppointments(appointmentsNew);	
 		
 
 		//obtengo el appointment que agregue en la base
-		List<AppointmentV2>  appointments = reserveAttemptsManager.findAppointmentsV2By(start, end, new ArrayList<TransferFilter>());
+		List<AppointmentV2>  appointments = appointmentsManager.findAppointmentsV2By(start, end, new ArrayList<TransferFilter>());
 		assertNotNull(appointments);
 		assertEquals(appointments.size(), 1);
 		AppointmentV2 appOriginal = appointments.get(0);
@@ -403,11 +403,11 @@ public class ReserveAttemptsManagerTest {
 		
 		
 		//realizo la busqueda inicial e inicializo las variables countNotCheckHour y countCheckHour	
-		appointments = reserveAttemptsManager.findAllAppointmentsBy(appOriginal, dates, false);
+		appointments = appointmentsManager.findAllAppointmentsBy(appOriginal, dates, false);
 		assertNotNull(appointments);
 		int countNotCheckHour = appointments.size();
 		
-		appointments = reserveAttemptsManager.findAllAppointmentsBy(appOriginal, dates, true);
+		appointments = appointmentsManager.findAllAppointmentsBy(appOriginal, dates, true);
 		assertNotNull(appointments);
 		int countCheckHour = appointments.size();
 		
@@ -422,17 +422,17 @@ public class ReserveAttemptsManagerTest {
 		appointmentsNew.clear();
 		appointmentsNew.add(app);
 		
-		reserveAttemptsManager.createNewAppointments(appointmentsNew);		
+		appointmentsManager.createNewAppointments(appointmentsNew);		
 		
 		
 		// realizo la busqueda nuevamente con el checkHour en false y verifico que se haya incrementado en uno countNotCheckHour
-		appointments = reserveAttemptsManager.findAllAppointmentsBy(appOriginal, dates, false);
+		appointments = appointmentsManager.findAllAppointmentsBy(appOriginal, dates, false);
 		assertNotNull(appointments);
 		assertEquals(appointments.size(), countNotCheckHour + 1);
 		countNotCheckHour ++;
 		
 		// realizo la busqueda nuevamente con el checkHour en true y verifico se haya incrementado en uno countCheckHour
-		appointments = reserveAttemptsManager.findAllAppointmentsBy(appOriginal, dates, true);
+		appointments = appointmentsManager.findAllAppointmentsBy(appOriginal, dates, true);
 		assertNotNull(appointments);
 		assertEquals(appointments.size(), countCheckHour + 1);
 		countCheckHour ++;
@@ -457,17 +457,17 @@ public class ReserveAttemptsManagerTest {
 		appointmentsNew.clear();
 		appointmentsNew.add(app);
 		
-		reserveAttemptsManager.createNewAppointments(appointmentsNew);				
+		appointmentsManager.createNewAppointments(appointmentsNew);				
 		
 		// realizo la busqueda nuevamente con el checkHour en false y verifico que  se haya incrementado countNotCheckHour
-		appointments = reserveAttemptsManager.findAllAppointmentsBy(appOriginal, dates, false);
+		appointments = appointmentsManager.findAllAppointmentsBy(appOriginal, dates, false);
 		assertNotNull(appointments);
 		
 		assertEquals(appointments.size(), countNotCheckHour + 1);
 		countNotCheckHour ++;
 		
 		// realizo la busqueda nuevamente con el checkHour en true y verifico que no se haya incrementado countCheckHour
-		appointments = reserveAttemptsManager.findAllAppointmentsBy(appOriginal, dates, true);
+		appointments = appointmentsManager.findAllAppointmentsBy(appOriginal, dates, true);
 		assertNotNull(appointments);
 		assertEquals(appointments.size(), countCheckHour);
 				
@@ -490,15 +490,15 @@ public class ReserveAttemptsManagerTest {
 		appointmentsNew.clear();
 		appointmentsNew.add(app);
 		
-		reserveAttemptsManager.createNewAppointments(appointmentsNew);		
+		appointmentsManager.createNewAppointments(appointmentsNew);		
 		
 		// realizo la busqueda nuevamente con el checkHour en false y verifico que no se haya incrementado countNotCheckHour
-		appointments = reserveAttemptsManager.findAllAppointmentsBy(appOriginal, dates, false);
+		appointments = appointmentsManager.findAllAppointmentsBy(appOriginal, dates, false);
 		assertNotNull(appointments);
 		assertEquals(appointments.size(), countNotCheckHour);
 		
 		// realizo la busqueda nuevamente con el checkHour en true y verifico que no se haya incrementado countCheckHour NotCheckHour
-		appointments = reserveAttemptsManager.findAllAppointmentsBy(appOriginal, dates, true);
+		appointments = appointmentsManager.findAllAppointmentsBy(appOriginal, dates, true);
 		assertNotNull(appointments);
 		assertEquals(appointments.size(), countCheckHour);		
 		
@@ -506,9 +506,9 @@ public class ReserveAttemptsManagerTest {
 	
 	@Test
 	public void findAllFilters() throws MapauException {
-		ReserveAttemptsManager reserveAttemptsManager = getReserveAttemptsManager();
+		AppointmentsManager appointmentsManager = getAppointmentsManager();
 		
-		List<TransferFilterType> filters = reserveAttemptsManager.findAllFilters();
+		List<TransferFilterType> filters = appointmentsManager.findAllFilters();
 		
 		assertNotNull(filters);
 			
@@ -586,7 +586,7 @@ public class ReserveAttemptsManagerTest {
 	
 	@Test
 	public void findAppointmentsV2ByFilters() throws MapauException, PersonException {
-		ReserveAttemptsManager reserveAttemptsManager = getReserveAttemptsManager();
+		AppointmentsManager appointmentsManager = getAppointmentsManager();
 		
 
 		ReserveAttemptDateType reserveAttemptTypeFinal = createReserveAttemptType("Final");	
@@ -612,13 +612,13 @@ public class ReserveAttemptsManagerTest {
 		filters.add(tfDate);
 		filters.add(tfCourse);
 		
-		List<AppointmentV2> appointments = reserveAttemptsManager.findAppointmentsV2By(filters);
+		List<AppointmentV2> appointments = appointmentsManager.findAppointmentsV2By(filters);
 		
 		int count = appointments.size();
 		assertEquals(count, 0);
 		filters = new ArrayList<TransferFilter>();
 		filters.add(tfDate);
-		appointments = reserveAttemptsManager.findAppointmentsV2By(filters);
+		appointments = appointmentsManager.findAppointmentsV2By(filters);
 		int countAll = appointments.size();
 
 		/* **********************************************************************************************************************
@@ -632,19 +632,19 @@ public class ReserveAttemptsManagerTest {
 		List<AppointmentV2> appointmentsNew = new ArrayList<AppointmentV2>();
 		AppointmentV2 app = createAppointment(newStart, newEnd, course, reserveAttemptTypeFinal);
 		appointmentsNew.add(app);
-		reserveAttemptsManager.createNewAppointments(appointmentsNew);
+		appointmentsManager.createNewAppointments(appointmentsNew);
 		
 		//realizo la busqueda con el filtro de fecha
 		filters = new ArrayList<TransferFilter>();
 		filters.add(tfDate);
-		appointments = reserveAttemptsManager.findAppointmentsV2By(filters);		
+		appointments = appointmentsManager.findAppointmentsV2By(filters);		
 		assertEquals(appointments.size(), countAll + 1);		
 		
 		//realizo la busqueda con todos los filtros
 		filters = new ArrayList<TransferFilter>();
 		filters.add(tfCourse);
 		filters.add(tfDate);
-		appointments = reserveAttemptsManager.findAppointmentsV2By(filters);
+		appointments = appointmentsManager.findAppointmentsV2By(filters);
 		assertEquals(appointments.size(), count + 1);	
 		
 		
@@ -661,19 +661,19 @@ public class ReserveAttemptsManagerTest {
 		app = createAppointment(newStart, newEnd, courseNew, reserveAttemptTypeFinal);
 		appointmentsNew.clear();
 		appointmentsNew.add(app);
-		reserveAttemptsManager.createNewAppointments(appointmentsNew);		
+		appointmentsManager.createNewAppointments(appointmentsNew);		
 		
 		//realizo la busqueda con el filtro de fecha
 		filters = new ArrayList<TransferFilter>();
 		filters.add(tfDate);
-		appointments = reserveAttemptsManager.findAppointmentsV2By(filters);
+		appointments = appointmentsManager.findAppointmentsV2By(filters);
 		assertEquals(appointments.size(), countAll + 2);		
 		
 		//realizo la busqueda con todos los filtros
 		filters = new ArrayList<TransferFilter>();
 		filters.add(tfCourse);
 		filters.add(tfDate);
-		appointments = reserveAttemptsManager.findAppointmentsV2By(filters);
+		appointments = appointmentsManager.findAppointmentsV2By(filters);
 		assertEquals(appointments.size(), count + 1);	
 		
 
@@ -688,19 +688,19 @@ public class ReserveAttemptsManagerTest {
 		app = createAppointment(newStart, newEnd, course, reserveAttemptTypeFinal);
 		appointmentsNew.clear();
 		appointmentsNew.add(app);
-		reserveAttemptsManager.createNewAppointments(appointmentsNew);	
+		appointmentsManager.createNewAppointments(appointmentsNew);	
 		
 		//realizo la busqueda con el filtro de fecha
 		filters = new ArrayList<TransferFilter>();
 		filters.add(tfDate);
-		appointments = reserveAttemptsManager.findAppointmentsV2By(filters);
+		appointments = appointmentsManager.findAppointmentsV2By(filters);
 		assertEquals(appointments.size(), countAll + 2);		
 		
 		//realizo la busqueda con todos los filtros
 		filters = new ArrayList<TransferFilter>();
 		filters.add(tfCourse);
 		filters.add(tfDate);
-		appointments = reserveAttemptsManager.findAppointmentsV2By(filters);
+		appointments = appointmentsManager.findAppointmentsV2By(filters);
 		assertEquals(appointments.size(), count + 1);	
 		
 		
@@ -710,7 +710,7 @@ public class ReserveAttemptsManagerTest {
 	
 	@Test
 	public void modifyAndDeleteAppointment() throws MapauException, PersonException {
-		ReserveAttemptsManager reserveAttemptsManager = getReserveAttemptsManager();
+		AppointmentsManager appointmentsManager = getAppointmentsManager();
 
 		List<TransferFilter> filters = new ArrayList<TransferFilter>();
 		Course course = createCourse("Conta I", "Catedra A");
@@ -730,7 +730,7 @@ public class ReserveAttemptsManagerTest {
 		end = c.getTime();
 		
 		
-		List<AppointmentV2> appointments = reserveAttemptsManager.findAppointmentsV2By(start, end, filters);
+		List<AppointmentV2> appointments = appointmentsManager.findAppointmentsV2By(start, end, filters);
 		assertNotNull(appointments);
 		assertEquals(appointments.size(),0);
 		
@@ -739,10 +739,10 @@ public class ReserveAttemptsManagerTest {
 		AppointmentV2 app = createAppointment(start, end, course, reserveAttemptType);
 		appointments = new ArrayList<AppointmentV2>();
 		appointments.add(app);
-		reserveAttemptsManager.createNewAppointments(appointments);
+		appointmentsManager.createNewAppointments(appointments);
 		
 		//vertifico que lo haya insertado
-		appointments = reserveAttemptsManager.findAppointmentsV2By(start, end, filters);
+		appointments = appointmentsManager.findAppointmentsV2By(start, end, filters);
 		assertNotNull(appointments);
 		assertEquals(appointments.size(),1);
 		
@@ -771,10 +771,10 @@ public class ReserveAttemptsManagerTest {
 		app.setStudentGroup(studentGroup);
 		
 		assertNotNull(app.getRad());
-		reserveAttemptsManager.modify(app);
+		appointmentsManager.modify(app);
 		
 		//busco el appointment con la fecha anterior
-		appointments = reserveAttemptsManager.findAppointmentsV2By(start, end, filters);
+		appointments = appointmentsManager.findAppointmentsV2By(start, end, filters);
 		assertNotNull(appointments);
 		//me tiene que dar 0 ya que no lo deberia encontrar porque fue modificada la fecha
 		assertEquals(appointments.size(),0);
@@ -783,7 +783,7 @@ public class ReserveAttemptsManagerTest {
 		tfCourse = createTransferFilterCourse(newCourse);
 		filters = new ArrayList<>();
 		filters.add(tfCourse);		
-		appointments = reserveAttemptsManager.findAppointmentsV2By(newStart, newEnd, filters);
+		appointments = appointmentsManager.findAppointmentsV2By(newStart, newEnd, filters);
 		assertNotNull(appointments);
 		assertEquals(appointments.size(),1);
 		
@@ -817,8 +817,8 @@ public class ReserveAttemptsManagerTest {
 		
 		
 		//ahora lo elimino
-		reserveAttemptsManager.deleteAppointment(app);
-		appointments = reserveAttemptsManager.findAppointmentsV2By(newStart, newEnd, filters);
+		appointmentsManager.deleteAppointment(app);
+		appointments = appointmentsManager.findAppointmentsV2By(newStart, newEnd, filters);
 		assertNotNull(appointments);
 		assertEquals(appointments.size(),0);
 	}

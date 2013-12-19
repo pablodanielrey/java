@@ -14,14 +14,14 @@ import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageTransport;
 import ar.com.dcsys.gwt.message.shared.MessageUtils;
 import ar.com.dcsys.gwt.message.shared.Method;
-import ar.com.dcsys.model.reserve.ReserveAttemptsManager;
+import ar.com.dcsys.model.reserve.AppointmentsManager;
 
 public class ModifyDeleteAppointmentHandler extends AbstractMessageHandler {
 
 	private static Logger logger = Logger.getLogger(ModifyDeleteAppointmentHandler.class.getName());
 	
 	private final MessageUtils messageUtils;
-	private final ReserveAttemptsManager reserveAttempsManager;
+	private final AppointmentsManager appointmentsManager;
 	private final MapauFactory mapauFactory;
 	
 	@Override
@@ -37,9 +37,9 @@ public class ModifyDeleteAppointmentHandler extends AbstractMessageHandler {
 	@Inject
 	public ModifyDeleteAppointmentHandler(MessageUtils messageUtils,
 										  MapauFactory mapauFactory,
-										  ReserveAttemptsManager reserveAttempsManager) {
+										  AppointmentsManager appointmentsManager) {
 		this.messageUtils = messageUtils;
-		this.reserveAttempsManager = reserveAttempsManager;
+		this.appointmentsManager = appointmentsManager;
 		this.mapauFactory = mapauFactory;
 	}
 
@@ -57,11 +57,11 @@ public class ModifyDeleteAppointmentHandler extends AbstractMessageHandler {
 			
 			if (MapauMethods.modifyAppointment.equals(method.getName())) {
 				
-				reserveAttempsManager.modify(app);
+				appointmentsManager.modify(app);
 				
 			} else if (MapauMethods.deleteAppointment.equals(method.getName())) {
 				
-				reserveAttempsManager.deleteAppointment(app);
+				appointmentsManager.deleteAppointment(app);
 				
 			}
 			

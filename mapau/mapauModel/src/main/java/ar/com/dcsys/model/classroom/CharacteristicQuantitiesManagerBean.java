@@ -10,17 +10,17 @@ import ar.com.dcsys.data.classroom.CharacteristicQuantityBean;
 import ar.com.dcsys.data.classroom.ClassRoom;
 import ar.com.dcsys.data.reserve.ReserveAttemptDate;
 import ar.com.dcsys.exceptions.MapauException;
-import ar.com.dcsys.model.reserve.ReserveAttemptsManager;
+import ar.com.dcsys.model.reserve.ReserveAttemptDatesManager;
 
 public class CharacteristicQuantitiesManagerBean implements CharacteristicQuantitiesManager {
 
 	private final ClassRoomsManager classRoomsManager;
-	private final ReserveAttemptsManager reserveAttemptsManager;
+	private final ReserveAttemptDatesManager reserveAttemptDatesManager;
 	
 	@Inject
-	public CharacteristicQuantitiesManagerBean(ClassRoomsManager classRoomsManager, ReserveAttemptsManager reserveAttemptsManager) {
+	public CharacteristicQuantitiesManagerBean(ClassRoomsManager classRoomsManager, ReserveAttemptDatesManager reserveAttemptDatesManager) {
 		this.classRoomsManager = classRoomsManager;
-		this.reserveAttemptsManager = reserveAttemptsManager;
+		this.reserveAttemptDatesManager = reserveAttemptDatesManager;
 	}
 	
 	@Override
@@ -59,7 +59,7 @@ public class CharacteristicQuantitiesManagerBean implements CharacteristicQuanti
 
 	@Override
 	public void persist(CharacteristicQuantity characteristicQuantity,ReserveAttemptDate reserveAttemptDate) throws MapauException {
-		reserveAttemptsManager.persist(characteristicQuantity, reserveAttemptDate);
+		reserveAttemptDatesManager.persist(characteristicQuantity, reserveAttemptDate);
 	}
 	
 	@Override
@@ -69,18 +69,18 @@ public class CharacteristicQuantitiesManagerBean implements CharacteristicQuanti
 		}
 		
 		for (CharacteristicQuantity cq : characteristicQuantities) {
-			reserveAttemptsManager.persist(cq, reserveAttemptDate);
+			reserveAttemptDatesManager.persist(cq, reserveAttemptDate);
 		} 
 	}
 
 	@Override
 	public void remove(CharacteristicQuantity characteristicQuantity,ReserveAttemptDate reserveAttemptDate) throws MapauException {
-		reserveAttemptsManager.remove(characteristicQuantity, reserveAttemptDate);
+		reserveAttemptDatesManager.remove(characteristicQuantity, reserveAttemptDate);
 	}
 	
 	@Override
 	public void removeAll(ReserveAttemptDate reserveAttemptDate) throws MapauException {
-		reserveAttemptsManager.removeAllCharacteristics(reserveAttemptDate);
+		reserveAttemptDatesManager.removeAllCharacteristics(reserveAttemptDate);
 	}
 
 }

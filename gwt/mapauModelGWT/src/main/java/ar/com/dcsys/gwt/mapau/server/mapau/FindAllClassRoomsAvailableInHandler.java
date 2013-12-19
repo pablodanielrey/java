@@ -18,7 +18,7 @@ import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageTransport;
 import ar.com.dcsys.gwt.message.shared.MessageUtils;
 import ar.com.dcsys.gwt.message.shared.Method;
-import ar.com.dcsys.model.reserve.ReserveAttemptsManager;
+import ar.com.dcsys.model.reserve.AppointmentsManager;
 
 public class FindAllClassRoomsAvailableInHandler extends AbstractMessageHandler {
 
@@ -29,7 +29,7 @@ public class FindAllClassRoomsAvailableInHandler extends AbstractMessageHandler 
 	private final MapauEncoderDecoder encoderDecoder;
 	private final SilegEncoderDecoder silegEncoderDecoder;
 	private final ClassRoomsEncoderDecoder classRoomEncoderDecoder;
-	private final ReserveAttemptsManager reserveAttemtpsManager;
+	private final AppointmentsManager appointmentsManager;
 	
 	@Override
 	protected Logger getLogger() {
@@ -47,13 +47,13 @@ public class FindAllClassRoomsAvailableInHandler extends AbstractMessageHandler 
 									   MapauEncoderDecoder encoderDecoder,
 									   SilegEncoderDecoder silegEncoderDecoder,
 									   ClassRoomsEncoderDecoder classRoomEncoderDecoder,
-									   ReserveAttemptsManager reserveAttemptsManager) {
+									   AppointmentsManager appointmentsManager) {
 		this.messageUtils = messageUtils;
 		this.managerUtils = managerUtils;
 		this.encoderDecoder = encoderDecoder;
 		this.silegEncoderDecoder = silegEncoderDecoder;
 		this.classRoomEncoderDecoder = classRoomEncoderDecoder;
-		this.reserveAttemtpsManager = reserveAttemptsManager;
+		this.appointmentsManager = appointmentsManager;
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class FindAllClassRoomsAvailableInHandler extends AbstractMessageHandler 
 			
 			List<ReserveAttemptDate> rads = encoderDecoder.decodeReserveAttemptDateList(lparams.get(0));
 			Boolean checkCapacity = managerUtils.decodeBoolean(lparams.get(1));
-			List<ClassRoom> classRooms = reserveAttemtpsManager.findAllClassRoomsAvailableIn(rads, checkCapacity);
+			List<ClassRoom> classRooms = appointmentsManager.findAllClassRoomsAvailableIn(rads, checkCapacity);
 			
 			String list = classRoomEncoderDecoder.encodeClassRoomList(classRooms);
 			sendResponse(msg, transport, list);

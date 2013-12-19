@@ -14,7 +14,7 @@ import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageTransport;
 import ar.com.dcsys.gwt.message.shared.MessageUtils;
 import ar.com.dcsys.gwt.message.shared.Method;
-import ar.com.dcsys.model.reserve.ReserveAttemptsManager;
+import ar.com.dcsys.model.reserve.AppointmentsManager;
 
 public class CreateNewAppointmentHandler extends AbstractMessageHandler {
 
@@ -22,7 +22,7 @@ public class CreateNewAppointmentHandler extends AbstractMessageHandler {
 	
 	private final MessageUtils messageUtils;
 	private final MapauEncoderDecoder encoderDecoder;
-	private final ReserveAttemptsManager reserveAttemtpsManager;
+	private final AppointmentsManager appointmentsManager;
 	
 	@Override
 	protected Logger getLogger() {
@@ -37,10 +37,10 @@ public class CreateNewAppointmentHandler extends AbstractMessageHandler {
 	@Inject
 	public CreateNewAppointmentHandler(MessageUtils messageUtils,
 									   MapauEncoderDecoder encoderDecoder,
-									   ReserveAttemptsManager reserveAttemptsManager) {
+									   AppointmentsManager appointmentsManager) {
 		this.messageUtils = messageUtils;
 		this.encoderDecoder = encoderDecoder;
-		this.reserveAttemtpsManager = reserveAttemptsManager;
+		this.appointmentsManager = appointmentsManager;
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class CreateNewAppointmentHandler extends AbstractMessageHandler {
 			
 			String params = method.getParams();
 			List<AppointmentV2> apps = encoderDecoder.decodeAppointmentV2List(params);
-			reserveAttemtpsManager.createNewAppointments(apps);
+			appointmentsManager.createNewAppointments(apps);
 			
 			sendResponse(msg, transport, null);
 			
