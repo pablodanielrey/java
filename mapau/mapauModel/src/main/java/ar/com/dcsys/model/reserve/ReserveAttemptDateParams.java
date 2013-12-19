@@ -1,4 +1,4 @@
-package ar.com.dcsys.gwt.mapau.server;
+package ar.com.dcsys.model.reserve;
 
 import javax.inject.Inject;
 
@@ -12,29 +12,24 @@ import ar.com.dcsys.exceptions.MapauException;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.model.PersonsManager;
 import ar.com.dcsys.model.classroom.CharacteristicsManager;
-import ar.com.dcsys.model.reserve.ReserveAttemptTypesManager;
 import ar.com.dcsys.model.silabouse.AreasManager;
 import ar.com.dcsys.model.silabouse.CoursesManager;
 
-public class ReserveAttemptDateDAOParams implements ReserveAttemptDateDAO.Params {
+public class ReserveAttemptDateParams implements ReserveAttemptDateDAO.Params {
 
 	private final PersonsManager personsManager;
 	private final CoursesManager coursesManager;
 	private final ReserveAttemptTypesManager reserveAttemptTypesManager;
 	private final AreasManager areasManager;
-	private final CharacteristicsManager characteristicsManager;	
+	private final CharacteristicsManager characteristicsManager;
 	
 	@Inject
-	public ReserveAttemptDateDAOParams(PersonsManager personsManager, 
-									   CoursesManager coursesManager, 
-									   ReserveAttemptTypesManager reserveAttemptTypesManager, 
-									   AreasManager areasManager, 
-									   CharacteristicsManager characteristicsManager) {
-		this.personsManager = personsManager;
+	public ReserveAttemptDateParams(PersonsManager personsManager, CoursesManager coursesManager, ReserveAttemptTypesManager reserveAttemptTypesManager, AreasManager areasManager, CharacteristicsManager characteristicsManager) {
+		this.personsManager= personsManager;
 		this.coursesManager = coursesManager;
 		this.reserveAttemptTypesManager = reserveAttemptTypesManager;
 		this.areasManager = areasManager;
-		this.characteristicsManager = characteristicsManager;		
+		this.characteristicsManager = characteristicsManager;
 	}
 	
 	@Override
@@ -61,7 +56,5 @@ public class ReserveAttemptDateDAOParams implements ReserveAttemptDateDAO.Params
 	public Characteristic findCharacteristicById(String id)	throws MapauException {
 		return characteristicsManager.findById(id);
 	}
-
-
 
 }

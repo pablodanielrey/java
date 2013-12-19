@@ -16,6 +16,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import ar.com.dcsys.data.HsqlConnectionProvider;
+import ar.com.dcsys.data.classroom.Characteristic;
 import ar.com.dcsys.data.classroom.CharacteristicQuantity;
 import ar.com.dcsys.data.classroom.CharacteristicQuantityBean;
 import ar.com.dcsys.data.person.Person;
@@ -30,6 +31,7 @@ public class ReserveAttemptDateHsqlDAO implements ReserveAttemptDateDAO {
 	private final static Logger logger = Logger.getLogger(ReserveAttemptDateHsqlDAO.class.getName());
 	private final HsqlConnectionProvider cp;
 	private final Params params;
+	
 	
 	@Inject
 	public ReserveAttemptDateHsqlDAO(HsqlConnectionProvider cp, Params params) {
@@ -383,18 +385,6 @@ public class ReserveAttemptDateHsqlDAO implements ReserveAttemptDateDAO {
 			throw new MapauException(e);
 		}
 	}
-
-	private void removeCharacteristics(Connection connection, ReserveAttemptDate rad) throws SQLException {
-		String query = "delete from reserveattemptdate_characteristic where reserveattemptdate_id = ?";
-	   	PreparedStatement st = connection.prepareStatement(query);
-	   	try {
-	   		st.setString(1, rad.getId());
-	   		st.executeUpdate();
-	   	} finally {
-	   		st.close();
-	   	}
-	}	
-	
 	private void removePersons(Connection connection, ReserveAttemptDate rad) throws SQLException {
 		String query = "delete from reserveattemptdate_person where reserveattemptdate_id = ?";
 	   	PreparedStatement st = connection.prepareStatement(query);
@@ -429,6 +419,129 @@ public class ReserveAttemptDateHsqlDAO implements ReserveAttemptDateDAO {
 				con.close();
 			}
 		} catch(SQLException e) {
+			throw new MapauException(e);
+		}
+	}	
+	
+
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////// CHARACTERISTICS /////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////	
+	
+	
+	private CharacteristicQuantity findCharacteristic(Connection con, Characteristic chars, ReserveAttemptDate reserve) throws SQLException, MapauException {
+		if (reserve == null || reserve.getId() == null) {
+			throw new MapauException("reserve == null");
+		}
+		
+		if (chars == null || chars.getId() == null) {
+			throw new MapauException("characteristic == null");
+		}
+		
+		
+		String idReserve = reserve.getId();
+		String idChars = chars.getId();
+		
+		String query = "select quantity from reserveattemptdate_characteristic where reserveattemptdate_id = ? and characteristic_id = ?";
+		PreparedStatement st = con.prepareStatement(query);
+		try {
+			st.setString(1, idReserve);
+			st.setString(2, idChars);
+			ResultSet rs = st.executeQuery();
+			try {
+				if (rs.next()) {
+					Long quantity = rs.getLong("quantity");
+					CharacteristicQuantity cq = new CharacteristicQuantityBean();
+					cq.setCharacteristic(chars);
+					cq.setQuantity(quantity);
+					return cq;
+				} else {
+					return null;
+				}					
+			} finally {
+				rs.close();
+			}			
+		} finally {
+			st.close();
+		}
+	}	
+	
+	@Override
+	public void persist(CharacteristicQuantity characteristicQuantity, ReserveAttemptDate reserveAttemptDate) throws MapauException {		
+		try {
+			Connection con = cp.getConnection();
+			try {
+				Characteristic chars = characteristicQuantity.getCharacteristic();
+				CharacteristicQuantity cq = findCharacteristic(con, chars, reserveAttemptDate);
+				String query;
+				if (cq == null) {
+					query = "INSERT INTO reserveattemptdate_characteristic (quantity,reserveattemptdate_id,characteristic_id) VALUES (?, ?, ?);";
+				} else {
+					query = "UPDATE reserveattemptdate_characteristic SET quantity = ? WHERE reserveattemptdate_id = ? and characteristic_id = ?;";
+				}
+				PreparedStatement st = con.prepareStatement(query);
+				try {
+					Long quantity = characteristicQuantity.getQuantity();
+					st.setLong(1, quantity);
+					st.setString(2, reserveAttemptDate.getId());
+					st.setString(3, chars.getId());
+					st.executeUpdate();
+				} finally {
+					st.close();
+				}
+			} finally {
+				con.close();
+			}
+			
+		} catch (SQLException | NullPointerException e) {
+			throw new MapauException(e);
+		}
+	}	
+
+	private void removeCharacteristics(Connection connection, ReserveAttemptDate rad) throws SQLException {
+		String query = "delete from reserveattemptdate_characteristic where reserveattemptdate_id = ?";
+	   	PreparedStatement st = connection.prepareStatement(query);
+	   	try {
+	   		st.setString(1, rad.getId());
+	   		st.executeUpdate();
+	   	} finally {
+	   		st.close();
+	   	}
+	}	
+	
+	@Override
+	public void remove(CharacteristicQuantity characteristicQuantity, ReserveAttemptDate reserveAttemptDate) throws MapauException {
+		try {
+			Connection con = cp.getConnection();
+			try {
+				String query = "delete from reserveattemptdate_characteristic where reserveattemptdate_id = ? and characteristic_id = ?";
+				PreparedStatement st = con.prepareStatement(query);
+				try {
+					Characteristic chars = characteristicQuantity.getCharacteristic();
+					st.setString(1, reserveAttemptDate.getId());
+					st.setString(2, chars.getId());
+					st.executeUpdate();
+				} finally {
+					st.close();
+				}
+			} finally {
+				con.close();
+			}
+		} catch (SQLException e) {
+			throw new MapauException(e);
+		}
+	}
+	
+	@Override
+	public void removeAllCharacteristics(ReserveAttemptDate reserveAttemptDate) throws MapauException {
+		try {
+			Connection con = cp.getConnection();
+			try {
+				removeCharacteristics(con, reserveAttemptDate);
+			} finally {
+				con.close();
+			}
+		} catch (SQLException e) {
 			throw new MapauException(e);
 		}
 	}	

@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import ar.com.dcsys.data.classroom.CharacteristicQuantity;
 import ar.com.dcsys.data.classroom.ClassRoom;
 import ar.com.dcsys.data.classroom.ClassRoomDAO;
 import ar.com.dcsys.exceptions.MapauException;
@@ -156,4 +157,33 @@ public class ClassRoomsManagerBean implements ClassRoomsManager {
 		invalidatesCaches(classRoom);
 		classRoomDAO.remove(classRoom);
 	}
+	
+	
+	
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////// CHARACTERISTICS /////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	
+	
+	@Override
+	public void persist(CharacteristicQuantity chars, ClassRoom classRoom) throws MapauException {
+		classRoomDAO.persist(chars, classRoom);
+	}
+	
+	@Override
+	public void remove(CharacteristicQuantity chars, ClassRoom classRoom) throws MapauException {
+		classRoomDAO.remove(chars, classRoom);
+	}
+	
+	
+	@Override
+	public void removeAllCharacteristics(ClassRoom classRoom) throws MapauException {
+		classRoomDAO.removeAllCharacteristics(classRoom);
+	}
+	
+	
+	
+	
+	
 }

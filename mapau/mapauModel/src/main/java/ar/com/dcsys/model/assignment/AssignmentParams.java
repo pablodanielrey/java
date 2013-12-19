@@ -1,4 +1,4 @@
-package ar.com.dcsys.gwt.mapau.server;
+package ar.com.dcsys.model.assignment;
 
 import javax.inject.Inject;
 
@@ -10,17 +10,16 @@ import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.model.PersonsManager;
 import ar.com.dcsys.model.silabouse.CoursesManager;
 
-public class AssignmentDAOParams implements AssignmentDAO.Params {
+public class AssignmentParams implements AssignmentDAO.Params {
 
 	private final PersonsManager personsManager;
 	private final CoursesManager coursesManager;
 	
 	@Inject
-	public AssignmentDAOParams(PersonsManager personsManager, CoursesManager coursesManager) {
+	public AssignmentParams(PersonsManager personsManager, CoursesManager coursesManager) {
 		this.personsManager = personsManager;
 		this.coursesManager = coursesManager;
 	}
-	
 	
 	@Override
 	public Person findPersonBySilegIdentifiers(String id) throws PersonException {
@@ -29,6 +28,7 @@ public class AssignmentDAOParams implements AssignmentDAO.Params {
 
 	@Override
 	public Person findPersonByUsername(String username) throws PersonException {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

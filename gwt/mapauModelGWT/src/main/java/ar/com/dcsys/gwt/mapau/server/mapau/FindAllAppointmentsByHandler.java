@@ -17,7 +17,7 @@ import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageTransport;
 import ar.com.dcsys.gwt.message.shared.MessageUtils;
 import ar.com.dcsys.gwt.message.shared.Method;
-import ar.com.dcsys.model.reserve.ReserveAttemptsManager;
+import ar.com.dcsys.model.reserve.AppointmentsManager;
 
 public class FindAllAppointmentsByHandler extends AbstractMessageHandler {
 
@@ -26,7 +26,7 @@ public class FindAllAppointmentsByHandler extends AbstractMessageHandler {
 	private final MessageUtils messageUtils;
 	private final ManagerUtils managerUtils;
 	private final MapauEncoderDecoder encoderDecoder;
-	private final ReserveAttemptsManager reserveAttemptsManager;
+	private final AppointmentsManager appointmentsManager;
 	private final MapauFactory mapauFactory;
 	
 	
@@ -44,12 +44,12 @@ public class FindAllAppointmentsByHandler extends AbstractMessageHandler {
 	public FindAllAppointmentsByHandler(MessageUtils messageUtils, 
 										ManagerUtils managerUtils,
 										MapauEncoderDecoder encoderDecoder,
-										ReserveAttemptsManager reserveAttempsManager,
+										AppointmentsManager appointmentsManager,
 										MapauFactory mapauFactory) {
 		this.messageUtils = messageUtils;
 		this.managerUtils = managerUtils;
 		this.encoderDecoder = encoderDecoder;
-		this.reserveAttemptsManager = reserveAttempsManager;
+		this.appointmentsManager = appointmentsManager;
 		this.mapauFactory = mapauFactory;
 	}
 
@@ -74,7 +74,7 @@ public class FindAllAppointmentsByHandler extends AbstractMessageHandler {
 			List<Date> dates = managerUtils.decodeDateList(lparams.get(1));
 			Boolean checkHour = managerUtils.decodeBoolean(lparams.get(2));
 			
-			List<AppointmentV2> apps = reserveAttemptsManager.findAllAppointmentsBy(app, dates, checkHour);
+			List<AppointmentV2> apps = appointmentsManager.findAllAppointmentsBy(app, dates, checkHour);
 			String sapps = encoderDecoder.encodeAppointmentV2List(apps);
 			
 			sendResponse(msg, transport, sapps);

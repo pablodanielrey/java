@@ -6,11 +6,12 @@ import ar.com.dcsys.data.silabouse.CourseDAO;
 import ar.com.dcsys.data.silabouse.Subject;
 import ar.com.dcsys.exceptions.MapauException;
 
-public class ParamsCourse implements CourseDAO.Params {
+public class CourseParams implements CourseDAO.Params {
 
 	private final SubjectsManager subjectManager;
+	
 	@Inject
-	public ParamsCourse(SubjectsManager subjectManager) {
+	public CourseParams(SubjectsManager subjectManager) {
 		this.subjectManager = subjectManager;
 	}
 	@Override

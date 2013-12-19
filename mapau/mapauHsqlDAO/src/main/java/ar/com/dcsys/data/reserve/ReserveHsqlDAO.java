@@ -136,7 +136,7 @@ public class ReserveHsqlDAO implements ReserveDAO {
 	}	
 
 	@Override
-	public Reserve findById(String id) throws MapauException, PersonException {
+	public Reserve findById(String id) throws MapauException {
 		try {
 			Connection con = cp.getConnection();
 			try {
@@ -162,13 +162,13 @@ public class ReserveHsqlDAO implements ReserveDAO {
 			} finally {
 				con.close();
 			}
-		} catch(SQLException e) {
+		} catch(SQLException | PersonException e) {
 			throw new MapauException(e);
 		}
 	}
 
 	@Override
-	public List<Reserve> findAll() throws MapauException, PersonException {
+	public List<Reserve> findAll() throws MapauException {
 		try {
 			Connection con = cp.getConnection();
 			try {
@@ -193,13 +193,13 @@ public class ReserveHsqlDAO implements ReserveDAO {
 			} finally {
 				con.close();
 			}
-		} catch(SQLException e) {
+		} catch(SQLException | PersonException e) {
 			throw new MapauException(e);
 		}
 	}
 
 	@Override
-	public List<Reserve> findBy(Date start, Date end) throws MapauException, PersonException {
+	public List<Reserve> findBy(Date start, Date end) throws MapauException {
 		try {
 			Connection con = cp.getConnection();
 			try {
@@ -226,7 +226,7 @@ public class ReserveHsqlDAO implements ReserveDAO {
 			} finally {
 				con.close();
 			}
-		} catch(SQLException e) {
+		} catch(SQLException | PersonException e) {
 			throw new MapauException(e);
 		}
 	}
@@ -237,7 +237,7 @@ public class ReserveHsqlDAO implements ReserveDAO {
 	}
 
 	@Override
-	public List<Reserve> findBy(ReserveAttemptDate date) throws MapauException,	PersonException {
+	public List<Reserve> findBy(ReserveAttemptDate date) throws MapauException {
 		if (date == null) {
 			throw new MapauException("reserveAttemptDate == null");
 		}
@@ -266,7 +266,7 @@ public class ReserveHsqlDAO implements ReserveDAO {
 			} finally {
 				con.close();
 			}
-		} catch(SQLException e) {
+		} catch(SQLException |PersonException e) {
 			throw new MapauException(e);
 		}
 	}
@@ -343,7 +343,7 @@ public class ReserveHsqlDAO implements ReserveDAO {
 	}
 
 	@Override
-	public List<Reserve> findAllCollidingWith(List<DatesRange> dates) throws MapauException, PersonException {
+	public List<Reserve> findAllCollidingWith(List<DatesRange> dates) throws MapauException {
 		if (dates == null) {
 			throw new MapauException("reserveAttemptDate == null");
 		}
@@ -381,7 +381,7 @@ public class ReserveHsqlDAO implements ReserveDAO {
 			} finally {
 				con.close();
 			}
-		} catch(SQLException e) {
+		} catch(SQLException | PersonException e) {
 			throw new MapauException(e);
 		}
 	}

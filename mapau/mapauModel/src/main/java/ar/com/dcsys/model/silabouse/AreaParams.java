@@ -16,13 +16,13 @@ import ar.com.dcsys.exceptions.MapauException;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.model.classroom.ClassRoomsManager;
 
-public class ParamsArea implements AreaDAO.Params {
+public class AreaParams implements AreaDAO.Params {
 
 	private final ClassRoomsManager classRoomsManager;
 	private final CoursesManager coursesManager;
 	
 	@Inject
-	public ParamsArea(ClassRoomsManager classRoomsManager, CoursesManager coursesManager) {
+	public AreaParams(ClassRoomsManager classRoomsManager, CoursesManager coursesManager) {
 		this.classRoomsManager = classRoomsManager;
 		this.coursesManager = coursesManager;
 	}

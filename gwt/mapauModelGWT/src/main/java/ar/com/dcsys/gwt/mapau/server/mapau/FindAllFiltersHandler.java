@@ -14,14 +14,14 @@ import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageTransport;
 import ar.com.dcsys.gwt.message.shared.MessageUtils;
 import ar.com.dcsys.gwt.message.shared.Method;
-import ar.com.dcsys.model.reserve.ReserveAttemptsManager;
+import ar.com.dcsys.model.reserve.AppointmentsManager;
 
 public class FindAllFiltersHandler extends AbstractMessageHandler {
 
 	private static Logger logger = Logger.getLogger(FindAllFiltersHandler.class.getName());
 	
 	private final MessageUtils messageUtils;
-	private final ReserveAttemptsManager reserveAttemptsManager;
+	private final AppointmentsManager appointmentsManager;
 	private final MapauEncoderDecoder encoderDecoder;
 	
 	@Override
@@ -36,10 +36,10 @@ public class FindAllFiltersHandler extends AbstractMessageHandler {
 	
 	@Inject
 	public FindAllFiltersHandler(MessageUtils messageUtils,
-								 ReserveAttemptsManager reserveAttempsManager,
+								 AppointmentsManager appointmentsManager,
 								 MapauEncoderDecoder encoderDecoder) {
 		this.messageUtils = messageUtils;
-		this.reserveAttemptsManager = reserveAttempsManager;
+		this.appointmentsManager = appointmentsManager;
 		this.encoderDecoder = encoderDecoder;
 	}
 
@@ -52,7 +52,7 @@ public class FindAllFiltersHandler extends AbstractMessageHandler {
 	public void handle(Message msg, Method method, MessageTransport transport) {
 		try {
 			
-			List<TransferFilterType> filters = reserveAttemptsManager.findAllFilters();
+			List<TransferFilterType> filters = appointmentsManager.findAllFilters();
 			String list = encoderDecoder.encodeTransferFilterTypeList(filters);
 			sendResponse(msg, transport, list);
 			

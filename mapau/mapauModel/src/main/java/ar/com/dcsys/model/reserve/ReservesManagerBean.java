@@ -42,11 +42,7 @@ public class ReservesManagerBean implements ReservesManager {
 	
 	@Override
 	public List<Reserve> findAllByDates(Date start, Date end) throws MapauException {
-		try {
-			return reserveDAO.findBy(start, end);
-		} catch (PersonException e) {
-			throw new MapauException(e);
-		}
+		return reserveDAO.findBy(start, end);
 	}
 	
 	@Override
@@ -60,28 +56,20 @@ public class ReservesManagerBean implements ReservesManager {
 	 */
 	@Override
 	public List<Reserve> findBy(ReserveAttemptDate date) throws MapauException {
-		try {
-			List<Reserve> reserves = reserveDAO.findBy(date);
-			Iterator<Reserve> it = reserves.iterator();
-			while (it.hasNext()) {
-				if (it.next().getRelated() != null) {
-					it.remove();
-				}
+		List<Reserve> reserves = reserveDAO.findBy(date);
+		Iterator<Reserve> it = reserves.iterator();
+		while (it.hasNext()) {
+			if (it.next().getRelated() != null) {
+				it.remove();
 			}
-			return reserves;
-			
-		} catch (PersonException e) {
-			throw new MapauException(e);
 		}
+		return reserves;
+		
 	}
 	
 	@Override
 	public Reserve findById(String id) throws MapauException {
-		try {
-			return reserveDAO.findById(id);
-		} catch (PersonException e) {
-			throw new MapauException(e);
-		}
+		return reserveDAO.findById(id);
 	}
 	
 	@Override

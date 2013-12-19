@@ -1,4 +1,4 @@
-package ar.com.dcsys.gwt.mapau.server;
+package ar.com.dcsys.model.reserve;
 
 import ar.com.dcsys.data.classroom.CharacteristicQuantity;
 import ar.com.dcsys.data.person.Person;
@@ -10,7 +10,7 @@ import ar.com.dcsys.data.silabouse.Course;
 import ar.com.dcsys.exceptions.MapauException;
 import ar.com.dcsys.exceptions.PersonException;
 
-public class ReserveAttemptDAOParams implements ReserveAttemptDAO.Params {
+public class ReserveAttemptParams implements ReserveAttemptDAO.Params {
 
 	@Override
 	public String persist(CharacteristicQuantity c) throws MapauException {

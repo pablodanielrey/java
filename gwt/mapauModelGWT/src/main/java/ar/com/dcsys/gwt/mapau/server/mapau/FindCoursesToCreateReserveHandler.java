@@ -15,7 +15,7 @@ import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageTransport;
 import ar.com.dcsys.gwt.message.shared.MessageUtils;
 import ar.com.dcsys.gwt.message.shared.Method;
-import ar.com.dcsys.model.reserve.ReserveAttemptsManager;
+import ar.com.dcsys.model.reserve.AppointmentsManager;
 
 public class FindCoursesToCreateReserveHandler extends AbstractMessageHandler {
 
@@ -24,7 +24,7 @@ public class FindCoursesToCreateReserveHandler extends AbstractMessageHandler {
 	private final MessageUtils messageUtils;
 	private final MapauEncoderDecoder encoderDecoder;
 	private final SilegEncoderDecoder silegEncoderDecoder;
-	private final ReserveAttemptsManager reserveAttemtpsManager;
+	private final AppointmentsManager appointmentsManager;
 	
 	@Override
 	protected Logger getLogger() {
@@ -40,11 +40,11 @@ public class FindCoursesToCreateReserveHandler extends AbstractMessageHandler {
 	public FindCoursesToCreateReserveHandler(MessageUtils messageUtils,
 									   MapauEncoderDecoder encoderDecoder,
 									   SilegEncoderDecoder silegEncoderDecoder,
-									   ReserveAttemptsManager reserveAttemptsManager) {
+									   AppointmentsManager appointmentsManager) {
 		this.messageUtils = messageUtils;
 		this.encoderDecoder = encoderDecoder;
 		this.silegEncoderDecoder = silegEncoderDecoder;
-		this.reserveAttemtpsManager = reserveAttemptsManager;
+		this.appointmentsManager = appointmentsManager;
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class FindCoursesToCreateReserveHandler extends AbstractMessageHandler {
 	public void handle(Message msg, Method method, MessageTransport transport) {
 		try {
 			
-			List<Course> courses = reserveAttemtpsManager.getCoursesToCreateReserveAttempt();
+			List<Course> courses = appointmentsManager.getCoursesToCreateReserveAttempt();
 			String list = silegEncoderDecoder.encodeCourseList(courses);
 			sendResponse(msg, transport, list);
 			

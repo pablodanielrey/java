@@ -16,14 +16,14 @@ import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageTransport;
 import ar.com.dcsys.gwt.message.shared.MessageUtils;
 import ar.com.dcsys.gwt.message.shared.Method;
-import ar.com.dcsys.model.reserve.ReserveAttemptsManager;
+import ar.com.dcsys.model.reserve.AppointmentsManager;
 
 public class FindAppointmentsByHandler extends AbstractMessageHandler {
 
 	private static Logger logger = Logger.getLogger(FindAppointmentsByHandler.class.getName());
 	
 	private final MessageUtils messageUtils;
-	private final ReserveAttemptsManager reserveAttemptsManager;
+	private final AppointmentsManager appointmentsManager;
 	private final MapauEncoderDecoder encoderDecoder;
 	
 	@Override
@@ -38,10 +38,10 @@ public class FindAppointmentsByHandler extends AbstractMessageHandler {
 	
 	@Inject
 	public FindAppointmentsByHandler(MessageUtils messageUtils, 
-									 ReserveAttemptsManager reserveAttemptsManager,
+									 AppointmentsManager appointmentsManager,
 									 MapauEncoderDecoder encoderDecoder) {
 		this.messageUtils = messageUtils;
-		this.reserveAttemptsManager = reserveAttemptsManager;
+		this.appointmentsManager = appointmentsManager;
 		this.encoderDecoder = encoderDecoder;
 	}
 
@@ -62,12 +62,12 @@ public class FindAppointmentsByHandler extends AbstractMessageHandler {
 			
 			if (MapauMethods.findAppointmentsBy.equals(method.getName())) {
 				
-				List<Appointment> apps = reserveAttemptsManager.findAppointmentsBy(filters);
+				List<Appointment> apps = appointmentsManager.findAppointmentsBy(filters);
 				sapps = encoderDecoder.encodeAppointmentList(apps);
 				
 			} else if (MapauMethods.findAppointmentsV2By.equals(method.getName())) {
 				
-				List<AppointmentV2> apps = reserveAttemptsManager.findAppointmentsV2By(filters);
+				List<AppointmentV2> apps = appointmentsManager.findAppointmentsV2By(filters);
 				sapps = encoderDecoder.encodeAppointmentV2List(apps);
 			
 			}
