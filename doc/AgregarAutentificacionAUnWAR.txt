@@ -1,0 +1,66 @@
+Para agregar autentificación a un war se debe configurar shiro.
+dentro del web.xml se debe agregar el filter de shiro.
+
+
+
+
+	<listener>
+	    <listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
+	</listener>
+
+	<filter>
+	    <filter-name>ShiroFilter</filter-name>
+	    <filter-class>org.apache.shiro.web.servlet.ShiroFilter</filter-class>
+	</filter>
+	
+	<filter-mapping>
+	    <filter-name>ShiroFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	    <dispatcher>REQUEST</dispatcher> 
+	    <dispatcher>FORWARD</dispatcher> 
+	    <dispatcher>INCLUDE</dispatcher> 
+	    <dispatcher>ERROR</dispatcher>
+	</filter-mapping>
+
+
+y tambien dentro del WEB-INF se debe agregar el archivo de configuración por defecto de shiro
+donde se definen las urls protegidas.
+por defecto /logout realiza un logout del usuario
+y /login.html realiza un redirect a /authGWT/ que es el proyecto encargado de autentificar a los usuarios.
+
+el contenido de shiro.ini 
+
+[main]
+
+shiro.loginUrl = /login.html
+
+dcsysRealm = ar.com.dcsys.auth.shiro.DCSysShiroRealm
+sessionDAO = ar.com.dcsys.auth.shiro.HsqlDCSysSessionDAO
+sessionManager = org.apache.shiro.web.session.mgt.DefaultWebSessionManager
+
+securityManager.sessionManager = $sessionManager
+securityManager.sessionManager.sessionDAO = $sessionDAO
+securityManager.sessionManager.sessionIdCookie.path = /
+securityManager.realms = $dcsysRealm
+
+[urls]
+/logout = logout
+/** = authc
+
+
+en este caso se define que todo el sitio es autentificado. por lo que si o si debe haberse autentificado 
+en /authGWT/
+
+el contenido de login.html
+
+<html>
+<head>
+<meta http-equiv="refresh" content="0;url=/authGWT/">
+</head>
+<body>
+</body>
+</html>
+
+con eso ya basta para tener asegurado el sitio.
+
+
