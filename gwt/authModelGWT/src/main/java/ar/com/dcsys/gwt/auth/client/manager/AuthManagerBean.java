@@ -19,8 +19,6 @@ import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
-import com.google.gwt.user.client.Window;
-import com.sun.org.apache.regexp.internal.RE;
 
 public class AuthManagerBean implements AuthManager {
 
@@ -77,25 +75,22 @@ public class AuthManagerBean implements AuthManager {
 				@Override
 				public void onResponseReceived(Request request, Response response) {
 					if (Response.SC_OK == response.getStatusCode()) {
-						
-						/*
-						// llamo para que se almacene en la sesion el subject.
-						try {
-							(new RequestBuilder(RequestBuilder.POST,getStoreUrl())).sendRequest("", new RequestCallback() {
-								@Override
-								public void onResponseReceived(Request request, Response response) {
+
+						isAuthenticated(new Receiver<Boolean>() {
+							@Override
+							public void onSuccess(Boolean t) {
+								if (t == null || t.booleanValue() == false) {
+									rec.onFailure(new Exception("No se pudo autentificar al usuario"));
+								} else {
 									rec.onSuccess(null);
 								}
-								@Override
-								public void onError(Request request, Throwable exception) {
-									rec.onFailure(exception);
-								}
-							});
-						} catch (RequestException e) {
-							rec.onFailure(e);
-						}
-						*/
-						rec.onSuccess(null);
+							}
+							@Override
+							public void onFailure(Throwable t) {
+								rec.onFailure(t);
+							}							
+						});
+						
 						
 					} else {
 						
@@ -132,8 +127,20 @@ public class AuthManagerBean implements AuthManager {
 				public void onResponseReceived(Request request, Response response) {
 					if (Response.SC_OK == response.getStatusCode()) {
 						
-						rec.onSuccess(null);
-						
+						isAuthenticated(new Receiver<Boolean>() {
+							@Override
+							public void onSuccess(Boolean t) {
+								if (t != null && t.booleanValue() == true) {
+									rec.onFailure(new Exception("No se pudo desloguear al usuario"));
+								} else {
+									rec.onSuccess(null);
+								}
+							}
+							@Override
+							public void onFailure(Throwable t) {
+								rec.onFailure(t);
+							}							
+						});						
 					} else {
 						
 						rec.onFailure(new Exception("No se pudo desloguear al usuario"));
