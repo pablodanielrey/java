@@ -27,6 +27,7 @@ public class DCSysShiroRealm extends AuthorizingRealm {
 
 	private static final Logger logger = Logger.getLogger(DCSysShiroRealm.class.getName());
 	
+	
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection pc) {
 

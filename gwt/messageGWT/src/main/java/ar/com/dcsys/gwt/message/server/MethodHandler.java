@@ -7,6 +7,6 @@ import ar.com.dcsys.gwt.message.shared.Method;
 public interface MethodHandler {
 
 	public boolean handles(Method method);
-	public void handle(Message msg, Method method, MessageTransport transport);
+	public void handle(MessageContext context, Message msg, Method method);
 	
 }

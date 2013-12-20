@@ -11,11 +11,12 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,6 +32,7 @@ public class HsqlDCSysSessionDAO implements SessionDAO {
 	
 	private static final String pathdb = System.getProperty("java.io.tmpdir") + "/shiro-sessions.db";
 	private static final String db = "jdbc:hsqldb:file:" + pathdb;
+//	private static final String db = "jdbc:hsqldb:hsql://localhost/";
 	private static final String user = "SA";
 	private static final String pass = "";
 
@@ -55,6 +57,8 @@ public class HsqlDCSysSessionDAO implements SessionDAO {
 			try {
 				PreparedStatement st = con.prepareStatement("create table if not exists sessions (" +
 						"id longvarchar not null primary key," +
+						"created timestamp not null," +
+						"lastAccess timestamp not null," +
 						"session varbinary(524288000) not null" +			// 500MB
 						")");
 				try {
@@ -86,35 +90,22 @@ public class HsqlDCSysSessionDAO implements SessionDAO {
 	
 	
 	private byte[] serializeSession(Session s) throws IOException {
-
-		/*
-		Date lastAccessTime = s.getLastAccessTime();
-		Date startTime = s.getStartTimestamp();
-		HashMap<Object,Object> data = new HashMap<>();
-		
-		for (Object k : s.getAttributeKeys()) {
-			Object v = s.getAttribute(k);
-			
-			if (isSerializable(k) && isSerializable(v)) {
-				data.put(k, v);
-			}
-		}
-		*/
+		SimpleSession ss = (SimpleSession)s;
+		Map data = ss.getAttributes();
 		
 		ByteArrayOutputStream bo = new ByteArrayOutputStream();
 		ObjectOutputStream oo = new ObjectOutputStream(bo);
-		oo.writeObject(s);
+		oo.writeObject(data);
 		oo.flush();
 		return bo.toByteArray();
 	}
 	
-	private Session deserializeSession(byte[] data) throws IOException, ClassNotFoundException {
+	private Map deserializeSession(byte[] data) throws IOException, ClassNotFoundException {
 		ByteArrayInputStream bin = new ByteArrayInputStream(data);
 		ObjectInputStream oin = new ObjectInputStream(bin);
-		Session s = (Session)oin.readObject();
+		Map s = (Map)oin.readObject();
 		return s;
 	}
-	
 	
 	@Override
 	public Serializable create(Session session) {
@@ -125,10 +116,12 @@ public class HsqlDCSysSessionDAO implements SessionDAO {
 			
 			Connection con = getConnection();
 			try {
-				PreparedStatement st = con.prepareStatement("insert into sessions (id,session) values (?,?)");
+				PreparedStatement st = con.prepareStatement("insert into sessions (id,created,lastAccess,session) values (?,?,?,?)");
 				try {
 					st.setString(1,id);
-					st.setBytes(2, s);
+					st.setTimestamp(2, new Timestamp(session.getStartTimestamp().getTime()));
+					st.setTimestamp(3, new Timestamp(session.getLastAccessTime().getTime()));
+					st.setBytes(4, s);
 					st.executeUpdate();
 					
 					return id;
@@ -147,9 +140,32 @@ public class HsqlDCSysSessionDAO implements SessionDAO {
 	}
 
 	
+	private void setSession(PreparedStatement st, Session session) throws SQLException, IOException {
+		
+		byte[] s = serializeSession(session);
+		
+		st.setString(1,session.getId().toString());
+		st.setTimestamp(2, new Timestamp(session.getStartTimestamp().getTime()));
+		st.setTimestamp(3, new Timestamp(session.getLastAccessTime().getTime()));
+		st.setBytes(4, s);
+	}
+	
+	
 	private Session getSession(ResultSet rs) throws SQLException, ClassNotFoundException, IOException {
+		SimpleSession session = new SimpleSession();
+		
 		byte[] s = rs.getBytes("session");
-		Session session = deserializeSession(s);
+		Map m = deserializeSession(s);
+		session.setAttributes(m);
+
+		Date accessed = new Date(rs.getTimestamp("lastAccess").getTime());
+		session.setLastAccessTime(accessed);
+		
+		Date created = new Date(rs.getTimestamp("created").getTime());
+		session.setStartTimestamp(created);
+		
+		session.setId(rs.getString("id"));
+		
 		return session;
 	}
 	
@@ -199,14 +215,14 @@ public class HsqlDCSysSessionDAO implements SessionDAO {
 	public void update(Session session) throws UnknownSessionException {
 		try {
 			String id = (String)session.getId();
-			byte[] s = serializeSession(session);
+			
 			
 			Connection con = getConnection();
 			try {
-				PreparedStatement st = con.prepareStatement("update sessions set session = ? where id = ?");
+				PreparedStatement st = con.prepareStatement("update sessions set id = ?, created = ?, lastAccess = ?, session = ? where id = ?");
 				try {
-					st.setString(2,id);
-					st.setBytes(1, s);
+					setSession(st, session);
+					st.setString(5,id);
 					st.executeUpdate();
 					
 				} finally {

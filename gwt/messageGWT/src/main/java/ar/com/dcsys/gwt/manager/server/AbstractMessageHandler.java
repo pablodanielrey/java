@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 
 import javax.enterprise.event.Observes;
 
+import ar.com.dcsys.gwt.message.server.MessageContext;
 import ar.com.dcsys.gwt.message.server.MessageHandlers;
 import ar.com.dcsys.gwt.message.server.MethodHandler;
 import ar.com.dcsys.gwt.message.shared.Message;
@@ -19,9 +20,16 @@ public abstract class AbstractMessageHandler implements MethodHandler {
 	public abstract boolean handles(Method method);
 
 	@Override
-	public abstract void handle(Message msg, Method method, MessageTransport transport);
+	public void handle(MessageContext ctx, Message msg, Method method) {
+		handle(msg,method,ctx.getMessageTransport());
+	}
 
-
+	// parche para no refactorizar todo.
+	public void handle(Message msg, Method method, MessageTransport transport) {
+		// por ahora nada. ya que lo sobreeescriben los hanlders normlamente.
+	}
+	
+	
 	/**
 	 * Retorna el logger asignado para poder loggear información y errores.
 	 * @return

@@ -20,6 +20,7 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
+import ar.com.dcsys.gwt.message.server.DefaultMessageContext;
 import ar.com.dcsys.gwt.message.server.MessageHandlersDetection;
 import ar.com.dcsys.gwt.message.server.MethodHandler;
 import ar.com.dcsys.gwt.message.shared.Message;
@@ -169,14 +170,24 @@ public class Websockets {
 	}
 	*/
 	
+	
+	private void saveHttpSession(Session session, EndpointConfig config) {
+		// paso la session desde la config a la session de websockets.
+		Object o = config.getUserProperties().get(HttpSession.class.getName());
+		session.getUserProperties().put(HttpSession.class.getName(),o);
+	}
+	
+	private HttpSession getHttpSession(Session session) {
+		Object o = session.getUserProperties().get(HttpSession.class.getName());
+		return (HttpSession)o;
+	}
+	
 
 	@OnOpen
 	public void onOpen(Session session, EndpointConfig config) {
 		logger.log(Level.INFO,"onOpen");
 
-		// paso la session desde la config a la session de websockets.
-		Object o = config.getUserProperties().get(HttpSession.class.getName());
-		session.getUserProperties().put(HttpSession.class.getName(),o);
+		saveHttpSession(session, config);
 		
 		sessions.put(session.getId(),session);
 		/*
@@ -208,6 +219,13 @@ public class Websockets {
 		
 		String sId = session.getId();
 
+		HttpSession hs = getHttpSession(session);
+
+		DefaultMessageContext ctx = new DefaultMessageContext();
+		ctx.setHttpSession(hs);
+		ctx.setMessageTransport(transport);
+		
+		
 		// decodifico el mensaje:
 		MessageEncoderDecoder med = getEncoderDecoder();
 		Message msg = med.decode(Message.class,json);
@@ -227,7 +245,7 @@ public class Websockets {
 			boolean handled = false;
 			for (MethodHandler mh : handlers) {
 				if (mh.handles(method)) {
-					mh.handle(msg,method,transport);
+					mh.handle(ctx,msg,method);
 					handled = true;
 				}
 			}
