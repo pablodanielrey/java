@@ -56,6 +56,8 @@ public class PostgreSqlDCSysSessionDAO implements SessionDAO {
 						"id varchar not null primary key," +
 						"created timestamp not null," +
 						"lastAccess timestamp not null," +
+						"timeout bigint, " +
+						"host varchar," +
 						"session bytea not null" +
 						")");
 				try {
@@ -72,9 +74,7 @@ public class PostgreSqlDCSysSessionDAO implements SessionDAO {
 		} catch (Exception e) {
 			logger.log(Level.SEVERE,e.getMessage(),e);
 		}
-		
-		
-		
+
 	}
 	
 	private Connection getConnection() throws SQLException {
@@ -99,6 +99,46 @@ public class PostgreSqlDCSysSessionDAO implements SessionDAO {
 		return s;
 	}
 	
+	
+	private void setSession(PreparedStatement st, Session session) throws SQLException, IOException {
+		
+		st.setString(1,session.getId().toString());	
+		
+		st.setTimestamp(2, new Timestamp(session.getStartTimestamp().getTime()));
+		st.setTimestamp(3, new Timestamp(session.getLastAccessTime().getTime()));
+		st.setLong(4, session.getTimeout());
+		st.setString(5,session.getHost());
+		
+		byte[] s = serializeSession(session);
+		st.setBytes(6, s);
+
+	}
+	
+	
+	private Session getSession(ResultSet rs) throws SQLException, ClassNotFoundException, IOException {
+		SimpleSession session = new SimpleSession();
+		
+		byte[] s = rs.getBytes("session");
+		Map m = deserializeSession(s);
+		session.setAttributes(m);
+
+		Date accessed = new Date(rs.getTimestamp("lastAccess").getTime());
+		session.setLastAccessTime(accessed);
+		
+		Date created = new Date(rs.getTimestamp("created").getTime());
+		session.setStartTimestamp(created);
+		
+		Long timeout = rs.getLong("timeout");
+		session.setTimeout(timeout);
+		
+		String host = rs.getString("host");
+		session.setHost(host);
+		
+		session.setId(rs.getString("id"));
+		
+		return session;
+	}	
+	
 	@Override
 	public Serializable create(Session session) {
 		try {
@@ -108,12 +148,9 @@ public class PostgreSqlDCSysSessionDAO implements SessionDAO {
 			
 			Connection con = getConnection();
 			try {
-				PreparedStatement st = con.prepareStatement("insert into sessions (id,created,lastAccess,session) values (?,?,?,?)");
+				PreparedStatement st = con.prepareStatement("insert into sessions (id,created,lastAccess,timeout,host,session) values (?,?,?,?,?,?)");
 				try {
-					st.setString(1,id);
-					st.setTimestamp(2, new Timestamp(session.getStartTimestamp().getTime()));
-					st.setTimestamp(3, new Timestamp(session.getLastAccessTime().getTime()));
-					st.setBytes(4, s);
+					setSession(st, session);
 					st.executeUpdate();
 					
 					return id;
@@ -132,34 +169,7 @@ public class PostgreSqlDCSysSessionDAO implements SessionDAO {
 	}
 
 	
-	private void setSession(PreparedStatement st, Session session) throws SQLException, IOException {
-		
-		byte[] s = serializeSession(session);
-		
-		st.setString(1,session.getId().toString());
-		st.setTimestamp(2, new Timestamp(session.getStartTimestamp().getTime()));
-		st.setTimestamp(3, new Timestamp(session.getLastAccessTime().getTime()));
-		st.setBytes(4, s);
-	}
-	
-	
-	private Session getSession(ResultSet rs) throws SQLException, ClassNotFoundException, IOException {
-		SimpleSession session = new SimpleSession();
-		
-		byte[] s = rs.getBytes("session");
-		Map m = deserializeSession(s);
-		session.setAttributes(m);
 
-		Date accessed = new Date(rs.getTimestamp("lastAccess").getTime());
-		session.setLastAccessTime(accessed);
-		
-		Date created = new Date(rs.getTimestamp("created").getTime());
-		session.setStartTimestamp(created);
-		
-		session.setId(rs.getString("id"));
-		
-		return session;
-	}
 	
 	@Override
 	public Session readSession(Serializable sessionId) throws UnknownSessionException {
@@ -211,10 +221,10 @@ public class PostgreSqlDCSysSessionDAO implements SessionDAO {
 			
 			Connection con = getConnection();
 			try {
-				PreparedStatement st = con.prepareStatement("update sessions set id = ?, created = ?, lastAccess = ?, session = ? where id = ?");
+				PreparedStatement st = con.prepareStatement("update sessions set id = ?, created = ?, lastAccess = ?, timeout = ?, host = ?, session = ? where id = ?");
 				try {
 					setSession(st, session);
-					st.setString(5,id);
+					st.setString(7,id);
 					st.executeUpdate();
 					
 				} finally {
