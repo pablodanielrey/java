@@ -41,15 +41,6 @@ public class AuthManagerBean implements AuthManager {
 		return GWT.getHostPageBaseURL() + "AuthGWT.html";
 	}
 	
-	/**
-	 * por un bug que tiene shiro, todo debe ser procesador por el shiroFilter, si no no se inicia el subject.
-	 * asi que llamo a este servlet que lo unico que hace es almacenar el Subject en la HttpSession para poder acceederlo posteriormente.
-	 * @return
-	 */
-	private String getStoreUrl() {
-		return GWT.getHostPageBaseURL() + "store";
-	}
-	
 	private String getLogoutUrl() {
 		return GWT.getHostPageBaseURL() + "logout";
 	}
@@ -167,33 +158,42 @@ public class AuthManagerBean implements AuthManager {
 		
 		Message msg = messageUtils.method(AuthMethods.isAuthenticated);
 		
-		try {
-			socket.open();
-			socket.send(msg, new WebSocketReceiver() {
-				@Override
-				public void onSuccess(Message message) {
-					
-					String json = message.getPayload();
-					Boolean b = managerUtils.decodeBoolean(json);
-					rec.onSuccess(b);
-					
-				}
-				@Override
-				public void onFailure(Throwable t) {
-					rec.onFailure(t);
-				}
-			});
-			
-		} catch (SocketException e) {
-			rec.onFailure(e);
-		}
-		
+		socket.send(msg, new WebSocketReceiver() {
+			@Override
+			public void onSuccess(Message message) {
+				
+				String json = message.getPayload();
+				Boolean b = managerUtils.decodeBoolean(json);
+				rec.onSuccess(b);
+				
+			}
+			@Override
+			public void onFailure(Throwable t) {
+				rec.onFailure(t);
+			}
+		});
 	}
 
 	@Override
-	public void hasPermission(String perm, Receiver<Boolean> rec) {
-		// TODO Auto-generated method stub
+	public void hasPermission(String perm, final Receiver<Boolean> rec) {
 		
+		Message msg = messageUtils.method(AuthMethods.hasPermission,perm);
+		
+		socket.send(msg, new WebSocketReceiver() {
+			@Override
+			public void onSuccess(Message message) {
+				
+				String json = message.getPayload();
+				Boolean b = managerUtils.decodeBoolean(json);
+				rec.onSuccess(b);
+				
+			}
+			@Override
+			public void onFailure(Throwable t) {
+				rec.onFailure(t);
+			}
+		});
+			
 	}
 
 	

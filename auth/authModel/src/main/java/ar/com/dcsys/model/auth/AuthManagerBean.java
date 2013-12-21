@@ -4,8 +4,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.subject.Subject;
 
 import ar.com.dcsys.data.auth.AuthHandler;
 import ar.com.dcsys.data.auth.AuthHandlersDetection;
@@ -38,6 +40,20 @@ public class AuthManagerBean implements AuthManager {
 			e = new AuthenticationException("No se pudo encontrar un handler de autentificación para manejar ese tipo de token");
 		}
 		throw e;
+	}
+	
+	@Override
+	public boolean hasPermission(String perm) throws AuthenticationException {
+		Subject subject = SecurityUtils.getSubject();
+		boolean ok = subject.isPermitted(perm);
+		return ok;
+	}
+	
+	@Override
+	public boolean isAuthenticated() throws AuthenticationException {
+		Subject subject = SecurityUtils.getSubject();
+		boolean ok = subject.isAuthenticated();
+		return ok;
 	}
 	
 }

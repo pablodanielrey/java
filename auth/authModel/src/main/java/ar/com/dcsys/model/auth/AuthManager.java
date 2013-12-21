@@ -10,5 +10,7 @@ public interface AuthManager {
 
 	public AuthenticationInfo autentificate(AuthenticationToken token) throws AuthenticationException;
 	
+	public boolean isAuthenticated() throws AuthenticationException;
+	public boolean hasPermission(String perm) throws AuthenticationException;
 	
 }

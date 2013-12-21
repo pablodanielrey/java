@@ -15,18 +15,18 @@ import ar.com.dcsys.gwt.message.shared.Method;
 import ar.com.dcsys.model.auth.AuthManager;
 
 
-public class IsAuthenticatedMessageHandler extends ShiroMessageHandler {
+public class HasPermissionMessageHandler extends ShiroMessageHandler {
 
-	public static final Logger logger = Logger.getLogger(IsAuthenticatedMessageHandler.class.getName());
+	public static final Logger logger = Logger.getLogger(HasPermissionMessageHandler.class.getName());
 	
 	private final MessageUtils messageUtils;
 	private final ManagerUtils managerUtils;
 	private final AuthManager authManager;
 
 	@Inject
-	public IsAuthenticatedMessageHandler(MessageUtils messageUtils,
-										 ManagerUtils managerUtils,
-										 AuthManager authManager) {
+	public HasPermissionMessageHandler(MessageUtils messageUtils,
+									   ManagerUtils managerUtils,
+									   AuthManager authManager) {
 		this.messageUtils = messageUtils;
 		this.managerUtils = managerUtils;
 		this.authManager = authManager;
@@ -34,7 +34,7 @@ public class IsAuthenticatedMessageHandler extends ShiroMessageHandler {
 	
 	@Override
 	public boolean handles(Method method) {
-		return (AuthMethods.isAuthenticated.equals(method.getName()));
+		return (AuthMethods.hasPermission.equals(method.getName()));
 	}
 
 	@Override
@@ -42,9 +42,10 @@ public class IsAuthenticatedMessageHandler extends ShiroMessageHandler {
 		MessageTransport transport = ctx.getMessageTransport();
 		
 		try {
-			boolean authenticated = authManager.isAuthenticated();
+			String perm = method.getParams();
+			boolean permission = authManager.hasPermission(perm);
 
-			String json = managerUtils.encodeBoolean(authenticated);
+			String json = managerUtils.encodeBoolean(permission);
 			sendResponse(msg, transport, json);
 	
 		} catch (Exception e) {
