@@ -14,6 +14,7 @@ import ar.com.dcsys.gwt.mapau.shared.ClassRoomsEncoderDecoder;
 import ar.com.dcsys.gwt.mapau.shared.MapauEncoderDecoder;
 import ar.com.dcsys.gwt.mapau.shared.MapauMethods;
 import ar.com.dcsys.gwt.mapau.shared.SilegEncoderDecoder;
+import ar.com.dcsys.gwt.message.server.MessageContext;
 import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageTransport;
 import ar.com.dcsys.gwt.message.shared.MessageUtils;
@@ -62,7 +63,10 @@ public class FindAllClassRoomsAvailableInHandler extends AbstractMessageHandler 
 	}
 	
 	@Override
-	public void handle(Message msg, Method method, MessageTransport transport) {
+	public void handle(MessageContext ctx, Message msg, Method method) {
+		
+		MessageTransport transport = ctx.getMessageTransport();
+		
 		try {
 			String params = method.getParams();
 			List<String> lparams = ManagerUtils.decodeParams(params);

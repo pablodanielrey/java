@@ -11,10 +11,9 @@ import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.gwt.manager.server.AbstractMessageHandler;
 import ar.com.dcsys.gwt.manager.shared.ManagerUtils;
+import ar.com.dcsys.gwt.message.server.MessageContext;
 import ar.com.dcsys.gwt.message.server.handlers.MessageHandlers;
-import ar.com.dcsys.gwt.message.server.handlers.MethodHandler;
 import ar.com.dcsys.gwt.message.shared.Message;
-import ar.com.dcsys.gwt.message.shared.MessageException;
 import ar.com.dcsys.gwt.message.shared.MessageTransport;
 import ar.com.dcsys.gwt.message.shared.MessageUtils;
 import ar.com.dcsys.gwt.message.shared.Method;
@@ -69,8 +68,10 @@ public class FindPersonByIdMethodHandler extends AbstractMessageHandler {
 	}
 	
 	@Override
-	public void handle(Message msg, Method method, MessageTransport transport) {
+	public void handle(MessageContext ctx, Message msg, Method method) {
 
+		MessageTransport transport = ctx.getMessageTransport();
+		
 		try {
 			String id = method.getParams();
 			if (id == null) {

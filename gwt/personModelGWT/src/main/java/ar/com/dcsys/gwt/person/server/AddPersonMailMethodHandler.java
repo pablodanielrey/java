@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import ar.com.dcsys.gwt.manager.server.AbstractMessageHandler;
+import ar.com.dcsys.gwt.message.server.MessageContext;
 import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageTransport;
 import ar.com.dcsys.gwt.message.shared.MessageUtils;
@@ -53,8 +54,10 @@ public class AddPersonMailMethodHandler extends AbstractMessageHandler {
 	}
 	
 	@Override
-	public void handle(Message msg, Method method, MessageTransport transport) {
+	public void handle(MessageContext ctx, Message msg, Method method) {
 
+		MessageTransport transport = ctx.getMessageTransport();
+		
 		sendError(msg,transport,"Método no implementado");
 		/*
 		try {

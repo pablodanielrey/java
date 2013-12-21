@@ -10,6 +10,7 @@ import ar.com.dcsys.data.silabouse.Course;
 import ar.com.dcsys.gwt.manager.server.AbstractMessageHandler;
 import ar.com.dcsys.gwt.mapau.shared.SilegEncoderDecoder;
 import ar.com.dcsys.gwt.mapau.shared.SilegMethods;
+import ar.com.dcsys.gwt.message.server.MessageContext;
 import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageTransport;
 import ar.com.dcsys.gwt.message.shared.MessageUtils;
@@ -49,7 +50,9 @@ public class FindAllCoursesHandler extends AbstractMessageHandler {
 	}
 
 	@Override
-	public void handle(Message msg, Method method, MessageTransport transport) {
+	public void handle(MessageContext ctx, Message msg, Method method) {
+		
+		MessageTransport transport = ctx.getMessageTransport();
 		
 		try {
 			List<Course> courses = coursesManager.findAll();

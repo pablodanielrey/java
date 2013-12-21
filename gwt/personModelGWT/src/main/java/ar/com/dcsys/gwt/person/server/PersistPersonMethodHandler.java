@@ -11,6 +11,7 @@ import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.gwt.manager.server.AbstractMessageHandler;
 import ar.com.dcsys.gwt.manager.shared.ManagerUtils;
+import ar.com.dcsys.gwt.message.server.MessageContext;
 import ar.com.dcsys.gwt.message.server.handlers.MessageHandlers;
 import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageException;
@@ -68,7 +69,9 @@ public class PersistPersonMethodHandler extends AbstractMessageHandler {
 	}
 	
 	@Override
-	public void handle(Message msg, Method method, MessageTransport transport) {
+	public void handle(MessageContext ctx, Message msg, Method method) {
+		
+		MessageTransport transport = ctx.getMessageTransport();
 		
 		String params = method.getParams();
 		Person person = ManagerUtils.decode(personFactory,Person.class,params);

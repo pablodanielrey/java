@@ -20,16 +20,8 @@ public abstract class AbstractMessageHandler implements MethodHandler {
 	public abstract boolean handles(Method method);
 
 	@Override
-	public void handle(MessageContext ctx, Message msg, Method method) {
-		handle(msg,method,ctx.getMessageTransport());
-	}
+	public abstract void handle(MessageContext ctx, Message msg, Method method);
 
-	// parche para no refactorizar todo.
-	public void handle(Message msg, Method method, MessageTransport transport) {
-		// por ahora nada. ya que lo sobreeescriben los hanlders normlamente.
-	}
-	
-	
 	/**
 	 * Retorna el logger asignado para poder loggear información y errores.
 	 * @return

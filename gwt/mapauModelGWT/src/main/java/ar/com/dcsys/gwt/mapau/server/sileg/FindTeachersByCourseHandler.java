@@ -12,6 +12,7 @@ import ar.com.dcsys.gwt.manager.server.AbstractMessageHandler;
 import ar.com.dcsys.gwt.manager.shared.ManagerUtils;
 import ar.com.dcsys.gwt.mapau.shared.SilegFactory;
 import ar.com.dcsys.gwt.mapau.shared.SilegMethods;
+import ar.com.dcsys.gwt.message.server.MessageContext;
 import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageTransport;
 import ar.com.dcsys.gwt.message.shared.MessageUtils;
@@ -51,7 +52,9 @@ public class FindTeachersByCourseHandler extends AbstractMessageHandler {
 	}
 
 	@Override
-	public void handle(Message msg, Method method, MessageTransport transport) {
+	public void handle(MessageContext ctx, Message msg, Method method) {
+		
+		MessageTransport transport = ctx.getMessageTransport();
 		
 		try {
 			String params = method.getParams();
