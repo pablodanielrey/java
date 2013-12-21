@@ -21,8 +21,10 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 import ar.com.dcsys.gwt.message.server.DefaultMessageContext;
-import ar.com.dcsys.gwt.message.server.MessageHandlersDetection;
-import ar.com.dcsys.gwt.message.server.MethodHandler;
+import ar.com.dcsys.gwt.message.server.filters.MessageFilter;
+import ar.com.dcsys.gwt.message.server.filters.MessageFiltersDetection;
+import ar.com.dcsys.gwt.message.server.handlers.MessageHandlersDetection;
+import ar.com.dcsys.gwt.message.server.handlers.MethodHandler;
 import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageEncoderDecoder;
 import ar.com.dcsys.gwt.message.shared.MessageException;
@@ -138,12 +140,29 @@ public class Websockets {
 		}
 	}	
 	
-	private List<MethodHandler> handlers = new ArrayList<MethodHandler>();
+	private final List<MethodHandler> handlers = new ArrayList<>();
+	private final List<MessageFilter> filters = new ArrayList<>();
 
 	public Websockets() {
 		
 		try {
 			BeanManager bm = BeanManagerLocator.getBeanManager();
+			
+			
+			// detecto todos los filtros.
+			
+			MessageFiltersDetection md = BeanManagerUtils.lookup(MessageFiltersDetection.class,bm);
+			logger.info("Detectando filters");
+			List<MessageFilter> messageFilters = md.detectMessageFilters();
+			logger.info(messageFilters.size() + " detectados");
+			for (MessageFilter mf : messageFilters) {
+				logger.info("Filter : " + mf.getClass().getName() + " registrado");
+			}
+			filters.addAll(messageFilters);
+			
+			
+			// detecto todos los handlers
+			
 			MessageHandlersDetection mh = BeanManagerUtils.lookup(MessageHandlersDetection.class,bm);
 			logger.info("Detectando handlers");
 			List<MethodHandler> methodHandlers = mh.detectMethodHandlers();
@@ -152,6 +171,7 @@ public class Websockets {
 				logger.info("Handler : " + m.getClass().getName() + " registrado");
 			}
 			handlers.addAll(methodHandlers);
+			
 			
 		} catch (NamingException e) {
 			logger.log(Level.SEVERE,"No se configura ningun handler ya que no se pudo obtener el BeanManager",e);
@@ -224,13 +244,19 @@ public class Websockets {
 		DefaultMessageContext ctx = new DefaultMessageContext();
 		ctx.setHttpSession(hs);
 		ctx.setMessageTransport(transport);
-		
-		
+
 		// decodifico el mensaje:
 		MessageEncoderDecoder med = getEncoderDecoder();
 		Message msg = med.decode(Message.class,json);
 		msg.setSessionId(sId);
 
+		
+		// aplico todos los filtros registrados
+		for (MessageFilter mf : filters) {
+			mf.filter(ctx,msg);
+		}
+		
+		
 		if (MessageType.FUNCTION.equals(msg.getType())) {
 			
 			///////////// METODO ////////////

@@ -11,7 +11,7 @@ import javax.inject.Singleton;
 
 import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.gwt.manager.server.AbstractMessageHandler;
-import ar.com.dcsys.gwt.message.server.MessageHandlers;
+import ar.com.dcsys.gwt.message.server.handlers.MessageHandlers;
 import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageException;
 import ar.com.dcsys.gwt.message.shared.MessageTransport;

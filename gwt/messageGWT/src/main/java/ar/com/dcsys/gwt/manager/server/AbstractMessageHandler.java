@@ -6,8 +6,8 @@ import java.util.logging.Logger;
 import javax.enterprise.event.Observes;
 
 import ar.com.dcsys.gwt.message.server.MessageContext;
-import ar.com.dcsys.gwt.message.server.MessageHandlers;
-import ar.com.dcsys.gwt.message.server.MethodHandler;
+import ar.com.dcsys.gwt.message.server.handlers.MessageHandlers;
+import ar.com.dcsys.gwt.message.server.handlers.MethodHandler;
 import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageException;
 import ar.com.dcsys.gwt.message.shared.MessageTransport;

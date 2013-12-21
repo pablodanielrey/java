@@ -1,4 +1,4 @@
-package ar.com.dcsys.gwt.message.server;
+package ar.com.dcsys.gwt.message.server.handlers;
 
 import java.util.ArrayList;
 import java.util.List;

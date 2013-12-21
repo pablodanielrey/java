@@ -1,5 +1,6 @@
-package ar.com.dcsys.gwt.message.server;
+package ar.com.dcsys.gwt.message.server.handlers;
 
+import ar.com.dcsys.gwt.message.server.MessageContext;
 import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageTransport;
 import ar.com.dcsys.gwt.message.shared.Method;
