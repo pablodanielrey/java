@@ -9,10 +9,10 @@ import ar.com.dcsys.exceptions.PersonException;
 
 public interface PersonsManager {
 
-//	public Person findByPrincipal(DCSysPrincipal principal) throws PersonException;
-	
 	public Person findByPrincipal(Principal principal) throws PersonException;
 	public List<Principal> getPrincipals(Person person) throws PersonException;
+	
+	public Person getLoggedPerson() throws PersonException;
 	
 	
 	public List<Person> findAll() throws PersonException;
@@ -25,7 +25,5 @@ public interface PersonsManager {
 	public void remove(Person p) throws PersonException;	
 
 	public List<PersonType> findAllTypes() throws PersonException;
-	
-	//public Person findByStudentNumber(String studentNumber) throws PersonException;	
 	
 }

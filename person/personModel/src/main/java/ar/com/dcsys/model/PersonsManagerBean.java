@@ -13,11 +13,15 @@ import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import ar.com.dcsys.data.auth.principals.DniPrincipal;
+import ar.com.dcsys.data.auth.principals.IdPrincipal;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonDAO;
 import ar.com.dcsys.data.person.PersonType;
+import ar.com.dcsys.exceptions.AuthenticationException;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.exceptions.PersonNotFoundException;
+import ar.com.dcsys.model.auth.AuthManager;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -33,10 +37,12 @@ public class PersonsManagerBean implements PersonsManager {
 	private LoadingCache<String,String> dnisCache;
 	private LoadingCache<PersonType,List<String>> personTypesCache;
 	
+	private final AuthManager authManager;
 	private final PersonDAO personDAO;
 	
 	@Inject
-	public PersonsManagerBean(PersonDAO personDAO) {
+	public PersonsManagerBean(PersonDAO personDAO, AuthManager authManager) {
+		this.authManager = authManager;
 		this.personDAO = personDAO;
 		createCaches();
 	}
@@ -125,17 +131,6 @@ public class PersonsManagerBean implements PersonsManager {
 		personTypesCache.invalidateAll();
 	}
 	
-	
-	/*
-	@Override
-	public Person findByPrincipal(DCSysPrincipal principal) throws PersonException {
-		String personId = principal.getUuid();
-		Person person = findById(personId);
-		return person;
-	};
-	*/
-	
-
 	@Override
 	public List<Person> findAll() throws PersonException {
 		List<String> allIds = personDAO.findAllIds();
@@ -241,76 +236,68 @@ public class PersonsManagerBean implements PersonsManager {
 	public List<PersonType> findAllTypes() throws PersonException {
 		return personDAO.findAllTypes();
 	}
+
+	
+	
+	@Override
+	public Person getLoggedPerson() throws PersonException {
+		
+		try {
+			if (!authManager.isAuthenticated()) {
+				throw new PersonException("Falta autentificar a la persona");
+			}
+			
+			List<Principal> principals = authManager.getPrincipals();
+			if (principals == null || principals.size() == 0) {
+				throw new PersonException("principals == null || principals.size == 0");
+			}
+			
+			
+			for (Principal p : principals) {
+				Person person = findByPrincipal(p);
+				if (person != null) {
+					return person;
+				}
+			}
+			
+			throw new PersonException("No se pudo encontrar la persona");
+			
+		} catch (AuthenticationException e) {
+			throw new PersonException(e);
+		}
+	}
+	
 	
 	
 	@Override
 	public Person findByPrincipal(Principal principal) throws PersonException {
 
-		String id = principal.getName();
-		Person person = findById(id);
-		if (person == null) {
-
-			person = findByDni(id);
-			if (person == null) {
-
-				// el caso de nombre.apellido no lo tengo en cuenta por ahora.
-				
-				throw new PersonException("No se puede encontrar la persona dado ese principal");
-				
-			}
-		}
-		return person;
+		String name = principal.getName();
 		
-	}
-	
-	
-	private class SimplePrincipal implements Principal {
-		private final String name;
-		
-		public SimplePrincipal(String name) {
-			this.name = name;
+		if (principal instanceof IdPrincipal) {
+			Person person = findById(name);
+			return person;
 		}
 		
-		@Override
-		public String getName() {
-			return null;
+		if (principal instanceof DniPrincipal) {
+			Person person = findByDni(name);
+			return person;
 		}
+		
+		throw new PersonException("principal.class unknown");
 	}
 	
 	@Override
 	public List<Principal> getPrincipals(Person person) throws PersonException {
-		
 		List<Principal> principals = new ArrayList<>();
 		
 		String id = person.getId();
-		principals.add(new SimplePrincipal(id));
+		principals.add(new IdPrincipal(id));
 		
 		String dni = person.getDni();
-		principals.add(new SimplePrincipal(dni));
-		
-		String name = person.getName();
-		String lastName = person.getLastName();
-		if (name != null && lastName != null) {
-			principals.add(new SimplePrincipal(name.toLowerCase().trim() + "." + lastName.toLowerCase().trim()));
-		}
-		
+		principals.add(new DniPrincipal(dni));
+
 		return principals;
 	}
-	
-	/*
-	@Override
-	public Person findByStudentNumber(String studentNumber) throws PersonException {
-		if (studentNumber == null) {
-			return null;
-		}
-		
-		for (Person p : findAll()) {
-			if (p.getStudentNumber() != null && studentNumber.equals(p.getStudentNumber())) {
-				return p;
-			}  			
-		}
-		return null;
-	}
-	*/
 	
 }

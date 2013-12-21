@@ -1,5 +1,6 @@
 package ar.com.dcsys.model.auth;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -7,6 +8,7 @@ import javax.inject.Inject;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 
 import ar.com.dcsys.data.auth.AuthHandler;
@@ -54,6 +56,13 @@ public class AuthManagerBean implements AuthManager {
 		Subject subject = SecurityUtils.getSubject();
 		boolean ok = subject.isAuthenticated();
 		return ok;
+	}
+	
+	@Override
+	public List<Principal> getPrincipals() throws AuthenticationException {
+		Subject subject = SecurityUtils.getSubject();
+		PrincipalCollection pc = subject.getPrincipals();
+		return pc.asList();
 	}
 	
 }

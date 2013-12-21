@@ -1,5 +1,8 @@
 package ar.com.dcsys.model.auth;
 
+import java.security.Principal;
+import java.util.List;
+
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 
@@ -12,5 +15,7 @@ public interface AuthManager {
 	
 	public boolean isAuthenticated() throws AuthenticationException;
 	public boolean hasPermission(String perm) throws AuthenticationException;
+	
+	public List<Principal> getPrincipals() throws AuthenticationException;
 	
 }
