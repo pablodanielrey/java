@@ -52,7 +52,6 @@ public class PostgreSqlDCSysSessionDAO implements SessionDAO {
 		}
 		
 		try {
-			Class.forName("org.hsqldb.jdbc.JDBCDriver" );
 			Connection con = getConnection();
 			try {
 				PreparedStatement st = con.prepareStatement("create table if not exists sessions (" +
