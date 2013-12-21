@@ -344,7 +344,7 @@ public class AppointmentsManagerTest {
 		
 	}
 	
-	
+	/*
 	@Test
 	public void findAllAppointmentsBy() throws MapauException, PersonException {
 		AppointmentsManager appointmentsManager = getAppointmentsManager();
@@ -503,6 +503,7 @@ public class AppointmentsManagerTest {
 		assertEquals(appointments.size(), countCheckHour);		
 		
 	}
+	*/
 	
 	@Test
 	public void findAllFilters() throws MapauException {
