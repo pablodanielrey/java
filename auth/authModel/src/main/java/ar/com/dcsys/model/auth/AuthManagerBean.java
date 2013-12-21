@@ -58,6 +58,7 @@ public class AuthManagerBean implements AuthManager {
 		return ok;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Principal> getPrincipals() throws AuthenticationException {
 		Subject subject = SecurityUtils.getSubject();
