@@ -39,6 +39,9 @@ public class HasPermissionMessageHandler extends ShiroMessageHandler {
 
 	@Override
 	public void handle(MessageContext ctx, Message msg, Method method) {
+		
+		super.handle(ctx, msg, method);
+		
 		MessageTransport transport = ctx.getMessageTransport();
 		
 		try {
