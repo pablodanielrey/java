@@ -20,6 +20,7 @@
 	<module>personEntities</module>
 	<module>personDAO</module>
 	<module>personHsqlDAO</module>
+	<module>personPostgreSqlDAO</module>
 	<module>personLdapDAO</module>
 	<module>personModel</module>
   </modules>

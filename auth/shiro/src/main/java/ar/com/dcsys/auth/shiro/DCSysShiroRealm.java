@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -49,12 +48,7 @@ public class DCSysShiroRealm extends AuthorizingRealm {
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken pc) throws AuthenticationException {
 		
 		logger.info("autenticando");
-		
 				
-		if (!(pc instanceof UsernamePasswordToken)) {
-			throw new AuthenticationException("AuthenticationToken not supported");
-		}
-		
 		AuthManager authManager = BeanManagerUtils.lookup(AuthManager.class);
 		if (authManager == null) {
 			throw new AuthenticationException("No se pudo encontrar el manager de autentificacion");

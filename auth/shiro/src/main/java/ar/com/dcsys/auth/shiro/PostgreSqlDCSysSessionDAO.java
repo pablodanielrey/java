@@ -150,7 +150,13 @@ public class PostgreSqlDCSysSessionDAO implements SessionDAO {
 		Object ps = session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
 		if (ps != null) {
 			PrincipalCollection pc = (PrincipalCollection)ps;
-			String name = (String)pc.getPrimaryPrincipal();
+			Object principal = pc.getPrimaryPrincipal();
+			String name = "";
+			if (principal instanceof Principal) {
+				name = ((Principal)principal).getName();
+			} else if (principal instanceof String) {
+				name = (String)principal;
+			}
 			st.setString(9,name);
 		} else {
 			st.setString(9,"nulo");

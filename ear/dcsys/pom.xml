@@ -120,7 +120,7 @@
 
     <dependency>
       <groupId>ar.com.dcsys.data</groupId>
-      <artifactId>personHsqlDAO</artifactId>
+      <artifactId>personPostgreSqlDAO</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
 
@@ -134,7 +134,7 @@
 
     <dependency>
       <groupId>ar.com.dcsys.data</groupId>
-      <artifactId>firmwareConfig</artifactId>
+      <artifactId>postgreSqlConfig</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
 
