@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import javax.inject.Inject;
 
 import ar.com.dcsys.gwt.auth.shared.AuthMethods;
+import ar.com.dcsys.gwt.manager.server.AbstractMessageHandler;
 import ar.com.dcsys.gwt.manager.shared.ManagerUtils;
 import ar.com.dcsys.gwt.message.server.MessageContext;
 import ar.com.dcsys.gwt.message.shared.Message;
@@ -15,7 +16,7 @@ import ar.com.dcsys.gwt.message.shared.Method;
 import ar.com.dcsys.model.auth.AuthManager;
 
 
-public class IsAuthenticatedMessageHandler extends ShiroMessageHandler {
+public class IsAuthenticatedMessageHandler extends AbstractMessageHandler {
 
 	public static final Logger logger = Logger.getLogger(IsAuthenticatedMessageHandler.class.getName());
 	
@@ -39,8 +40,6 @@ public class IsAuthenticatedMessageHandler extends ShiroMessageHandler {
 
 	@Override
 	public void handle(MessageContext ctx, Message msg, Method method) {
-		
-		super.handle(ctx, msg, method);
 				
 		MessageTransport transport = ctx.getMessageTransport();
 		
