@@ -22,12 +22,13 @@
   <dependencies>
 
   <!-- para tener shiro con cdi -->
-
+<!--
 	<dependency>
 	    <groupId>org.ops4j.pax.shiro</groupId>
 	    <artifactId>pax-shiro-cdi-web</artifactId>
 	    <version>0.1.0</version>
 	</dependency>
+-->
 
   <!-- para tener shiro -->
 

@@ -3,13 +3,10 @@ package ar.com.dcsys.gwt.person.client.activity;
 import java.util.List;
 
 import ar.com.dcsys.data.person.Person;
+import ar.com.dcsys.gwt.auth.client.manager.AuthManager;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.person.client.manager.AssistancePersonData;
-import ar.com.dcsys.gwt.person.client.manager.AuthManager;
-import ar.com.dcsys.gwt.person.client.manager.DCSysCredentials;
-import ar.com.dcsys.gwt.person.client.manager.DCSysPrincipal;
 import ar.com.dcsys.gwt.person.client.manager.PersonsManager;
-import ar.com.dcsys.gwt.person.client.manager.UserPinCredentials;
 import ar.com.dcsys.gwt.person.client.ui.assistance.PersonAssistanceDataView;
 
 import com.google.gwt.activity.shared.AbstractActivity;
@@ -77,6 +74,8 @@ public class PersonAssistanceDataActivity extends AbstractActivity implements Pe
 
 		hasPermission = false;
 		
+		/*
+		
 		authManager.isUserInRole("ADMIN", new Receiver<Boolean>() {
 			@Override
 			public void onSuccess(Boolean ok) {
@@ -106,6 +105,8 @@ public class PersonAssistanceDataActivity extends AbstractActivity implements Pe
 			}
 		});
 		
+		*/
+		
 	}
 
 	@Override
@@ -129,6 +130,8 @@ public class PersonAssistanceDataActivity extends AbstractActivity implements Pe
 	 * Busca todas las credenciales para una persona determinada. y setea los datos en la vista.
 	 */
 	private void findAllCredentials(Person person) {
+		
+		/*
 		
 		authManager.findByPerson(person, new Receiver<DCSysPrincipal>() {
 			@Override
@@ -157,13 +160,15 @@ public class PersonAssistanceDataActivity extends AbstractActivity implements Pe
 				showMessage(error.getMessage());
 			}
 		});
-		
+		*/
 	}
 	
 	/**
 	 * Setea en la vista el numero de pin si es que encuentra alguna credencial del tipo correcto.
 	 * @param creds
 	 */
+	
+	/*
 	private void setCredentials(List<DCSysCredentials> creds) {
 		if (creds == null || creds.size() <= 0) {
 			return;
@@ -177,6 +182,7 @@ public class PersonAssistanceDataActivity extends AbstractActivity implements Pe
 			}
 		}
 	}
+	*7
 	
 	/**
 	 * Busca todos los datos de asistencia de la persona y los setea en la vista

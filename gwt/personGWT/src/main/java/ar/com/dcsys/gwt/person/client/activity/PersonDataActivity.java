@@ -9,11 +9,11 @@ import java.util.Set;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.data.person.Telephone;
+import ar.com.dcsys.gwt.auth.client.manager.AuthManager;
 import ar.com.dcsys.gwt.clientMessages.client.MessageDialogEvent;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
-import ar.com.dcsys.gwt.person.client.manager.AuthManager;
 import ar.com.dcsys.gwt.person.client.manager.PersonsManager;
-import ar.com.dcsys.gwt.person.client.place.PersonDataPlace;
+import ar.com.dcsys.gwt.person.client.place.UpdatePersonDataPlace;
 import ar.com.dcsys.gwt.person.client.ui.basicData.PersonDataView;
 import ar.com.dcsys.gwt.person.client.ui.basicData.PersonDataViewCss;
 import ar.com.dcsys.gwt.person.client.ui.basicData.PersonDataViewResources;
@@ -77,7 +77,7 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 	
 	
 	@Inject
-	public PersonDataActivity(PersonsManager personsManager, PersonFactory personFactory, AuthManager authManager, PersonDataView view, @Assisted PersonDataPlace place) {
+	public PersonDataActivity(PersonsManager personsManager, PersonFactory personFactory, AuthManager authManager, PersonDataView view, @Assisted UpdatePersonDataPlace place) {
 		this.personFactory = personFactory;
 		this.personsManager = personsManager;
 		this.authManager = authManager;
@@ -169,7 +169,18 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 		
 		view.getPersonTypesView().setReadOnly(true);
 		
-		
+
+		///////////////// PARCHE HASTA SOLUCIONAR LO DE AUTENTIFICACION /////////////
+		view.setMailReadOnly(false);
+		view.setDniReadOnly(false);
+		view.setNameReadOnly(false);
+		view.setLastNameReadOnly(false);
+		view.setStudentNumberReadOnly(false);
+		view.getPersonTypesView().setReadOnly(false);
+
+		view.setMailVisible(true);
+
+		/*
 		authManager.isUserInRole("ADMIN", new Receiver<Boolean>() {
 			@Override
 			public void onSuccess(Boolean arg0) {
@@ -237,7 +248,9 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 			public void onFailure(Throwable error) {
 				
 			}
-		});		
+		});
+		
+				*/
 		
 	}
 	

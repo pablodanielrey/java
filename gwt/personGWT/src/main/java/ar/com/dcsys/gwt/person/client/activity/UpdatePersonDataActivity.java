@@ -1,9 +1,9 @@
 package ar.com.dcsys.gwt.person.client.activity;
 
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.gwt.person.client.manager.AuthManager;
+import ar.com.dcsys.gwt.auth.client.manager.AuthManager;
 import ar.com.dcsys.gwt.person.client.manager.PersonsManager;
-import ar.com.dcsys.gwt.person.client.place.PersonDataPlace;
+import ar.com.dcsys.gwt.person.client.place.UpdatePersonDataPlace;
 import ar.com.dcsys.gwt.person.client.ui.UpdatePersonDataView;
 import ar.com.dcsys.gwt.person.client.ui.assistance.PersonAssistanceDataView;
 import ar.com.dcsys.gwt.person.client.ui.basicData.PersonDataView;
@@ -29,7 +29,7 @@ public class UpdatePersonDataActivity extends AbstractActivity implements Update
 									UpdatePersonDataView updatePersonDataView,
 									PersonDataView personDataView, 
 									PersonAssistanceDataView personAssistanceDataView,
-									@Assisted PersonDataPlace place) {
+									@Assisted UpdatePersonDataPlace place) {
 		
 		this.updatePersonDataView = updatePersonDataView;
 		

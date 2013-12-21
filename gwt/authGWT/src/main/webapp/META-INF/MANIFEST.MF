@@ -1,5 +1,6 @@
 Manifest-Version: 1.0
-Class-Path: gwt-servlet-2.5.1.jar authModelGWT.jar messageGWT.jar org.
- json-chargebee-1.0.jar gwt-websockets-1.0.3.jar cdiUtils-1.0-SNAPSHOT
- .jar clientMessagesGWT.jar
+Class-Path: gwt-servlet-2.5.1.jar authModelGWT.jar javax.servlet-api-3
+ .1.0.jar shiro-1.0-SNAPSHOT.jar authModel-1.0-SNAPSHOT.jar authEntiti
+ es-1.0-SNAPSHOT.jar cdiUtils-1.0-SNAPSHOT.jar messageGWT.jar org.json
+ -chargebee-1.0.jar gwt-websockets-1.0.3.jar clientMessagesGWT.jar
 

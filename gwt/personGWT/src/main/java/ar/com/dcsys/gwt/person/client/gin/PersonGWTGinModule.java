@@ -1,7 +1,6 @@
 package ar.com.dcsys.gwt.person.client.gin;
 
-import ar.com.dcsys.gwt.person.client.manager.AuthManager;
-import ar.com.dcsys.gwt.person.client.manager.AuthManagerBean;
+import ar.com.dcsys.gwt.person.client.activity.PersonActivityMapper;
 import ar.com.dcsys.gwt.person.client.ui.UpdatePersonData;
 import ar.com.dcsys.gwt.person.client.ui.UpdatePersonDataView;
 import ar.com.dcsys.gwt.person.client.ui.assistance.PersonAssistanceData;
@@ -27,14 +26,14 @@ public class PersonGWTGinModule extends AbstractGinModule {
 
 		bind(EventBus.class).to(SimpleEventBus.class).in(Singleton.class);
 		
-		bind(AuthManager.class).to(AuthManagerBean.class).in(Singleton.class);
-		
 		bind(PersonTypesView.class).to(PersonTypes.class).in(Singleton.class);
 		bind(PersonDataView.class).to(PersonDataUser.class).in(Singleton.class);
 		bind(PersonAssistanceDataView.class).to(PersonAssistanceData.class).in(Singleton.class);
 		bind(UpdatePersonDataView.class).to(UpdatePersonData.class).in(Singleton.class);
 		bind(ManagePersonsView.class).to(ManagePersons.class).in(Singleton.class);
 
+		bind(PersonActivityMapper.class).in(Singleton.class);
+		
 		GinFactoryModuleBuilder builder = new GinFactoryModuleBuilder();
 		install(builder.build(AssistedInjectionFactory.class));
 	}

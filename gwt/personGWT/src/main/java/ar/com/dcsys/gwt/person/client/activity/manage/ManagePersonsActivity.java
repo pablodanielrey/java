@@ -7,10 +7,10 @@ import java.util.logging.Logger;
 
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonType;
+import ar.com.dcsys.gwt.auth.client.manager.AuthManager;
 import ar.com.dcsys.gwt.clientMessages.client.MessageDialogEvent;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.person.client.activity.UpdatePersonDataActivity;
-import ar.com.dcsys.gwt.person.client.manager.AuthManager;
 import ar.com.dcsys.gwt.person.client.manager.PersonsManager;
 import ar.com.dcsys.gwt.person.client.manager.events.PersonModifiedEvent;
 import ar.com.dcsys.gwt.person.client.manager.events.PersonModifiedEventHandler;

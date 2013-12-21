@@ -1,9 +1,11 @@
 Manifest-Version: 1.0
-Class-Path: gwt-servlet-2.5.1.jar personEntities-1.0-SNAPSHOT.jar clie
- ntMessagesGWT.jar personModelGWT.jar messageGWT.jar org.json-chargebe
- e-1.0.jar gwt-websockets-1.0.3.jar cdiUtils-1.0-SNAPSHOT.jar personMo
- del-1.0-SNAPSHOT.jar personDAO-1.0-SNAPSHOT.jar dcsysUtils-1.0-SNAPSH
- OT.jar hsqldb-2.3.1.jar postgresql-9.3-1100-jdbc41.jar personHsqlDAO-
- 1.0-SNAPSHOT.jar hsql-1.0-SNAPSHOT.jar firmwareConfig-1.0-SNAPSHOT.ja
- r
+Class-Path: gwt-servlet-2.5.1.jar authModelGWT.jar javax.servlet-api-3
+ .1.0.jar shiro-1.0-SNAPSHOT.jar shiro-core-1.2.2.jar slf4j-api-1.6.4.
+ jar commons-beanutils-1.8.3.jar authModel-1.0-SNAPSHOT.jar authEntiti
+ es-1.0-SNAPSHOT.jar cdiUtils-1.0-SNAPSHOT.jar messageGWT.jar org.json
+ -chargebee-1.0.jar gwt-websockets-1.0.3.jar personEntities-1.0-SNAPSH
+ OT.jar clientMessagesGWT.jar personModelGWT.jar personModel-1.0-SNAPS
+ HOT.jar personDAO-1.0-SNAPSHOT.jar dcsysUtils-1.0-SNAPSHOT.jar hsqldb
+ -2.3.1.jar postgresql-9.3-1100-jdbc41.jar personHsqlDAO-1.0-SNAPSHOT.
+ jar hsql-1.0-SNAPSHOT.jar firmwareConfig-1.0-SNAPSHOT.jar
 
