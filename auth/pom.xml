@@ -23,9 +23,10 @@
 	<module>userPasswordCredentials</module>
 	<module>userPasswordDAO</module>
 	<module>shiro</module>
-    <module>authModel</module>
-    <module>authEntities</module>
-    <module>userPasswordAuthModule</module>
+	<module>shiroHsql</module>
+	<module>authModel</module>
+	<module>authEntities</module>
+	<module>userPasswordAuthModule</module>
   </modules>
 
 </project>

@@ -8,7 +8,6 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.security.Principal;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,20 +28,33 @@ import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.support.DefaultSubjectContext;
 
+import ar.com.dcsys.data.PostgresSqlConnectionProvider;
+import ar.com.dcsys.utils.BeanManagerUtils;
+
 public class PostgreSqlDCSysSessionDAO implements SessionDAO {
 
 	private static final Logger logger = Logger.getLogger(PostgreSqlDCSysSessionDAO.class.getName());
 	
+	/*
 	private static final String db = "jdbc:postgresql://localhost/dcsys";
 	private static final String user = "dcsys";
 	private static final String pass = "dcsys";
+	*/
 	
+	private final PostgresSqlConnectionProvider cp;
 	private boolean tablesCreated = false;
 	
 	public PostgreSqlDCSysSessionDAO() {
 		
+		this.cp = getConnectionProvider();
+		
 		createTables();
 		
+	}
+	
+	private final PostgresSqlConnectionProvider getConnectionProvider() {
+		PostgresSqlConnectionProvider cp = BeanManagerUtils.lookup(PostgresSqlConnectionProvider.class);
+		return cp;
 	}
 	
 	private void createTables() {
@@ -52,7 +64,7 @@ public class PostgreSqlDCSysSessionDAO implements SessionDAO {
 		}
 		
 		try {
-			Connection con = getConnection();
+			Connection con = cp.getConnection();
 			try {
 				PreparedStatement st = con.prepareStatement("create table if not exists sessions (" +
 						"id varchar not null primary key," +
@@ -81,16 +93,12 @@ public class PostgreSqlDCSysSessionDAO implements SessionDAO {
 				}
 				
 			} finally {
-				con.close();
+				cp.closeConnection(con);
 			}
 		} catch (Exception e) {
 			logger.log(Level.SEVERE,e.getMessage(),e);
 		}
 
-	}
-	
-	private Connection getConnection() throws SQLException {
-		return DriverManager.getConnection(db,user,pass);
 	}
 	
 	private byte[] serializeSession(SimpleSession ss) throws IOException {
@@ -209,7 +217,7 @@ public class PostgreSqlDCSysSessionDAO implements SessionDAO {
 			String id = UUID.randomUUID().toString();
 			((SimpleSession)session).setId(id);					// como lo hace en otras partes de shiro.
 			
-			Connection con = getConnection();
+			Connection con = cp.getConnection();
 			try {
 				PreparedStatement st = con.prepareStatement("insert into sessions (id,created,lastAccess,stoped,timeout,expired,host,authenticated,principal,session) values (?,?,?,?,?,?,?,?,?,?)");
 				try {
@@ -223,7 +231,7 @@ public class PostgreSqlDCSysSessionDAO implements SessionDAO {
 				}
 				
 			} finally {
-				con.close();
+				cp.closeConnection(con);
 			}
 		
 		} catch (Exception e) {
@@ -237,7 +245,7 @@ public class PostgreSqlDCSysSessionDAO implements SessionDAO {
 	@Override
 	public Session readSession(Serializable sessionId) throws UnknownSessionException {
 		try {
-			Connection con = getConnection();
+			Connection con = cp.getConnection();
 			try {
 				PreparedStatement st = con.prepareStatement("select * from sessions where id = ?");
 				try {
@@ -265,7 +273,7 @@ public class PostgreSqlDCSysSessionDAO implements SessionDAO {
 				}
 				
 			} finally {
-				con.close();
+				cp.closeConnection(con);
 			}
 		
 		} catch (UnknownSessionException e) {
@@ -282,7 +290,7 @@ public class PostgreSqlDCSysSessionDAO implements SessionDAO {
 			String id = (String)session.getId();
 			
 			
-			Connection con = getConnection();
+			Connection con = cp.getConnection();
 			try {
 				PreparedStatement st = con.prepareStatement("update sessions set id = ?, created = ?, lastAccess = ?, stoped = ?, timeout = ?, expired = ?, host = ?, authenticated = ?, principal = ?, session = ? where id = ?");
 				try {
@@ -297,7 +305,7 @@ public class PostgreSqlDCSysSessionDAO implements SessionDAO {
 				}
 				
 			} finally {
-				con.close();
+				cp.closeConnection(con);
 			}
 		
 		} catch (Exception e) {
@@ -310,7 +318,7 @@ public class PostgreSqlDCSysSessionDAO implements SessionDAO {
 		try {
 			String id = (String)session.getId();
 			
-			Connection con = getConnection();
+			Connection con = cp.getConnection();
 			try {
 				PreparedStatement st = con.prepareStatement("delete from sessions where id = ?");
 				try {
@@ -322,7 +330,7 @@ public class PostgreSqlDCSysSessionDAO implements SessionDAO {
 				}
 				
 			} finally {
-				con.close();
+				cp.closeConnection(con);
 			}
 		
 		} catch (Exception e) {
@@ -333,7 +341,7 @@ public class PostgreSqlDCSysSessionDAO implements SessionDAO {
 	@Override
 	public Collection<Session> getActiveSessions() {
 		try {
-			Connection con = getConnection();
+			Connection con = cp.getConnection();
 			try {
 				PreparedStatement st = con.prepareStatement(" select * from sessions s where s.lastAccess < ? and s.stoped is null");
 				try {
@@ -356,7 +364,7 @@ public class PostgreSqlDCSysSessionDAO implements SessionDAO {
 				}
 				
 			} finally {
-				con.close();
+				cp.closeConnection(con);
 			}
 		
 		} catch (UnknownSessionException e) {

@@ -10,9 +10,9 @@
   </parent>
 
   <groupId>ar.com.dcsys.auth</groupId>
-  <artifactId>shiro</artifactId>
+  <artifactId>shiroHsql</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>shiro</name>
+  <name>shiroHsql</name>
 
   <dependencies>
 
@@ -84,7 +84,7 @@
 
         <dependency>
             <groupId>ar.com.dcsys.data</groupId>
-            <artifactId>postgresql</artifactId>
+            <artifactId>hsql</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
