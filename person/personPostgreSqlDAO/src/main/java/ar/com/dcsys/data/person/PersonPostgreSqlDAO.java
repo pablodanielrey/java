@@ -110,8 +110,8 @@ public class PersonPostgreSqlDAO extends  AbstractPersonDAO {
 			}
 			
 			st = con.prepareStatement("create table if not exists persons_mails (" +
-					"person_id longvarchar not null," +
-					"mail longvarchar not null)");
+					"person_id varchar not null," +
+					"mail varchar not null)");
 			try {
 				st.execute();
 			} finally {
@@ -119,8 +119,8 @@ public class PersonPostgreSqlDAO extends  AbstractPersonDAO {
 			}			
 			
 			st = con.prepareStatement("create table if not exists persons_telephones (" +
-					"person_id longvarchar not null," +
-					"telephone longvarchar not null)");
+					"person_id varchar not null," +
+					"telephone varchar not null)");
 			try {
 				st.execute();
 			} finally {

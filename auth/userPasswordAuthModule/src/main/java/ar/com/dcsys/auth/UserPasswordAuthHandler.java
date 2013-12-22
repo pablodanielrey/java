@@ -54,7 +54,9 @@ public class UserPasswordAuthHandler extends AbstractAuthHandler {
 				st = con.prepareStatement("create table if not exists user_password_auth_log (" +
 						"date timestamp not null," +
 						"host varchar, " +
-						"userName varchar not null" +
+						"userName varchar not null," +
+						"principal varchar not null," +
+						"principalName varchar not null" +
 						")");
 				try {
 					st.execute();
@@ -62,6 +64,20 @@ public class UserPasswordAuthHandler extends AbstractAuthHandler {
 				} finally {
 					st.close();
 				}
+
+				st = con.prepareStatement("create table if not exists user_password_auth_error_log (" +
+						"date timestamp not null," +
+						"host varchar, " +
+						"userName varchar not null," +
+						"password varchar not null" +
+						")");
+				try {
+					st.execute();
+					
+				} finally {
+					st.close();
+				}
+				
 				
 				tablesCreated = true;
 				
@@ -74,13 +90,15 @@ public class UserPasswordAuthHandler extends AbstractAuthHandler {
 		}
 	}
 	
-	private void log(Connection con, String host, String username) throws SQLException {
+	private void logSuccess(Connection con, String host, String username, Principal p) throws SQLException {
 		
-		PreparedStatement st = con.prepareStatement("insert into user_password_auth_log (date, host, username) values (?,?,?)");
+		PreparedStatement st = con.prepareStatement("insert into user_password_auth_log (date, host, username, principal, principalName) values (?,?,?,?,?)");
 		try {
 			st.setTimestamp(1, new Timestamp((new Date()).getTime()));
 			st.setString(2,host);
 			st.setString(3,username);
+			st.setString(4,p.getClass().getName());
+			st.setString(5,p.getName());
 			st.execute();
 			
 		} finally {
@@ -88,6 +106,22 @@ public class UserPasswordAuthHandler extends AbstractAuthHandler {
 		}
 		
 	}
+	
+	private void logError(Connection con, String host, String username, String password) throws SQLException {
+		
+		PreparedStatement st = con.prepareStatement("insert into user_password_auth_error_log (date, host, username, password) values (?,?,?,?)");
+		try {
+			st.setTimestamp(1, new Timestamp((new Date()).getTime()));
+			st.setString(2,host);
+			st.setString(3,username);
+			st.setString(4,password);
+			st.execute();
+			
+		} finally {
+			st.close();
+		}
+		
+	}	
 	
 	private AuthenticationInfo authenticate(Connection con, UsernamePasswordToken token) throws SQLException, AuthenticationException {
 		
@@ -131,17 +165,27 @@ public class UserPasswordAuthHandler extends AbstractAuthHandler {
 		try {
 			Connection con = cp.getConnection();
 			try {
-				AuthenticationInfo info = authenticate(con, upt);
-				
-				String username = upt.getUsername();
 				String host = upt.getHost();
-				log(con,host,username);
-				
-				return info;
+				String username = upt.getUsername();
+
+				try {
+					AuthenticationInfo info = authenticate(con, upt);
+					
+					Principal p = (Principal)info.getPrincipals().getPrimaryPrincipal();
+					logSuccess(con,host,username,p);
+					
+					return info;
+
+				} catch (AuthenticationException e) {
+					char[] password = upt.getPassword();
+					logError(con, host, username, new String(password));
+					throw e;
+				}
 				
 			} finally {
 				con.close();
 			}
+			
 		} catch (SQLException e) {
 			throw new AuthenticationException(e.getMessage());
 		}
