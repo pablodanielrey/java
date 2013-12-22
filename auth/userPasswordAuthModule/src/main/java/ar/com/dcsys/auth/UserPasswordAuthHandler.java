@@ -54,7 +54,7 @@ public class UserPasswordAuthHandler extends AbstractAuthHandler {
 				st = con.prepareStatement("create table if not exists user_password_auth_log (" +
 						"date timestamp not null," +
 						"host varchar, " +
-						"userName varchar not null," +
+						"userName varchar not null" +
 						")");
 				try {
 					st.execute();
@@ -107,7 +107,7 @@ public class UserPasswordAuthHandler extends AbstractAuthHandler {
 				String id = rs.getString("person_id");
 				Principal p = new IdPrincipal(id);
 						
-				AuthenticationInfo info = new SimpleAuthenticationInfo(p, token, this.getClass().getName());
+				AuthenticationInfo info = new SimpleAuthenticationInfo(p, token.getPassword(), this.getClass().getName());
 				return info;
 
 			} finally {
