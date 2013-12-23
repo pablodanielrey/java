@@ -27,7 +27,8 @@ public class PersonActivityMapper implements ActivityMapper {
 		}
 		
 		if (place instanceof UpdatePersonDataPlace) {
-			return factory.updatePersonDataActivity((UpdatePersonDataPlace)place);
+			//return factory.updatePersonDataActivity((UpdatePersonDataPlace)place);
+			return factory.loggedPersonActivity((UpdatePersonDataPlace)place);
 		}
 		
 		return null;

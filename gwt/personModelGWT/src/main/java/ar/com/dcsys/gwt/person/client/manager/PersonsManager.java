@@ -10,6 +10,8 @@ import ar.com.dcsys.gwt.person.shared.PersonValueProxy;
 
 public interface PersonsManager {
 
+	public void getLoggedPerson(Receiver<Person> rec);
+	
 	/**
 	 * Envía el mensaje de persist al servidor.
 	 * @param person, persona a crear o actualizar

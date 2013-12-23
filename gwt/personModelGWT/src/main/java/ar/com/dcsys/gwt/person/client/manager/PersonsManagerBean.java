@@ -159,6 +159,46 @@ public class PersonsManagerBean implements PersonsManager {
 		}		
 	}
 	
+	
+	@Override
+	public void getLoggedPerson(final Receiver<Person> rec) {
+		try {
+			Message msg = messagesFactory.method(PersonMethods.getLoggedPerson);
+			
+			socket.send(msg, new WebSocketReceiver() {
+				@Override
+				public void onSuccess(Message response) {
+					
+					if (handleError(response, rec)) {
+						return;
+					}
+					
+					Person person = null;
+					try {
+						String personS = response.getPayload();
+						if (personS != null) {
+							person = ManagerUtils.decode(personFactory,Person.class,personS);
+						}
+					} catch (Exception e) {
+						rec.onFailure(e);
+					}
+					
+					try {
+						rec.onSuccess(person);
+					} catch (Exception e) {
+						logger.log(Level.SEVERE,e.getMessage(),e);
+					}
+				}
+				@Override
+				public void onFailure(Throwable t) {
+					rec.onFailure(t);
+				}
+			});
+		} catch (Exception e) {
+			rec.onFailure(e);
+		}
+	}
+	
 	@Override
 	public void findByDni(String dni, final Receiver<Person> rec) {
 		try {
