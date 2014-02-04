@@ -36,7 +36,7 @@ public class PersonGWT implements EntryPoint {
    */
   public void onModuleLoad() {
 
-	  RootPanel p = RootPanel.get();
+	  RootPanel p = RootPanel.get("content");
 	  AcceptsOneWidgetAdapter adapter = new AcceptsOneWidgetAdapter(p);
 	  
 	  EventBus eventBus = injector.eventbus();
