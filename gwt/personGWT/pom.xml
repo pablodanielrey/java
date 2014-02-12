@@ -148,6 +148,7 @@
           <i18nMessagesBundle>ar.com.dcsys.gwt.person.client.Messages</i18nMessagesBundle>
           <noServer>true</noServer>
           <port>8080</port>
+	  <style>DETAILED</style>
 
           <compileSourcesArtifacts>
               <artifact>ar.com.dcsys.data:personEntities</artifact>

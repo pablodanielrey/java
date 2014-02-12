@@ -8,6 +8,7 @@ import ar.com.dcsys.gwt.person.client.place.ManagePersonsPlace;
 import ar.com.dcsys.gwt.person.client.place.PersonPlaceHistoryMapper;
 import ar.com.dcsys.gwt.person.client.place.UpdatePersonDataPlace;
 import ar.com.dcsys.gwt.person.client.ui.AcceptsOneWidgetAdapter;
+import ar.com.dcsys.gwt.person.client.ui.menu.Menu;
 import ar.com.dcsys.gwt.ws.shared.SocketException;
 import ar.com.dcsys.gwt.ws.shared.SocketStateEvent;
 import ar.com.dcsys.gwt.ws.shared.SocketStateEventHandler;
@@ -19,6 +20,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -35,9 +37,10 @@ public class PersonGWT implements EntryPoint {
    * This is the entry point method.
    */
   public void onModuleLoad() {
-
-	  RootPanel p = RootPanel.get("content");
-	  AcceptsOneWidgetAdapter adapter = new AcceptsOneWidgetAdapter(p);
+	  
+	  SimplePanel sp = new SimplePanel();
+	  RootPanel.get("content").add(sp);
+	  AcceptsOneWidgetAdapter adapter = new AcceptsOneWidgetAdapter(sp);
 	  
 	  EventBus eventBus = injector.eventbus();
 	  
@@ -66,6 +69,9 @@ public class PersonGWT implements EntryPoint {
 		public void onClose() {
 		}
 	  });
+	  
+	  RootPanel pMenu = RootPanel.get("menu");
+	  (new Menu(pc)).attachMenu(pMenu);
 	  
 	  try {
 			injector.ws().open();

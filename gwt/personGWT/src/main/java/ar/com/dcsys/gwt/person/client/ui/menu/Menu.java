@@ -1,0 +1,40 @@
+package ar.com.dcsys.gwt.person.client.ui.menu;
+
+import ar.com.dcsys.gwt.person.client.place.ManagePersonsPlace;
+import ar.com.dcsys.gwt.person.client.place.UpdatePersonDataPlace;
+
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.place.shared.PlaceController;
+import com.google.gwt.user.client.ui.MenuBar;
+import com.google.gwt.user.client.ui.MenuItem;
+import com.google.gwt.user.client.ui.RootPanel;
+
+public class Menu {
+	
+	private final PlaceController ctrl;
+	
+	public Menu(PlaceController ctrl) {
+		this.ctrl = ctrl;
+	}
+	
+	public void attachMenu(RootPanel panel) {
+		
+		MenuBar menu = new MenuBar();
+		menu.addItem(new MenuItem("Datos Personales",false,new ScheduledCommand() {
+			@Override
+			public void execute() {
+				ctrl.goTo(new UpdatePersonDataPlace());
+			}
+		}));
+
+		menu.addItem(new MenuItem("Administrar Personas",false,new ScheduledCommand() {
+			@Override
+			public void execute() {
+				ctrl.goTo(new ManagePersonsPlace());
+			}
+		}));
+		
+		panel.add(menu);
+	}
+
+}
