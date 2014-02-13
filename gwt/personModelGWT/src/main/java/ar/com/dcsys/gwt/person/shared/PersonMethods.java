@@ -19,4 +19,11 @@ public class PersonMethods {
 	
 	public static final String personModifiedEvent = "personModifiedEvent";
 	
+	
+	public static final String persistMailChange = "personPeristMailChange";
+	public static final String findAllMailChanges = "personFindAllMailChanges";
+	
+	
+	public static final String mailChangeModifiedEvent = "personMailChangeModifiedEvent";
+	
 }

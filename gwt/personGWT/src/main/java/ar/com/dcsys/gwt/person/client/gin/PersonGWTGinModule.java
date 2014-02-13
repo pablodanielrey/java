@@ -7,6 +7,8 @@ import ar.com.dcsys.gwt.person.client.ui.assistance.PersonAssistanceData;
 import ar.com.dcsys.gwt.person.client.ui.assistance.PersonAssistanceDataView;
 import ar.com.dcsys.gwt.person.client.ui.basicData.PersonDataUser;
 import ar.com.dcsys.gwt.person.client.ui.basicData.PersonDataView;
+import ar.com.dcsys.gwt.person.client.ui.mailchange.MailChange;
+import ar.com.dcsys.gwt.person.client.ui.mailchange.MailChangeView;
 import ar.com.dcsys.gwt.person.client.ui.manage.ManagePersons;
 import ar.com.dcsys.gwt.person.client.ui.manage.ManagePersonsView;
 import ar.com.dcsys.gwt.person.client.ui.types.PersonTypes;
@@ -31,7 +33,8 @@ public class PersonGWTGinModule extends AbstractGinModule {
 		bind(PersonAssistanceDataView.class).to(PersonAssistanceData.class).in(Singleton.class);
 		bind(UpdatePersonDataView.class).to(UpdatePersonData.class).in(Singleton.class);
 		bind(ManagePersonsView.class).to(ManagePersons.class).in(Singleton.class);
-
+		bind(MailChangeView.class).to(MailChange.class).in(Singleton.class);
+		
 		bind(PersonActivityMapper.class).in(Singleton.class);
 		
 		GinFactoryModuleBuilder builder = new GinFactoryModuleBuilder();

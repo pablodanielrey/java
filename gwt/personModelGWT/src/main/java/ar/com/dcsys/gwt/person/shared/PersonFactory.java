@@ -1,8 +1,10 @@
 package ar.com.dcsys.gwt.person.shared;
 
 import ar.com.dcsys.data.person.Mail;
+import ar.com.dcsys.data.person.MailChange;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.Telephone;
+import ar.com.dcsys.gwt.person.shared.lists.MailChangeList;
 import ar.com.dcsys.gwt.person.shared.lists.MailList;
 import ar.com.dcsys.gwt.person.shared.lists.PersonList;
 import ar.com.dcsys.gwt.person.shared.lists.PersonTypeList;
@@ -17,6 +19,7 @@ public interface PersonFactory extends AutoBeanFactory {
 	public AutoBean<Person> person(Person p);
 	public AutoBean<Telephone> telephone();
 	public AutoBean<Mail> mail();
+	public AutoBean<MailChange> mailChange();
 
 	public AutoBean<PersonValueProxy> personValue();
 	
@@ -24,5 +27,6 @@ public interface PersonFactory extends AutoBeanFactory {
 	public AutoBean<PersonList> personList();
 	public AutoBean<MailList> mailList();
 	public AutoBean<PersonValueList> personValueList();
+	public AutoBean<MailChangeList> mailChangeList();
 	
 }

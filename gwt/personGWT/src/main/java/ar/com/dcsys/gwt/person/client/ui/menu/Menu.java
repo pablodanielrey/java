@@ -1,5 +1,6 @@
 package ar.com.dcsys.gwt.person.client.ui.menu;
 
+import ar.com.dcsys.gwt.person.client.place.MailChangePlace;
 import ar.com.dcsys.gwt.person.client.place.ManagePersonsPlace;
 import ar.com.dcsys.gwt.person.client.place.UpdatePersonDataPlace;
 
@@ -26,6 +27,13 @@ public class Menu {
 				ctrl.goTo(new UpdatePersonDataPlace());
 			}
 		}));
+		
+		menu.addItem(new MenuItem("Cambiar e-Mail",false,new ScheduledCommand() {
+			@Override
+			public void execute() {
+				ctrl.goTo(new MailChangePlace());
+			}
+		}));		
 
 		menu.addItem(new MenuItem("Administrar Personas",false,new ScheduledCommand() {
 			@Override

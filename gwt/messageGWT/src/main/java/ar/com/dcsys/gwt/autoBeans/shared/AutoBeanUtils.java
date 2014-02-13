@@ -23,7 +23,7 @@ public class AutoBeanUtils {
 			if (com.google.web.bindery.autobean.shared.AutoBeanUtils.getAutoBean(t) != null) {
 				r.add(t);
 			} else {
-				r.add(factory.create(clazz).as());
+				r.add(factory.create(clazz,t).as());
 			}
 		}
 		return r;

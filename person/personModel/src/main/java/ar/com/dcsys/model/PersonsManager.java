@@ -14,7 +14,6 @@ public interface PersonsManager {
 	
 	public Person getLoggedPerson() throws PersonException;
 	
-	
 	public List<Person> findAll() throws PersonException;
 	public List<Person> findAllBy(List<PersonType> types) throws PersonException;
 	

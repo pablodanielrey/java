@@ -5,14 +5,17 @@ import java.util.List;
 import javax.inject.Inject;
 
 import ar.com.dcsys.data.person.Mail;
+import ar.com.dcsys.data.person.MailChange;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.gwt.autoBeans.shared.AutoBeanUtils;
+import ar.com.dcsys.gwt.person.shared.lists.MailChangeList;
 import ar.com.dcsys.gwt.person.shared.lists.MailList;
 import ar.com.dcsys.gwt.person.shared.lists.PersonList;
 import ar.com.dcsys.gwt.person.shared.lists.PersonTypeList;
 import ar.com.dcsys.gwt.person.shared.lists.PersonValueList;
 
+import com.google.web.bindery.autobean.gwt.rebind.model.AutoBeanType;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 
@@ -102,6 +105,24 @@ public class PersonEncoderDecoder {
 		PersonList personList = bean.as();
 		List<Person> persons = personList.getList();
 		return persons;
+	}
+	
+	
+	public String encodeMailChangeList(List<MailChange> mailChanges) {
+		AutoBean<MailChangeList> list = personFactory.mailChangeList();
+		MailChangeList mcl = list.as();
+		List<MailChange> wlist = AutoBeanUtils.wrapList(personFactory, MailChange.class, mailChanges);
+		mcl.setList(wlist);
+		
+		String json = AutoBeanCodex.encode(list).getPayload();
+		return json;
+	}
+	
+	public List<MailChange> decodeMailChangeList(String list) {
+		AutoBean<MailChangeList> bean = AutoBeanCodex.decode(personFactory, MailChangeList.class, list);
+		MailChangeList mailList = bean.as();
+		List<MailChange> mailChanges = mailList.getList();
+		return mailChanges;
 	}
 	
 }

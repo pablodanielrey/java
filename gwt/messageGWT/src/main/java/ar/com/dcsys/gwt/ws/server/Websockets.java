@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.enterprise.event.Event;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpSession;
@@ -45,6 +46,7 @@ public class Websockets {
 	private Map<String,Session> sessions = new ConcurrentHashMap<>();
 	
 	private final MessageTransport transport = new MessageTransport() {
+		
 		@Override
 		public void send(Message msg) throws MessageException {
 
@@ -54,6 +56,8 @@ public class Websockets {
 			
 			MessageEncoderDecoder med = getEncoderDecoder();
 			String json = med.encode(Message.class, msg);
+			
+			logger.info(json);
 			
 			if (MessageType.EVENT.equals(msg.getType())) {
 				
@@ -148,7 +152,6 @@ public class Websockets {
 		try {
 			BeanManager bm = BeanManagerLocator.getBeanManager();
 			
-			
 			// detecto todos los filtros.
 			
 			MessageFiltersDetection md = BeanManagerUtils.lookup(MessageFiltersDetection.class,bm);
@@ -171,7 +174,10 @@ public class Websockets {
 				logger.info("Handler : " + m.getClass().getName() + " registrado");
 			}
 			handlers.addAll(methodHandlers);
+
 			
+			// publico el nuevo transport mediante eventos de CDI
+			bm.fireEvent(transport);
 			
 		} catch (NamingException e) {
 			logger.log(Level.SEVERE,"No se configura ningun handler ya que no se pudo obtener el BeanManager",e);
@@ -277,7 +283,7 @@ public class Websockets {
 			}
 			
 			if (!handled) {
-				sendError(med,session,msg.getId(),"No se encontró hanlder para la función : " + method.getName());
+				sendError(med,session,msg.getId(),"No se encontró handler para la función : " + method.getName());
 			}
 			
 			return;

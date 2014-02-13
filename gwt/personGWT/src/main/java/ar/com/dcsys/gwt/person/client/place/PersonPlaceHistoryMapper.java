@@ -4,7 +4,8 @@ import com.google.gwt.place.shared.PlaceHistoryMapper;
 import com.google.gwt.place.shared.WithTokenizers;
 
 @WithTokenizers({ ManagePersonsPlace.Tokenizer.class,
-				  UpdatePersonDataPlace.Tokenizer.class })
+				  UpdatePersonDataPlace.Tokenizer.class,
+				  MailChangePlace.Tokenizer.class })
 public interface PersonPlaceHistoryMapper extends PlaceHistoryMapper {
 
 }
