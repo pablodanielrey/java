@@ -5,6 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.MailChange;
 import ar.com.dcsys.data.person.MailChangeDAO;
 import ar.com.dcsys.data.person.Person;
@@ -14,16 +15,19 @@ import ar.com.dcsys.exceptions.PersonException;
 public class MailChangesManagerBean implements MailChangesManager {
 
 	private final MailChangeDAO mailChangeDAO;
+	private final PersonsManager personsManager;
 	
 	@Inject
-	public MailChangesManagerBean(MailChangeDAO mailChangeDAO) {
+	public MailChangesManagerBean(MailChangeDAO mailChangeDAO, PersonsManager personsManager) {
 		this.mailChangeDAO = mailChangeDAO;
+		this.personsManager = personsManager;
 	}
 	
 	@Override
 	public void persist(Person person, MailChange change) throws PersonException {
 		mailChangeDAO.persist(person, change);
 	}
+	
 	
 	@Override
 	public void remove(MailChange change) throws PersonException {
@@ -34,6 +38,35 @@ public class MailChangesManagerBean implements MailChangesManager {
 	public List<MailChange> findAllBy(Person person) throws PersonException {
 		return mailChangeDAO.findAllBy(person);
 	}
+
 	
+	@Override
+	public void processByToken(String token) throws PersonException {
+		MailChange mc = mailChangeDAO.findByToken(token);
+		if (mc.isConfirmed()) {
+			return;
+		}
+		
+		Mail mail = mc.getMail();
+		String m2 = mail.getMail().trim().toLowerCase();
+		
+		String personId = mc.getPersonId();
+		
+		boolean found = false;
+		List<Mail> mails = personsManager.findAllMails(personId);
+		for (Mail m : mails) {
+			String m1 = m.getMail().trim().toLowerCase();
+			if (m2.equals(m1)) {
+				found = true;
+				break;
+			}
+		}
+		
+		if (!found) {
+			personsManager.addMail(personId, mail);
+		}
+		
+		mailChangeDAO.remove(mc);
+	}
 	
 }

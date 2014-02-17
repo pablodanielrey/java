@@ -6,6 +6,7 @@ public class MailChangeBean implements MailChange, Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
+	private String personId;
 	private Mail mail;
 	private boolean confirmed;
 	private String token;
@@ -38,6 +39,16 @@ public class MailChangeBean implements MailChange, Serializable {
 	@Override
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	@Override
+	public String getPersonId() {
+		return personId;
+	}
+
+	@Override
+	public void setPersonId(String personId) {
+		this.personId = personId;
 	}
 
 }

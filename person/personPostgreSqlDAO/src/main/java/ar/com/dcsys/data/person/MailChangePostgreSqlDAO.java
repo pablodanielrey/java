@@ -43,6 +43,10 @@ public class MailChangePostgreSqlDAO implements MailChangeDAO {
 		String token = rs.getString("token");
 		mc.setToken(token);
 		
+		
+		String personId = rs.getString("person_id");
+		mc.setPersonId(personId);
+		
 		return mc;
 	}
 	
@@ -172,4 +176,40 @@ public class MailChangePostgreSqlDAO implements MailChangeDAO {
 		}
 	}
 
+	
+	@Override
+	public MailChange findByToken(String token) throws PersonException {
+		if (token == null) {
+			throw new PersonException("token == null");
+		}
+		
+		try {
+			Connection con = cp.getConnection();
+			try {
+				String query = "select * from persons_mailChanges where token = ?";
+				PreparedStatement st = con.prepareStatement(query);
+				try {
+					st.setString(1, token);
+					ResultSet rs = st.executeQuery();
+					try {
+						if (rs.next()) {
+							MailChange mc = getMailChange(rs);
+							return mc;
+						} else {
+							throw new PersonException("token not found");
+						}
+					} finally {
+						rs.close();
+					}
+				} finally {
+					st.close();
+				}
+			} finally {
+				cp.closeConnection(con);
+			}
+		} catch (SQLException e) {
+			throw new PersonException(e);
+		}
+	}
+	
 }

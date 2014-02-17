@@ -133,6 +133,93 @@ public class PersonPostgreSqlDAO extends  AbstractPersonDAO {
 	}
 	
 	
+	private Mail getMail(ResultSet rs) throws SQLException {
+		Mail mail = new MailBean();
+		mail.setMail(rs.getString("mail"));
+		mail.setPrimary(true);
+		return mail;
+	}
+	
+	@Override
+	public void addMail(String personId, Mail mail) throws PersonException {
+		try {
+			Connection con = cp.getConnection();
+			try {
+				PreparedStatement st = con.prepareStatement("insert into persons_mails (person_id, mail) values (?,?)");
+				try {
+					st.setString(1, personId);
+					st.setString(2, mail.getMail());
+					st.execute();
+					
+				} finally {
+					st.close();
+				}
+				
+			} finally {
+				cp.closeConnection(con);
+			}
+		} catch (Exception e) {
+			throw new PersonException(e);
+		}
+	}
+	
+	@Override
+	public List<Mail> findAllMails(String personId) throws PersonException {
+		try {
+			Connection con = cp.getConnection();
+			try {
+				PreparedStatement st = con.prepareStatement("select * from persons_mails where person_id = ?");
+				try {
+					st.setString(1, personId);
+					ResultSet rs = st.executeQuery();
+					try {
+						List<Mail> mails = new ArrayList<>();
+						while (rs.next()) {
+							Mail m = getMail(rs);
+							mails.add(m);
+						}
+						return mails;
+						
+					} finally {
+						rs.close();
+					}
+				} finally {
+					st.close();
+				}
+				
+			} finally {
+				cp.closeConnection(con);
+			}
+		} catch (Exception e) {
+			throw new PersonException(e);
+		}
+	}
+	
+	
+	@Override
+	public void removeMail(String personId, Mail mail) throws PersonException {
+		try {
+			Connection con = cp.getConnection();
+			try {
+				PreparedStatement st = con.prepareStatement("delete from persons_mails where person_id = ? and mail = ?");
+				try {
+					st.setString(1, personId);
+					st.setString(2, mail.getMail());
+					st.execute();
+					
+				} finally {
+					st.close();
+				}
+				
+			} finally {
+				cp.closeConnection(con);
+			}
+		} catch (Exception e) {
+			throw new PersonException(e);
+		}		
+	}
+	
+	
 	@Override
 	public List<String> findAllIds() throws PersonException {
 		
@@ -216,10 +303,6 @@ public class PersonPostgreSqlDAO extends  AbstractPersonDAO {
 		}
 	}
 
-	
-	private Mail getMail(ResultSet rs) throws SQLException {
-		return null;
-	}
 	
 	/**
 	 * Retora una persona sacada de los datos del resultset.

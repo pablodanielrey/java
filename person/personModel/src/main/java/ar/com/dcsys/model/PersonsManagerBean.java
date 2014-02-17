@@ -15,6 +15,7 @@ import javax.inject.Singleton;
 
 import ar.com.dcsys.data.auth.principals.DniPrincipal;
 import ar.com.dcsys.data.auth.principals.IdPrincipal;
+import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonDAO;
 import ar.com.dcsys.data.person.PersonType;
@@ -237,6 +238,22 @@ public class PersonsManagerBean implements PersonsManager {
 		return personDAO.findAllTypes();
 	}
 
+	
+	@Override
+	public void addMail(String personId, Mail mail) throws PersonException {
+		personDAO.addMail(personId, mail);
+	}
+
+	@Override
+	public void removeMail(String personId, Mail mail) throws PersonException {
+		personDAO.removeMail(personId, mail);
+	}
+	
+	@Override
+	public List<Mail> findAllMails(String personId) throws PersonException {
+		return personDAO.findAllMails(personId);
+	}
+	
 	
 	
 	@Override

@@ -11,4 +11,7 @@ public interface MailChange {
 	public String getToken();
 	public void setToken(String token);
 	
+	public String getPersonId();
+	public void setPersonId(String id);
+	
 }
