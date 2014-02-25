@@ -17,6 +17,7 @@ import ar.com.dcsys.exceptions.MapauException;
 
 public class CharacteristicsTest {
 	
+	/*
 	private static Weld weld;
 	private static WeldContainer container;
 	
@@ -69,7 +70,7 @@ public class CharacteristicsTest {
 		assertNotNull(characteristic3.getId());
 		assertEquals(id, characteristic3.getId());*/
 			
-
+/*
 		/////////////////// pruebo que las caracteristicas en la base tienen todas diferentes ids ////////////////
 				
 		characteristics = characteristicsManager.findAll();
@@ -99,4 +100,5 @@ public class CharacteristicsTest {
 		}
 	}	
 
+*/
 }

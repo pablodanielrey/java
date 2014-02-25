@@ -22,6 +22,10 @@ import ar.com.dcsys.gwt.message.shared.Method;
 import ar.com.dcsys.gwt.person.shared.PersonEncoderDecoder;
 import ar.com.dcsys.gwt.person.shared.PersonFactory;
 import ar.com.dcsys.gwt.person.shared.PersonMethods;
+import ar.com.dcsys.mail.MailData;
+import ar.com.dcsys.mail.MailException;
+import ar.com.dcsys.mail.MailsManager;
+import ar.com.dcsys.model.MailChangesManager;
 
 @Singleton
 public class PersistMailChangeMethodHandler extends AbstractMessageHandler {
@@ -30,8 +34,10 @@ public class PersistMailChangeMethodHandler extends AbstractMessageHandler {
 
 	private final PersonEncoderDecoder encoderDecoder;
 	private final MessageUtils mf;
-//	private final MailChangesManager mailChangesModel;
+	private final MailChangesManager mailChangesModel;
 	private final PersonFactory personFactory;
+	private final MailsManager mailsManager;
+	private final MailData mailData;
 	
 	@Override
 	protected Logger getLogger() {
@@ -47,11 +53,16 @@ public class PersistMailChangeMethodHandler extends AbstractMessageHandler {
 	@Inject
 	public PersistMailChangeMethodHandler(PersonFactory personFactory,
 									  PersonEncoderDecoder encoderDecoder, 
-									  MessageUtils messagesFactory) {
+									  MessageUtils messagesFactory,
+									  MailChangesManager mailChangesManager,
+									  MailsManager mailsManager,
+									  MailData mailData) {
 		this.encoderDecoder = encoderDecoder;
 		this.mf = messagesFactory;
-//		this.mailChangesModel = mailChangesModel;
+		this.mailChangesModel = mailChangesManager;
 		this.personFactory = personFactory;
+		this.mailsManager = mailsManager;
+		this.mailData = mailData;
 	}
 
 	/**
@@ -93,17 +104,36 @@ public class PersistMailChangeMethodHandler extends AbstractMessageHandler {
 		Person person = ManagerUtils.decode(personFactory,Person.class,lparams.get(1));
 		
 		try {
-			//String id = mailChangesModel.persist(mailChange,person);
-			String id = "ok";
-			sendResponse(msg, transport, id);
-			sendEvent(transport, id);
+			mailChangesModel.persist(person, mailChange);
+			sendMail(person, mailChange);
+			sendResponse(msg, transport, msg.getId());
+			
 			
 		} catch (Exception e) {
 //		} catch (PersonException e) {
 			logger.log(Level.SEVERE,e.getMessage(),e);
 			sendError(msg,transport,e.getMessage());
 		}
+
+		sendEvent(transport, msg.getId());
 		
+	}
+	
+	private void sendMail(Person person, MailChange mailChange) throws MailException {
+		String from = mailData.from();
+		String to = mailChange.getMail().getMail();
+		
+		String token = mailChange.getToken();
+		if (token == null) {
+			throw new MailException("token == null");
+		}
+		
+		String subject = "Confirmación de cambio de correo requerida";
+		String body = "Debe confirmar haciendo click en el siguiente link,\n" + 
+					  "https://fce.econo.unlp.edu.ar/personGWT/mailChanges?t=" + token + "\n" +
+					  "el cambio de cuenta de correo para la persona con dni : " + person.getDni();
+		
+		mailsManager.sendMail(from, to, subject, body);
 	}
 	
 }

@@ -26,7 +26,7 @@ import ar.com.dcsys.model.silabouse.CoursesManager;
 import ar.com.dcsys.model.silabouse.SubjectsManager;
 
 public class AssignmentsTest {
-	
+	/*
 	private static Weld weld;
 	private static WeldContainer container;
 	
@@ -142,5 +142,7 @@ public class AssignmentsTest {
 			assertEquals(equals,1);
 		}		
 	}
+	
+	*/
 
 }

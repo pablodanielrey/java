@@ -18,6 +18,8 @@ import ar.com.dcsys.model.classroom.ClassRoomsManager;
 
 public class ClassRoomsTest {
 	
+	/*
+	
 	private static Weld weld;
 	private static WeldContainer container;
 	
@@ -94,5 +96,7 @@ public class ClassRoomsTest {
 			assertNotNull(c.getId());
 		}
 	}	
+
+*/
 
 }

@@ -11,6 +11,7 @@
 	<module>dcsysUtils</module>
 	<module>data</module>
 	<module>config</module>
+	<module>mail</module>
 	<module>person</module>
 	<module>auth</module>
 	<module>mapau</module>

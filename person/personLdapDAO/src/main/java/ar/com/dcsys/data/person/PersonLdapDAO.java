@@ -926,4 +926,21 @@ public class PersonLdapDAO extends AbstractLdapPersonDAO {
 			logger.log(Level.SEVERE,"error actualizando el mail " + e.getMessage());
 		}
 	}
+	
+	
+	@Override
+	public void addMail(String personId, Mail mail) throws PersonException {
+		throw new PersonException("no implementado");
+	}
+	
+	@Override
+	public List<Mail> findAllMails(String personId) throws PersonException {
+		throw new PersonException("no implementado");
+	}
+	
+	@Override
+	public void removeMail(String personId, Mail mail) throws PersonException {
+		throw new PersonException("no implementado");
+	}
+	
 }

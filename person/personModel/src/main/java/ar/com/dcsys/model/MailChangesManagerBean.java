@@ -1,6 +1,7 @@
 package ar.com.dcsys.model;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -24,8 +25,29 @@ public class MailChangesManagerBean implements MailChangesManager {
 	}
 	
 	@Override
-	public void persist(Person person, MailChange change) throws PersonException {
-		mailChangeDAO.persist(person, change);
+	public void persist(Person person, MailChange mailChange) throws PersonException {
+		
+		if (mailChange.getMail() == null || mailChange.getMail().getMail() == null) {
+			throw new PersonException("mail == null");
+		}
+		
+		String personId = person.getId();
+		if (personId == null) {
+			throw new PersonException("person.id == null");
+		}
+		
+		String mPersonId = mailChange.getPersonId();
+		if (mPersonId != null && (!personId.equals(mPersonId))) {
+			throw new PersonException("El id de la persona pasada como parámetro debe ser igual al id de la persona configurada en el cambio de mail\n" + personId + " != " + mPersonId);
+		}
+		
+		mailChange.setPersonId(personId);		
+
+		String uuid = UUID.randomUUID().toString();
+		mailChange.setToken(uuid);
+		mailChange.setConfirmed(false);
+		
+		mailChangeDAO.persist(person, mailChange);
 	}
 	
 	

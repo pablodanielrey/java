@@ -496,4 +496,19 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 		}
 	}
 	
+	
+	@Override
+	public void addMail(String personId, Mail mail) throws PersonException {
+		throw new PersonException("No implementado");
+	}
+	
+	@Override
+	public List<Mail> findAllMails(String personId) throws PersonException {
+		throw new PersonException("No implementado");
+	}
+	
+	public void removeMail(String personId, Mail mail) throws PersonException {
+		throw new PersonException("No implementado");
+	};
+	
 }

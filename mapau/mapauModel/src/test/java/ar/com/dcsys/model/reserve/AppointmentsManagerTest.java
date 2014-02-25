@@ -47,6 +47,8 @@ import ar.com.dcsys.model.silabouse.SubjectsManager;
 
 public class AppointmentsManagerTest {
 
+	/*
+	
 	private static Weld weld;
 	private static WeldContainer container;
 	
@@ -505,6 +507,8 @@ public class AppointmentsManagerTest {
 	}
 	*/
 	
+	/*
+	
 	@Test
 	public void findAllFilters() throws MapauException {
 		AppointmentsManager appointmentsManager = getAppointmentsManager();
@@ -625,6 +629,9 @@ public class AppointmentsManagerTest {
 		/* **********************************************************************************************************************
 		 * creo un appointment que tenga el course creado al inicio y que este entre las fechas start y end
 		 * ******************************************************************************************************************** */
+	
+	/*
+	
 		Date newStart = new Date();
 		newStart = setTime(newStart, 8, 0, 0, 0);
 		Date newEnd = new Date();
@@ -652,6 +659,9 @@ public class AppointmentsManagerTest {
 		/* **********************************************************************************************************************
 		 * creo un appointment que tenga un nuevo course y que este entre las fechas start y end
 		 * ******************************************************************************************************************** */
+	
+	/*
+	
 		newStart = new Date();
 		newStart = setTime(newStart, 12, 0, 0, 0);
 		newEnd = new Date();
@@ -681,6 +691,8 @@ public class AppointmentsManagerTest {
 		/* **********************************************************************************************************************
 		 * creo un appointment que tenga el course creado al inicio y que no este entre las fechas start y end
 		 * ******************************************************************************************************************** */
+	/*
+	
 		newStart = new Date(end.getTime() + dayL);
 		newStart = setTime(newStart, 8, 0, 0, 0);
 		newEnd = new Date(newStart.getTime());
@@ -823,5 +835,5 @@ public class AppointmentsManagerTest {
 		assertNotNull(appointments);
 		assertEquals(appointments.size(),0);
 	}
-	
+	*/
 }

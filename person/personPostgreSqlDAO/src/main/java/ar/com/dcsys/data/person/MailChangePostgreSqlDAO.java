@@ -71,6 +71,19 @@ public class MailChangePostgreSqlDAO implements MailChangeDAO {
 				} finally {
 					st.close();
 				}
+				
+				st = con.prepareStatement("create table if not exists persons_mailChanges_logs (person_id varchar not null," +
+																			 "mail varchar not null," +
+																			 "date timestamp default now()," +
+																			 "token varchar not null," +
+																			 "action varchar not null" + 
+																			 ")");
+				try {
+					st.execute();
+				} finally {
+					st.close();
+				}
+				
 			} finally {
 				cp.closeConnection(con);
 			}
@@ -89,6 +102,8 @@ public class MailChangePostgreSqlDAO implements MailChangeDAO {
 		
 		try {
 			Connection con = cp.getConnection();
+			con.setAutoCommit(false);
+
 			try {
 				String query = "insert into persons_mailChanges (person_id, mail, confirmed, token) values (?,?,?,?)";
 				PreparedStatement st = con.prepareStatement(query);
@@ -103,7 +118,23 @@ public class MailChangePostgreSqlDAO implements MailChangeDAO {
 					st.close();
 				}
 				
+				try {
+					query = "insert into persons_mailChanges_logs (person_id, mail, token, action) values (?,?,?,?)";
+					st = con.prepareStatement("");
+					st.setString(1, person.getId());
+					st.setString(2, change.getMail().getMail());
+					st.setString(3, change.getToken());
+					st.setString(4, "PRESIST");
+					st.execute();
+					
+				} finally {
+					st.close();
+				}
+				
+				con.commit();
+				
 			} finally {
+
 				cp.closeConnection(con);
 			}
 			
@@ -122,6 +153,8 @@ public class MailChangePostgreSqlDAO implements MailChangeDAO {
 		
 		try {
 			Connection con = cp.getConnection();
+			con.setAutoCommit(false);
+			
 			try {
 				String query = "delete from persons_mailChanges where token = ?";
 				PreparedStatement st = con.prepareStatement(query);
@@ -131,6 +164,22 @@ public class MailChangePostgreSqlDAO implements MailChangeDAO {
 				} finally {
 					st.close();
 				}
+				
+				try {
+					query = "insert into persons_mailChanges_logs (person_id, mail, token, action) values (?,?,?,?)";
+					st = con.prepareStatement("");
+					st.setString(1, change.getPersonId());
+					st.setString(2, change.getMail().getMail());
+					st.setString(3, change.getToken());
+					st.setString(4, "REMOVE");
+					st.execute();
+					
+				} finally {
+					st.close();
+				}
+				
+				con.commit();
+				
 			} finally {
 				cp.closeConnection(con);
 			}
