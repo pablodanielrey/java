@@ -11,9 +11,11 @@ import ar.com.dcsys.gwt.manager.shared.list.DateList;
 import ar.com.dcsys.gwt.manager.shared.primitive.BooleanContainer;
 import ar.com.dcsys.gwt.utils.client.EncoderDecoder;
 
+import com.google.gwt.core.shared.GWT;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.google.web.bindery.autobean.shared.AutoBeanFactory;
+import com.sksamuel.gwt.websockets.Base64Utils;
 
 public class ManagerUtils {
 
@@ -47,8 +49,12 @@ public class ManagerUtils {
 	public static String encodeParams(String ... params) {
 		StringBuilder sb = new StringBuilder();
 		for (String p : params) {
-			sb.append(EncoderDecoder.b64encode(p));
-			sb.append("*");
+			if (GWT.isClient()) {
+				sb.append(EncoderDecoder.b64encode(p));
+			} else {
+				sb.append(Base64Utils.toBase64(p.getBytes()));
+			}
+			sb.append("--!!--");
 		}
 		sb.delete(sb.length() - 1, sb.length());
 		return sb.toString();
@@ -60,10 +66,16 @@ public class ManagerUtils {
 	 * @return
 	 */
 	public static List<String> decodeParams(String params) {
-		String[] par = params.split("*");
+		String[] par = params.split("--!!--");
 		List<String> r = new ArrayList<String>();
 		for (String p : par) {
-			r.add(EncoderDecoder.b64decode(p));
+			String decoded = "";
+			if (GWT.isClient()) {
+				decoded = EncoderDecoder.b64decode(p);
+			} else {
+				decoded = new String(Base64Utils.fromBase64(p));
+			}
+			r.add(decoded);
 		}
 		return r;
 	}	
