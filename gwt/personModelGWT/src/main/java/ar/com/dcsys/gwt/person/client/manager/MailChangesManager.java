@@ -9,6 +9,7 @@ import ar.com.dcsys.gwt.manager.shared.Receiver;
 public interface MailChangesManager {
 	
 	public void persist(MailChange mail, Person person, final Receiver<String> receiver);
+	public void remove(MailChange mail, final Receiver<String> receiver);
 	public void findAllBy(Person person, final Receiver<List<MailChange>> receiver);
 
 }

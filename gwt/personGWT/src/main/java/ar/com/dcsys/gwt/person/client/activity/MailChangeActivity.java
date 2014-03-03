@@ -155,6 +155,19 @@ public class MailChangeActivity extends AbstractActivity implements MailChangeVi
 	    
 	@Override
 	public void remove(ar.com.dcsys.data.person.MailChange change) {
+		
+		mailChangesManager.remove(change, new Receiver<String>() {
+			@Override
+			public void onSuccess(String t) {
+				updateMailsFromPerson();
+			}
+			
+			@Override
+			public void onFailure(Throwable t) {
+				showMessage(t.getMessage());
+			}
+		});
+		
 	}
 	
 	@Override

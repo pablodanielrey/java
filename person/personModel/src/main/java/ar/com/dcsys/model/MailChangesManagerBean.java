@@ -52,8 +52,16 @@ public class MailChangesManagerBean implements MailChangesManager {
 	
 	
 	@Override
-	public void remove(MailChange change) throws PersonException {
-		mailChangeDAO.remove(change);
+	public void remove(MailChange mail) throws PersonException {
+		mailChangeDAO.remove(mail);	
+	}
+	
+	@Override
+	public void remove(String mail) throws PersonException {
+		List<MailChange> changes = mailChangeDAO.findByMail(mail);
+		for (MailChange change : changes) {
+			mailChangeDAO.remove(change);
+		}
 	}
 	
 	@Override

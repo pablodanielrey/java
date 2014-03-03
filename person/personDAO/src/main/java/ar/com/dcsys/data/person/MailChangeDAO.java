@@ -10,5 +10,6 @@ public interface MailChangeDAO {
 	public void remove(MailChange change) throws PersonException;
 	public List<MailChange> findAllBy(Person person) throws PersonException;
 	public MailChange findByToken(String token) throws PersonException;
+	public List<MailChange> findByMail(String mail) throws PersonException;
 	
 }

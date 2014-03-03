@@ -93,6 +93,33 @@ public class MailChangesManagerBean implements MailChangesManager {
 		return false;
 	}	
 
+	
+	@Override
+	public void remove(MailChange mail, final Receiver<String> receiver) {
+		try {
+			String param = ManagerUtils.encode(personFactory, MailChange.class, mail);
+			Message msg = messagesFactory.method(PersonMethods.removeMailChange,param);
+			
+			//envío el mensaje al servidor
+			socket.open();
+			socket.send(msg, new WebSocketReceiver() {
+				@Override
+				public void onSuccess(Message response) {
+					if (handleError(response, receiver)) {
+						return;
+					}
+					receiver.onSuccess(response.getPayload());
+				}
+				@Override
+				public void onFailure(Throwable t) {
+					receiver.onFailure(t);
+				}
+			});
+		} catch (Exception e) {
+			receiver.onFailure(e);
+		}
+	}
+	
 	@Override
 	public void persist(MailChange mailChange, Person person, final Receiver<String> receiver) {
 		try {

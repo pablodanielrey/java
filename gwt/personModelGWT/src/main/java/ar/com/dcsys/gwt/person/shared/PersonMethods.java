@@ -21,6 +21,7 @@ public class PersonMethods {
 	
 	
 	public static final String persistMailChange = "personPeristMailChange";
+	public static final String removeMailChange = "personRemoveMailChange";
 	public static final String findAllMailChanges = "personFindAllMailChanges";
 	
 	
