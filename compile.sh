@@ -1,2 +1,3 @@
 #!/bin/bash
-mvn compile source:jar javadoc:jar package install
+mvn -Dgwt.compiler.skip=true source:jar javadoc:jar compile
+mvn -Dgwt.compiler.skip=true package install
