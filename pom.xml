@@ -8,6 +8,7 @@
   <name>Projectos de Java</name>
 
   <modules>
+	<module>workarrounds</module>
 	<module>dcsysUtils</module>
 	<module>data</module>
 	<module>config</module>
@@ -18,20 +19,23 @@
 	<module>assistance</module>
 	<module>gwt</module>
 	<module>ear</module>
-    <module>cdiUtils</module>
+    	<module>cdiUtils</module>
   </modules>
   
   <properties>
+    <servlet.version>3.1.0</servlet.version>
+    <cdi.version>1.1</cdi.version>
     <weld.version>2.1.0.Final</weld.version>
+    <websockets.version>1.0</websockets.version>
     <slf4j.version>1.7.5</slf4j.version>
     <logback.version>1.0.13</logback.version>
     <shiro.version>1.2.2</shiro.version>
-    <gwt.version>2.5.1</gwt.version>
-    <jetty.version>9.1.0.v20131115</jetty.version>
-    <gin.version>2.1.1</gin.version>
+    <gwt.version>2.6.0</gwt.version>
+    <gwt.websockets.version>1.0.3</gwt.websockets.version>
+    <gin.version>2.1.2</gin.version>
     <jetty.version>9.1.0.v20131115</jetty.version>
     <junit.version>4.11</junit.version>
-    <guava.version>13.0.1</guava.version>
+    <guava.version>16.0.1</guava.version>
     <java.version>1.7</java.version>
     <jackson.version>2.3.0</jackson.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

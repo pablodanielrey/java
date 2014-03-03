@@ -11,14 +11,14 @@
 
 
   <groupId>ar.com.dcsys</groupId>
-  <artifactId>config</artifactId>
+  <artifactId>workarrounds</artifactId>
   <packaging>pom</packaging>
   <version>1.0</version>
-  <name>Config</name>
+  <name>Workarrounds</name>
 
   <modules>
-	<module>firmwareConfig</module>
-	<module>postgreSqlConfig</module>
+    	<module>weld-jetty9</module>
+    	<module>guava-cdi</module>
   </modules>
 
 </project>
