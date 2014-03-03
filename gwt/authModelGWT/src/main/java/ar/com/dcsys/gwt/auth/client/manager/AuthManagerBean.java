@@ -3,13 +3,12 @@ package ar.com.dcsys.gwt.auth.client.manager;
 import javax.inject.Inject;
 
 import ar.com.dcsys.gwt.auth.shared.AuthMethods;
-import ar.com.dcsys.gwt.manager.shared.ManagerUtils;
+import ar.com.dcsys.gwt.manager.client.ManagerUtils;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageUtils;
 import ar.com.dcsys.gwt.ws.client.WebSocket;
 import ar.com.dcsys.gwt.ws.client.WebSocketReceiver;
-import ar.com.dcsys.gwt.ws.shared.SocketException;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;

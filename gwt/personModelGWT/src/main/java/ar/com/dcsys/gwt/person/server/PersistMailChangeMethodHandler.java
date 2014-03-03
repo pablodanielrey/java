@@ -10,8 +10,8 @@ import javax.inject.Singleton;
 
 import ar.com.dcsys.data.person.MailChange;
 import ar.com.dcsys.data.person.Person;
+import ar.com.dcsys.gwt.manager.server.ServerManagerUtils;
 import ar.com.dcsys.gwt.manager.server.AbstractMessageHandler;
-import ar.com.dcsys.gwt.manager.shared.ManagerUtils;
 import ar.com.dcsys.gwt.message.server.MessageContext;
 import ar.com.dcsys.gwt.message.server.handlers.MessageHandlers;
 import ar.com.dcsys.gwt.message.shared.Message;
@@ -79,7 +79,7 @@ public class PersistMailChangeMethodHandler extends AbstractMessageHandler {
 	}
 	
 	private void sendEvent(MessageTransport transport, String id) {
-		Message msg = mf.event(PersonMethods.personModifiedEvent, id);
+		Message msg = mf.event(PersonMethods.mailChangeModifiedEvent, id);
 		try {
 			transport.send(msg);
 		} catch (MessageException e) {
@@ -93,15 +93,15 @@ public class PersistMailChangeMethodHandler extends AbstractMessageHandler {
 		MessageTransport transport = ctx.getMessageTransport();
 		
 		String params = method.getParams();
-		List<String> lparams = ManagerUtils.decodeParams(params);
+		List<String> lparams = ServerManagerUtils.decodeParams(params);
 		
 		if (lparams.size() != 2) {
 			sendError(msg, transport, "Cantidad de parámetros incorrectos : " + lparams.size());
 			return;
 		}
 		
-		MailChange mailChange = ManagerUtils.decode(personFactory,MailChange.class,lparams.get(0));
-		Person person = ManagerUtils.decode(personFactory,Person.class,lparams.get(1));
+		MailChange mailChange = ServerManagerUtils.decode(personFactory,MailChange.class,lparams.get(0));
+		Person person = ServerManagerUtils.decode(personFactory,Person.class,lparams.get(1));
 		
 		try {
 			mailChangesModel.persist(person, mailChange);

@@ -13,7 +13,7 @@ import ar.com.dcsys.data.reserve.ReserveAttemptDate;
 import ar.com.dcsys.data.reserve.ReserveAttemptDateType;
 import ar.com.dcsys.data.silabouse.Area;
 import ar.com.dcsys.gwt.autoBeans.shared.AutoBeanUtils;
-import ar.com.dcsys.gwt.manager.shared.ManagerUtils;
+import ar.com.dcsys.gwt.manager.client.ManagerUtils;
 import ar.com.dcsys.gwt.mapau.shared.list.AppointmentList;
 import ar.com.dcsys.gwt.mapau.shared.list.AppointmentV2List;
 import ar.com.dcsys.gwt.mapau.shared.list.AreaList;

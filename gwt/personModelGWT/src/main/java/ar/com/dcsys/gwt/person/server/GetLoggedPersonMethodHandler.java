@@ -10,7 +10,7 @@ import javax.inject.Singleton;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.gwt.manager.server.AbstractMessageHandler;
-import ar.com.dcsys.gwt.manager.shared.ManagerUtils;
+import ar.com.dcsys.gwt.manager.server.ServerManagerUtils;
 import ar.com.dcsys.gwt.message.server.MessageContext;
 import ar.com.dcsys.gwt.message.server.handlers.MessageHandlers;
 import ar.com.dcsys.gwt.message.shared.Message;
@@ -77,7 +77,7 @@ public class GetLoggedPersonMethodHandler extends AbstractMessageHandler {
 			if (person == null) {
 				sendResponse(msg, transport, null);
 			} else {
-				String lpersons = ManagerUtils.encode(pf, Person.class,person);
+				String lpersons = ServerManagerUtils.encode(pf, Person.class,person);
 				sendResponse(msg, transport, lpersons);
 			}
 		

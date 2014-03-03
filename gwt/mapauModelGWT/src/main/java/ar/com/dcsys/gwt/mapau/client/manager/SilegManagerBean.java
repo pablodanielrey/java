@@ -8,7 +8,7 @@ import javax.inject.Inject;
 
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.silabouse.Course;
-import ar.com.dcsys.gwt.manager.shared.ManagerUtils;
+import ar.com.dcsys.gwt.manager.client.ManagerUtils;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.mapau.shared.SilegEncoderDecoder;
 import ar.com.dcsys.gwt.mapau.shared.SilegFactory;

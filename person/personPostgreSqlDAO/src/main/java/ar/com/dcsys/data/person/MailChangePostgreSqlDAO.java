@@ -120,7 +120,7 @@ public class MailChangePostgreSqlDAO implements MailChangeDAO {
 				
 				try {
 					query = "insert into persons_mailChanges_logs (person_id, mail, token, action) values (?,?,?,?)";
-					st = con.prepareStatement("");
+					st = con.prepareStatement(query);
 					st.setString(1, person.getId());
 					st.setString(2, change.getMail().getMail());
 					st.setString(3, change.getToken());

@@ -10,7 +10,7 @@ import javax.inject.Singleton;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.gwt.manager.server.AbstractMessageHandler;
-import ar.com.dcsys.gwt.manager.shared.ManagerUtils;
+import ar.com.dcsys.gwt.manager.server.ServerManagerUtils;
 import ar.com.dcsys.gwt.message.server.MessageContext;
 import ar.com.dcsys.gwt.message.server.handlers.MessageHandlers;
 import ar.com.dcsys.gwt.message.shared.Message;
@@ -74,7 +74,7 @@ public class PersistPersonMethodHandler extends AbstractMessageHandler {
 		MessageTransport transport = ctx.getMessageTransport();
 		
 		String params = method.getParams();
-		Person person = ManagerUtils.decode(personFactory,Person.class,params);
+		Person person = ServerManagerUtils.decode(personFactory,Person.class,params);
 		
 		try {
 			String id = personsModel.persist(person);

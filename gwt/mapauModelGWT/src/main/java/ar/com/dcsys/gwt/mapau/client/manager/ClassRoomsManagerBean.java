@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 import ar.com.dcsys.data.classroom.Characteristic;
 import ar.com.dcsys.data.classroom.CharacteristicQuantity;
 import ar.com.dcsys.data.classroom.ClassRoom;
-import ar.com.dcsys.gwt.manager.shared.ManagerUtils;
+import ar.com.dcsys.gwt.manager.client.ManagerUtils;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.mapau.shared.ClassRoomMethods;
 import ar.com.dcsys.gwt.mapau.shared.ClassRoomsEncoderDecoder;

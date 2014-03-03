@@ -8,8 +8,8 @@ import java.util.logging.Logger;
 import javax.inject.Inject;
 
 import ar.com.dcsys.data.appointment.AppointmentV2;
+import ar.com.dcsys.gwt.manager.client.ManagerUtils;
 import ar.com.dcsys.gwt.manager.server.AbstractMessageHandler;
-import ar.com.dcsys.gwt.manager.shared.ManagerUtils;
 import ar.com.dcsys.gwt.mapau.shared.MapauEncoderDecoder;
 import ar.com.dcsys.gwt.mapau.shared.MapauFactory;
 import ar.com.dcsys.gwt.mapau.shared.MapauMethods;

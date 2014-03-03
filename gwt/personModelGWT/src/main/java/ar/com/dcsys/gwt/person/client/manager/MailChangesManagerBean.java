@@ -4,11 +4,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.inject.Inject;
-
 import ar.com.dcsys.data.person.MailChange;
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.gwt.manager.shared.ManagerUtils;
+import ar.com.dcsys.gwt.manager.client.ManagerUtils;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.message.shared.Event;
 import ar.com.dcsys.gwt.message.shared.Message;
@@ -25,6 +23,7 @@ import ar.com.dcsys.gwt.ws.shared.SocketMessageEvent;
 import ar.com.dcsys.gwt.ws.shared.SocketMessageEventHandler;
 
 import com.google.gwt.event.shared.EventBus;
+import com.google.inject.Inject;
 
 public class MailChangesManagerBean implements MailChangesManager {
 	
@@ -41,20 +40,30 @@ public class MailChangesManagerBean implements MailChangesManager {
 		@Override
 		public void onMessage(Message msg) {
 			
-			if (!MessageType.EVENT.equals(msg.getType())) {
+			if (MessageType.EVENT.equals(msg.getType())) {
+				Event event = messagesFactory.event(msg);
+				if (!PersonMethods.mailChangeModifiedEvent.equals(event.getName())) {
+					return;
+				}
+
+				try {
+					eventBus.fireEvent(new MailChangeModifiedEvent());
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
 				return;
 			}
 			
-			Event event = messagesFactory.event(msg);
-			if (!PersonMethods.mailChangeModifiedEvent.equals(event.getName())) {
+			// en caso de error refresco siempre la pantalla.
+			if (MessageType.ERROR.equals(msg.getType())) {
+				try {
+					eventBus.fireEvent(new MailChangeModifiedEvent());
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
 				return;
 			}
 			
-			try {
-				eventBus.fireEvent(new MailChangeModifiedEvent());
-			} catch (Exception e) {
-				logger.log(Level.SEVERE,e.getMessage(),e);
-			}
 		}
 	};	
 	

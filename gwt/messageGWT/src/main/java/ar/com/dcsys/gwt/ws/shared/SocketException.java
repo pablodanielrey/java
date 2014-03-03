@@ -7,6 +7,10 @@ public class SocketException extends Exception {
 	public SocketException() {
 	}
 	
+	public SocketException(String message) {
+		super(message);
+	}
+	
 	public SocketException(Exception t) {
 		super(t);
 	}

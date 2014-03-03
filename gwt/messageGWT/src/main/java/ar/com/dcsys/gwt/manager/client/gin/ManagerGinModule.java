@@ -1,7 +1,7 @@
 package ar.com.dcsys.gwt.manager.client.gin;
 
+import ar.com.dcsys.gwt.manager.client.ManagerUtils;
 import ar.com.dcsys.gwt.manager.shared.ManagerFactory;
-import ar.com.dcsys.gwt.manager.shared.ManagerUtils;
 
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.inject.Singleton;

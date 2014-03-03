@@ -7,7 +7,7 @@ import javax.inject.Inject;
 
 import ar.com.dcsys.gwt.auth.shared.AuthMethods;
 import ar.com.dcsys.gwt.manager.server.AbstractMessageHandler;
-import ar.com.dcsys.gwt.manager.shared.ManagerUtils;
+import ar.com.dcsys.gwt.manager.server.ServerManagerUtils;
 import ar.com.dcsys.gwt.message.server.MessageContext;
 import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageTransport;
@@ -21,12 +21,12 @@ public class IsAuthenticatedMessageHandler extends AbstractMessageHandler {
 	public static final Logger logger = Logger.getLogger(IsAuthenticatedMessageHandler.class.getName());
 	
 	private final MessageUtils messageUtils;
-	private final ManagerUtils managerUtils;
+	private final ServerManagerUtils managerUtils;
 	private final AuthManager authManager;
 
 	@Inject
 	public IsAuthenticatedMessageHandler(MessageUtils messageUtils,
-										 ManagerUtils managerUtils,
+										 ServerManagerUtils managerUtils,
 										 AuthManager authManager) {
 		this.messageUtils = messageUtils;
 		this.managerUtils = managerUtils;

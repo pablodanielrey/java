@@ -80,6 +80,38 @@ public class WebSocketImpl implements WebSocket {
 				}
 				return;
 			}
+
+			/**
+			 * En caso de error y no tener id el mensaje se dispara un SocketMessageEvent, si tiene id se llama al onFailure del id correspondiente 
+			 * con el payload como msg del SocketException nuevo que se crea.
+			 */
+			if (MessageType.ERROR.equals(msg.getType())) {
+				
+				String id = msg.getId();
+				if (id == null) {
+					logger.log(Level.FINE,"MensajeType == ERROR and msg.id == null -- fire SocketMessageEvent");
+					try {
+						eventBus.fireEvent(new SocketMessageEvent(msg));
+					} catch (Exception e) {
+						logger.log(Level.SEVERE,e.getMessage(),e);
+					}
+					return;
+				}
+					
+				WebSocketReceiver rec = receivers.get(id);
+				if (rec == null) {
+					logger.log(Level.SEVERE,"MessageTYpe == ERROR and msg.id != null and receiver == null");
+					return;
+				}
+
+				try {
+					rec.onFailure(new SocketException(msg.getPayload()));
+				} catch(Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+				return;
+			}
+			
 			
 			if (MessageType.EVENT.equals(msg.getType())) {
 				try {

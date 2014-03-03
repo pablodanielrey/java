@@ -18,7 +18,7 @@ import ar.com.dcsys.data.reserve.ReserveAttemptDateType;
 import ar.com.dcsys.data.silabouse.Area;
 import ar.com.dcsys.data.silabouse.Course;
 import ar.com.dcsys.gwt.autoBeans.shared.AutoBeanUtils;
-import ar.com.dcsys.gwt.manager.shared.ManagerUtils;
+import ar.com.dcsys.gwt.manager.client.ManagerUtils;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.mapau.shared.ClassRoomsEncoderDecoder;
 import ar.com.dcsys.gwt.mapau.shared.MapauEncoderDecoder;

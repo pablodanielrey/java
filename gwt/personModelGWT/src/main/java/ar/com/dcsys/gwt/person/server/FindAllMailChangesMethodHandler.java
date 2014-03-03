@@ -11,7 +11,7 @@ import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.MailChange;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.gwt.manager.server.AbstractMessageHandler;
-import ar.com.dcsys.gwt.manager.shared.ManagerUtils;
+import ar.com.dcsys.gwt.manager.server.ServerManagerUtils;
 import ar.com.dcsys.gwt.message.server.MessageContext;
 import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageTransport;
@@ -68,7 +68,7 @@ public class FindAllMailChangesMethodHandler extends AbstractMessageHandler {
 		
 		try {
 			String params = method.getParams();
-			Person person = ManagerUtils.decode(pf,Person.class,params);
+			Person person = ServerManagerUtils.decode(pf,Person.class,params);
 
 			// obtengo todos los cambios pendientes de mails
 			List<MailChange> changes = mailChangesManager.findAllBy(person);
