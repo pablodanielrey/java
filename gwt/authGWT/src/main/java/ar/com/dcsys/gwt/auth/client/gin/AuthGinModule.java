@@ -1,8 +1,8 @@
 package ar.com.dcsys.gwt.auth.client.gin;
 
 import ar.com.dcsys.gwt.auth.client.activity.login.LoginActivity;
-import ar.com.dcsys.gwt.auth.client.ui.login.Login;
 import ar.com.dcsys.gwt.auth.client.ui.login.LoginView;
+import ar.com.dcsys.gwt.auth.client.ui.login2.Login;
 import ar.com.dcsys.gwt.clientMessages.client.Message;
 
 import com.google.gwt.event.shared.EventBus;

@@ -1,0 +1,10 @@
+@CHARSET "UTF-8";
+
+
+.label:hover {
+	-webkit-transform: rotate(180deg);
+}
+
+.label {
+	-webkit-transition: -webkit-transform 2s;
+}

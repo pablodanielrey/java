@@ -1,0 +1,21 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style src="login.css">
+	
+	</ui:style>
+	
+	<g:FlowPanel>
+		<g:FlowPanel>
+			<g:Label text="Usuario" styleName="${style.label}"/>
+			<g:TextBox ui:field="username"/>
+		</g:FlowPanel>
+		<g:FlowPanel>
+			<g:Label text="Clave" styleName="${style.label}"/>
+			<g:TextBox ui:field="password"/>
+		</g:FlowPanel>
+		<g:Button ui:field="login" text="Aceptar"/>
+	</g:FlowPanel>
+
+	
+</ui:UiBinder> 
