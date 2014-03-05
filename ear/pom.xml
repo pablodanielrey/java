@@ -21,6 +21,7 @@
 
   <modules>
     <module>dcsys</module>
+    <module>assistance</module>
   </modules>
 
 </project>

@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <!-- POM file generated with GWT webAppCreator -->
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>ear</artifactId>
+    <groupId>ar.com.dcsys.ear</groupId>
+    <version>1.0</version>
+  </parent>
+
+  <groupId>ar.com.dcsys.ear</groupId>
+  <artifactId>assistance</artifactId>
+  <packaging>ear</packaging>
+  <version>1.0</version>
+  <name>assistsance</name>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+
+  <!-- para tener shiro con cdi -->
+<!--
+	<dependency>
+	    <groupId>org.ops4j.pax.shiro</groupId>
+	    <artifactId>pax-shiro-cdi-web</artifactId>
+	    <version>0.1.0</version>
+	</dependency>
+-->
+
+  <!-- para tener shiro -->
+
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-core</artifactId>
+            <version>${shiro.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-web</artifactId>
+            <version>${shiro.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- Logging API + implementation: para shiro -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+
+
+   <!-- auth -->
+
+    <dependency>
+	<groupId>ar.com.dcsys.gwt</groupId>
+	<artifactId>authGWT</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	 <type>war</type>
+    </dependency>
+
+    <dependency>
+        <groupId>ar.com.dcsys.gwt</groupId>
+        <artifactId>authModelGWT</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+        <groupId>ar.com.dcsys.auth</groupId>
+        <artifactId>shiro</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+        <groupId>ar.com.dcsys.auth</groupId>
+        <artifactId>userPasswordAuthModule</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+
+    <!-- persona -->
+
+    <dependency>
+      <groupId>ar.com.dcsys.gwt</groupId>
+      <artifactId>personGWT</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <type>war</type>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.gwt</groupId>
+      <artifactId>personModelGWT</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.data</groupId>
+      <artifactId>personEntities</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.data</groupId>
+      <artifactId>personPostgreSqlDAO</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.model</groupId>
+      <artifactId>personModel</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.mail</groupId>
+      <artifactId>mailModel</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+    <!-- config -->
+
+    <dependency>
+      <groupId>ar.com.dcsys.data</groupId>
+      <artifactId>postgreSqlConfig</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.data</groupId>
+      <artifactId>mailSqlConfig</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+
+
+    <!-- mapau -->
+<!--
+    <dependency>
+      <groupId>ar.com.dcsys.gwt</groupId>
+      <artifactId>mapauGWT</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <type>war</type>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.gwt</groupId>
+      <artifactId>mapauModelGWT</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+    <dependency> 
+      <groupId>ar.com.dcsys.data</groupId>
+      <artifactId>mapauEntities</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.data</groupId>
+      <artifactId>mapauHsqlDAO</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.model</groupId>
+      <artifactId>mapauModel</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+-->
+
+   <!-- utilidades usadas en todos los proyectos -->
+
+    <dependency>
+      <groupId>ar.com.dcsys.gwt</groupId>
+      <artifactId>messageGWT</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.gwt</groupId>
+      <artifactId>clientMessagesGWT</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+
+  </dependencies>
+
+  <build>
+
+    <plugins>
+
+      <plugin>
+        <artifactId>maven-ear-plugin</artifactId>
+        <version>2.9</version>
+        <configuration>
+          <defaultJavaBundleDir>lib/</defaultJavaBundleDir>
+          <skinnyWars>true</skinnyWars>
+        </configuration>
+      </plugin>
+
+        <plugin>
+                <groupId>org.glassfish.embedded</groupId>
+                <artifactId>maven-embedded-glassfish-plugin</artifactId>
+                <version>4.0</version>
+
+                <configuration>
+			<app>target/dcsys-1.0.ear</app>
+<!--                        <app>${project.build.directory}/${project.build.finalName}.ear</app> -->
+                        <port>8080</port>
+<!--                            <contextRoot>${project.artifactId}</contextRoot> -->
+                        <contextRoot>/</contextRoot>
+			<debug>true</debug>
+			<autoCreate>true</autoCreate>
+                </configuration>
+		<executions>
+          	<execution>
+	             <phase>install</phase>
+        	     <goals>
+			    <goal>deploy</goal>
+           		    <goal>run</goal>
+	             </goals>
+        	  </execution>
+	       </executions>
+        </plugin>
+
+    </plugins>
+
+  </build>
+
+
+</project>
