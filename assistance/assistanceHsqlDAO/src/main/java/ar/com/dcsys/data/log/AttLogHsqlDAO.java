@@ -67,7 +67,7 @@ public class AttLogHsqlDAO implements AttLogDAO {
 	
 	
 	private AttLog getAttLog(ResultSet rs) throws SQLException, DeviceException {
-		AttLog log = new AttLog();
+		AttLog log = new AttLogBean();
 		log.setId(rs.getString("id"));
 		log.setDate(new Date(rs.getTimestamp("date").getTime()));
 		log.setVerifyMode(rs.getLong("verifyMode"));
