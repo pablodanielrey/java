@@ -1,88 +1,29 @@
 package ar.com.dcsys.data.device;
 
-import java.io.Serializable;
-import java.util.UUID;
+public interface Device {
 
-public class Device implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+	public String getId();
+	public void setId(String id);
 	
-	private UUID id;
-	private String name;
-	private String description;
-
-	private String mac; 
-	private String ip;
-	private String netmask;
-	private String gateway;
-
-	private Boolean enabled;
+	public String getName();
+	public void setName(String name);
 	
-	public String getId() {
-		if (id == null) {
-			return null;
-		}
-		return id.toString();
-	}
-
-	public void setId(String id) {
-		this.id = UUID.fromString(id);
-	}
+	public String getMac();
+	public void setMac(String mac);
 	
-	public String getName() {
-		return name;
-	}
+	public String getIp();
+	public void setIp(String ip);
 	
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getMac() {
-		return mac;
-	}
+	public String getNetmask();
+	public void setNetmask(String netmask);
 	
-	public void setMac(String mac) {
-		this.mac = mac;
-	}
+	public String getGateway();
+	public void setGateway(String gateway);
 	
-	public String getIp() {
-		return ip;
-	}
+	public String getDescription();
+	public void setDescription(String description);
 	
-	public void setIp(String ip) {
-		this.ip = ip;
-	}
-	
-	public String getNetmask() {
-		return netmask;
-	}
-	
-	public void setNetmask(String netmask) {
-		this.netmask = netmask;
-	}
-	
-	public String getGateway() {
-		return gateway;
-	}
-	
-	public void setGateway(String gateway) {
-		this.gateway = gateway;
-	}
-	
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Boolean getEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
-	}
+	public Boolean getEnabled();
+	public void setEnabled(Boolean enabled);
 	
 }
