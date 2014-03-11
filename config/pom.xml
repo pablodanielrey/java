@@ -20,6 +20,7 @@
 	<module>firmwareConfig</module>
 	<module>postgreSqlConfig</module>
 	<module>mailSqlConfig</module>
+	<module>openLdapConfig</module>
   </modules>
 
 </project>
