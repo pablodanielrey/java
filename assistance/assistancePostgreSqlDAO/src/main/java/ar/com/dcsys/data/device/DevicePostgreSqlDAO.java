@@ -30,50 +30,55 @@ public class DevicePostgreSqlDAO implements DeviceDAO {
 
 	@PostConstruct
 	void init() {
-		try {
-			createTables();
-		} catch (SQLException e) {
-			logger.log(Level.SEVERE,e.getMessage(),e);
-		}
+		createTables();
 	}
 	
-	private void createTables() throws SQLException {
-		Connection con = cp.getConnection();
+	private void createTables() {
 		try {
-			PreparedStatement st = con.prepareStatement("create table if not exists devices (" +
-																"id varchar not null primary key, " +
-																"name varchar not null," +
-																"description varchar," +
-																"ip varchar," +
-																"netmask varchar," +
-																"gateway varchar," +
-																"mac varchar," +
-																"enabled boolean not null)");
+			Connection con = cp.getConnection();
 			try {
-				st.executeUpdate();
-				
+				PreparedStatement st = con.prepareStatement("create table if not exists devices (" +
+																	"id varchar not null primary key, " +
+																	"name varchar not null," +
+																	"description varchar," +
+																	"ip varchar," +
+																	"netmask varchar," +
+																	"gateway varchar," +
+																	"mac varchar," +
+																	"enabled boolean not null)");
+				try {
+					st.execute();
+					
+				} finally {
+					st.close();
+				}
 			} finally {
-				st.close();
+				cp.closeConnection(con);
 			}
-		} finally {
-			con.close();
-		}		
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, e.getMessage());
+		}
 	}	
 	
 
-	private void getDevice(Device d, ResultSet rs) throws SQLException {
-		d.setId(rs.getString("id"));
-		d.setName(rs.getString("name"));
-		d.setDescription(rs.getString("description"));
-		d.setIp(rs.getString("ip"));
-		d.setMac(rs.getString("mac"));
-		d.setGateway(rs.getString("gateway"));
-		d.setNetmask(rs.getString("netmask"));
-		d.setEnabled(rs.getBoolean("enabled"));
+	private Device getDevice(ResultSet rs) throws SQLException {
+		Device device = new DeviceBean();
+		
+		device.setId(rs.getString("id"));
+		device.setName(rs.getString("name"));
+		device.setDescription(rs.getString("description"));
+		device.setIp(rs.getString("ip"));
+		device.setMac(rs.getString("mac"));
+		device.setGateway(rs.getString("gateway"));
+		device.setNetmask(rs.getString("netmask"));
+		device.setEnabled(rs.getBoolean("enabled"));
+		
+		return device;
 	}
 	
 	@Override
 	public Device findById(String id) throws DeviceException {
+		
 		try {
 			Connection con = cp.getConnection();
 			try {
@@ -84,8 +89,7 @@ public class DevicePostgreSqlDAO implements DeviceDAO {
 					ResultSet rs = st.executeQuery();
 					try {
 						if (rs.next()) {
-							Device d = new Device();
-							getDevice(d,rs);
+							Device d = getDevice(rs);
 							return d;
 						} else {
 							return null;
@@ -121,8 +125,7 @@ public class DevicePostgreSqlDAO implements DeviceDAO {
 					try {
 						List<Device> devices = new ArrayList<Device>();
 						while (rs.next()) {
-							Device d = new Device();
-							getDevice(d,rs);
+							Device d = getDevice(rs);
 							devices.add(d);
 						}
 						return devices;
