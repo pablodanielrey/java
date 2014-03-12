@@ -14,21 +14,21 @@ public interface JustificationDAO extends Serializable {
 	
 	public Justification findById(String id) throws JustificationException;
 	public List<Justification> findAll() throws JustificationException;
-	public void persist(Justification j) throws JustificationException;
+	public String persist(Justification j) throws JustificationException;
 	public void remove(Justification j) throws JustificationException;
 
 	// justification date
 	
 	public JustificationDate findJustificationDateById(String id) throws JustificationException, PersonException;
 	public List<JustificationDate> findBy(Person person, Date start, Date end) throws JustificationException, PersonException;
-	public void persist(JustificationDate jd) throws JustificationException;
+	public String persist(JustificationDate jd) throws JustificationException;
 	public void remove(JustificationDate jd) throws JustificationException;
 	
 	// general justifications
 	
 	public GeneralJustificationDate findGeneralJustificationDateById(String id) throws JustificationException;
 	public List<GeneralJustificationDate> findGeneralJustificationDateBy(Date start, Date end) throws JustificationException;
-	public void persist(GeneralJustificationDate gjd) throws JustificationException;
+	public String persist(GeneralJustificationDate gjd) throws JustificationException;
 	public void removeGeneralJustificationDate (GeneralJustificationDate gjd) throws JustificationException;
 
 	
