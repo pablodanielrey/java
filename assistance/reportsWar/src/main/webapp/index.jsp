@@ -1,13 +1,15 @@
 <html>
 <body>
 
+	<jsp:useBean id="constants" class="ar.com.dcsys.server.person.ConstantsBean"/>
+
 	<form action="index.jsp">
 		<div>Tipo de reporte</div>
 		<div>
 			<select name="reporte">
-				<option value="a">Ausencias (Todas)</option>
-				<option value="ai">Ausencias Injustificadas</option>
-				<option value="aj">Ausencias Justificadas</option>
+				<option value='<jsp:getProperty name="constants" property="all"/>'>Ausencias (Todas)</option>
+				<option value='<jsp:getProperty name="constants" property="injustificatedAbsences"/>'>Ausencias Injustificadas</option>
+				<option value='<jsp:getProperty name="constants" property="justificatedAbsences"/>'>Ausencias Justificadas</option>
 			</select>
 		</div>
 		<div>

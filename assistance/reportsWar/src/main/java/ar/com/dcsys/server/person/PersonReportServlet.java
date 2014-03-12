@@ -13,46 +13,41 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import javax.ejb.EJB;
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ar.com.dcsys.assistance.client.ui.period.PERIODFILTER;
-import ar.com.dcsys.assistance.data.justification.GeneralJustificationDate;
-import ar.com.dcsys.assistance.data.justification.JustificationDate;
-import ar.com.dcsys.assistance.data.justification.JustificationException;
-import ar.com.dcsys.assistance.data.log.AttLog;
-import ar.com.dcsys.assistance.data.period.PeriodException;
-import ar.com.dcsys.assistance.justification.JustificationsManager;
-import ar.com.dcsys.assistance.period.Period;
-import ar.com.dcsys.assistance.period.PeriodsManager;
-import ar.com.dcsys.assistance.period.WorkedHours;
-import ar.com.dcsys.auth.AuthException;
-import ar.com.dcsys.auth.AuthsManager;
-import ar.com.dcsys.auth.DCSysPrincipal;
-import ar.com.dcsys.group.entities.Group;
-import ar.com.dcsys.group.entities.types.Position;
-import ar.com.dcsys.group.entities.types.TimeTable;
-import ar.com.dcsys.person.GroupsManager;
-import ar.com.dcsys.person.PersonException;
-import ar.com.dcsys.person.PersonsManager;
-import ar.com.dcsys.person.entities.Person;
-import ar.com.dcsys.person.server.person.PersonsSort;
-import ar.com.dcsys.server.utils.ServletExportCSV;
+import ar.com.dcsys.data.group.Group;
+import ar.com.dcsys.data.group.GroupType;
+import ar.com.dcsys.data.justification.GeneralJustificationDate;
+import ar.com.dcsys.data.justification.JustificationDate;
+import ar.com.dcsys.data.log.AttLog;
+import ar.com.dcsys.data.person.Person;
+import ar.com.dcsys.exceptions.JustificationException;
+import ar.com.dcsys.exceptions.PeriodException;
+import ar.com.dcsys.exceptions.PersonException;
+import ar.com.dcsys.model.GroupsManager;
+import ar.com.dcsys.model.PersonsManager;
+import ar.com.dcsys.model.justification.JustificationsManager;
+import ar.com.dcsys.model.period.Period;
+import ar.com.dcsys.model.period.PeriodsManager;
+import ar.com.dcsys.model.period.WorkedHours;
+import ar.com.dcsys.utils.PersonSort;
 
 
 
-public class PersonDailyReportServlet extends HttpServlet {
+public class PersonReportServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-	@EJB AuthsManager authsManager;
-	@EJB PeriodsManager periodsManager;
-	@EJB JustificationsManager justificationManager;
-	@EJB PersonsManager personsManager;
-	@EJB GroupsManager groupsManager;
+	@Inject PeriodsManager periodsManager;
+	@Inject JustificationsManager justificationManager;
+	@Inject PersonsManager personsManager;
+	@Inject GroupsManager groupsManager;
+	
+	private final static ConstantsBean constants = new ConstantsBean();
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)	throws ServletException, IOException {
@@ -64,12 +59,6 @@ public class PersonDailyReportServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)	throws ServletException, IOException {
 		try {
 		
-			Person user = getLoggedUser(req);
-			if (user == null) {
-				resp.sendError(HttpServletResponse.SC_FORBIDDEN);
-				return;
-			}
-
 			// se obtienen las fechas del reporte
 			SimpleDateFormat format = new SimpleDateFormat("dd_MM_yyyy");
 			String pstart = req.getParameter("start");
@@ -117,7 +106,7 @@ public class PersonDailyReportServlet extends HttpServlet {
 
 			String reportType = req.getParameter("periodFilter");
 			if (reportType == null) {
-				reportType = PERIODFILTER.ALL.toString();
+				reportType = constants.getAll();
 			}
 			
 			// busco las justificaciones generales.
@@ -127,11 +116,11 @@ public class PersonDailyReportServlet extends HttpServlet {
 
 			// ordeno los usuarios
 			
-			PersonsSort.sort(personsToReport);
+			PersonSort.sort(personsToReport);
 			
 			// genero el reporte.
 			
-			generateHeader(user, sb);
+			generateHeader(sb);
 			for (Person p : personsToReport) {
 				try {
 					report(p,start,end,generalJustifications,sb, reportType);
@@ -150,19 +139,12 @@ public class PersonDailyReportServlet extends HttpServlet {
 			pout.flush();
 			pout.close();
 		
-		} catch (PersonException | AuthException | JustificationException e) {
+		} catch (PersonException | JustificationException e) {
 			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		} catch (java.text.ParseException e) {
 			resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
 		}
 	}
-	
-	
-	private Person getLoggedUser(HttpServletRequest req) throws PersonException, AuthException {
-		DCSysPrincipal principal = authsManager.getUserPrincipal();
-		return personsManager.findByPrincipal(principal);
-	}
-	
 	
 	private GeneralJustificationDate checkGeneralJustification(List<GeneralJustificationDate> justifications, Period p) {
 		Date startP = p.getStart();
@@ -204,7 +186,7 @@ public class PersonDailyReportServlet extends HttpServlet {
 	 * @param requester
 	 * @param sb
 	 */
-	private void generateHeader(Person requester, StringBuilder sb) {
+	private void generateHeader(StringBuilder sb) {
 		sb.append("APELLIDO;NOMBRE;DNI;CARGO;HORARIO;FECHA ENTRADA; HORA ENTRADA; HORA SALIDA;CANTIDAD DE HORAS TRABAJADAS;JUSTIFICACION;NOTAS;JUSTIFICACION GENERAL;NOTAS\n");
 	}
 	
@@ -223,7 +205,7 @@ public class PersonDailyReportServlet extends HttpServlet {
 					
 			List<Period> periods = null;
 
-			PERIODFILTER filter = PERIODFILTER.valueOf(reportType);
+//			PERIODFILTER filter = PERIODFILTER.valueOf(reportType);
 			periods = periodsManager.findAll(person, start, end, false);
 			
 		
@@ -268,14 +250,12 @@ public class PersonDailyReportServlet extends HttpServlet {
 			
 			Group tg = null;					// horario
 			Group pg = null; 					// cargo
-			TimeTable tt = new TimeTable();
-			Position pp = new Position();
 			List<Group> groups = groupsManager.findByPerson(person);
 			for (Group g : groups) {
-				if (g.getTypes().contains(tt)) {
+				if (g.getTypes().contains(GroupType.TIMETABLE)) {
 					tg = g;
 				}
-				if (g.getTypes().contains(pp)) {
+				if (g.getTypes().contains(GroupType.POSITION)) {
 					pg = g;
 				}
 				if (tg != null && pg != null) {
