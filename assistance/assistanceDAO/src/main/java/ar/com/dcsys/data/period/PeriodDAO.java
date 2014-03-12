@@ -13,7 +13,7 @@ public interface PeriodDAO extends Serializable {
 	public List<PeriodAssignation> findAllPeriodAssignations() throws PeriodException, PersonException;
 	public List<PeriodAssignation> findAll(Person p) throws PeriodException;
 	
-	public void persist(PeriodAssignation p) throws PeriodException;
+	public String persist(PeriodAssignation p) throws PeriodException;
 	public void remove(PeriodAssignation p) throws PeriodException;
 	
 	public PeriodAssignation findBy(Person person, Date date, PeriodType type) throws PeriodException;
