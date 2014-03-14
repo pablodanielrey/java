@@ -19,7 +19,7 @@ public class OpenLdapContextProvider implements DirContextProvider {
 	private Hashtable<String,String> env;
 	
 	@Inject
-	public OpenLdapContextProvider(PersistenceData data) {
+	public OpenLdapContextProvider(@Named("ldap") PersistenceData data) {
 		this.data = data;
 
 		StringBuffer sb = new StringBuffer();

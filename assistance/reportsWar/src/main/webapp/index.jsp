@@ -3,7 +3,7 @@
 
 	<jsp:useBean id="constants" class="ar.com.dcsys.server.person.ConstantsBean"/>
 
-	<form action="index.jsp">
+	<form action="reporte">
 		<div>Tipo de reporte</div>
 		<div>
 			<select name="reporte">

@@ -1,7 +1,10 @@
 package ar.com.dcsys.data;
 
+import javax.inject.Named;
+
 import ar.com.dcsys.persistence.PersistenceData;
 
+@Named("sql")
 public class DatabasePersistenceData implements PersistenceData {
 
 	private static final String userName = "dcsys";

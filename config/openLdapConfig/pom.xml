@@ -17,6 +17,13 @@
 
   <dependencies>
 
+   <dependency>
+      <groupId>javax.enterprise</groupId>
+      <artifactId>cdi-api</artifactId>
+      <version>${cdi.version}</version>
+      <scope>provided</scope>
+   </dependency>
+
     <dependency>
 	<groupId>ar.com.dcsys</groupId>
 	<artifactId>dcsysUtils</artifactId>

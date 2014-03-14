@@ -17,6 +17,14 @@
 
   <dependencies>
 
+<!--
+	<dependency>
+      	   <groupId>javax.enterprise</groupId>
+	   <artifactId>cdi-api</artifactId>
+	   <version>1.1</version>
+	   <scope>provided</scope>
+	</dependency>
+-->
     	<dependency>
 	      <groupId>javax.inject</groupId>
 	      <artifactId>javax.inject</artifactId>
@@ -47,6 +55,21 @@
             <scope>compile</scope>
         </dependency>
 
+
+	<!-- postgresql -->
+
+	<dependency>
+	  <groupId>ar.com.dcsys.data</groupId>
+	  <artifactId>postgreSqlConfig</artifactId>
+	  <version>1.0-SNAPSHOT</version>
+	</dependency>
+
+	<dependency>
+	    <groupId>ar.com.dcsys.data</groupId>
+	    <artifactId>postgresql</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+	</dependency>
 
 
 	<!-- auth -->

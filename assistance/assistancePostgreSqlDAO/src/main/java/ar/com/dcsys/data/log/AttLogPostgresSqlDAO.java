@@ -50,7 +50,7 @@ public class AttLogPostgresSqlDAO implements AttLogDAO {
 		try {
 			PreparedStatement st = con.prepareStatement("create table if not exists attLog (" +
 																"id varchar not null primary key, " +
-																"device_id varchar not null references device (id)," +
+																"device_id varchar not null," +
 																"person_id varchar not null, " +
 																"verifyMode bigint not null, " +
 																"date timestamp not null)");
