@@ -16,8 +16,4 @@ public interface AssistancePersonDataDAO extends Serializable {
 	public AssistancePersonData findById(String id) throws AssistancePersonDataException, PersonException;
 	public AssistancePersonData findBy(Person person) throws AssistancePersonDataException, PersonException;
 	
-	public interface Params {
-		public Person findPersonById(String person_id) throws PersonException;
-	}		
-	
 }

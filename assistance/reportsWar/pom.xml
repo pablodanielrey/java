@@ -40,6 +40,16 @@
         </dependency>
 
 
+        <dependency>
+	    <groupId>ar.com.dcsys.data</groupId>
+  	    <artifactId>assistancePostgreSqlDAO</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+
+
+	<!-- auth -->
 
        <dependency>
             <groupId>ar.com.dcsys.data</groupId>
@@ -64,6 +74,7 @@
 
 
 
+	<!-- person -->
 
         <dependency>
             <groupId>ar.com.dcsys.data</groupId>
@@ -79,11 +90,11 @@
             <scope>compile</scope>
         </dependency>
 
-    <dependency>
-      <groupId>ar.com.dcsys.data</groupId>
-      <artifactId>personLdapDAO</artifactId>
-      <version>1.0-SNAPSHOT</version>
-    </dependency>
+	<dependency>
+	   <groupId>ar.com.dcsys.data</groupId>
+	   <artifactId>personLdapDAO</artifactId>
+	   <version>1.0-SNAPSHOT</version>
+	</dependency>
 
 	<dependency>
 	  <groupId>ar.com.dcsys.config</groupId>
@@ -97,11 +108,11 @@
           <version>1.0-SNAPSHOT</version>
         </dependency>
 
-    <dependency>
-      <groupId>ar.com.dcsys.mail</groupId>
-      <artifactId>mailModel</artifactId>
-      <version>1.0-SNAPSHOT</version>
-    </dependency>
+	<dependency>
+	   <groupId>ar.com.dcsys.mail</groupId>
+	   <artifactId>mailModel</artifactId>
+	   <version>1.0-SNAPSHOT</version>
+	</dependency>
 
 
 

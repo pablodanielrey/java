@@ -27,10 +27,10 @@ public class AssistancePersonDataPostgresSqlDAO implements AssistancePersonDataD
 	private static final Logger logger = Logger.getLogger(AssistancePersonDataPostgresSqlDAO.class.getName());
 	private final PostgresSqlConnectionProvider cp;
 	
-	private final Params params;
+	private final AssistancePersonDataDAOParams params;
 	
 	@Inject
-	public AssistancePersonDataPostgresSqlDAO(PostgresSqlConnectionProvider cp, Params params) {
+	public AssistancePersonDataPostgresSqlDAO(PostgresSqlConnectionProvider cp, AssistancePersonDataDAOParams params) {
 		this.params = params;
 		this.cp = cp;
 	}
