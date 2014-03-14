@@ -100,7 +100,7 @@ public class JustificationPostgresSqlDAO implements JustificationDAO {
 		return j;
 	}
 	
-	private JustificationDate getJustificationDate(ResultSet rs) throws SQLException, JustificationException, PersonException {
+	private JustificationDate getJustificationDate(Connection con, ResultSet rs) throws SQLException, JustificationException, PersonException {
 		JustificationDate j = new JustificationDateBean();
 		
 		j.setId(rs.getString("id"));
@@ -109,7 +109,7 @@ public class JustificationPostgresSqlDAO implements JustificationDAO {
 		j.setNotes(rs.getString("notes"));
 		
 		String j_id = rs.getString("justification_id");
-		j.setJustification(params.findJustificationById(j_id));
+		j.setJustification(findById(con,j_id));
 		
 		String p_id = rs.getString("person_id");
 		j.setPerson(params.findPersonById(p_id));
@@ -117,7 +117,7 @@ public class JustificationPostgresSqlDAO implements JustificationDAO {
 		return j;
 	}
 	
-	private final GeneralJustificationDate getGeneralJustificationDate (ResultSet rs) throws SQLException, JustificationException {
+	private final GeneralJustificationDate getGeneralJustificationDate (Connection con, ResultSet rs) throws SQLException, JustificationException {
 		GeneralJustificationDate j = new GeneralJustificationDateBean();
 		
 		j.setId(rs.getString("id"));
@@ -126,9 +126,32 @@ public class JustificationPostgresSqlDAO implements JustificationDAO {
 		j.setNotes(rs.getString("notes"));
 		
 		String j_id = rs.getString("justification_id");
-		j.setJustification(params.findJustificationById(j_id));
+		j.setJustification(findById(con,j_id));
 		
 		return j;
+	}
+	
+	
+	
+	private Justification findById(Connection con, String id) throws SQLException {
+		String query = "select * from justifications where id = ?";
+		PreparedStatement st = con.prepareStatement(query);
+		try {
+			st.setString(1, id);
+			ResultSet rs = st.executeQuery();
+			try {
+				if (rs.next()) {
+					Justification j = getJustification(rs);
+					return j;
+				} else {
+					return null;
+				}
+			} finally {
+				rs.close();
+			}
+		} finally {
+			st.close();
+		}
 	}
 
 	@Override
@@ -136,24 +159,7 @@ public class JustificationPostgresSqlDAO implements JustificationDAO {
 		try {
 			Connection con = cp.getConnection();
 			try {
-				String query = "select * from justifications where id = ?";
-				PreparedStatement st = con.prepareStatement(query);
-				try {
-					st.setString(1, id);
-					ResultSet rs = st.executeQuery();
-					try {
-						if (rs.next()) {
-							Justification j = getJustification(rs);
-							return j;
-						} else {
-							return null;
-						}
-					} finally {
-						rs.close();
-					}
-				} finally {
-					st.close();
-				}
+				return findById(con, id);
 			} finally {
 				cp.closeConnection(con);
 			}
@@ -263,7 +269,7 @@ public class JustificationPostgresSqlDAO implements JustificationDAO {
 					ResultSet rs = st.executeQuery();
 					try {
 						if (rs.next()) {
-							JustificationDate j = getJustificationDate(rs);
+							JustificationDate j = getJustificationDate(con,rs);
 							return j;
 						} else {
 							return null;
@@ -303,7 +309,7 @@ public class JustificationPostgresSqlDAO implements JustificationDAO {
 					try {
 						List<JustificationDate> justifications = new ArrayList<JustificationDate>();
 						while(rs.next()) {
-							JustificationDate j = getJustificationDate(rs);
+							JustificationDate j = getJustificationDate(con,rs);
 							justifications.add(j);
 						}
 						return justifications;
@@ -394,7 +400,7 @@ public class JustificationPostgresSqlDAO implements JustificationDAO {
 					ResultSet rs = st.executeQuery();
 					try {
 						if (rs.next()) {
-							GeneralJustificationDate gjd = getGeneralJustificationDate(rs);
+							GeneralJustificationDate gjd = getGeneralJustificationDate(con,rs);
 							return gjd;
 						} else {
 							return null;
@@ -430,7 +436,7 @@ public class JustificationPostgresSqlDAO implements JustificationDAO {
 					try {
 						List<GeneralJustificationDate> justifications = new ArrayList<GeneralJustificationDate>();
 						while(rs.next()) {
-							GeneralJustificationDate j = getGeneralJustificationDate(rs);
+							GeneralJustificationDate j = getGeneralJustificationDate(con,rs);
 							justifications.add(j);
 						}
 						return justifications;
