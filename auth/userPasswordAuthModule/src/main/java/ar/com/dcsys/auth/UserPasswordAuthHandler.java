@@ -6,7 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,6 +21,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 
 import ar.com.dcsys.data.auth.AbstractAuthHandler;
 import ar.com.dcsys.data.auth.principals.IdPrincipal;
+import ar.com.dcsys.data.auth.principals.UserNamePrincipal;
 import ar.com.dcsys.exceptions.AuthenticationException;
 import ar.com.dcsys.persistence.JdbcConnectionProvider;
 
@@ -196,6 +199,84 @@ public class UserPasswordAuthHandler extends AbstractAuthHandler {
 		
 		return (token instanceof UsernamePasswordToken);
 		
+	}
+	
+	
+	@Override
+	public List<Principal> findAllPrincipals(IdPrincipal id) throws AuthenticationException {
+		try {
+			Connection con = cp.getConnection();
+			try {
+				String query = "select userName from user_password_auth where person_id = ?";
+				PreparedStatement st = con.prepareStatement(query);
+				try {
+					st.setString(1,id.getName());
+					ResultSet rs = st.executeQuery();
+					try {
+						if (rs.next()) {
+							String userName = rs.getString("userName");
+							Principal unp = new UserNamePrincipal(userName);
+							return Arrays.asList(unp);
+							
+						} else {
+							throw new AuthenticationException("user not found");
+						}
+						
+					} finally {
+						rs.close();
+					}
+					
+				} finally {
+					st.close();
+				}
+		
+			} finally {
+				cp.closeConnection(con);
+			}
+		} catch (SQLException e) {
+			throw new AuthenticationException(e.getMessage());
+		}
+	}
+	
+	
+	@Override
+	public String findIdByPrincipal(Principal p) throws AuthenticationException {
+				
+		if (!(p instanceof UserNamePrincipal)) {
+			throw new AuthenticationException("Principal not supported");
+		}
+		
+		try {
+			Connection con = cp.getConnection();
+			try {
+				String query = "select person_id from user_password_auth where userName = ?";
+				PreparedStatement st = con.prepareStatement(query);
+				try {
+					st.setString(1,p.getName());
+					ResultSet rs = st.executeQuery();
+					try {
+						if (rs.next()) {
+							String id = rs.getString("person_id");
+							return id;
+							
+						} else {
+							throw new AuthenticationException("user not found");
+						}
+						
+					} finally {
+						rs.close();
+					}
+					
+				} finally {
+					st.close();
+				}
+		
+			} finally {
+				cp.closeConnection(con);
+			}
+		} catch (SQLException e) {
+			throw new AuthenticationException(e.getMessage());
+		}
 	}
 	
 }

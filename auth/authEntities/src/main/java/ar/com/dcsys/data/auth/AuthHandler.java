@@ -1,9 +1,13 @@
 package ar.com.dcsys.data.auth;
 
 
+import java.security.Principal;
+import java.util.List;
+
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 
+import ar.com.dcsys.data.auth.principals.IdPrincipal;
 import ar.com.dcsys.exceptions.AuthenticationException;
 
 
@@ -24,4 +28,22 @@ public interface AuthHandler {
 	 */
 	public AuthenticationInfo autenticate(AuthenticationToken token) throws AuthenticationException;
 
+	
+	/**
+	 * Encuentra el identificador único principal de las personas/usuarios/cosas dado un principal.
+	 * tira una exception si no puede encontrarlo
+	 * @param p
+	 * @return
+	 * @throws AuthenticationException
+	 */
+	public String findIdByPrincipal(Principal p) throws AuthenticationException;
+	
+	/**
+	 * Encuentra todos los principales dado el principal primario que determina el id de una persona.
+	 * @param p
+	 * @return
+	 * @throws AuthenticationException
+	 */
+	public List<Principal> findAllPrincipals(IdPrincipal p) throws AuthenticationException;
+	
 }
