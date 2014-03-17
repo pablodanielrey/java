@@ -23,7 +23,11 @@ public class OpenLdapContextProvider implements DirContextProvider {
 		this.data = data;
 
 		StringBuffer sb = new StringBuffer();
-		sb.append("ldap://").append(data.getServer()).append(":").append(data.getPort());
+		sb.append("ldap://").append(data.getServer());
+		if (data.getPort() != null) {
+			sb.append(":").append(data.getPort());
+		}
+		sb.append("/");
 		String url = sb.toString();
 		String user = data.getUserName();
 		String password = data.getPassword();

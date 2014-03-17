@@ -7,9 +7,10 @@ import ar.com.dcsys.persistence.PersistenceData;
 @Named("ldap")
 public class OpenLdapData implements PersistenceData {
 
-	private static final String userName = "dcsys";
-	private static final String password = "dcsys";
+	private static final String userName = "cn=admin,dc=econo";
+	private static final String password = "algo";
 	private static final String host = "127.0.0.1";
+	private static final String port = "389";
 	
 	@Override
 	public String getUserName() {
@@ -28,7 +29,7 @@ public class OpenLdapData implements PersistenceData {
 	
 	@Override
 	public String getPort() {
-		return null;
+		return port;
 	}
 	
 	@Override

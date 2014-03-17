@@ -38,7 +38,7 @@ import ar.com.dcsys.model.period.WorkedHours;
 import ar.com.dcsys.utils.PersonSort;
 
 
-@WebServlet("/report/*")
+@WebServlet("/reporte/*")
 public class PersonReportServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
@@ -61,7 +61,7 @@ public class PersonReportServlet extends HttpServlet {
 		try {
 		
 			// se obtienen las fechas del reporte
-			SimpleDateFormat format = new SimpleDateFormat("dd_MM_yyyy");
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			String pstart = req.getParameter("start");
 			String pend = req.getParameter("end");
 			if (pstart == null || pend == null) {
@@ -203,15 +203,48 @@ public class PersonReportServlet extends HttpServlet {
 	 */
 	private void report(Person person, Date start, Date end, List<GeneralJustificationDate> generalJustifications, StringBuilder sb, String reportType) throws JustificationException, PeriodException, PersonException {
 		
-					
-			List<Period> periods = null;
+			List<JustificationDate> justifications = justificationManager.findBy(Arrays.asList(person), start, end);			
+            List<Period> periodsAux = periodsManager.findAll(person, start, end, true);
+			List<Period> periods = new ArrayList<>();
 
 //			PERIODFILTER filter = PERIODFILTER.valueOf(reportType);
-			periods = periodsManager.findAll(person, start, end, false);
-			
-		
-			if (periods == null) {
-				periods = new ArrayList<Period>();
+			if (reportType.equals(constants.getAll())) {
+				
+                periods = new ArrayList<Period>();
+                for (Period p : periodsAux) {
+                        if (p.getWorkedHours() == null || p.getWorkedHours().size() <= 0) {
+                        	periods.add(p);
+                        }
+                }
+                
+			} else if (reportType.equals(constants.getInjustificatedAbsences())) {
+				
+                for (Period p : periodsAux) {
+                    if (p.getWorkedHours() == null || p.getWorkedHours().size() <= 0) {
+                    	JustificationDate j = checkJustification(justifications,p);
+                    	if (j == null) {
+                        	GeneralJustificationDate gj = checkGeneralJustification(generalJustifications,p);
+                    		if (gj == null) {
+                    			periods.add(p);
+                    		}
+                    	}
+                    }
+                }
+                
+			} else if (reportType.equals(constants.getInjustificatedAbsences())) {
+				
+                for (Period p : periodsAux) {
+                    if (p.getWorkedHours() == null || p.getWorkedHours().size() <= 0) {
+                    	JustificationDate j = checkJustification(justifications,p);
+                    	if (j != null) {
+                        	GeneralJustificationDate gj = checkGeneralJustification(generalJustifications,p);
+                        	if (gj != null) {
+                        		periods.add(p);
+                        	}
+                    	}
+                    }
+                }
+                
 			}
 			
 			// ordeno los períodos. debe ser la lista ordenada ya que si no no funciona correctamente el reporte.
@@ -268,9 +301,6 @@ public class PersonReportServlet extends HttpServlet {
 			sb.append(";" + (tg != null ? tg.getName() : "No tiene"));
 			
 			
-			/////////////////////// justificaciones de la persona en ese período ////////////////////////
-			
-			List<JustificationDate> justifications = justificationManager.findBy(Arrays.asList(person), start, end);
 			
 			/////////////////////// datos de los periodos ////////////////////////////////////////////////
 			

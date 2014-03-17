@@ -60,7 +60,7 @@
 
 	<dependency>
 	  <groupId>ar.com.dcsys.data</groupId>
-	  <artifactId>postgreSqlConfig</artifactId>
+	  <artifactId>presiPostgreSqlConfig</artifactId>
 	  <version>1.0-SNAPSHOT</version>
 	</dependency>
 
@@ -121,7 +121,7 @@
 
 	<dependency>
 	  <groupId>ar.com.dcsys.config</groupId>
-	  <artifactId>openLdapConfig</artifactId>
+	  <artifactId>presiOpenLdapConfig</artifactId>
 	  <version>1.0-SNAPSHOT</version>
 	</dependency>
 
