@@ -1,0 +1,99 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+
+		.page{
+			width:40em;
+			margin:0 auto;
+		}	
+
+		.block-content{
+			width: 100%;
+			height: 17em;
+			-moz-border-radius: 5px;
+			border-radius: 5px;
+			border: 1px solid #C1C1C1;	
+			background-color: #E8EEF7;
+		}
+
+		.title{
+			text-align:center;
+			font-weight:bold;
+			font-size:large;
+			margin-bottom: 1em;
+			margin-top: 1em;
+			color: #2952a3;
+			text-transform:capitalize;
+		}
+
+		.label-inline{
+			font-weight: bold;
+			color: #47698A;
+			width:6em;
+			display:inline;
+		}
+
+		.input-inline{
+			width: 15em;
+			background-color: #FFF;
+			text-align:center;
+			display: inline;
+			margin-left:1em;
+		}
+		
+		.error {
+			color: red;
+			display: inline;
+			margin: 5px;
+		}
+		
+		.okMessage {
+			border-color: red;
+			border: 2px;
+			margin: 5px;
+		}
+
+		.button{
+			text-align:center;
+			color: #47698A;
+		}
+
+		.panel-button{
+			text-align:center;
+			margin-top:2em;
+		}		
+	</ui:style>
+	<g:FlowPanel styleName="{style.page}">
+	    <g:Label styleName="{style.title}" text="Modificación del PIN"/>
+	    <g:FlowPanel styleName="{style.block-content}">
+		    <g:FlowPanel>
+		        <g:Label styleName="{style.label-inline}" text="PIN:"/>
+		        <g:PasswordTextBox styleName="{style.input-inline}" ui:field="pin"/>
+		   	            <g:Label ui:field="pinError" text="PIN No Permitido" styleName="{style.error}" visible="false"/>
+		    </g:FlowPanel>
+		    <g:FlowPanel>
+		        <g:Label styleName="{style.label-inline}" text="Repetir PIN:"/>
+		        <g:PasswordTextBox styleName="{style.input-inline}" ui:field="pin2"/>
+		    </g:FlowPanel>
+			<g:FlowPanel styleName="{style.panel-button}">
+				<g:Button ui:field="save" text="Guardar" visible="true" enabled="false" styleName="{style.button}"/>
+				<g:Label ui:field="pin2Error" text="PIN diferentes!!" styleName="{style.error}" visible="false"/>
+			</g:FlowPanel>	
+		</g:FlowPanel>
+	    <!--  para mostrar los mensajes de error, etc -->
+		<g:SimplePanel>
+	    	<g:DialogBox ui:field="messageDialog" visible="false">
+	    		<g:caption>Mensaje</g:caption>
+	    		<g:FlowPanel>
+	    			<g:FlowPanel styleName="{style.okMessage}">
+	    				<g:Label ui:field="message"/>
+	    			</g:FlowPanel>
+	    			<g:FlowPanel styleName="{style.panel-button}">
+	    				<g:Button ui:field="okMessage" text="Cerrar" styleName="{style.button}"/>
+	    			</g:FlowPanel>
+	    		</g:FlowPanel>
+	    	</g:DialogBox>
+	    </g:SimplePanel>			
+	</g:FlowPanel>
+</ui:UiBinder> 

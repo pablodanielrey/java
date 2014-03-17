@@ -1,0 +1,24 @@
+-classpath
+'/home/emanuel/java/github/source/java/gwt/assistanceGWT/target/assistanceGWT-1.0-SNAPSHOT/WEB-INF/classes:/home/emanuel/.m2/repository/ar/com/dcsys/data/personEntities/1.0-SNAPSHOT/personEntities-1.0-SNAPSHOT.jar:/home/emanuel/.m2/repository/com/google/gwt/inject/gin/2.1.2/gin-2.1.2.jar:/home/emanuel/.m2/repository/com/google/inject/guice/3.0/guice-3.0.jar:/home/emanuel/.m2/repository/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA.jar:/home/emanuel/.m2/repository/com/google/gwt/gwt-user/2.6.0/gwt-user-2.6.0.jar:/home/emanuel/.m2/repository/commons-beanutils/commons-beanutils/1.8.3/commons-beanutils-1.8.3.jar:/home/emanuel/.m2/repository/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0.jar:/home/emanuel/.m2/repository/ar/com/dcsys/gwt/authModelGWT/1.0-SNAPSHOT/authModelGWT-1.0-SNAPSHOT.jar:/home/emanuel/.m2/repository/ar/com/dcsys/cdiUtils/1.0-SNAPSHOT/cdiUtils-1.0-SNAPSHOT.jar:/home/emanuel/.m2/repository/ar/com/dcsys/gwt/clientMessagesGWT/1.0-SNAPSHOT/clientMessagesGWT-1.0-SNAPSHOT.jar:/home/emanuel/.m2/repository/ar/com/dcsys/data/assistanceEntities/1.0-SNAPSHOT/assistanceEntities-1.0-SNAPSHOT.jar:/home/emanuel/.m2/repository/com/sksamuel/gwt/gwt-websockets/1.0.3/gwt-websockets-1.0.3.jar:/home/emanuel/.m2/repository/com/google/inject/extensions/guice-assistedinject/3.0/guice-assistedinject-3.0.jar:/home/emanuel/.m2/repository/ar/com/dcsys/model/authModel/1.0-SNAPSHOT/authModel-1.0-SNAPSHOT.jar:/home/emanuel/.m2/repository/org/postgresql/postgresql/9.3-1100-jdbc41/postgresql-9.3-1100-jdbc41.jar:/home/emanuel/.m2/repository/ar/com/dcsys/gwt/messageGWT/1.0-SNAPSHOT/messageGWT-1.0-SNAPSHOT.jar:/home/emanuel/.m2/repository/ar/com/dcsys/data/postgresql/1.0-SNAPSHOT/postgresql-1.0-SNAPSHOT.jar:/home/emanuel/.m2/repository/ar/com/dcsys/auth/shiro/1.0-SNAPSHOT/shiro-1.0-SNAPSHOT.jar:/home/emanuel/.m2/repository/ar/com/dcsys/data/authEntities/1.0-SNAPSHOT/authEntities-1.0-SNAPSHOT.jar:/home/emanuel/.m2/repository/org/json/json/20090211/json-20090211.jar:/home/emanuel/.m2/repository/ar/com/dcsys/dcsysUtils/1.0-SNAPSHOT/dcsysUtils-1.0-SNAPSHOT.jar:/home/emanuel/.m2/repository/javax/inject/javax.inject/1/javax.inject-1.jar:/home/emanuel/.m2/repository/org/slf4j/slf4j-api/1.6.4/slf4j-api-1.6.4.jar:/home/emanuel/.m2/repository/com/google/gwt/gwt-servlet/2.6.0/gwt-servlet-2.6.0.jar:/home/emanuel/.m2/repository/org/apache/shiro/shiro-core/1.2.2/shiro-core-1.2.2.jar:/home/emanuel/.m2/repository/aopalliance/aopalliance/1.0/aopalliance-1.0.jar:/home/emanuel/.m2/repository/org/json/org.json/chargebee-1.0/org.json-chargebee-1.0.jar:/home/emanuel/.m2/repository/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA-sources.jar'
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'/home/emanuel/java/github/source/java/gwt/assistanceGWT/src/main/java:/home/emanuel/java/github/source/java/gwt/assistanceGWT/target/generated-sources/gwt'
+-author
+-bottom
+'Copyright &#169; 2014. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'/home/emanuel/java/github/source/java/gwt/assistanceGWT/target/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'assistanceGWT 1.0-SNAPSHOT API'
+-linkoffline
+'http://docs.oracle.com/javase/7/docs/api' '/home/emanuel/java/github/source/java/gwt/assistanceGWT/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'assistanceGWT 1.0-SNAPSHOT API'

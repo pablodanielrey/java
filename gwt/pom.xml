@@ -32,7 +32,7 @@
 
     <module>mapauModelGWT</module>
     <module>mapauGWT</module>
-
+    <module>assistanceGWT</module>
   </modules>
 
 </project>
