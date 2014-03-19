@@ -231,16 +231,14 @@ public class PersonReportServlet extends HttpServlet {
                     }
                 }
                 
-			} else if (reportType.equals(constants.getInjustificatedAbsences())) {
+			} else if (reportType.equals(constants.getJustificatedAbsences())) {
 				
                 for (Period p : periodsAux) {
                     if (p.getWorkedHours() == null || p.getWorkedHours().size() <= 0) {
                     	JustificationDate j = checkJustification(justifications,p);
-                    	if (j != null) {
-                        	GeneralJustificationDate gj = checkGeneralJustification(generalJustifications,p);
-                        	if (gj != null) {
-                        		periods.add(p);
-                        	}
+                    	GeneralJustificationDate gj = checkGeneralJustification(generalJustifications,p);
+                    	if (j != null || gj != null) {
+                       		periods.add(p);
                     	}
                     }
                 }
@@ -271,7 +269,7 @@ public class PersonReportServlet extends HttpServlet {
 				}
 			});
 
-			DateFormat onlyDate = new SimpleDateFormat("yyyy-MM-dd");
+			DateFormat onlyDate = new SimpleDateFormat("dd/MM/yyyy");
 			DateFormat onlyTime = new SimpleDateFormat("HH:mm:ss");
 			
 			//////////////////////////// datos de la persona ///////////////////////////////////////////
