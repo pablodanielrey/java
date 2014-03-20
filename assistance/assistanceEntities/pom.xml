@@ -16,12 +16,14 @@
   <name>assistanceEntities</name>
   <url>http://maven.apache.org</url>
 
+<!--
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
-
+-->
   <dependencies>
 
+<!--
     <dependency>
       <groupId>javax.inject</groupId>
       <artifactId>javax.inject</artifactId>
@@ -36,7 +38,7 @@
         <scope>provided</scope>
    </dependency>
 
-
+-->
     <dependency>
       <groupId>ar.com.dcsys.data</groupId>
       <artifactId>personEntities</artifactId>
