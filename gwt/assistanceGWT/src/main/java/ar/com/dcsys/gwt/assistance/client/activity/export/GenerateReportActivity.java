@@ -8,9 +8,9 @@ import java.util.Map;
 
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.group.GroupType;
+import ar.com.dcsys.gwt.assistance.client.place.GenerateReportPlace;
 import ar.com.dcsys.gwt.assistance.client.ui.export.GenerateReportView;
 import ar.com.dcsys.gwt.assistance.client.ui.period.PERIODFILTER;
-import ar.com.dcsys.gwt.clientMessages.client.MessageDialogEvent;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.core.client.GWT;
@@ -27,15 +27,14 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent.Handler;
 import com.google.gwt.view.client.SingleSelectionModel;
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 import com.google.web.bindery.requestfactory.shared.Receiver;
 import com.google.web.bindery.requestfactory.shared.ServerFailure;
+import com.google.inject.Inject;
+import ar.com.dcsys.gwt.clientMessages.client.MessageDialogEvent;
+import com.google.inject.assistedinject.Assisted;
 
 public class GenerateReportActivity extends AbstractActivity implements GenerateReportView.Presenter{
 
-	private AssistanceRequestFactory rf;
-	private PersonRequestFactory prf;
 	private GenerateReportView view;
 	
 	private EventBus eventBus;
@@ -47,9 +46,7 @@ public class GenerateReportActivity extends AbstractActivity implements Generate
 	
 	
 	@Inject
-	public GenerateReportActivity(PersonRequestFactory prf, AssistanceRequestFactory rf, GenerateReportView view, @Assisted GenerateReportPlace place){
-		this.rf = rf;
-		this.prf = prf;
+	public GenerateReportActivity(GenerateReportView view, @Assisted GenerateReportPlace place){
 		this.view = view;
 		
 		groupSelection = new SingleSelectionModel<Group>();
@@ -105,12 +102,12 @@ public class GenerateReportActivity extends AbstractActivity implements Generate
 	
 	
 	private void showError(String message) {
-		eventBus.fireEvent(new MessageDialogEvent());
+		eventBus.fireEvent(new MessageDialogEvent(true,message));
 	}
 	
 	
 	private void updateGroupTypes() {
-		prf.groupRequest().findAllTypes().fire(new Receiver<List<GroupType>>() {
+		/*prf.groupRequest().findAllTypes().fire(new Receiver<List<GroupType>>() {
 			@Override
 			public void onSuccess(List<GroupType> types) {
 				if (types == null) {
@@ -123,13 +120,13 @@ public class GenerateReportActivity extends AbstractActivity implements Generate
 			public void onFailure(ServerFailure error) {
 				showError(error.getMessage());
 			}
-		});
+		});*/
 	}
 	
 	
 	private void findGroupsByType(GroupType type) {
 		
-		Receiver<List<Group>> receiver = new Receiver<List<Group>>() {
+		/*Receiver<List<Group>> receiver = new Receiver<List<Group>>() {
 			@Override
 			public void onSuccess(List<Group> groups) {
 				if (groups == null) {
@@ -148,7 +145,7 @@ public class GenerateReportActivity extends AbstractActivity implements Generate
 			prf.groupRequest().findAll().fire(receiver);
 		} else {
 			prf.groupRequest().findByType(type).fire(receiver);
-		}
+		}*/
 	}
 
 	

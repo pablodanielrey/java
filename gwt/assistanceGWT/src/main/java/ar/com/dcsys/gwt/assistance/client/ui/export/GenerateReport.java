@@ -194,7 +194,7 @@ public class GenerateReport extends Composite implements GenerateReportView {
 	public void setGroup(List<Group> groups) {
 		clearGroup();
 		/*
-		 * TODO: falta iumplementarlo en person
+		 * Falta implementarlo
 		GroupsSort.sort(groups);
 		 */
 		if (groups.size() > 0) {

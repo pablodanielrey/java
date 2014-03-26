@@ -3,11 +3,12 @@ package ar.com.dcsys.gwt.assistance.client.ui.export;
 import java.util.Date;
 import java.util.List;
 
-import ar.com.dcsys.data.group.Group;
-import ar.com.dcsys.data.group.GroupType;
 import ar.com.dcsys.gwt.assistance.client.ui.period.PERIODFILTER;
 
 import com.google.gwt.user.client.ui.IsWidget;
+
+import ar.com.dcsys.data.group.Group;
+import ar.com.dcsys.data.group.GroupType;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 public interface GenerateReportView extends IsWidget{
