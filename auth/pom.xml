@@ -27,6 +27,7 @@
 	<module>authModel</module>
 	<module>authEntities</module>
 	<module>userPasswordAuthModule</module>
+	<module>userPasswordAuthLdapModule</module>
   </modules>
 
 </project>

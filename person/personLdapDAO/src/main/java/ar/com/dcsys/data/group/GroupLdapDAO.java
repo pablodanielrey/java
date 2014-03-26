@@ -8,6 +8,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.inject.Inject;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
@@ -59,7 +60,6 @@ import ar.com.dcsys.persistence.DirContextProvider;
 
 public class GroupLdapDAO implements GroupDAO {
 
-	private static final long serialVersionUID = 1L;
 	private static final Logger logger = Logger.getLogger(GroupLdapDAO.class.getName());
 	
 	
@@ -88,24 +88,14 @@ public class GroupLdapDAO implements GroupDAO {
 	private final String groupFilter = "(objectClass=posixGroup)";	
 
 	private final DirContextProvider cp;
-	private final Params params;
+	private final GroupLdapDAOParams params;
 
-	public GroupLdapDAO(OpenLdapContextProvider cp, Params params) {
+	@Inject
+	public GroupLdapDAO(OpenLdapContextProvider cp, GroupLdapDAOParams params) {
 		this.cp = cp;
 		this.params = params;
 	}
 	
-	@Override
-	public void initialize() throws PersonException {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public void destroy() throws PersonException {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	private String getStringAtt(String name, Attributes attrs) throws NamingException {
 		Attribute att = attrs.get(name);

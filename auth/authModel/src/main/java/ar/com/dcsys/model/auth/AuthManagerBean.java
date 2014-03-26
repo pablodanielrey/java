@@ -13,6 +13,7 @@ import org.apache.shiro.subject.Subject;
 
 import ar.com.dcsys.data.auth.AuthHandler;
 import ar.com.dcsys.data.auth.AuthHandlersDetection;
+import ar.com.dcsys.data.auth.principals.IdPrincipal;
 import ar.com.dcsys.exceptions.AuthenticationException;
 
 public class AuthManagerBean implements AuthManager {
@@ -64,6 +65,41 @@ public class AuthManagerBean implements AuthManager {
 		Subject subject = SecurityUtils.getSubject();
 		PrincipalCollection pc = subject.getPrincipals();
 		return pc.asList();
+	}
+	
+	
+	@Override
+	public String findIdByPrincipal(Principal p) throws AuthenticationException {
+		
+		if (p instanceof IdPrincipal) {
+			return p.getName();
+		}
+		
+		
+		for (AuthHandler h : handlers) {
+			try {
+				return h.findIdByPrincipal(p);
+			} catch (AuthenticationException e) {
+				// nada
+			}
+		}
+		throw new AuthenticationException("Handler not found");
+	}
+	
+	@Override
+	public List<Principal> findAllPrincipals(IdPrincipal p) throws AuthenticationException {
+		if (p == null) {
+			throw new AuthenticationException("principal == null");
+		}
+		
+		for (AuthHandler h : handlers) {
+			try {
+				return h.findAllPrincipals(p);
+			} catch (AuthenticationException e) {
+				// nada
+			}
+		}
+		throw new AuthenticationException("Handler not found");
 	}
 	
 }

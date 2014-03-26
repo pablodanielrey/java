@@ -1,12 +1,11 @@
 package ar.com.dcsys.data.group;
 
-import java.io.Serializable;
 import java.util.List;
 
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.exceptions.PersonException;
 
-public interface GroupDAO extends Serializable {
+public interface GroupDAO {
 
 	public List<GroupType> findAllTypes();
 	
@@ -30,13 +29,5 @@ public interface GroupDAO extends Serializable {
 	public List<String> findAllSons(List<Group> groups) throws PersonException;
 
 	public void setParent(Group son, Group parent) throws PersonException;
-	
-	public void initialize() throws PersonException;
-	public void destroy() throws PersonException;
-	
-	public interface Params {
-		public List<Person> findPersonByMemberField(String userName) throws PersonException;
-		public String getMemberFieldContent(Person person) throws PersonException;
-	}
 	
 }

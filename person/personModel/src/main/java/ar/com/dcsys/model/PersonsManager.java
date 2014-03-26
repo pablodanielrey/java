@@ -26,7 +26,6 @@ public interface PersonsManager {
 
 	public List<PersonType> findAllTypes() throws PersonException;
 	
-	
 	void addMail(String personId, Mail mail) throws PersonException;
 	void removeMail(String personId, Mail mail) throws PersonException;
 	List<Mail> findAllMails(String personId) throws PersonException;

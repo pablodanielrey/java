@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>ar.com.dcsys</groupId>
+    <artifactId>auth</artifactId>
+    <version>1.0</version>
+  </parent>
+
+  <groupId>ar.com.dcsys.auth</groupId>
+  <artifactId>userPasswordAuthLdapModule</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <name>userPasswordAuthLdapModule</name>
+
+  <dependencies>
+
+   <dependency>
+      <groupId>ar.com.dcsys</groupId>
+      <artifactId>dcsysUtils</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+   </dependency>
+
+   <dependency>
+      <groupId>ar.com.dcsys.data</groupId>
+      <artifactId>openldap</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+   </dependency>
+
+   <dependency>
+      <groupId>ar.com.dcsys.data</groupId>
+      <artifactId>authEntities</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+   </dependency>
+
+    <dependency>
+       <groupId>org.apache.shiro</groupId>
+       <artifactId>shiro-core</artifactId>
+       <version>${shiro.version}</version>
+       <scope>compile</scope>
+    </dependency>
+
+   <dependency>
+      <groupId>javax.enterprise</groupId>
+      <artifactId>cdi-api</artifactId>
+      <version>1.1</version>
+      <scope>provided</scope>
+   </dependency>
+
+  </dependencies>
+
+</project>

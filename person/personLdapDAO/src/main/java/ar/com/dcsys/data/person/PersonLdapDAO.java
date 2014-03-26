@@ -174,7 +174,22 @@ public class PersonLdapDAO extends AbstractLdapPersonDAO {
 							person.setLastName(lastName);
 							person.setDni(dni);
 							person.setAddress(address);
-							person.setGender(Gender.valueOf(gender));
+							
+							
+							///// PARCHE PARA SACAR DESPUES YA QUE CAMBIO EL SISTEMA Y LOS DATOS GUARDADOS /////////////
+							// TODO: corregir cuando se haga la migracion de la base.
+							
+							if (gender != null) {
+								try {
+									person.setGender(Gender.valueOf(gender));
+								} catch (Exception e) {
+									person.setGender(Gender.M);
+								}
+							}
+							
+							///////////////////////////////7
+							
+							
 							person.setCity(locality);
 							person.setCountry(country);
 							person.setStudentNumber(studentNumber);

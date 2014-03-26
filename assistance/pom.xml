@@ -20,6 +20,7 @@
 	<module>assistanceDAO</module>
 	<module>assistanceHsqlDAO</module>
 	<module>assistancePostgreSqlDAO</module>
+    <module>reportsWar</module>
   </modules>
 
 </project>

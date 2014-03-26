@@ -34,7 +34,7 @@ public interface JustificationDAO extends Serializable {
 	
 	public interface Params {
 		public Person findPersonById(String id) throws PersonException;
-		public Justification findJustificationById(String id) throws JustificationException;
+		//public Justification findJustificationById(String id) throws JustificationException;			GENERA REFERENCIA CICLICA
 	}
 
 }

@@ -16,7 +16,7 @@ public class PostgresSqlConnectionProvider implements JdbcConnectionProvider {
 	private final PersistenceData data;
 	
 	@Inject
-	public PostgresSqlConnectionProvider(PersistenceData data) {
+	public PostgresSqlConnectionProvider(@Named("sql") PersistenceData data) {
 		this.data = data;
 	}
 	
