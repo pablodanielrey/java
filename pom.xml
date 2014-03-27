@@ -11,6 +11,7 @@
 	<module>workarrounds</module>
 	<module>dcsysUtils</module>
 	<module>data</module>
+	<module>config-privada</module>
 	<module>config</module>
 	<module>mail</module>
 	<module>person</module>
