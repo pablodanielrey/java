@@ -1,0 +1,306 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:d="urn:import:com.google.gwt.user.datepicker.client"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+	xmlns:sjd="urn:import:ar.com.dcsys.gwt.assistance.client.ui.justification.widget.selectionJustificationDateList">
+	
+	<ui:style>
+		.persons {
+			width: 350px;
+			height: 49em;
+			margin-top:1em;
+			margin-bottom:0.5em;
+		}
+		.person-list{
+			float:left;
+			margin-left:1em;
+			-moz-border-radius: 5px;
+			border-radius: 5px;
+			border: 1px solid #C1C1C1;
+			background-color: #E8EEF7;		
+			margin-top:1em;
+		}
+		.filter-panel,.panel{
+			margin-top:1em;
+			margin-left:1em;
+		}
+		.label-inline,.input-inline{
+			display:inline;
+		}
+
+		.label-inline{
+			color: #47698A;
+			font-weight:bold;
+		}		
+
+		.input-inline{
+			margin-left:1em;
+		}	
+
+		.panel-button{
+			text-align:center;
+			float:left;
+			width:100%;
+			margin-top:1em;
+		}
+
+		.panel-inline{
+			display:inline;
+			margin-left:1em;
+		}
+
+		.panel-filter-count {
+			display:inline;
+			margin-left:1em;
+		}
+/*-------------------------------------*/
+/*------------ Labels -----------------*/
+/*-------------------------------------*/
+		.content-labels{
+			width:15em;
+			float:left;
+			display:block;
+			height: 1em;
+			margin-top: 0.5em;
+			text-align:right;
+		}
+		.label-block,.label{
+			color: #47698A;
+			font-weight:bold;
+		}
+
+		.label{
+			margin-top:1.5em;
+			margin-right:0.5em;
+			margin-left:2em;
+		}
+		
+		.title{
+			text-align:center;
+			font-weight:bold;
+			font-size:large;
+			margin-bottom: 1em;
+			margin-top: 1em;
+			color: #2952a3;
+			text-transform:capitalize;
+		}
+
+		.subtitle-inline,.subtitle-center,.subtitle-center-dialog {
+			text-align:center;
+			font-weight:bold;
+			margin-bottom: 1em;
+			color: #2952a3;
+		}
+		.subtitle-inline{
+			display:inline;
+		}
+
+		.subtitle-center-dialog {
+			text-align:center;
+		}
+
+		.subtitle-center{
+			text-align:center;
+			margin-top:0.5em;
+		}
+/*-------------------------------------*/
+/*------------ INPUTS -----------------*/
+/*-------------------------------------*/
+		.content-inputs{
+			width:10em;
+			float:left;
+			margin-top:1em;
+		}
+		.button{
+			margin-top:0.5em;
+			margin-bottom:0.5em;
+			margin-right:0.5em;
+			text-align:center;
+			color: #47698A;
+		}
+
+		.input-meddium,.input-large,.type-list{
+			background-color: #FFF;
+			margin-top:1em;	
+			display:block;
+		}
+
+		.date-box{
+			width:6em;
+			text-align:center;
+			display:inline;
+			background-color: #FFF;
+		}
+
+		.input-meddium{
+			width:6em;
+			text-align:center;
+		}
+		
+		.input-large{
+			width:20em;
+			text-align:center;
+		}
+
+		.text-area{
+			resize:none;
+			width: 340px;
+			height:4em;
+		}
+/*---------------------------------------------------*/
+/*----------- BLOQUE DE JUSTIFICACION ---------------*/
+/*---------------------------------------------------*/	
+
+	.block-justifications{
+		float:left;
+		width:70em;
+	}	
+
+/*------------------------ Panel de Fechas ----------------------------*/
+	.block-dates{
+		margin-left:1em;
+		-moz-border-radius: 5px;
+		border-radius: 5px;
+		border: 1px solid #C1C1C1;
+		background-color: #E8EEF7;		
+		margin-top:1em;
+		width:100%;
+		padding-bottom:1em;
+		float:left;
+	}
+
+/*--------------- Panel de Generar Justificaciones  --------------------*/
+	.panel-generate-justifications{
+		width:370px;	
+		height:15em;
+		background-color: #E8EEF7;
+	}
+
+		.dialogJustify {
+			background-color: black;
+		}
+/*--------------- Panel de Justification Dates -------------------------*/
+	.block-justification-date-list{
+		width:100%;
+		float:left;
+		margin-left:1em;
+		-moz-border-radius: 5px;
+		border-radius: 5px;
+		border: 1px solid #C1C1C1;
+		background-color: #E8EEF7;		
+		margin-top:1em;
+	}
+
+	.selection-justification-date-list{
+		width: 98%;
+		height: 320px;
+		margin: 1%;
+	}
+
+
+	.panel-west-south {
+		width: 100%;
+		height: 320px;
+		margin: 1%;
+		float:left;
+		margin-left:1em;
+		-moz-border-radius: 5px;
+		border-radius: 5px;
+		border: 1px solid #C1C1C1;
+		background-color: #E8EEF7;	
+	}
+
+	.statistics-content {
+		width:100;
+		height:20em;
+	}
+
+
+	</ui:style>
+	<g:FlowPanel>
+	    <g:Label styleName="{style.title}" text="Jutificación Personal"/>
+
+<!-- ******************************************************** -->
+<!-- ***************** BLOQUE DE PERSONAS ******************* -->
+<!-- ******************************************************** -->
+
+		<g:FlowPanel styleName="{style.person-list}">
+			<g:FlowPanel>
+				<g:FlowPanel styleName="{style.filter-panel}">
+					<g:Label text="Buscar:" styleName="{style.label-inline}"/> 
+					<g:TextBox ui:field="filter" styleName="{style.input-inline}"/>
+					<g:FlowPanel styleName="{style.panel-filter-count}">
+					    <g:Label text="Total:" styleName="{style.label-inline}"/> 
+						<g:Label ui:field="usersCount" styleName="{style.label-inline}"/>
+					</g:FlowPanel>
+				</g:FlowPanel>
+			</g:FlowPanel>
+			<c:DataGrid ui:field="persons" styleName="{style.persons}"/>
+		</g:FlowPanel>
+
+<!-- ******************************************************** -->
+<!-- ************** BLOQUE DE JUSTIFICACIONES *************** -->
+<!-- ******************************************************** -->		
+	
+		<g:FlowPanel styleName="{style.block-justifications}" ui:field="blockJustifications">
+		    
+	<!-- ************************ Panel de Fechas ***************************** -->
+	
+			<g:FlowPanel styleName="{style.block-dates}">
+			    <g:FlowPanel styleName="{style.panel}">
+				    <g:Label styleName="{style.subtitle-inline}" text="Fechas a buscar" />
+					<g:FlowPanel styleName="{style.panel-inline}">
+						<g:Label text="Inicio" styleName="{style.label-inline}"/>
+						<d:DateBox ui:field="start" styleName="{style.date-box}"/>
+					</g:FlowPanel>
+					<g:FlowPanel styleName="{style.panel-inline}">
+						<g:Label text="Fin" styleName="{style.label-inline}"/>
+						<d:DateBox ui:field="end" styleName="{style.date-box}"/>
+					</g:FlowPanel>
+				</g:FlowPanel>
+			</g:FlowPanel>
+
+	<!-- ****************** Panel de Justification Dates ************************************* -->
+							
+			<g:FlowPanel styleName="{style.block-justification-date-list}">
+			    <g:Label text="Listado de Justificaciones" styleName="{style.subtitle-center}"/>
+			    <sjd:SelectionJustificationDateList ui:field="selectionJustificationDates" styleName="{style.selection-justification-date-list}"/>
+				<g:FlowPanel styleName="{style.panel-button}">
+				    <g:Button ui:field="remove" text="Eliminar justificaciones seleccionadas" styleName="{style.button}"/>
+				    <g:Button ui:field="openJustify" text="Justificar rango de fechas" styleName="{style.button}"/>
+				</g:FlowPanel>
+			</g:FlowPanel>
+			
+			<g:FlowPanel styleName="{style.panel-west-south}">					
+				<!-- ******************** Estadisticas de justificaciones ******************* -->
+				<g:FlowPanel>
+				    <g:Label text="Estadísticas" styleName="{style.subtitle-center}"/>
+					<c:DataGrid ui:field="statistics" styleName="{style.statistics-content}"/>
+				</g:FlowPanel>
+			</g:FlowPanel>			
+	<!-- ******************** Panel de Generar Justificaciones ******************* -->
+			<g:DialogBox ui:field="dialogJustify" modal="true" visible="false">		
+				<g:FlowPanel styleName="{style.panel-generate-justifications}">
+				    <g:Label text="Justificar Periodos" styleName="{style.subtitle-center-dialog}"/>
+				    <g:FlowPanel styleName="{style.panel}">
+				        <g:Label text="Tipo : " styleName="{style.label-inline}"/>
+						<g:ValueListBox ui:field="types"/>
+					</g:FlowPanel>
+					<g:FlowPanel styleName="{style.panel}">	
+					    <g:Label text="Notas : " styleName="{style.label-block}"/>
+						<g:TextArea ui:field="justifyNotes" styleName="{style.text-area}"/>
+					</g:FlowPanel>
+					<g:FlowPanel styleName="{style.panel-button}">
+						<g:Button ui:field="commit" text="Aceptar" styleName="{style.button}" />
+						<g:Button ui:field="closeJustify" text="Cancelar" styleName="{style.button}" />
+					</g:FlowPanel>
+				</g:FlowPanel>
+			</g:DialogBox>
+				
+
+		</g:FlowPanel>
+	
+	</g:FlowPanel>	
+	
+</ui:UiBinder> 

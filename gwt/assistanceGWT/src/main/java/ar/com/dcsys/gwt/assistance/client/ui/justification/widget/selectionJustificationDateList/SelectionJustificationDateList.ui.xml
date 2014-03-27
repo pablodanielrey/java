@@ -1,0 +1,90 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:jd="urn:import:ar.com.dcsys.gwt.assistance.client.ui.justification.widget.justificationDateList"
+	xmlns:d="urn:import:com.google.gwt.user.datepicker.client">
+	<ui:style>
+		.panel-content-search {
+			width: 100%;
+			height: 10%;
+		}
+		
+		.content-persons {
+			width: 100%;
+			height: 100%;
+			-moz-border-radius: 5px;
+			border-radius: 5px;
+			border: 1px solid #C1C1C1;			
+		}
+		
+		.panel-table {
+			width:100%;
+			height:90%;
+		}
+
+		.panel-inline{
+			display:inline;
+			margin-left:1em;
+		}
+
+		.label-inline{
+			color: #47698A;
+			font-weight:bold;
+			display:inline;
+		}
+
+		.subtitle{
+			text-align:center;
+			font-weight:bold;
+			margin-bottom: 1em;
+			color: #2952a3;
+			display:inline;
+		}
+
+		.date-box{
+			width:6em;
+			text-align:center;
+			margin-left:0.5em;
+		}
+
+		.search{
+			margin-left:1em;
+		}
+		.button,.search{
+			color: #47698A;
+		}
+		.button{
+			margin-top:0.5em;
+			margin-bottom:0.5em;
+			margin-right:0.5em;
+			text-align:center;
+		}
+
+		.panel-button{
+			text-align:center;
+			float:left;
+			width:100%;
+		}
+		
+	</ui:style>
+
+	<g:FlowPanel styleName="{style.content-persons}">
+	<!--  Se comento porque el listado de fechas esta en la vista de arriba
+	    <g:FlowPanel styleName="{style.panel-content-search}">
+		    <g:Label styleName="{style.subtitle}" text="Fechas a buscar" />
+			<g:FlowPanel styleName="{style.panel-inline}">
+				<g:Label text="Inicio" styleName="{style.label-inline}"/>
+				<d:DateBox ui:field="start" styleName="{style.date-box}"/>
+			</g:FlowPanel>
+			<g:FlowPanel styleName="{style.panel-inline}">
+				<g:Label text="Fin" styleName="{style.label-inline}"/>
+				<d:DateBox ui:field="end" styleName="{style.date-box}"/>
+			</g:FlowPanel>
+			<g:Button ui:field="search" text="Obtener Justificaciones" styleName="{style.search}"/>
+		</g:FlowPanel>
+		 -->
+		<g:FlowPanel styleName="{style.panel-table}">
+			<jd:JustificationDateList ui:field="justificationDateList" />
+		</g:FlowPanel>
+	</g:FlowPanel>
+</ui:UiBinder> 

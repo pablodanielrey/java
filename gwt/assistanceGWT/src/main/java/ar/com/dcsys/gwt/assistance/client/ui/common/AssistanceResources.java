@@ -28,6 +28,9 @@ public interface AssistanceResources extends ClientBundle {
 	@Source("fingerprint.png")
 	public ImageResource fingerprint();
 	
+	@Source("user.png")
+	public ImageResource user();
+	
 	@Source("clock1.png")
 	public ImageResource device();
 	

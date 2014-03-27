@@ -1,0 +1,133 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:c="urn:import:com.google.gwt.user.cellview.client">
+	<ui:style>
+
+/*--------------------------------------------------------------*/
+/*------------------ ESTILOS GENERALES -------------------------*/
+/*--------------------------------------------------------------*/		
+
+	.filter-panel,.panel{
+		margin-top:1em;
+		margin-left:1em;
+	}
+
+	.label-inline{
+		color: #47698A;
+		font-weight:bold;
+		display:inline;
+	}
+
+	.label-block{
+		color: #47698A;
+		font-weight:bold;
+	}
+
+	.input-inline{
+		display:inline;
+		margin-left:1em;
+	}
+
+	.text-area{
+		resize:none;
+		width:90%;
+		height:4em;
+	}
+
+	.panel-button{
+		text-align:center;
+		float:left;
+		width:100%;
+		margin-top:1em;
+	}
+		
+	.button{
+		margin-top:0.5em;
+		margin-bottom:0.5em;
+		margin-right:0.5em;
+		text-align:center;
+		color: #47698A;
+	}
+	
+	.subtitle-center{
+		text-align:center;
+		font-weight:bold;
+		margin-bottom: 1em;
+		margin-top:1em;
+		color: #2952a3;
+	}
+/*--------------------------------------------------------------*/
+/*------------------------ BLOQUES -----------------------------*/
+/*--------------------------------------------------------------*/		
+	.justification-list{
+		float:left;
+		width:30em;
+		margin-left:1em;
+		-moz-border-radius: 5px;
+		border-radius: 5px;
+		border: 1px solid #C1C1C1;
+		background-color: #E8EEF7;		
+		margin-top:1em;
+	}
+
+	.justifications{
+		width: 100%;
+		height: 510px;
+		margin-top:1em;
+		margin-bottom:0.5em;
+	}
+
+	.justification-info{
+		float:left;
+		width:30em;
+		margin-left:1em;
+		-moz-border-radius: 5px;
+		border-radius: 5px;
+		border: 1px solid #C1C1C1;
+		background-color: #E8EEF7;		
+		margin-top:1em;
+	}
+		
+	.title{
+		text-align:center;
+		font-weight:bold;
+		font-size:large;
+		margin-bottom: 1em;
+		margin-top: 1em;
+		color: #2952a3;
+		text-transform:capitalize;
+	}
+	</ui:style>
+
+	<g:FlowPanel>
+	    <g:Label styleName="{style.title}" text="Administración de Justificaciones"/>
+<!-- ******************************************************** -->
+<!-- ************** LISTADO DE JUSTIFICACIONES ************** -->
+<!-- ******************************************************** -->
+		<g:FlowPanel styleName="{style.justification-list}">
+		    <g:Label text="Listado de Justificaciones" styleName="{style.subtitle-center}"/>
+			<c:DataGrid ui:field="justifications" styleName="{style.justifications}"/>
+		</g:FlowPanel>	    
+<!-- ******************************************************** -->
+<!-- **************** DETALLE JUSTIFICACION ***************** -->
+<!-- ******************************************************** -->
+		<g:FlowPanel styleName="{style.justification-info}">
+		    <g:Label text="Editar Justificación" styleName="{style.subtitle-center}"/>
+		    <g:FlowPanel styleName="{style.panel}">
+		        <g:Label text="Código : " styleName="{style.label-inline}"/>
+		        <g:TextBox ui:field="code" styleName="{style.input-inline}"/>
+		    </g:FlowPanel>
+		    <g:FlowPanel styleName="{style.panel}">
+				<g:Label text="Descripción : " styleName="{style.label-block}"/>
+				<g:TextArea ui:field="description" styleName="{style.text-area}"/>
+		    </g:FlowPanel>
+		    <g:FlowPanel styleName="{style.panel-button}">
+		        <g:Button text="Cancelar" ui:field="cancel" styleName="{style.button}"/>
+		        <g:Button text="Aceptar" ui:field="commit" styleName="{style.button}"/>
+		    </g:FlowPanel>
+		</g:FlowPanel>
+
+	</g:FlowPanel>
+	
+</ui:UiBinder> 
