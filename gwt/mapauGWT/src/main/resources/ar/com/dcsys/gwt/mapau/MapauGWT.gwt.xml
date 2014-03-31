@@ -24,7 +24,7 @@
   <inherits name="ar.com.dcsys.UtilsGWT"/>
 
   
-  <inherits name="ar.com.dcsys.data.PersonEntities"/>
+  <inherits name="ar.com.dcsys.PersonEntities"/>
   <inherits name="ar.com.dcsys.gwt.person.PersonModelGWT"/>
   
   <inherits name="ar.com.dcsys.data.MapauEntities"/>
