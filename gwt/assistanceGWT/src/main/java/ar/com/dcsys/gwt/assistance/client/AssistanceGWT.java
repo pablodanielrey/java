@@ -5,6 +5,7 @@ import ar.com.dcsys.gwt.assistance.client.activity.AssistanceActivityMapper;
 import ar.com.dcsys.gwt.assistance.client.activity.auth.PinAuthDataActivity;
 import ar.com.dcsys.gwt.assistance.client.gin.Injector;
 import ar.com.dcsys.gwt.assistance.client.place.AssistancePlaceHistoryMapper;
+import ar.com.dcsys.gwt.assistance.client.place.DailyPeriodsPlace;
 import ar.com.dcsys.gwt.assistance.client.place.PinAuthDataPlace;
 import ar.com.dcsys.gwt.assistance.client.ui.common.AcceptsOneWidgetAdapter;
 import ar.com.dcsys.gwt.assistance.client.ui.menu.Menu;
@@ -46,9 +47,9 @@ public class AssistanceGWT implements EntryPoint {
 		  // inicioalizo la parte de los history
 		  AssistancePlaceHistoryMapper historyMapper = GWT.create(AssistancePlaceHistoryMapper.class);
 		  final PlaceHistoryHandler historyHandler = new PlaceHistoryHandler(historyMapper);
-		  historyHandler.register(pc,eventBus,new PinAuthDataPlace());
+		  historyHandler.register(pc,eventBus,new DailyPeriodsPlace());
 		   
-		  final PinAuthDataActivity activity = injector.factory().pinAuthDataActivity(new PinAuthDataPlace());
+//		  final PinAuthDataActivity activity = injector.factory().pinAuthDataActivity(new PinAuthDataPlace());
 		  
 		  eventBus.addHandler(SocketStateEvent.TYPE, new SocketStateEventHandler() {
 			@Override

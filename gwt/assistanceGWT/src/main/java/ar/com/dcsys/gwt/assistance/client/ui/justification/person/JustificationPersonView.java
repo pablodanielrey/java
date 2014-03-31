@@ -5,9 +5,8 @@ import java.util.List;
 
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
-import ar.com.dcsys.gwt.assistance.client.activity.justification.JustificationPersonActivity.JustificationStatistic;
+import ar.com.dcsys.gwt.assistance.client.activity.justification.JustificationStatistic;
 import ar.com.dcsys.gwt.assistance.client.ui.justification.widget.SelectionJustificationDateListWidget;
-import ar.com.dcsys.gwt.person.shared.PersonValueProxy;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.view.client.MultiSelectionModel;
@@ -19,9 +18,12 @@ public interface JustificationPersonView  extends IsWidget{
 	public void clear();
 	public void clearJustificationData();
 	public void setJustificationData(List<JustificationDate> jds);
-	
+
+	/*
 	public void setSelectionModel(MultiSelectionModel<PersonValueProxy> person);
 	public void setPersons(List<PersonValueProxy> persons);
+	*/
+	
 	
 	public void setTypes(List<Justification> types);
 	public void setTypesSelectionModel(SingleSelectionModel<Justification> selection);	
