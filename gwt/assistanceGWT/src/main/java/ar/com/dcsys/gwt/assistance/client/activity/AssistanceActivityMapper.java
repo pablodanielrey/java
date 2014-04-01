@@ -3,6 +3,7 @@ package ar.com.dcsys.gwt.assistance.client.activity;
 import javax.inject.Inject;
 
 import ar.com.dcsys.gwt.assistance.client.gin.AssistedInjectionFactory;
+import ar.com.dcsys.gwt.assistance.client.place.DailyPeriodsPlace;
 import ar.com.dcsys.gwt.assistance.client.place.PinAuthDataPlace;
 
 import com.google.gwt.activity.shared.Activity;
@@ -25,6 +26,9 @@ public class AssistanceActivityMapper implements ActivityMapper {
 			return factory.pinAuthDataActivity((PinAuthDataPlace)place);
 		}
 		
+		if (place instanceof DailyPeriodsPlace) {
+			return factory.dailyPeriodsActivity((DailyPeriodsPlace)place);
+		}
 				
 		return null;
 		

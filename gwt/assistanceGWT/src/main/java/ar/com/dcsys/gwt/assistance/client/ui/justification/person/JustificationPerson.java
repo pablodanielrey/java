@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import ar.com.dcsys.gwt.assistance.client.activity.justification.JustificationStatistic;
 
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
-import ar.com.dcsys.gwt.assistance.client.activity.justification.JustificationPersonActivity.JustificationStatistic;
 import ar.com.dcsys.gwt.assistance.client.common.JustificationDatesSort;
 import ar.com.dcsys.gwt.assistance.client.common.JustificationsSort;
 import ar.com.dcsys.gwt.assistance.client.common.PersonValueSort;

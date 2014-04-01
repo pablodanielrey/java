@@ -3,6 +3,8 @@ package ar.com.dcsys.gwt.assistance.client.gin;
 import ar.com.dcsys.gwt.assistance.client.activity.AssistanceActivityMapper;
 import ar.com.dcsys.gwt.assistance.client.ui.auth.PinAuthData;
 import ar.com.dcsys.gwt.assistance.client.ui.auth.PinAuthDataView;
+import ar.com.dcsys.gwt.assistance.client.ui.period.daily.DailyPeriods;
+import ar.com.dcsys.gwt.assistance.client.ui.period.daily.DailyPeriodsView;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
@@ -18,6 +20,7 @@ public class AssistanceGWTGinModule extends AbstractGinModule {
 		bind(EventBus.class).to(SimpleEventBus.class).in(Singleton.class);
 		
 		bind(PinAuthDataView.class).to(PinAuthData.class).in(Singleton.class);
+		bind(DailyPeriodsView.class).to(DailyPeriods.class).in(Singleton.class);
 		
 		bind(AssistanceActivityMapper.class).in(Singleton.class);
 		

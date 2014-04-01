@@ -4,8 +4,8 @@
   <!-- POM file generated with GWT webAppCreator -->
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>ear</artifactId>
     <groupId>ar.com.dcsys.ear</groupId>
+    <artifactId>ear</artifactId>
     <version>1.0</version>
   </parent>
 
@@ -235,7 +235,7 @@
                 <version>4.0</version>
 
                 <configuration>
-			<app>target/dcsys-1.0.ear</app>
+			<app>target/assistance-1.0.ear</app>
 <!--                        <app>${project.build.directory}/${project.build.finalName}.ear</app> -->
                         <port>8080</port>
 <!--                            <contextRoot>${project.artifactId}</contextRoot> -->
