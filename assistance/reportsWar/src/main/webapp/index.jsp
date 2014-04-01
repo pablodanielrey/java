@@ -4,7 +4,7 @@
 
 	<jsp:useBean id="constants" class="ar.com.dcsys.server.person.ConstantsBean"/>
 
-	<form action="reporte" method="POST">
+	<form action="reporte/ausencias" method="POST">
 		<div>Tipo de reporte</div>
 		<div>
 			<div>

@@ -3,15 +3,15 @@ package ar.com.dcsys.server.person;
 public class ConstantsBean {
 
 	public String getAll() {
-		return "All";
+		return "Todas";
 	}
 	
 	public String getInjustificatedAbsences() {
-		return "AI";
+		return "Injustificadas";
 	}
 	
 	public String getJustificatedAbsences() {
-		return "AJ";
+		return "Justificadas";
 	}
 	
 }

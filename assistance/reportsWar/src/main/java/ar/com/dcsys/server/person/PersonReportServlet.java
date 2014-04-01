@@ -38,7 +38,7 @@ import ar.com.dcsys.model.period.WorkedHours;
 import ar.com.dcsys.utils.PersonSort;
 
 
-@WebServlet("/reporte/*")
+@WebServlet("/reportesss/*")
 public class PersonReportServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
