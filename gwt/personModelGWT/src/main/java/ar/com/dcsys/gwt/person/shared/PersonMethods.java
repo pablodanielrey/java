@@ -25,6 +25,12 @@ public class PersonMethods {
 	public static final String findAllMailChanges = "personFindAllMailChanges";
 	
 	
+	public static final String reportPersonsData = "personReportPersonsData";
+	
+	
+	///////// EVENTOS //////////////
+	
 	public static final String mailChangeModifiedEvent = "personMailChangeModifiedEvent";
+	public static final String personReportEvent = "personPersonReportEvent";
 	
 }

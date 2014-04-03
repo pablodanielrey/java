@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import ar.com.dcsys.gwt.person.client.gin.AssistedInjectionFactory;
 import ar.com.dcsys.gwt.person.client.place.MailChangePlace;
 import ar.com.dcsys.gwt.person.client.place.ManagePersonsPlace;
+import ar.com.dcsys.gwt.person.client.place.PersonReportPlace;
 import ar.com.dcsys.gwt.person.client.place.UpdatePersonDataPlace;
 
 import com.google.gwt.activity.shared.Activity;
@@ -34,6 +35,10 @@ public class PersonActivityMapper implements ActivityMapper {
 		
 		if (place instanceof MailChangePlace) {
 			return factory.mailChangeActivity((MailChangePlace)place);
+		}
+		
+		if (place instanceof PersonReportPlace) {
+			return factory.personReportActivity((PersonReportPlace)place);
 		}
 		
 		return null;

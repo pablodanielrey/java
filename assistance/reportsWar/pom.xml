@@ -22,21 +22,21 @@
 <dependency>
   <groupId>net.sourceforge.dynamicreports</groupId>
   <artifactId>dynamicreports-core</artifactId>
-  <version>3.2.0</version>
+  <version>${dynamic-reports.version}</version>
   <scope>compile</scope>
 </dependency>
 
 <dependency>
   <groupId>net.sourceforge.dynamicreports</groupId>
   <artifactId>dynamicreports-adhoc</artifactId>
-  <version>3.2.0</version>
+  <version>${dynamic-reports.version}</version>
   <scope>compile</scope>
 </dependency>  
 
 <dependency>
   <groupId>net.sourceforge.dynamicreports</groupId>
   <artifactId>dynamicreports-googlecharts</artifactId>
-  <version>3.2.0</version>
+  <version>${dynamic-reports.version}</version>
   <scope>compile</scope>
 </dependency>
 

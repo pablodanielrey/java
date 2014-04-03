@@ -340,6 +340,34 @@ public class PersonsManagerBean implements PersonsManager {
 		return false;
 	}
 	
+	
+	@Override
+	public void report(final Receiver<String> receiver) {
+		try {
+			// serializo los parametros y genero el mensaje
+			Message msg = messagesFactory.method(PersonMethods.reportPersonsData);
+	
+			// envío el mensaje al servidor.
+			socket.open();
+			socket.send(msg, new WebSocketReceiver() {
+				@Override
+				public void onSuccess(Message response) {
+					if (handleError(response, receiver)) {
+						return;
+					}
+					receiver.onSuccess(response.getPayload());
+				}
+				@Override
+				public void onFailure(Throwable t) {
+					receiver.onFailure(t);
+				}
+			});
+			
+		} catch (Exception e) {
+			receiver.onFailure(e);
+		}
+	}
+	
 	@Override
 	public void persist(Person person, final Receiver<String> receiver) {
 		try {

@@ -39,4 +39,11 @@ public interface PersonsManager {
 	
 	public void findAssistancePersonData(Person p, Receiver<AssistancePersonData> rec);		// AssistancePersonDataActivity
 	
+	
+	/**
+	 * Genera el reporte con todas las personas de la base.
+	 * @param rec
+	 */
+	public void report(Receiver<String> rec);
+	
 }

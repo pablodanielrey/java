@@ -2,6 +2,7 @@ package ar.com.dcsys.gwt.person.client.ui.menu;
 
 import ar.com.dcsys.gwt.person.client.place.MailChangePlace;
 import ar.com.dcsys.gwt.person.client.place.ManagePersonsPlace;
+import ar.com.dcsys.gwt.person.client.place.PersonReportPlace;
 import ar.com.dcsys.gwt.person.client.place.UpdatePersonDataPlace;
 
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
@@ -21,7 +22,7 @@ public class Menu {
 	public void attachMenu(RootPanel panel) {
 		
 		MenuBar menu = new MenuBar();
-		menu.addItem(new MenuItem("Datos Personales",false,new ScheduledCommand() {
+		menu.addItem(new MenuItem("Datos personales",false,new ScheduledCommand() {
 			@Override
 			public void execute() {
 				ctrl.goTo(new UpdatePersonDataPlace());
@@ -35,12 +36,21 @@ public class Menu {
 			}
 		}));		
 
-		menu.addItem(new MenuItem("Administrar Personas",false,new ScheduledCommand() {
+		menu.addItem(new MenuItem("Administrar personas",false,new ScheduledCommand() {
 			@Override
 			public void execute() {
 				ctrl.goTo(new ManagePersonsPlace());
 			}
 		}));
+
+		
+		menu.addItem(new MenuItem("Reporte de personas",false,new ScheduledCommand() {
+			@Override
+			public void execute() {
+				ctrl.goTo(new PersonReportPlace());
+			}
+		}));
+
 		
 		panel.add(menu);
 	}

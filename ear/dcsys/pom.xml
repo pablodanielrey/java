@@ -30,6 +30,31 @@
 	</dependency>
 -->
 
+
+<!-- para los reportes usando dynamic reports -->
+
+
+<dependency>
+  <groupId>net.sourceforge.dynamicreports</groupId>
+  <artifactId>dynamicreports-core</artifactId>
+  <version>${dynamic-reports.version}</version>
+</dependency>
+
+<dependency>
+  <groupId>net.sourceforge.dynamicreports</groupId>
+  <artifactId>dynamicreports-adhoc</artifactId>
+  <version>${dynamic-reports.version}</version>
+</dependency>  
+
+<dependency>
+  <groupId>net.sourceforge.dynamicreports</groupId>
+  <artifactId>dynamicreports-googlecharts</artifactId>
+  <version>${dynamic-reports.version}</version>
+</dependency>
+
+
+
+
   <!-- para tener shiro -->
 
         <dependency>

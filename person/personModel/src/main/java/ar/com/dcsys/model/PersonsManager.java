@@ -1,5 +1,6 @@
 package ar.com.dcsys.model;
 
+import java.io.OutputStream;
 import java.security.Principal;
 import java.util.List;
 
@@ -29,5 +30,13 @@ public interface PersonsManager {
 	void addMail(String personId, Mail mail) throws PersonException;
 	void removeMail(String personId, Mail mail) throws PersonException;
 	List<Mail> findAllMails(String personId) throws PersonException;
+	
+	/**
+	 * Genera un reporte de los datos personales de todas las personas de la base y lo escribe en out.
+	 * @param out
+	 * @throws PersonException
+	 */
+	void reportPersons(OutputStream out) throws PersonException;	
+	
 	
 }
