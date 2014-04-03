@@ -11,6 +11,8 @@ import ar.com.dcsys.gwt.person.client.ui.mailchange.MailChange;
 import ar.com.dcsys.gwt.person.client.ui.mailchange.MailChangeView;
 import ar.com.dcsys.gwt.person.client.ui.manage.ManagePersons;
 import ar.com.dcsys.gwt.person.client.ui.manage.ManagePersonsView;
+import ar.com.dcsys.gwt.person.client.ui.reports.PersonReport;
+import ar.com.dcsys.gwt.person.client.ui.reports.PersonReportView;
 import ar.com.dcsys.gwt.person.client.ui.types.PersonTypes;
 import ar.com.dcsys.gwt.person.client.ui.types.PersonTypesView;
 
@@ -34,6 +36,8 @@ public class PersonGWTGinModule extends AbstractGinModule {
 		bind(UpdatePersonDataView.class).to(UpdatePersonData.class).in(Singleton.class);
 		bind(ManagePersonsView.class).to(ManagePersons.class).in(Singleton.class);
 		bind(MailChangeView.class).to(MailChange.class).in(Singleton.class);
+		bind(PersonReportView.class).to(PersonReport.class).in(Singleton.class);
+		
 		
 		bind(PersonActivityMapper.class).in(Singleton.class);
 		

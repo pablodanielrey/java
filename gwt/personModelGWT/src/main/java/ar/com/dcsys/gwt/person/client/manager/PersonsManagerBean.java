@@ -40,6 +40,73 @@ public class PersonsManagerBean implements PersonsManager {
 	
 	
 	
+	
+	/////////// reportes ///////////////////
+	
+	
+	@Override
+	public void report(final Receiver<String> receiver) {
+		try {
+			// serializo los parametros y genero el mensaje
+			Message msg = messagesFactory.method(PersonMethods.reportPersonsData);
+	
+			// envío el mensaje al servidor.
+			socket.open();
+			socket.send(msg, new WebSocketReceiver() {
+				@Override
+				public void onSuccess(Message response) {
+					if (handleError(response, receiver)) {
+						return;
+					}
+					receiver.onSuccess(response.getPayload());
+				}
+				@Override
+				public void onFailure(Throwable t) {
+					receiver.onFailure(t);
+				}
+			});
+			
+		} catch (Exception e) {
+			receiver.onFailure(e);
+		}
+	}
+	
+	
+	@Override
+	public void findAllReports(final Receiver<List<String>> receiver) {
+		try {
+			// serializo los parametros y genero el mensaje
+			Message msg = messagesFactory.method(PersonMethods.findPersonReportsData);
+	
+			// envío el mensaje al servidor.
+			socket.open();
+			socket.send(msg, new WebSocketReceiver() {
+				@Override
+				public void onSuccess(Message response) {
+					if (handleError(response, receiver)) {
+						return;
+					}
+					
+					String sreports = response.getPayload();
+					List<String> reports = managerUtils.decodeStringList(sreports);
+					
+					receiver.onSuccess(reports);
+				}
+				@Override
+				public void onFailure(Throwable t) {
+					receiver.onFailure(t);
+				}
+			});
+			
+		} catch (Exception e) {
+			receiver.onFailure(e);
+		}
+	}
+	
+	
+	
+	
+	
 	//////////// metodos para hacer compilar el codgio pasado hasta que esten bien implementados o en el manager correcto ////////////
 	
 	public void findAssistancePersonData(Person p, Receiver<AssistancePersonData> rec) {
@@ -340,33 +407,7 @@ public class PersonsManagerBean implements PersonsManager {
 		return false;
 	}
 	
-	
-	@Override
-	public void report(final Receiver<String> receiver) {
-		try {
-			// serializo los parametros y genero el mensaje
-			Message msg = messagesFactory.method(PersonMethods.reportPersonsData);
-	
-			// envío el mensaje al servidor.
-			socket.open();
-			socket.send(msg, new WebSocketReceiver() {
-				@Override
-				public void onSuccess(Message response) {
-					if (handleError(response, receiver)) {
-						return;
-					}
-					receiver.onSuccess(response.getPayload());
-				}
-				@Override
-				public void onFailure(Throwable t) {
-					receiver.onFailure(t);
-				}
-			});
-			
-		} catch (Exception e) {
-			receiver.onFailure(e);
-		}
-	}
+
 	
 	@Override
 	public void persist(Person person, final Receiver<String> receiver) {

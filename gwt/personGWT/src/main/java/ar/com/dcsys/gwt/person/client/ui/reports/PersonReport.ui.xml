@@ -1,0 +1,17 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+	
+	</ui:style>
+	
+	
+	<g:FlowPanel>
+		<g:FlowPanel>
+			<g:Button ui:field="generate" text="Generar reporte"/>
+			<g:Button ui:field="update" text="Actualizar reportes"/>
+		</g:FlowPanel>
+		<g:VerticalPanel ui:field="reports"/>
+	</g:FlowPanel>
+	
+</ui:UiBinder> 

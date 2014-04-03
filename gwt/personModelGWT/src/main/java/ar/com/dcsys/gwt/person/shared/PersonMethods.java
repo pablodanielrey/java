@@ -26,7 +26,7 @@ public class PersonMethods {
 	
 	
 	public static final String reportPersonsData = "personReportPersonsData";
-	
+	public static final String findPersonReportsData = "personFindPersonReportsData";
 	
 	///////// EVENTOS //////////////
 	

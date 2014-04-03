@@ -46,4 +46,5 @@ public interface PersonsManager {
 	 */
 	public void report(Receiver<String> rec);
 	
+	public void findAllReports(Receiver<List<String>> rec);
 }

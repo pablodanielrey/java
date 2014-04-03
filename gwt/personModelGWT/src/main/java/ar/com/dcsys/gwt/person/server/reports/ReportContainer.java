@@ -1,7 +1,10 @@
 package ar.com.dcsys.gwt.person.server.reports;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.inject.Singleton;
 
@@ -21,5 +24,12 @@ public class ReportContainer {
 		return reports.get(id);
 	}
 	
+	
+	public synchronized List<String> findAll() {
+		Set<String> ks = reports.keySet();
+		List<String> al = new ArrayList<String>();
+		al.addAll(ks);
+		return al;
+	}
 	
 }

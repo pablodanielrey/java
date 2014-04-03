@@ -8,6 +8,7 @@ import ar.com.dcsys.gwt.autoBeans.shared.AutoBeanUtils;
 import ar.com.dcsys.gwt.manager.shared.ManagerFactory;
 import ar.com.dcsys.gwt.manager.shared.ManagerUtilsParams;
 import ar.com.dcsys.gwt.manager.shared.list.DateList;
+import ar.com.dcsys.gwt.manager.shared.list.StringList;
 import ar.com.dcsys.gwt.manager.shared.primitive.BooleanContainer;
 import ar.com.dcsys.gwt.utils.client.EncoderDecoder;
 
@@ -142,6 +143,34 @@ public class ManagerUtils {
 	}	
 	
 	
+	/**
+	 * Decodifica una lista de fechas desde un string.
+	 * @param managerFactory
+	 * @param list
+	 * @return
+	 */
+	public List<String> decodeStringList(String list) {
+		AutoBean<StringList> bean = AutoBeanCodex.decode(managerFactory, StringList.class, list);
+		StringList l = bean.as();
+		List<String> values = l.getList();
+		return values;
+	}
 	
+	/**
+	 * Codifica una lista de fechas a un string.
+	 * @param managerFactory
+	 * @param list
+	 * @return
+	 */
+	public String encodeStringList(List<String> list) {
+		AutoBean<StringList> al = managerFactory.stringList();
+		StringList l = al.as();
+		
+//		List<String> cl = AutoBeanUtils.wrapList(managerFactory, String.class, list);
+		l.setList(list);
+		
+		String json = AutoBeanCodex.encode(al).getPayload();
+		return json;
+	}	
 	
 }
