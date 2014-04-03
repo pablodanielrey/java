@@ -2,7 +2,9 @@ package ar.com.dcsys.model;
 
 import static net.sf.dynamicreports.report.builder.DynamicReports.cmp;
 import static net.sf.dynamicreports.report.builder.DynamicReports.col;
+import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
 
+import java.awt.Color;
 import java.io.OutputStream;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -19,6 +21,9 @@ import javax.inject.Singleton;
 
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.datatype.DataTypes;
+import net.sf.dynamicreports.report.builder.style.StyleBuilder;
+import net.sf.dynamicreports.report.constant.HorizontalAlignment;
+import net.sf.dynamicreports.report.constant.VerticalAlignment;
 import ar.com.dcsys.data.auth.principals.DniPrincipal;
 import ar.com.dcsys.data.auth.principals.IdPrincipal;
 import ar.com.dcsys.data.person.Mail;
@@ -60,13 +65,35 @@ public class PersonsManagerBean implements PersonsManager {
 		}
 		
 		try {
+			
+			StyleBuilder bold = stl.style().bold();
+			StyleBuilder boldCentered = stl.style(bold).setHorizontalAlignment(HorizontalAlignment.CENTER);
+			
+			StyleBuilder title = stl.style(boldCentered)
+									.setVerticalAlignment(VerticalAlignment.MIDDLE)
+									.setFontSize(15);			
+			
+			StyleBuilder columnTitle = stl.style(boldCentered)
+					.setBorder(stl.pen1Point())
+					.setBackgroundColor(Color.LIGHT_GRAY);			
+			
+			
 			DynamicReports.report()
-				.title(cmp.text("Datos Personales"))
-				.columns(
-						col.column("Id","getId",DataTypes.stringType()),
-						col.column("Nombre","getName",DataTypes.stringType()),
-						col.column("Apellido","getLastName",DataTypes.stringType()),
-						col.column("Dni","getDni",DataTypes.stringType())
+				.title(cmp.verticalList()
+						.add(cmp.text("Datos Personales").setStyle(title))
+						.add(cmp.horizontalList()
+								.add(cmp.text("Fecha Reporte :"))
+								.add(cmp.currentDate())
+								)
+						.add(cmp.filler().setFixedHeight(10))
+						)
+						.setColumnTitleStyle(columnTitle)
+						.highlightDetailEvenRows()						
+						.columns(
+//							col.column("Id","getId",DataTypes.stringType()),
+							col.column("Nombre","getName",DataTypes.stringType()),
+							col.column("Apellido","getLastName",DataTypes.stringType()),
+							col.column("Dni","getDni",DataTypes.stringType())
 						)
 				.setDataSource(new ListBeanDataSource<Person>(persons))
 				.toPdf(out);
