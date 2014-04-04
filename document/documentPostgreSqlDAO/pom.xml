@@ -4,16 +4,16 @@
 
   <parent>
 	<groupId>ar.com.dcsys</groupId>
-	<artifactId>person</artifactId>
+	<artifactId>document</artifactId>
 	<version>1.0</version>
   </parent>
 
   
   <groupId>ar.com.dcsys.data</groupId>
-  <artifactId>personPostgreSqlDAO</artifactId>
+  <artifactId>documentPostgreSqlDAO</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>personPostgreSqlDAO</name>
+  <name>documentPostgreSqlDAO</name>
 
   <dependencies>
 
@@ -26,13 +26,13 @@
 
     <dependency>
       <groupId>ar.com.dcsys.data</groupId>
-      <artifactId>personDAO</artifactId>
+      <artifactId>documentDAO</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
 
     <dependency>
       <groupId>ar.com.dcsys.data</groupId>
-      <artifactId>personEntities</artifactId>
+      <artifactId>documentEntities</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
 

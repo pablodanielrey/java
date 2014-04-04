@@ -14,6 +14,7 @@
 	<module>config-privada</module>
 	<module>config</module>
 	<module>mail</module>
+	<module>document</module>
 	<module>person</module>
 	<module>auth</module>
 	<module>mapau</module>
