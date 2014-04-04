@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class DocumentBean implements Document {
 
+	private String id;
 	private Date created;
 	private String name;
 	private String description;
@@ -20,7 +21,17 @@ public class DocumentBean implements Document {
 		this.name = name;
 		this.content = content;
 	}
+
 	
+	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	public void setCreated(Date created) {
 		this.created = created;
 	}
