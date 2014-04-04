@@ -37,7 +37,7 @@ public class PersonReport extends Composite implements PersonReportView {
 
 	@Override
 	public void addReport(String url) {
-		reports.add(new Anchor(url, "personReport?t=" + url));
+		reports.add(new Anchor(url, "/documentWeb/documents?t=" + url));
 	}
 	
 	@UiHandler("generate")

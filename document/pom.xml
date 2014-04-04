@@ -21,6 +21,7 @@
 	<module>documentDAO</module>
 	<module>documentPostgreSqlDAO</module>
 	<module>documentModel</module>
+    	<module>documentWeb</module>
   </modules>
 
 </project>

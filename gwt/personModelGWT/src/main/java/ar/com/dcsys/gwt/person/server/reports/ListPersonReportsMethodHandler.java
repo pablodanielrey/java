@@ -20,6 +20,7 @@ import ar.com.dcsys.gwt.message.shared.Method;
 import ar.com.dcsys.gwt.person.shared.PersonEncoderDecoder;
 import ar.com.dcsys.gwt.person.shared.PersonFactory;
 import ar.com.dcsys.gwt.person.shared.PersonMethods;
+import ar.com.dcsys.model.DocumentsManager;
 
 @Singleton
 public class ListPersonReportsMethodHandler extends AbstractMessageHandler {
@@ -31,6 +32,7 @@ public class ListPersonReportsMethodHandler extends AbstractMessageHandler {
 	private final ServerManagerUtils managerUtils;
 	private final ManagerFactory managerFactory;
 	private final ReportContainer reportContainer;
+	private final DocumentsManager documentsManager;
 	
 	@Override
 	protected Logger getLogger() {
@@ -49,12 +51,14 @@ public class ListPersonReportsMethodHandler extends AbstractMessageHandler {
 									  MessageUtils messagesFactory,
 									  ManagerFactory managerFactory,
 									  ServerManagerUtils managerUtils,
-									  ReportContainer reportContainer) {
+									  ReportContainer reportContainer,
+									  DocumentsManager documentsManager) {
 		this.encoderDecoder = encoderDecoder;
 		this.mf = messagesFactory;
 		this.reportContainer = reportContainer;
 		this.managerFactory = managerFactory;
 		this.managerUtils = managerUtils;
+		this.documentsManager = documentsManager;
 	}
 
 	/**
@@ -76,7 +80,7 @@ public class ListPersonReportsMethodHandler extends AbstractMessageHandler {
 		MessageTransport transport = ctx.getMessageTransport();
 		
 		try {
-			List<String> reports = reportContainer.findAll();
+			List<String> reports = documentsManager.findAll();
 			String payload = managerUtils.encodeStringList(reports);
 			
 			sendResponse(msg, transport, payload);

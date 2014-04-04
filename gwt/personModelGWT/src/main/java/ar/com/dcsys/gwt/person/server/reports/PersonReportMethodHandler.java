@@ -1,7 +1,7 @@
 package ar.com.dcsys.gwt.person.server.reports;
 
 import java.io.ByteArrayOutputStream;
-import java.util.UUID;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -9,6 +9,8 @@ import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import ar.com.dcsys.data.document.Document;
+import ar.com.dcsys.data.document.DocumentBean;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.gwt.manager.server.AbstractMessageHandler;
 import ar.com.dcsys.gwt.message.server.MessageContext;
@@ -21,6 +23,7 @@ import ar.com.dcsys.gwt.message.shared.Method;
 import ar.com.dcsys.gwt.person.shared.PersonEncoderDecoder;
 import ar.com.dcsys.gwt.person.shared.PersonFactory;
 import ar.com.dcsys.gwt.person.shared.PersonMethods;
+import ar.com.dcsys.model.DocumentsManager;
 import ar.com.dcsys.model.PersonsManager;
 
 @Singleton
@@ -33,6 +36,7 @@ public class PersonReportMethodHandler extends AbstractMessageHandler {
 	private final PersonsManager personsModel;
 	private final PersonFactory personFactory;
 	private final ReportContainer reportContainer;
+	private final DocumentsManager documentsManager;
 	
 	@Override
 	protected Logger getLogger() {
@@ -50,12 +54,14 @@ public class PersonReportMethodHandler extends AbstractMessageHandler {
 									  PersonEncoderDecoder encoderDecoder, 
 									  MessageUtils messagesFactory,
 									  PersonsManager personsModel,
-									  ReportContainer reportContainer) {
+									  ReportContainer reportContainer,
+									  DocumentsManager documentsManager) {
 		this.encoderDecoder = encoderDecoder;
 		this.mf = messagesFactory;
 		this.personsModel = personsModel;
 		this.personFactory = personFactory;
 		this.reportContainer = reportContainer;
+		this.documentsManager = documentsManager;
 	}
 
 	/**
@@ -106,9 +112,17 @@ public class PersonReportMethodHandler extends AbstractMessageHandler {
 		personsModel.reportPersons(out);
 		
 		try {
-			String id = UUID.randomUUID().toString();
-			reportContainer.addReport(id, out.toByteArray());
-			return id;
+			byte[] content = out.toByteArray();
+			
+			DocumentBean d = new DocumentBean();
+			d.setName("Reporte de personas");
+			d.setCreated(new Date());
+			d.setContent(content);
+			
+			documentsManager.persist(d);
+//			String id = UUID.randomUUID().toString();
+//			reportContainer.addReport(id, out.toByteArray());
+			return d.getId();
 			
 		} catch (Exception e) {
 			throw new PersonException(e);
