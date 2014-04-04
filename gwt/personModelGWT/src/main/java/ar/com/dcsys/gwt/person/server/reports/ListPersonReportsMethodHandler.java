@@ -31,7 +31,6 @@ public class ListPersonReportsMethodHandler extends AbstractMessageHandler {
 	private final MessageUtils mf;
 	private final ServerManagerUtils managerUtils;
 	private final ManagerFactory managerFactory;
-	private final ReportContainer reportContainer;
 	private final DocumentsManager documentsManager;
 	
 	@Override
@@ -51,11 +50,9 @@ public class ListPersonReportsMethodHandler extends AbstractMessageHandler {
 									  MessageUtils messagesFactory,
 									  ManagerFactory managerFactory,
 									  ServerManagerUtils managerUtils,
-									  ReportContainer reportContainer,
 									  DocumentsManager documentsManager) {
 		this.encoderDecoder = encoderDecoder;
 		this.mf = messagesFactory;
-		this.reportContainer = reportContainer;
 		this.managerFactory = managerFactory;
 		this.managerUtils = managerUtils;
 		this.documentsManager = documentsManager;

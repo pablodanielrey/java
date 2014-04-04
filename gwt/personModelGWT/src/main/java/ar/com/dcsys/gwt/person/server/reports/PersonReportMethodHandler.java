@@ -9,7 +9,6 @@ import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import ar.com.dcsys.data.document.Document;
 import ar.com.dcsys.data.document.DocumentBean;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.gwt.manager.server.AbstractMessageHandler;
@@ -35,7 +34,6 @@ public class PersonReportMethodHandler extends AbstractMessageHandler {
 	private final MessageUtils mf;
 	private final PersonsManager personsModel;
 	private final PersonFactory personFactory;
-	private final ReportContainer reportContainer;
 	private final DocumentsManager documentsManager;
 	
 	@Override
@@ -54,13 +52,11 @@ public class PersonReportMethodHandler extends AbstractMessageHandler {
 									  PersonEncoderDecoder encoderDecoder, 
 									  MessageUtils messagesFactory,
 									  PersonsManager personsModel,
-									  ReportContainer reportContainer,
 									  DocumentsManager documentsManager) {
 		this.encoderDecoder = encoderDecoder;
 		this.mf = messagesFactory;
 		this.personsModel = personsModel;
 		this.personFactory = personFactory;
-		this.reportContainer = reportContainer;
 		this.documentsManager = documentsManager;
 	}
 
@@ -120,8 +116,6 @@ public class PersonReportMethodHandler extends AbstractMessageHandler {
 			d.setContent(content);
 			
 			documentsManager.persist(d);
-//			String id = UUID.randomUUID().toString();
-//			reportContainer.addReport(id, out.toByteArray());
 			return d.getId();
 			
 		} catch (Exception e) {
