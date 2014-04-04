@@ -67,7 +67,7 @@ public class DocumentPostgreSqlDAO implements DocumentDAO {
 				
 				if (id == null) {
 					id = UUID.randomUUID().toString();					
-					query = "insert into documents (name,description,created,mimetype,encoding,content,id) values (?,?,?,?,?,?)";
+					query = "insert into documents (name,description,created,mimetype,encoding,content,id) values (?,?,?,?,?,?,?)";
 				} else {
 					query = "update documents set name = ?, description = ?, created = ?, mimetype = ?, encoding = ?, content = ?) where id = ?";
 				}
