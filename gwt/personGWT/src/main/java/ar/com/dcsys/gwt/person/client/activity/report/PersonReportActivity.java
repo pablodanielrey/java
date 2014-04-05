@@ -2,6 +2,7 @@ package ar.com.dcsys.gwt.person.client.activity.report;
 
 import java.util.List;
 
+import ar.com.dcsys.data.document.Document;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.person.client.manager.PersonsManager;
 import ar.com.dcsys.gwt.person.client.place.PersonReportPlace;
@@ -41,9 +42,9 @@ public class PersonReportActivity extends AbstractActivity implements PersonRepo
 
 	@Override
 	public void generateReport() {
-		personsManager.report(new Receiver<String>() {
+		personsManager.report(new Receiver<Document>() {
 			@Override
-			public void onSuccess(String t) {
+			public void onSuccess(Document t) {
 				view.addReport(t);
 			}
 			@Override
@@ -56,17 +57,18 @@ public class PersonReportActivity extends AbstractActivity implements PersonRepo
 
 	@Override
 	public void updateReports() {
-		personsManager.findAllReports(new Receiver<List<String>>() {
+		view.clear();
+		personsManager.findAllReports(new Receiver<List<Document>>() {
 			@Override
 			public void onFailure(Throwable t) {
 				
 			}
-			public void onSuccess(List<String> t) {
+			public void onSuccess(List<Document> t) {
 				view.clear();
 				if (t == null) {
 					return;
 				}
-				for (String s : t) {
+				for (Document s : t) {
 					view.addReport(s);
 				}
 			};

@@ -1,4 +1,4 @@
-package ar.com.dcsys.gwt.person.server.reports;
+package ar.com.dcsys.gwt.person.server.handlers.reports;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Date;
@@ -9,6 +9,7 @@ import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import ar.com.dcsys.data.document.Document;
 import ar.com.dcsys.data.document.DocumentBean;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.gwt.manager.server.AbstractMessageHandler;
@@ -19,6 +20,7 @@ import ar.com.dcsys.gwt.message.shared.MessageException;
 import ar.com.dcsys.gwt.message.shared.MessageTransport;
 import ar.com.dcsys.gwt.message.shared.MessageUtils;
 import ar.com.dcsys.gwt.message.shared.Method;
+import ar.com.dcsys.gwt.person.shared.DocumentEncoderDecoder;
 import ar.com.dcsys.gwt.person.shared.PersonEncoderDecoder;
 import ar.com.dcsys.gwt.person.shared.PersonFactory;
 import ar.com.dcsys.gwt.person.shared.PersonMethods;
@@ -30,11 +32,10 @@ public class PersonReportMethodHandler extends AbstractMessageHandler {
 
 	private static final Logger logger = Logger.getLogger(PersonReportMethodHandler.class.getName());
 
-	private final PersonEncoderDecoder encoderDecoder;
 	private final MessageUtils mf;
 	private final PersonsManager personsModel;
-	private final PersonFactory personFactory;
 	private final DocumentsManager documentsManager;
+	private final DocumentEncoderDecoder documentEncoderDecoder;
 	
 	@Override
 	protected Logger getLogger() {
@@ -48,16 +49,14 @@ public class PersonReportMethodHandler extends AbstractMessageHandler {
 		
 	
 	@Inject
-	public PersonReportMethodHandler(PersonFactory personFactory,
-									  PersonEncoderDecoder encoderDecoder, 
-									  MessageUtils messagesFactory,
+	public PersonReportMethodHandler( MessageUtils messagesFactory,
 									  PersonsManager personsModel,
-									  DocumentsManager documentsManager) {
-		this.encoderDecoder = encoderDecoder;
+									  DocumentsManager documentsManager,
+									  DocumentEncoderDecoder documentEncoderDecoder) {
 		this.mf = messagesFactory;
 		this.personsModel = personsModel;
-		this.personFactory = personFactory;
 		this.documentsManager = documentsManager;
+		this.documentEncoderDecoder = documentEncoderDecoder;
 	}
 
 	/**
@@ -79,10 +78,10 @@ public class PersonReportMethodHandler extends AbstractMessageHandler {
 		MessageTransport transport = ctx.getMessageTransport();
 		
 		try {
-			
-			String id = generateReport();
-			sendResponse(msg, transport, id);
-			sendEvent(transport, id);
+			Document d = generateReport();
+			String sd = documentEncoderDecoder.encode(d);
+			sendResponse(msg, transport, sd);
+			//sendEvent(transport, sd);
 			
 		} catch (PersonException e) {
 			logger.log(Level.SEVERE,e.getMessage(),e);
@@ -102,7 +101,7 @@ public class PersonReportMethodHandler extends AbstractMessageHandler {
 	
 	
 
-	private String generateReport() throws PersonException {
+	private Document generateReport() throws PersonException {
 		
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		personsModel.reportPersons(out);
@@ -116,7 +115,8 @@ public class PersonReportMethodHandler extends AbstractMessageHandler {
 			d.setContent(content);
 			
 			documentsManager.persist(d);
-			return d.getId();
+			
+			return d.cloneWithoutContent();
 			
 		} catch (Exception e) {
 			throw new PersonException(e);

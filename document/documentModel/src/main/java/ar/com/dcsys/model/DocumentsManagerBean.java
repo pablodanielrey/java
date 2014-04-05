@@ -34,5 +34,13 @@ public class DocumentsManagerBean implements DocumentsManager {
 		}
 		return documentDAO.findById(id);
 	}
-
+	
+	@Override
+	public Document findByIdWithoutContent(String id) throws DocumentException {
+		if (id == null) {
+			throw new DocumentException("id == null");
+		}
+		return documentDAO.findByIdWithoutContent(id);
+	}
+	
 }

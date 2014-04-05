@@ -134,7 +134,7 @@ public class DocumentPostgreSqlDAO implements DocumentDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	private Document getDocument(ResultSet rs) throws SQLException {
+	private DocumentBean getDocument(ResultSet rs) throws SQLException {
 		DocumentBean d = new DocumentBean();
 		d.setId(rs.getString("id"));
 		d.setCreated(new Date(rs.getTimestamp("created").getTime()));
@@ -142,8 +142,15 @@ public class DocumentPostgreSqlDAO implements DocumentDAO {
 		d.setDescription(rs.getString("description"));
 		d.setEncoding(rs.getString("encoding"));
 		d.setMimeType(rs.getString("mimetype"));
-		d.setContent(rs.getBytes("content"));
 		return d;
+	}
+	
+	private void loadContent(ResultSet rs, DocumentBean d) throws SQLException, DocumentException {
+		String id = rs.getString("id");
+		if (!d.getId().equals(id)) {
+			throw new DocumentException("documentos distintos");
+		}
+		d.setContent(rs.getBytes("content"));
 	}
 
 	@Override
@@ -152,6 +159,39 @@ public class DocumentPostgreSqlDAO implements DocumentDAO {
 			Connection con = cp.getConnection();
 			try {
 				String query = "select * from documents where id = ?";
+				PreparedStatement st = con.prepareStatement(query);
+				try {
+					st.setString(1,id);
+					ResultSet rs = st.executeQuery();
+					try {
+						if (rs.next() == false) {
+							throw new DocumentNotFoundException(id);
+						}
+						DocumentBean d = getDocument(rs);
+						loadContent(rs, d);
+						return d;
+
+					} finally {
+						rs.close();
+					}
+				} finally {
+					st.close();
+				}
+			} finally {
+				cp.closeConnection(con);
+			}
+		} catch (SQLException e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+			throw new DocumentException(e);
+		}
+	}
+
+	@Override
+	public Document findByIdWithoutContent(String id) throws DocumentException {
+		try {
+			Connection con = cp.getConnection();
+			try {
+				String query = "select id,created,name,description,encoding,mimetype from documents where id = ?";
 				PreparedStatement st = con.prepareStatement(query);
 				try {
 					st.setString(1,id);
@@ -177,6 +217,5 @@ public class DocumentPostgreSqlDAO implements DocumentDAO {
 			throw new DocumentException(e);
 		}
 	}
-
 	
 }

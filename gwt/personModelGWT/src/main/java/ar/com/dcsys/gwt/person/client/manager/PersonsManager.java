@@ -2,6 +2,7 @@ package ar.com.dcsys.gwt.person.client.manager;
 
 import java.util.List;
 
+import ar.com.dcsys.data.document.Document;
 import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonType;
@@ -44,7 +45,7 @@ public interface PersonsManager {
 	 * Genera el reporte con todas las personas de la base.
 	 * @param rec
 	 */
-	public void report(Receiver<String> rec);
+	public void report(Receiver<Document> rec);
 	
-	public void findAllReports(Receiver<List<String>> rec);
+	public void findAllReports(Receiver<List<Document>> rec);
 }

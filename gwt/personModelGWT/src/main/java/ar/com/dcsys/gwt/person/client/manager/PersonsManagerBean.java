@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import ar.com.dcsys.data.document.Document;
 import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonType;
@@ -15,11 +16,12 @@ import ar.com.dcsys.gwt.message.shared.MessageException;
 import ar.com.dcsys.gwt.message.shared.MessageType;
 import ar.com.dcsys.gwt.message.shared.MessageUtils;
 import ar.com.dcsys.gwt.person.client.manager.events.PersonModifiedEvent;
+import ar.com.dcsys.gwt.person.shared.DocumentEncoderDecoder;
+import ar.com.dcsys.gwt.person.shared.DocumentFactory;
 import ar.com.dcsys.gwt.person.shared.PersonEncoderDecoder;
 import ar.com.dcsys.gwt.person.shared.PersonFactory;
 import ar.com.dcsys.gwt.person.shared.PersonMethods;
 import ar.com.dcsys.gwt.person.shared.PersonValueProxy;
-import ar.com.dcsys.gwt.utils.client.EncoderDecoder;
 import ar.com.dcsys.gwt.ws.client.WebSocket;
 import ar.com.dcsys.gwt.ws.client.WebSocketReceiver;
 import ar.com.dcsys.gwt.ws.shared.SocketMessageEvent;
@@ -36,6 +38,8 @@ public class PersonsManagerBean implements PersonsManager {
 	private final PersonFactory personFactory;
 	private final MessageUtils messagesFactory;
 	private final PersonEncoderDecoder personEncoderDecoder;
+	private final DocumentEncoderDecoder documentEncoderDecoder;
+	private final DocumentFactory documentFactory;
 	private final WebSocket socket;
 	
 	
@@ -45,7 +49,7 @@ public class PersonsManagerBean implements PersonsManager {
 	
 	
 	@Override
-	public void report(final Receiver<String> receiver) {
+	public void report(final Receiver<Document> receiver) {
 		try {
 			// serializo los parametros y genero el mensaje
 			Message msg = messagesFactory.method(PersonMethods.reportPersonsData);
@@ -58,7 +62,11 @@ public class PersonsManagerBean implements PersonsManager {
 					if (handleError(response, receiver)) {
 						return;
 					}
-					receiver.onSuccess(response.getPayload());
+					
+					String payload = response.getPayload();
+					Document d = documentEncoderDecoder.decode(payload);
+					
+					receiver.onSuccess(d);
 				}
 				@Override
 				public void onFailure(Throwable t) {
@@ -73,7 +81,7 @@ public class PersonsManagerBean implements PersonsManager {
 	
 	
 	@Override
-	public void findAllReports(final Receiver<List<String>> receiver) {
+	public void findAllReports(final Receiver<List<Document>> receiver) {
 		try {
 			// serializo los parametros y genero el mensaje
 			Message msg = messagesFactory.method(PersonMethods.findPersonReportsData);
@@ -88,7 +96,7 @@ public class PersonsManagerBean implements PersonsManager {
 					}
 					
 					String sreports = response.getPayload();
-					List<String> reports = managerUtils.decodeStringList(sreports);
+					List<Document> reports = documentEncoderDecoder.decodeDocumentList(sreports);
 					
 					receiver.onSuccess(reports);
 				}
@@ -384,7 +392,8 @@ public class PersonsManagerBean implements PersonsManager {
 	@Inject
 	public PersonsManagerBean(EventBus eventBus, 
 							  ManagerUtils managerUtils,
-							  PersonFactory personFactory, PersonEncoderDecoder personEncoderDecoder, 
+							  PersonFactory personFactory, PersonEncoderDecoder personEncoderDecoder,
+							  DocumentFactory documenFactory, DocumentEncoderDecoder documentEncoderDecoder,
 							  MessageUtils messagesFactory, 
 							  WebSocket ws) {
 		this.eventBus = eventBus;
@@ -392,6 +401,8 @@ public class PersonsManagerBean implements PersonsManager {
 		this.personFactory = personFactory;
 		this.messagesFactory = messagesFactory;
 		this.personEncoderDecoder = personEncoderDecoder;
+		this.documentFactory = documenFactory;
+		this.documentEncoderDecoder = documentEncoderDecoder;
 		socket = ws;
 		
 		eventBus.addHandler(SocketMessageEvent.TYPE, eventHandler);

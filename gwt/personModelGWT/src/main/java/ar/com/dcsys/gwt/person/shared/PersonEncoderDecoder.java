@@ -15,7 +15,6 @@ import ar.com.dcsys.gwt.person.shared.lists.PersonList;
 import ar.com.dcsys.gwt.person.shared.lists.PersonTypeList;
 import ar.com.dcsys.gwt.person.shared.lists.PersonValueList;
 
-import com.google.web.bindery.autobean.gwt.rebind.model.AutoBeanType;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 

@@ -13,5 +13,5 @@ public interface Document {
 	public String getMimeType();
 	public String getEncoding();
 	public byte[] getContent();
-	
+
 }

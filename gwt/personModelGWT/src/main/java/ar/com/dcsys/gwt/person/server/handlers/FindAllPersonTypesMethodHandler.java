@@ -1,5 +1,7 @@
-package ar.com.dcsys.gwt.person.server;
+package ar.com.dcsys.gwt.person.server.handlers;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -7,14 +9,11 @@ import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.exceptions.PersonException;
+import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.gwt.manager.server.AbstractMessageHandler;
-import ar.com.dcsys.gwt.manager.server.ServerManagerUtils;
 import ar.com.dcsys.gwt.message.server.MessageContext;
 import ar.com.dcsys.gwt.message.server.handlers.MessageHandlers;
 import ar.com.dcsys.gwt.message.shared.Message;
-import ar.com.dcsys.gwt.message.shared.MessageException;
 import ar.com.dcsys.gwt.message.shared.MessageTransport;
 import ar.com.dcsys.gwt.message.shared.MessageUtils;
 import ar.com.dcsys.gwt.message.shared.Method;
@@ -24,14 +23,14 @@ import ar.com.dcsys.gwt.person.shared.PersonMethods;
 import ar.com.dcsys.model.PersonsManager;
 
 @Singleton
-public class PersistPersonMethodHandler extends AbstractMessageHandler {
+public class FindAllPersonTypesMethodHandler extends AbstractMessageHandler {
 
-	private static final Logger logger = Logger.getLogger(PersistPersonMethodHandler.class.getName());
+	private static final Logger logger = Logger.getLogger(FindAllPersonTypesMethodHandler.class.getName());
 
 	private final PersonEncoderDecoder encoderDecoder;
 	private final MessageUtils mf;
+	private final PersonFactory pf;
 	private final PersonsManager personsModel;
-	private final PersonFactory personFactory;
 	
 	@Override
 	protected Logger getLogger() {
@@ -45,14 +44,14 @@ public class PersistPersonMethodHandler extends AbstractMessageHandler {
 		
 	
 	@Inject
-	public PersistPersonMethodHandler(PersonFactory personFactory,
-									  PersonEncoderDecoder encoderDecoder, 
-									  MessageUtils messagesFactory,
+	public FindAllPersonTypesMethodHandler(PersonEncoderDecoder encoderDecoder, 
+									  MessageUtils messagesFactory, 
+									  PersonFactory personFactory,
 									  PersonsManager personsModel) {
 		this.encoderDecoder = encoderDecoder;
 		this.mf = messagesFactory;
+		this.pf = personFactory;
 		this.personsModel = personsModel;
-		this.personFactory = personFactory;
 	}
 
 	/**
@@ -65,35 +64,24 @@ public class PersistPersonMethodHandler extends AbstractMessageHandler {
 	
 	@Override
 	public boolean handles(Method method) {
-		return PersonMethods.persist.equals(method.getName());
+		return PersonMethods.findTypes.equals(method.getName());
 	}
 	
 	@Override
 	public void handle(MessageContext ctx, Message msg, Method method) {
-		
+
 		MessageTransport transport = ctx.getMessageTransport();
 		
-		String params = method.getParams();
-		Person person = ServerManagerUtils.decode(personFactory,Person.class,params);
-		
 		try {
-			String id = personsModel.persist(person);
-			sendResponse(msg, transport, id);
-			sendEvent(transport, id);
-		} catch (PersonException e) {
+			List<PersonType> types = Arrays.asList(PersonType.values()); 
+
+			String list = encoderDecoder.encodeTypeList(types);
+			sendResponse(msg, transport, list);
+		
+		} catch (Exception e) {
 			logger.log(Level.SEVERE,e.getMessage(),e);
 			sendError(msg,transport,e.getMessage());
-			
 		}
 	}
-	
-	private void sendEvent(MessageTransport transport, String id) {
-		Message msg = mf.event(PersonMethods.personModifiedEvent, id);
-		try {
-			transport.send(msg);
-		} catch (MessageException e) {
-			logger.log(Level.SEVERE,e.getMessage(),e);
-		}
-	}
-	
+
 }

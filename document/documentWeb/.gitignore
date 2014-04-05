@@ -4,3 +4,4 @@ target/
 .settings/*
 *.launch
 .gwt/
+/bin

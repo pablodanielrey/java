@@ -1,4 +1,4 @@
-package ar.com.dcsys.gwt.person.server;
+package ar.com.dcsys.gwt.person.server.handlers;
 
 import java.util.ArrayList;
 import java.util.List;

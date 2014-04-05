@@ -1,5 +1,6 @@
-package ar.com.dcsys.gwt.person.server.reports;
+package ar.com.dcsys.gwt.person.server.handlers.reports;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -8,6 +9,7 @@ import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import ar.com.dcsys.data.document.Document;
 import ar.com.dcsys.gwt.manager.server.AbstractMessageHandler;
 import ar.com.dcsys.gwt.manager.server.ServerManagerUtils;
 import ar.com.dcsys.gwt.manager.shared.ManagerFactory;
@@ -17,8 +19,7 @@ import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageTransport;
 import ar.com.dcsys.gwt.message.shared.MessageUtils;
 import ar.com.dcsys.gwt.message.shared.Method;
-import ar.com.dcsys.gwt.person.shared.PersonEncoderDecoder;
-import ar.com.dcsys.gwt.person.shared.PersonFactory;
+import ar.com.dcsys.gwt.person.shared.DocumentEncoderDecoder;
 import ar.com.dcsys.gwt.person.shared.PersonMethods;
 import ar.com.dcsys.model.DocumentsManager;
 
@@ -27,11 +28,11 @@ public class ListPersonReportsMethodHandler extends AbstractMessageHandler {
 
 	private static final Logger logger = Logger.getLogger(ListPersonReportsMethodHandler.class.getName());
 
-	private final PersonEncoderDecoder encoderDecoder;
 	private final MessageUtils mf;
 	private final ServerManagerUtils managerUtils;
 	private final ManagerFactory managerFactory;
 	private final DocumentsManager documentsManager;
+	private final DocumentEncoderDecoder documentEncoderDecoder;
 	
 	@Override
 	protected Logger getLogger() {
@@ -45,17 +46,17 @@ public class ListPersonReportsMethodHandler extends AbstractMessageHandler {
 		
 	
 	@Inject
-	public ListPersonReportsMethodHandler(PersonFactory personFactory,
-									  PersonEncoderDecoder encoderDecoder, 
+	public ListPersonReportsMethodHandler(
 									  MessageUtils messagesFactory,
 									  ManagerFactory managerFactory,
 									  ServerManagerUtils managerUtils,
-									  DocumentsManager documentsManager) {
-		this.encoderDecoder = encoderDecoder;
+									  DocumentsManager documentsManager,
+									  DocumentEncoderDecoder documentEncoderDecoder) {
 		this.mf = messagesFactory;
 		this.managerFactory = managerFactory;
 		this.managerUtils = managerUtils;
 		this.documentsManager = documentsManager;
+		this.documentEncoderDecoder = documentEncoderDecoder;
 	}
 
 	/**
@@ -77,8 +78,14 @@ public class ListPersonReportsMethodHandler extends AbstractMessageHandler {
 		MessageTransport transport = ctx.getMessageTransport();
 		
 		try {
+			List<Document> ds = new ArrayList<>();
 			List<String> reports = documentsManager.findAll();
-			String payload = managerUtils.encodeStringList(reports);
+			for (String id : reports) {
+				Document d = documentsManager.findByIdWithoutContent(id);
+				ds.add(d);
+			}
+			
+			String payload = documentEncoderDecoder.encodeDocumentList(ds);
 			
 			sendResponse(msg, transport, payload);
 			

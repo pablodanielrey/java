@@ -5,11 +5,12 @@ Class-Path: shiro-core-1.2.2.jar slf4j-api-1.7.5.jar commons-beanutils
  .2.jar clientMessagesGWT.jar firmwareConfig-1.0-SNAPSHOT.jar mapauMod
  elGWT.jar messageGWT.jar org.json-chargebee-1.0.jar gwt-websockets-1.
  0.3.jar cdiUtils-1.0-SNAPSHOT.jar personModelGWT.jar javax.servlet-ap
- i-3.1.0.jar personEntities-1.0-SNAPSHOT.jar personModel-1.0-SNAPSHOT.
- jar personDAO-1.0-SNAPSHOT.jar dcsysUtils-1.0-SNAPSHOT.jar authModel-
- 1.0-SNAPSHOT.jar authEntities-1.0-SNAPSHOT.jar mailModel-1.0-SNAPSHOT
- .jar javax.mail-api-1.5.1.jar activation-1.1.jar mapauEntities-1.0-SN
- APSHOT.jar mapauModel-1.0-SNAPSHOT.jar mapauDAO-1.0-SNAPSHOT.jar mapa
- uHsqlDAO-1.0-SNAPSHOT.jar hsql-1.0-SNAPSHOT.jar hsqldb-2.3.1.jar pers
- onHsqlDAO-1.0-SNAPSHOT.jar
+ i-3.1.0.jar documentEntities-1.0-SNAPSHOT.jar documentModel-1.0-SNAPS
+ HOT.jar documentDAO-1.0-SNAPSHOT.jar dcsysUtils-1.0-SNAPSHOT.jar pers
+ onEntities-1.0-SNAPSHOT.jar personModel-1.0-SNAPSHOT.jar personDAO-1.
+ 0-SNAPSHOT.jar authModel-1.0-SNAPSHOT.jar authEntities-1.0-SNAPSHOT.j
+ ar mailModel-1.0-SNAPSHOT.jar javax.mail-api-1.5.1.jar activation-1.1
+ .jar mapauEntities-1.0-SNAPSHOT.jar mapauModel-1.0-SNAPSHOT.jar mapau
+ DAO-1.0-SNAPSHOT.jar mapauHsqlDAO-1.0-SNAPSHOT.jar hsql-1.0-SNAPSHOT.
+ jar hsqldb-2.3.1.jar personHsqlDAO-1.0-SNAPSHOT.jar
 

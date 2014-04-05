@@ -12,6 +12,22 @@ public class DocumentBean implements Document {
 	private String encoding;
 	private byte[] content;
 	
+	
+	/**
+	 * Copia el objeto en una nueva instancia, pero sin el contenido.
+	 * @return
+	 */
+	public Document cloneWithoutContent() {
+		DocumentBean d = new DocumentBean();
+		d.setId(getId() != null ? new String(getId()) : null);
+		d.setCreated(getCreated() != null ? new Date(getCreated().getTime()) : null);
+		d.setName(getName() != null ? new String(getName()) : getName());
+		d.setDescription(getDescription() != null ? new String(getDescription()) : null);
+		d.setMimeType(getMimeType() != null ? new String(getMimeType()) : null);
+		d.setEncoding(getEncoding() != null ? new String(getEncoding()) : null);
+		return d;
+	}
+	
 	public DocumentBean() {
 		created = new Date();
 	}

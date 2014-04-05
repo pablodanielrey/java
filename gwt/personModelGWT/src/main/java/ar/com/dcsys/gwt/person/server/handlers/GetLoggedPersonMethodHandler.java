@@ -1,4 +1,4 @@
-package ar.com.dcsys.gwt.person.server;
+package ar.com.dcsys.gwt.person.server.handlers;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,9 +23,9 @@ import ar.com.dcsys.gwt.person.shared.PersonMethods;
 import ar.com.dcsys.model.PersonsManager;
 
 @Singleton
-public class FindPersonByDniMethodHandler extends AbstractMessageHandler {
+public class GetLoggedPersonMethodHandler extends AbstractMessageHandler {
 
-	private static final Logger logger = Logger.getLogger(FindPersonByDniMethodHandler.class.getName());
+	private static final Logger logger = Logger.getLogger(GetLoggedPersonMethodHandler.class.getName());
 
 	private final PersonEncoderDecoder encoderDecoder;
 	private final MessageUtils mf;
@@ -44,7 +44,7 @@ public class FindPersonByDniMethodHandler extends AbstractMessageHandler {
 		
 	
 	@Inject
-	public FindPersonByDniMethodHandler(PersonEncoderDecoder encoderDecoder,
+	public GetLoggedPersonMethodHandler(PersonEncoderDecoder encoderDecoder,
 									  MessageUtils messagesFactory, 
 									  PersonFactory personFactory,
 									  PersonsManager personsModel) {
@@ -64,7 +64,7 @@ public class FindPersonByDniMethodHandler extends AbstractMessageHandler {
 	
 	@Override
 	public boolean handles(Method method) {
-		return PersonMethods.findByDni.equals(method.getName());
+		return PersonMethods.getLoggedPerson.equals(method.getName());
 	}
 	
 	@Override
@@ -73,8 +73,7 @@ public class FindPersonByDniMethodHandler extends AbstractMessageHandler {
 		MessageTransport transport = ctx.getMessageTransport();
 		
 		try {
-			String dni = method.getParams();
-			Person person = personsModel.findByDni(dni);
+			Person person = personsModel.getLoggedPerson();
 			if (person == null) {
 				sendResponse(msg, transport, null);
 			} else {

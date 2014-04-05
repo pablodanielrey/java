@@ -1,4 +1,4 @@
-package ar.com.dcsys.gwt.person.server;
+package ar.com.dcsys.gwt.person.server.handlers;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,9 +23,9 @@ import ar.com.dcsys.gwt.person.shared.PersonMethods;
 import ar.com.dcsys.model.PersonsManager;
 
 @Singleton
-public class FindPersonByIdMethodHandler extends AbstractMessageHandler {
+public class FindPersonByDniMethodHandler extends AbstractMessageHandler {
 
-	private static final Logger logger = Logger.getLogger(FindPersonByIdMethodHandler.class.getName());
+	private static final Logger logger = Logger.getLogger(FindPersonByDniMethodHandler.class.getName());
 
 	private final PersonEncoderDecoder encoderDecoder;
 	private final MessageUtils mf;
@@ -44,7 +44,7 @@ public class FindPersonByIdMethodHandler extends AbstractMessageHandler {
 		
 	
 	@Inject
-	public FindPersonByIdMethodHandler(PersonEncoderDecoder encoderDecoder, 
+	public FindPersonByDniMethodHandler(PersonEncoderDecoder encoderDecoder,
 									  MessageUtils messagesFactory, 
 									  PersonFactory personFactory,
 									  PersonsManager personsModel) {
@@ -64,7 +64,7 @@ public class FindPersonByIdMethodHandler extends AbstractMessageHandler {
 	
 	@Override
 	public boolean handles(Method method) {
-		return PersonMethods.findById.equals(method.getName());
+		return PersonMethods.findByDni.equals(method.getName());
 	}
 	
 	@Override
@@ -73,16 +73,12 @@ public class FindPersonByIdMethodHandler extends AbstractMessageHandler {
 		MessageTransport transport = ctx.getMessageTransport();
 		
 		try {
-			String id = method.getParams();
-			if (id == null) {
-				sendError(msg,transport,"person.id == null");
-				return;
-			}
-			Person person = personsModel.findById(id);
+			String dni = method.getParams();
+			Person person = personsModel.findByDni(dni);
 			if (person == null) {
 				sendResponse(msg, transport, null);
 			} else {
-				String lpersons = ServerManagerUtils.encode(pf,Person.class,person);
+				String lpersons = ServerManagerUtils.encode(pf, Person.class,person);
 				sendResponse(msg, transport, lpersons);
 			}
 		
@@ -91,7 +87,6 @@ public class FindPersonByIdMethodHandler extends AbstractMessageHandler {
 			sendError(msg,transport,e.getMessage());
 		}
 	}
-	
 	
 
 }
