@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.model.period.Period;
@@ -12,6 +13,7 @@ import ar.com.dcsys.model.period.WorkedHours;
 public class Report {
 	
 	private Person person;
+	private Group group;
 	private Period period;
 	private List<Justification> justifications = new ArrayList<>();
 	private List<Justification> gjustifications = new ArrayList<>();
@@ -22,6 +24,13 @@ public class Report {
 	
 	
 	/// para el reporte /////////
+	
+	public String groupNameReport() {
+		if (group == null || group.getName() == null) {
+			return "nulo";
+		}
+		return group.getName();
+	}
 	
 	public String nameReport() {
 		Person person = getPerson();
@@ -87,6 +96,14 @@ public class Report {
 		this.person = person;
 	}
 	
+	public Group getGroup() {
+		return group;
+	}
+
+	public void setGroup(Group group) {
+		this.group = group;
+	}
+
 	public Period getPeriod() {
 		return period;
 	}

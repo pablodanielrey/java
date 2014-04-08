@@ -7,10 +7,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.inject.Inject;
 
 import ar.com.dcsys.data.group.Group;
+import ar.com.dcsys.data.group.GroupType;
 import ar.com.dcsys.data.justification.GeneralJustificationDate;
 import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.person.Person;
@@ -25,21 +28,15 @@ import ar.com.dcsys.model.period.PeriodsManager;
 import ar.com.dcsys.utils.PersonSort;
 
 public class ReportGenerator {
+	
+	private static final Logger logger = Logger.getLogger(ReportGenerator.class.getName());
 
 	@Inject PeriodsManager periodsManager;
 	@Inject JustificationsManager justificationManager;
 	@Inject PersonsManager personsManager;
 	@Inject GroupsManager groupsManager;
 	
-	
-	public ReportSummary getReport(Date start, Date end, Group g) throws IOException {
-		List<Person> persons = g.getPersons();
-		ReportSummary rs = getReport(start,end,persons);
-		rs.setGroup(g);
-		return rs;
-	}
-	
-	
+
 	public ReportSummary getReport(Date start, Date end, List<Person> personsToReport) throws IOException {
 	
 		try {
@@ -62,6 +59,9 @@ public class ReportGenerator {
 					
 					List<JustificationDate> justifications = justificationManager.findBy(Arrays.asList(p), start, end);			
 		            List<Period> periodsAux = periodsManager.findAll(p, start, end, true);
+		            if (periodsAux == null) {
+		            	continue;
+		            }
 		            
 					Collections.sort(periodsAux, new Comparator<Period>() {
 						@Override
@@ -86,12 +86,25 @@ public class ReportGenerator {
 						}
 					});		            
 		            
+					
+					List<Group> groups = groupsManager.findByPerson(p);
+					Group groupToSet = null;
+					if (groups != null) {
+						for (Group g : groups) {
+							if (g.getTypes() != null && g.getTypes().contains(GroupType.OFFICE)) {
+								groupToSet = g;
+								break;
+							}
+						}
+					}
+					
 
 		            for (Period period : periodsAux) {
 
 		            	Report r = new Report();
 		            	r.setPerson(p);
 		            	r.setPeriod(period);
+		            	r.setGroup(groupToSet);
 		            	
 		            	List<GeneralJustificationDate> jgds = checkGeneralJustification(generalJustifications, period);
 		            	for (GeneralJustificationDate j : jgds) {
@@ -108,8 +121,11 @@ public class ReportGenerator {
 					
 					
 				} catch (JustificationException | PeriodException | PersonException e) {
+					logger.log(Level.WARNING,e.getMessage(),e);
 					// error realizando el reporte. ignoro y sigo con otra
 					// hay que ver por que se realizo el error.
+				} catch (Exception e) {
+					logger.log(Level.WARNING,e.getMessage(),e);
 				}
 			}
 			

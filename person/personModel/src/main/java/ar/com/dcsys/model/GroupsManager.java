@@ -28,9 +28,4 @@ public interface GroupsManager {
 	public String persist(Group ou) throws PersonException;
 	public void remove(Group ou) throws PersonException;	
 	
-	public Group findParent(Group g) throws PersonException;
-	public List<Group> findAllParents(List<Group> groups) throws PersonException;
-	public List<Group> findAllSons(List<Group> groups) throws PersonException;
-		
-	public void setParent(Group son, Group parent) throws PersonException;
 }

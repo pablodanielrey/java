@@ -212,26 +212,6 @@ public class GroupsManagerBean implements GroupsManager {
 	}	
 	
 	
-	/**
-	 * Setea el padre de un grupo
-	 * Si se pasa null como parent se elimina el padre que tenga el grupo son.
-	 */
-	@Override
-	public void setParent(Group son, Group parent) throws PersonException {
-		
-		if (son == null) {
-			throw new PersonException("son == null");
-		}
-		
-		if (son.getId() == null || ((parent != null) && (parent.getId() == null))) {
-			throw new PersonException("Los ids de los grupos no deben ser nulos");
-		}
-
-		groupCache.invalidate(son.getId());
-		groupManager.setParent(son, parent);
-	}
-
-
 
 	/**
 	 * Obtiene el grupo identificado por el id pasado como parámetro.
@@ -339,47 +319,5 @@ public class GroupsManagerBean implements GroupsManager {
 		groupManager.remove(g);
 	}
 
-	@Override
-	public Group findParent(Group g) throws PersonException {
-		String id = groupManager.findParent(g);
-		if (id == null) {
-			return null;
-		}
-		return findById(id);
-	}
 
-	/**
-	 * Obtiene todos los grupos padre de los grupos pasados como parametros.
-	 */
-	@Override
-	public List<Group> findAllParents(List<Group> groups) throws PersonException {
-		List<Group> parents = new ArrayList<Group>();
-		
- 		List<String> ids = groupManager.findAllParents(groups);
-		if (ids == null || ids.size() <= 0) {
-			return parents;
-		}
-		for (Group p : parents) {
-			parents.add(findById(p.getId()));
-		}
-		return parents;
-	}
-
-	/**
-	 * Obtiene todos los grupos hijos de los grupos pasados como parametro.
-	 */
-	@Override
-	public List<Group> findAllSons(List<Group> groups) throws PersonException {
-		List<Group> sons = new ArrayList<Group>();
-		
- 		List<String> ids = groupManager.findAllSons(groups);
-		if (ids == null || ids.size() <= 0) {
-			return sons;
-		}
-		for (Group p : sons) {
-			sons.add(findById(p.getId()));
-		}
-		return sons;
-	}
-	
 }

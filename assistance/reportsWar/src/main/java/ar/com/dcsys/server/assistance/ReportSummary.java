@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import ar.com.dcsys.data.group.Group;
-
 public class ReportSummary {
 
 	public static final String START = "start";
@@ -14,11 +12,11 @@ public class ReportSummary {
 
 	private Date start;
 	private Date end;
-	private Group group;
 	
 	private List<Report> reports = new ArrayList<>();
 	private Long minutes;
 
+	
 	public Date getStart() {
 		return start;
 	}
@@ -33,14 +31,6 @@ public class ReportSummary {
 
 	public void setEnd(Date end) {
 		this.end = end;
-	}
-
-	public Group getGroup() {
-		return group;
-	}
-
-	public void setGroup(Group group) {
-		this.group = group;
 	}
 
 	public List<Report> getReports() {
