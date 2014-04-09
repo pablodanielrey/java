@@ -108,7 +108,12 @@ public class GroupAbsenceReportServlet extends HttpServlet {
 			filterReport(rs, reportType);
 			
 			
-			
+			resp.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			if (group == null || group.getName() == null) {
+			resp.setHeader("content-disposition", "attachment; filename=\"ausencias-grupo.xls\"");
+			} else {
+				resp.setHeader("content-disposition", "attachment; filename=\"ausencias-grupo-" + group.getName() + ".xls\"");
+			}
 			OutputStream out = resp.getOutputStream();
 			
 			

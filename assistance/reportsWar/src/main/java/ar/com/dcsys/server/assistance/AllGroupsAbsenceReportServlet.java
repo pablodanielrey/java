@@ -1,8 +1,8 @@
 package ar.com.dcsys.server.assistance;
 
 import static net.sf.dynamicreports.report.builder.DynamicReports.cmp;
+import static net.sf.dynamicreports.report.builder.DynamicReports.grp;
 import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
-import static net.sf.dynamicreports.report.builder.DynamicReports.sbt;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -10,9 +10,13 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -25,16 +29,16 @@ import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.column.Columns;
 import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
 import net.sf.dynamicreports.report.builder.datatype.DataTypes;
+import net.sf.dynamicreports.report.builder.group.ColumnGroupBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.constant.HorizontalAlignment;
 import net.sf.dynamicreports.report.constant.VerticalAlignment;
 import ar.com.dcsys.data.group.Group;
+import ar.com.dcsys.data.group.GroupType;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.model.GroupsManager;
 import ar.com.dcsys.model.PersonsManager;
 import ar.com.dcsys.server.person.ConstantsBean;
-
-
 
 
 
@@ -90,13 +94,33 @@ public class AllGroupsAbsenceReportServlet extends HttpServlet {
 									.setBackgroundColor(Color.LIGHT_GRAY);
 			
 			TextColumnBuilder<String> groupC = Columns.column("Grupo",".groupName", DataTypes.stringType());
+			ColumnGroupBuilder groupCG = grp.group(groupC)
+												.groupByDataType()
+												.addFooterComponent(cmp.pageBreak());
+			
 			TextColumnBuilder<String> person = Columns.column("Nombre",".name", DataTypes.stringType());
+			ColumnGroupBuilder personG = grp.group(person).groupByDataType();
 
 			
+			Set<Person> personsToReportS = new HashSet<>();
 			
-			List<Person> personsToReport = personsManager.findAll();
+			
+			// busco todas las oficinas
+			List<Group> groups = groupsManager.findByType(GroupType.OFFICE);
+			for (Group g : groups) {
+				Group gr = groupsManager.findByIdEager(g.getId());
+				if (gr.getPersons() != null) {
+					personsToReportS.addAll(gr.getPersons());
+				}
+			}
+			
+			List<Person> personsToReport = new ArrayList<>();
+			personsToReport.addAll(personsToReportS);
+			
 			
 //			resp.setContentType("multipart/x-mixed-replace;boundary=END");
+			//resp.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			resp.setHeader("content-disposition", "attachment; filename=\"ausencias-todos-los-grupos.xls\"");
 			OutputStream out = resp.getOutputStream();
 			
 			String reportType = req.getParameter("periodFilter");
@@ -105,6 +129,21 @@ public class AllGroupsAbsenceReportServlet extends HttpServlet {
 			}
 			
 			ReportSummary rs = reportGenerator.getReport(start, end, personsToReport);
+			Collections.sort(rs.getReports(),new Comparator<Report>() {
+				@Override
+				public int compare(Report r1, Report r2) {
+					if (r1 == null && r2 == null) {
+						return 0;
+					}
+					if (r1 == null) {
+						return -1; 
+					}
+					if (r2 == null) {
+						return 1;
+					}
+					return (r1.groupNameReport().compareTo(r2.groupNameReport()));
+				}
+			});
 			
 			filterReport(rs, reportType);
 
@@ -132,14 +171,15 @@ public class AllGroupsAbsenceReportServlet extends HttpServlet {
 			.setColumnTitleStyle(columnTitle)
 			.highlightDetailEvenRows()
 			.columns(
-					groupC,
+					groupC
+						.setStyle(boldCentered),
 					person,
 					Columns.column("Fecha",".date",DataTypes.dateType())
 						.setPattern("dd/MM/yyyy"),
 					Columns.column("Justificación",".justification",DataTypes.stringType()),
 					Columns.column("Justificación General", ".generalJustification", DataTypes.stringType())
 			)
-			.groupBy(groupC,person)
+			.groupBy(groupCG,personG)
 			.setDataSource(new ReportDataSource(rs))
 			.toExcelApiXls(out);
 			//.toPdf(out);
