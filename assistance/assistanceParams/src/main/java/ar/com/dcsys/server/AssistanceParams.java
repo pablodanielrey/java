@@ -3,44 +3,28 @@ package ar.com.dcsys.server;
 import java.util.Date;
 import java.util.List;
 
+import ar.com.dcsys.data.justification.JustificationDAO;
 import ar.com.dcsys.data.period.PeriodAssignation;
 import ar.com.dcsys.data.period.PeriodDAO;
 import ar.com.dcsys.data.period.PeriodType;
-import ar.com.dcsys.data.period.Person;
+import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.exceptions.PeriodException;
+import ar.com.dcsys.exceptions.PersonException;
+import ar.com.dcsys.model.PersonsManager;
 
-public class AssistanceParams implements PeriodDAO {
+import javax.inject.Inject;
 
-	@Override
-	public List<PeriodAssignation> findAllPeriodAssignations()
-			throws PeriodException, PersonException {
-		// TODO Auto-generated method stub
-		return null;
+public class AssistanceParams implements PeriodDAO.Params, JustificationDAO.Params {
+
+	private final PersonsManager personsManager; 
+	
+	@Inject
+	public AssistanceParams(PersonsManager personsManager) {
+		this.personsManager = personsManager;
 	}
 
 	@Override
-	public List<PeriodAssignation> findAll(Person p) throws PeriodException {
-		// TODO Auto-generated method stub
-		return null;
+	public Person findPersonById(String person_id) throws PersonException {
+		return personsManager.findById(person_id);
 	}
-
-	@Override
-	public String persist(PeriodAssignation p) throws PeriodException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void remove(PeriodAssignation p) throws PeriodException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public PeriodAssignation findBy(Person person, Date date, PeriodType type)
-			throws PeriodException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
