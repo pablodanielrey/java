@@ -28,7 +28,6 @@ public class ReportDataSource implements JRDataSource {
 			if (!methodName.contains(".")) {
 				
 				// actuo sobre el summary contenedor
-				methodName = methodName.substring(0, methodName.indexOf("."));
 				Method method = rs.getClass().getMethod(methodName + "Report");
 				Object o = method.invoke(rs, null);
 				return o;

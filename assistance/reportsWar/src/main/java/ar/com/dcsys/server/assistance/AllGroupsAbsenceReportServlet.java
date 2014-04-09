@@ -1,8 +1,8 @@
 package ar.com.dcsys.server.assistance;
 
 import static net.sf.dynamicreports.report.builder.DynamicReports.cmp;
+import static net.sf.dynamicreports.report.builder.DynamicReports.grp;
 import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
-import static net.sf.dynamicreports.report.builder.DynamicReports.sbt;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -10,9 +10,13 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -25,10 +29,12 @@ import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.column.Columns;
 import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
 import net.sf.dynamicreports.report.builder.datatype.DataTypes;
+import net.sf.dynamicreports.report.builder.group.ColumnGroupBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.constant.HorizontalAlignment;
 import net.sf.dynamicreports.report.constant.VerticalAlignment;
 import ar.com.dcsys.data.group.Group;
+import ar.com.dcsys.data.group.GroupType;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.model.GroupsManager;
 import ar.com.dcsys.model.PersonsManager;
@@ -36,10 +42,8 @@ import ar.com.dcsys.server.person.ConstantsBean;
 
 
 
-
-
-@WebServlet("/reporte/ausencias/*")
-public class AbsenceReportServlet extends HttpServlet {
+@WebServlet("/reporte/allgrupos/ausencias/*")
+public class AllGroupsAbsenceReportServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
@@ -76,55 +80,8 @@ public class AbsenceReportServlet extends HttpServlet {
 			cal.set(Calendar.MILLISECOND, 999);
 			end = cal.getTime();
 			
-			
-			// se determina a quien se le va a ahcer el reporte.
-			String groupId = req.getParameter("group");
-			String personId = req.getParameter("person");
-			if (personId == null && groupId == null) {
-				resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
-				return;
-			}
-			
-			List<Person> personsToReport = new ArrayList<Person>();
-			
-			Group group = null;
-			if (groupId != null) {
-				group = groupsManager.findByIdEager(groupId);
-				if (group == null) {
-					resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
-					return;
-				}
-				personsToReport.addAll(group.getPersons());
-			} else {
-				Person person = personsManager.findById(personId);
-				if (person == null) {
-					resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
-					return;
-				}
-				personsToReport.add(person);
-			}
-			
 
-			String reportType = req.getParameter("periodFilter");
-			if (reportType == null) {
-				reportType = constants.getAll();
-			}
-		
 
-			ReportSummary rs = null;
-			if (group == null) {
-				rs = reportGenerator.getReport(start, end, personsToReport);
-			} else {
-				rs = reportGenerator.getReport(start, end, group);
-			}
-			
-			filterReport(rs, reportType);
-			
-			
-			
-			OutputStream out = resp.getOutputStream();
-			
-			
 			StyleBuilder bold = stl.style().bold();
 			StyleBuilder boldCentered = stl.style(bold).setHorizontalAlignment(HorizontalAlignment.CENTER);
 			
@@ -136,52 +93,105 @@ public class AbsenceReportServlet extends HttpServlet {
 									.setBorder(stl.pen1Point())
 									.setBackgroundColor(Color.LIGHT_GRAY);
 			
+			TextColumnBuilder<String> groupC = Columns.column("Grupo",".groupName", DataTypes.stringType());
+			ColumnGroupBuilder groupCG = grp.group(groupC)
+												.groupByDataType()
+												.addFooterComponent(cmp.pageBreak());
+			
 			TextColumnBuilder<String> person = Columns.column("Nombre",".name", DataTypes.stringType());
+			ColumnGroupBuilder personG = grp.group(person).groupByDataType();
+
 			
+			Set<Person> personsToReportS = new HashSet<>();
+			
+			
+			// busco todas las oficinas
+			List<Group> groups = groupsManager.findByType(GroupType.OFFICE);
+			for (Group g : groups) {
+				Group gr = groupsManager.findByIdEager(g.getId());
+				if (gr.getPersons() != null) {
+					personsToReportS.addAll(gr.getPersons());
+				}
+			}
+			
+			List<Person> personsToReport = new ArrayList<>();
+			personsToReport.addAll(personsToReportS);
+			
+			
+//			resp.setContentType("multipart/x-mixed-replace;boundary=END");
+			//resp.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			resp.setHeader("content-disposition", "attachment; filename=\"ausencias-todos-los-grupos.xls\"");
+			OutputStream out = resp.getOutputStream();
+			
+			String reportType = req.getParameter("periodFilter");
+			if (reportType == null) {
+				reportType = constants.getAll();
+			}
+			
+			ReportSummary rs = reportGenerator.getReport(start, end, personsToReport);
+			Collections.sort(rs.getReports(),new Comparator<Report>() {
+				@Override
+				public int compare(Report r1, Report r2) {
+					if (r1 == null && r2 == null) {
+						return 0;
+					}
+					if (r1 == null) {
+						return -1; 
+					}
+					if (r2 == null) {
+						return 1;
+					}
+					return (r1.groupNameReport().compareTo(r2.groupNameReport()));
+				}
+			});
+			
+			filterReport(rs, reportType);
+
 			DynamicReports.report()
-					.title(cmp.verticalList()
-								.add(cmp.text("Ausencias").setStyle(title))
-								.add(cmp.horizontalList()
-										.add(cmp.text("Fecha Reporte :"))
-										.add(cmp.currentDate())
-										)
-								.add(cmp.horizontalList()
-										.add(cmp.text("Tipo Reporte"))
-										.add(cmp.text(reportType))
-										)
-								.add(cmp.horizontalList()
-										.add(cmp.text("Inicio"))
-										.add(cmp.text(start))
-										)
-								.add(cmp.horizontalList()
-										.add(cmp.text("Fin"))
-										.add(cmp.text(end))
-										)
-								.add(cmp.horizontalList()
-										.add(cmp.text("Grupo"))
-										.add(cmp.text((rs.getGroup().getName()) == null ? "" : rs.getGroup().getName()))
-										)
-								.add(cmp.filler().setFixedHeight(10))
+			.title(cmp.verticalList()
+						.add(cmp.text("Ausencias").setStyle(title))
+						.add(cmp.horizontalList()
+								.add(cmp.text("Fecha Reporte :"))
+								.add(cmp.currentDate())
 								)
-					.setColumnTitleStyle(columnTitle)
-					.highlightDetailEvenRows()
-					.columns(
-							person,
-							Columns.column("Fecha",".date",DataTypes.dateType())
-								.setPattern("dd/MM/yyyy"),
-							Columns.column("Justificación",".justification",DataTypes.stringType()),
-							Columns.column("Justificación General", ".generalJustification", DataTypes.stringType())
-					)
-					.groupBy(person)
-					.setDataSource(new ReportDataSource(rs))
-					.toPdf(out);
-			
+						.add(cmp.horizontalList()
+								.add(cmp.text("Tipo Reporte"))
+								.add(cmp.text(reportType))
+								)
+						.add(cmp.horizontalList()
+								.add(cmp.text("Inicio"))
+								.add(cmp.text(start))
+								)
+						.add(cmp.horizontalList()
+								.add(cmp.text("Fin"))
+								.add(cmp.text(end))
+								)
+						.add(cmp.filler().setFixedHeight(10))
+						)
+			.setColumnTitleStyle(columnTitle)
+			.highlightDetailEvenRows()
+			.columns(
+					groupC
+						.setStyle(boldCentered),
+					person,
+					Columns.column("Fecha",".date",DataTypes.dateType())
+						.setPattern("dd/MM/yyyy"),
+					Columns.column("Justificación",".justification",DataTypes.stringType()),
+					Columns.column("Justificación General", ".generalJustification", DataTypes.stringType())
+			)
+			.groupBy(groupCG,personG)
+			.setDataSource(new ReportDataSource(rs))
+			.toExcelApiXls(out);
+			//.toPdf(out);
+
 			out.flush();
 			out.close();
-		
+			
 		} catch (Exception e) {
 			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
+		
+		
 	}
 	
 	
