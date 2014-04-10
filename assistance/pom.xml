@@ -22,6 +22,7 @@
 	<module>assistancePostgreSqlDAO</module>
 	<module>assistanceModel</module>
 	<module>reportsWar</module>
+    <module>assistanceParams</module>
   </modules>
 
 </project>
