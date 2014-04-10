@@ -11,14 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ar.com.dcsys.exceptions.PersonException;
-import ar.com.dcsys.model.PersonsManager;
+import ar.com.dcsys.model.reports.ReportsGenerator;
 
 @WebServlet("/personas")
 public class IndexServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-	@Inject PersonsManager personsManager;
+	@Inject ReportsGenerator reportsGenerator;
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)	throws ServletException, IOException {
@@ -36,7 +36,7 @@ public class IndexServlet extends HttpServlet {
 		OutputStream out = resp.getOutputStream();
 		
 		try {
-			personsManager.reportPersons(out);
+			reportsGenerator.reportPersons(out);
 			
 		} catch (PersonException e) {
 			throw new ServletException(e);

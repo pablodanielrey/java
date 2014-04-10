@@ -144,6 +144,13 @@
             <scope>compile</scope>
         </dependency>
 
+        <dependency>
+            <groupId>ar.com.dcsys.model</groupId>
+            <artifactId>personReportsModel</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
 	<dependency>
 	   <groupId>ar.com.dcsys.data</groupId>
 	   <artifactId>personLdapDAO</artifactId>
