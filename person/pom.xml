@@ -23,6 +23,7 @@
 	<module>personPostgreSqlDAO</module>
 	<module>personLdapDAO</module>
 	<module>personModel</module>
+	<module>personReportsModel</module>
   </modules>
 
 </project>
