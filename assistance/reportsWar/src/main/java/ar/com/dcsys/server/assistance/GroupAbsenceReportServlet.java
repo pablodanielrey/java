@@ -32,7 +32,6 @@ import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.model.GroupsManager;
 import ar.com.dcsys.model.PersonsManager;
-import ar.com.dcsys.server.person.ConstantsBean;
 
 
 

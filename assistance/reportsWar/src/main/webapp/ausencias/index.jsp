@@ -2,9 +2,9 @@
 <html>
 <body>
 
-	<jsp:useBean id="constants" class="ar.com.dcsys.server.person.ConstantsBean"/>
+	<jsp:useBean id="constants" class="ar.com.dcsys.server.assistance.ConstantsBean"/>
 
-	<form action="reporte/ausencias" method="POST">
+	<form action="ausencias" method="POST">
 		<div>Tipo de reporte</div>
 		<div>
 			<div>

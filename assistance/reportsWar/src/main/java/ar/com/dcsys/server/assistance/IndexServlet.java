@@ -1,4 +1,4 @@
-package ar.com.dcsys.server;
+package ar.com.dcsys.server.assistance;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,10 +18,12 @@ import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.model.GroupsManager;
 import ar.com.dcsys.model.PersonsManager;
 
-@WebServlet("/index")
+@WebServlet("/ausencias")
 public class IndexServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
+	private final static String NULLGROUP= "00000000-0000-0000-0000-000000000000"; 
+	
 	
 	@Inject PersonsManager personsManager;
 	@Inject GroupsManager groupsManager;
@@ -40,21 +42,42 @@ public class IndexServlet extends HttpServlet {
 
 		try {
 			
-			GroupBean g = new GroupBean();
-			g.setId(UUID.fromString("00000000-0000-0000-0000-000000000000").toString());
-			g.setName("Todos");
-			
-			List<Group> groups = new ArrayList<>();
-			groups.add(g);
-			groups.addAll(groupsManager.findAll());
-			req.setAttribute("groups", groups);
+			String groupId = req.getParameter("group");
+			if (groupId == null) {
+
+				// se esta tratando de mostrar el index.
+				
+				GroupBean g = new GroupBean();
+				g.setId(UUID.fromString(NULLGROUP).toString());
+				g.setName("Todos");
+				
+				List<Group> groups = new ArrayList<>();
+				groups.add(g);
+				groups.addAll(groupsManager.findAll());
+				req.setAttribute("groups", groups);
+
+				req.getRequestDispatcher("/ausencias/index.jsp").forward(req, resp);
+				
+			} else {
+				
+				if (NULLGROUP.equals(groupId)) {
+					
+					// todos los grupos
+					req.getRequestDispatcher("/reporte/allgrupos/ausencias").forward(req, resp);
+					
+				} else {
+					
+					// solo el grupoId.
+					req.getRequestDispatcher("/reporte/grupos/ausencias").forward(req, resp);
+				}
+				
+			}
 			
 		} catch (PersonException e) {
 			throw new ServletException(e);
 		}
 
 		
-		req.getRequestDispatcher("index.jsp").forward(req, resp);
 	}
 	
 	
