@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.model.reports.ReportsGenerator;
 
-@WebServlet("/personas")
+@WebServlet("/personas/*")
 public class IndexServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
@@ -32,11 +32,21 @@ public class IndexServlet extends HttpServlet {
 	
 	private void process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
+		
+		
 		resp.setHeader("content-disposition", "attachment; filename=\"personas.pdf\"");
 		OutputStream out = resp.getOutputStream();
 		
 		try {
-			reportsGenerator.reportPersons(out);
+			String uri = req.getRequestURI();
+			
+			if (uri.endsWith("/personas/oficinas")) { 
+				reportsGenerator.reportPersonsByOffice(out);
+			} else if (uri.endsWith("/personas/cargos")) { 
+				reportsGenerator.reportPersonsByPosition(out);
+			} else {
+				reportsGenerator.reportPersons(out);
+			}
 			
 		} catch (PersonException e) {
 			throw new ServletException(e);

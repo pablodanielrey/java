@@ -20,11 +20,17 @@ public class Report {
 		StringBuilder sb = new StringBuilder();
 		for (Group g : groups) {
 			if (g.getTypes() != null && g.getTypes().contains(gt)) {
+				if (sb.length() > 0) {
+					sb.append(" ");
+				}
 				sb.append(g.getName());
-				sb.append(" ");
 			}
 		}
-		return sb.toString();
+		if (sb.length() <= 0) {
+			return "No tiene";
+		} else {
+			return sb.toString();
+		}
 	}
 	
 	
