@@ -1,14 +1,16 @@
 package ar.com.dcsys.gwt.assistance.client.activity;
 
-import javax.inject.Inject;
-
 import ar.com.dcsys.gwt.assistance.client.gin.AssistedInjectionFactory;
 import ar.com.dcsys.gwt.assistance.client.place.DailyPeriodsPlace;
+import ar.com.dcsys.gwt.assistance.client.place.GeneralsJustificationPlace;
+import ar.com.dcsys.gwt.assistance.client.place.JustificationPersonPlace;
+import ar.com.dcsys.gwt.assistance.client.place.ManageJustificationPlace;
 import ar.com.dcsys.gwt.assistance.client.place.PinAuthDataPlace;
 
 import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.place.shared.Place;
+import javax.inject.Inject;
 
 public class AssistanceActivityMapper implements ActivityMapper {
 
@@ -28,6 +30,18 @@ public class AssistanceActivityMapper implements ActivityMapper {
 		
 		if (place instanceof DailyPeriodsPlace) {
 			return factory.dailyPeriodsActivity((DailyPeriodsPlace)place);
+		}
+		
+		if (place instanceof GeneralsJustificationPlace) {
+			return factory.generalsJustificationActivity((GeneralsJustificationPlace)place);
+		}
+		
+		if (place instanceof JustificationPersonPlace) {
+			return factory.justificationPersonActivity((JustificationPersonPlace)place);
+		}
+		
+		if (place instanceof ManageJustificationPlace) {
+			return factory.manageJustificationsActivity((ManageJustificationPlace)place);
 		}
 				
 		return null;

@@ -5,6 +5,9 @@ import com.google.gwt.place.shared.WithTokenizers;
 
 
 @WithTokenizers({ PinAuthDataPlace.Tokenizer.class,
+				  GeneralsJustificationPlace.Tokenizer.class,
+				  JustificationPersonPlace.Tokenizer.class,
+				  ManageJustificationPlace.Tokenizer.class,
 				  DailyPeriodsPlace.Tokenizer.class })
 public interface AssistancePlaceHistoryMapper extends PlaceHistoryMapper {
 

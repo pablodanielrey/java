@@ -93,12 +93,17 @@ public class GeneralsJustificationActivity extends AbstractActivity implements G
 	}
 
 	@Override
-	public void persist() {
+	public void onStop() {
 		/*if (hr != null) {
 			hr.removeHandler();
 		}*/
 		view.clear();
 		view.setPresenter(null);
+	}
+	
+	@Override
+	public void persist() {
+		
 	}
 	
 	private void showMessage(String message) {

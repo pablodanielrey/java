@@ -116,6 +116,7 @@
 
           <compileSourcesArtifacts>
               <artifact>ar.com.dcsys.data:personEntities</artifact>
+              <artifact>ar.com.dcsys.gwt:personModelGWT</artifact>
               <artifact>ar.com.dcsys.data:assistanceEntities</artifact>
               <artifact>ar.com.dcsys.gwt:assistanceModelGWT</artifact>
 	      <artifact>ar.com.dcsys.gwt:clientMessagesGWT</artifact>
