@@ -1,4 +1,4 @@
-package ar.com.dcsys.gwt.assistance.client.common.cell;
+package ar.com.dcsys.gwt.assistance.client.ui.common.cell;
 
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.FieldUpdater;
