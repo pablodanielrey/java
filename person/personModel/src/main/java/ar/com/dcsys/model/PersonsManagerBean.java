@@ -1,11 +1,5 @@
 package ar.com.dcsys.model;
 
-import static net.sf.dynamicreports.report.builder.DynamicReports.cmp;
-import static net.sf.dynamicreports.report.builder.DynamicReports.col;
-import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
-
-import java.awt.Color;
-import java.io.OutputStream;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,11 +13,6 @@ import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import net.sf.dynamicreports.report.builder.DynamicReports;
-import net.sf.dynamicreports.report.builder.datatype.DataTypes;
-import net.sf.dynamicreports.report.builder.style.StyleBuilder;
-import net.sf.dynamicreports.report.constant.HorizontalAlignment;
-import net.sf.dynamicreports.report.constant.VerticalAlignment;
 import ar.com.dcsys.data.auth.principals.DniPrincipal;
 import ar.com.dcsys.data.auth.principals.IdPrincipal;
 import ar.com.dcsys.data.person.Mail;
@@ -34,7 +23,6 @@ import ar.com.dcsys.exceptions.AuthenticationException;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.exceptions.PersonNotFoundException;
 import ar.com.dcsys.model.auth.AuthManager;
-import ar.com.dcsys.model.reports.ListBeanDataSource;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -52,66 +40,6 @@ public class PersonsManagerBean implements PersonsManager {
 	
 	private final AuthManager authManager;
 	private final PersonDAO personDAO;
-	
-	
-	
-	///////////// REPORTES /////////////////
-	
-	public void reportPersons(OutputStream out) throws PersonException {
-		
-		List<Person> persons = findAll();
-		if (persons == null) {
-			throw new PersonException("ninguna persona existente");
-		}
-		
-		try {
-			
-			StyleBuilder bold = stl.style().bold();
-			StyleBuilder boldCentered = stl.style(bold).setHorizontalAlignment(HorizontalAlignment.CENTER);
-			
-			StyleBuilder title = stl.style(boldCentered)
-									.setVerticalAlignment(VerticalAlignment.MIDDLE)
-									.setFontSize(15);			
-			
-			StyleBuilder columnTitle = stl.style(boldCentered)
-					.setBorder(stl.pen1Point())
-					.setBackgroundColor(Color.LIGHT_GRAY);			
-			
-			
-			DynamicReports.report()
-				.title(cmp.verticalList()
-						.add(cmp.text("Datos Personales").setStyle(title))
-						.add(cmp.horizontalList()
-								.add(cmp.text("Fecha Reporte :"))
-								.add(cmp.currentDate())
-								)
-						.add(cmp.filler().setFixedHeight(10))
-						)
-						.setColumnTitleStyle(columnTitle)
-						.highlightDetailEvenRows()						
-						.columns(
-//							col.column("Id","getId",DataTypes.stringType()),
-							col.column("Nombre","getName",DataTypes.stringType()),
-							col.column("Apellido","getLastName",DataTypes.stringType()),
-							col.column("Dni","getDni",DataTypes.stringType())
-						)
-				.setDataSource(new ListBeanDataSource<Person>(persons))
-				.toPdf(out);
-		
-		} catch (Exception e) {
-			throw new PersonException(e);
-		}
-	};
-	
-	
-	
-	
-	////////////////////////////////////////
-	
-	
-	
-	
-	
 	
 	@Inject
 	public PersonsManagerBean(PersonDAO personDAO, AuthManager authManager) {

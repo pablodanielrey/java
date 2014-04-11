@@ -1,4 +1,4 @@
-package ar.com.dcsys.server.person;
+package ar.com.dcsys.server.assistance;
 
 public class ConstantsBean {
 

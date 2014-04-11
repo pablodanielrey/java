@@ -38,11 +38,10 @@ import ar.com.dcsys.data.group.GroupType;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.model.GroupsManager;
 import ar.com.dcsys.model.PersonsManager;
-import ar.com.dcsys.server.person.ConstantsBean;
 
 
 
-@WebServlet("/reporte/allgrupos/ausencias/*")
+@WebServlet("/reporte/allgrupos/ausencias")
 public class AllGroupsAbsenceReportServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;

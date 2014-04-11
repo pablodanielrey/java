@@ -21,11 +21,10 @@ import ar.com.dcsys.gwt.message.shared.MessageTransport;
 import ar.com.dcsys.gwt.message.shared.MessageUtils;
 import ar.com.dcsys.gwt.message.shared.Method;
 import ar.com.dcsys.gwt.person.shared.DocumentEncoderDecoder;
-import ar.com.dcsys.gwt.person.shared.PersonEncoderDecoder;
-import ar.com.dcsys.gwt.person.shared.PersonFactory;
 import ar.com.dcsys.gwt.person.shared.PersonMethods;
 import ar.com.dcsys.model.DocumentsManager;
 import ar.com.dcsys.model.PersonsManager;
+import ar.com.dcsys.model.reports.ReportsGenerator;
 
 @Singleton
 public class PersonReportMethodHandler extends AbstractMessageHandler {
@@ -33,6 +32,7 @@ public class PersonReportMethodHandler extends AbstractMessageHandler {
 	private static final Logger logger = Logger.getLogger(PersonReportMethodHandler.class.getName());
 
 	private final MessageUtils mf;
+	private final ReportsGenerator reportsGenerator;
 	private final PersonsManager personsModel;
 	private final DocumentsManager documentsManager;
 	private final DocumentEncoderDecoder documentEncoderDecoder;
@@ -52,11 +52,13 @@ public class PersonReportMethodHandler extends AbstractMessageHandler {
 	public PersonReportMethodHandler( MessageUtils messagesFactory,
 									  PersonsManager personsModel,
 									  DocumentsManager documentsManager,
-									  DocumentEncoderDecoder documentEncoderDecoder) {
+									  DocumentEncoderDecoder documentEncoderDecoder,
+									  ReportsGenerator reportsGenerator) {
 		this.mf = messagesFactory;
 		this.personsModel = personsModel;
 		this.documentsManager = documentsManager;
 		this.documentEncoderDecoder = documentEncoderDecoder;
+		this.reportsGenerator = reportsGenerator;
 	}
 
 	/**
@@ -104,7 +106,7 @@ public class PersonReportMethodHandler extends AbstractMessageHandler {
 	private Document generateReport() throws PersonException {
 		
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		personsModel.reportPersons(out);
+		reportsGenerator.reportPersons(out);
 		
 		try {
 			byte[] content = out.toByteArray();
