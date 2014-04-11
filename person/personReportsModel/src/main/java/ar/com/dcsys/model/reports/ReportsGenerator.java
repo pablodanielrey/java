@@ -6,6 +6,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.grp;
 import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
 
 import java.awt.Color;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import net.sf.dynamicreports.report.builder.group.ColumnGroupBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.constant.HorizontalAlignment;
 import net.sf.dynamicreports.report.constant.VerticalAlignment;
+import net.sf.dynamicreports.report.exception.DRException;
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.exceptions.PersonException;
@@ -32,7 +34,7 @@ import ar.com.dcsys.model.PersonsManager;
 
 @Singleton
 public class ReportsGenerator {
-
+	
 	private final PersonsManager personsManager;
 	private final GroupsManager groupsManager;
 	
@@ -168,7 +170,17 @@ public class ReportsGenerator {
 	}
 	
 	
-	
+	private void exportReport(JasperReportBuilder report, ReportExportType type, OutputStream out) throws IOException, DRException {
+		if (ReportExportType.PDF.equals(type)) {
+			report.toPdf(out);
+		} else if (ReportExportType.EXCEL.equals(type)) {
+			report.toExcelApiXls(out);
+		} else if (ReportExportType.DOCX.equals(type)) {
+			report.toDocx(out);
+		} else {
+			report.toCsv(out);
+		}		
+	}
 	
 	
 	/**
@@ -176,7 +188,7 @@ public class ReportsGenerator {
 	 * @param out
 	 * @throws PersonException
 	 */
-	public synchronized void reportPersons(OutputStream out) throws PersonException {
+	public synchronized void reportPersons(OutputStream out, ReportExportType type) throws PersonException {
 		
 		List<Report> reports = generateAllReports();
 		Collections.sort(reports,namesComparator);
@@ -214,7 +226,7 @@ public class ReportsGenerator {
 			report.addColumn(col.column("Oficinas","getOffices",DataTypes.stringType()));
 			report.addColumn(col.column("Cargos","getPositions",DataTypes.stringType()));
 			
-			report.toExcelApiXls(out);
+			exportReport(report, type, out);
 		
 		} catch (Exception e) {
 			throw new PersonException(e);
@@ -227,7 +239,7 @@ public class ReportsGenerator {
 	 * @param out
 	 * @throws PersonException
 	 */
-	public synchronized void reportPersonsByOffice(OutputStream out) throws PersonException {
+	public synchronized void reportPersonsByOffice(OutputStream out, ReportExportType type) throws PersonException {
 		
 		List<Report> reports = generateAllReports();
 		Collections.sort(reports,officeComparator);
@@ -270,16 +282,16 @@ public class ReportsGenerator {
 			}
 			report.addColumn(office);
 			report.addColumn(col.column("Cargos","getPositions",DataTypes.stringType()));
-			
 			report.groupBy(officeG);
-			report.toExcelApiXls(out);
+			
+			exportReport(report, type, out);
 		
 		} catch (Exception e) {
 			throw new PersonException(e);
 		}		
 	}	
 	
-	public synchronized void reportPersonsByPosition(OutputStream out) throws PersonException {
+	public synchronized void reportPersonsByPosition(OutputStream out, ReportExportType type) throws PersonException {
 		
 		List<Report> reports = generateAllReports();
 		Collections.sort(reports,positionsComparator);		
@@ -321,9 +333,10 @@ public class ReportsGenerator {
 			}
 			report.addColumn(col.column("Oficinas","getOffices",DataTypes.stringType()));
 			report.addColumn(position);
-			
 			report.groupBy(positionG);
-			report.toExcelApiXls(out);
+
+			exportReport(report, type, out);
+
 			
 		} catch (Exception e) {
 			throw new PersonException(e);

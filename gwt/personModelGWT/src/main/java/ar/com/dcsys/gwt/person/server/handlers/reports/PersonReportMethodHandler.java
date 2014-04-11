@@ -24,6 +24,7 @@ import ar.com.dcsys.gwt.person.shared.DocumentEncoderDecoder;
 import ar.com.dcsys.gwt.person.shared.PersonMethods;
 import ar.com.dcsys.model.DocumentsManager;
 import ar.com.dcsys.model.PersonsManager;
+import ar.com.dcsys.model.reports.ReportExportType;
 import ar.com.dcsys.model.reports.ReportsGenerator;
 
 @Singleton
@@ -106,7 +107,7 @@ public class PersonReportMethodHandler extends AbstractMessageHandler {
 	private Document generateReport() throws PersonException {
 		
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		reportsGenerator.reportPersons(out);
+		reportsGenerator.reportPersons(out,ReportExportType.PDF);
 		
 		try {
 			byte[] content = out.toByteArray();
