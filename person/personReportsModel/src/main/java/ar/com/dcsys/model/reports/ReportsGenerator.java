@@ -7,6 +7,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
 
 import java.awt.Color;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -15,6 +16,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
 import net.sf.dynamicreports.report.builder.datatype.DataTypes;
@@ -33,84 +35,6 @@ public class ReportsGenerator {
 
 	private final PersonsManager personsManager;
 	private final GroupsManager groupsManager;
-	
-	@Inject
-	public ReportsGenerator(PersonsManager personsManager, GroupsManager groupsManager) {
-		this.personsManager = personsManager;
-		this.groupsManager = groupsManager;
-	}
-	
-	
-	private List<Report> generateReports(List<Person> persons) throws PersonException {
-		List<Report> rs = new ArrayList<>();
-		for (Person p : persons) {
-			List<Group> groups = groupsManager.findByPerson(p);
-			Report r = new Report();
-			r.setPerson(p);
-			r.setGroups(groups);
-			rs.add(r);
-		}
-		return rs;
-	}
-
-	private List<Report> generateAllReports() throws PersonException {
-		List<Person> persons = personsManager.findAll();
-		if (persons == null || persons.size() <= 0) {
-			throw new PersonException("ninguna persona existente");
-		}
-		
-		List<Report> reports = generateReports(persons);
-		return reports;
-	}
-	
-	public synchronized void reportPersons(OutputStream out) throws PersonException {
-		
-		List<Report> reports = generateAllReports();
-		Collections.sort(reports,namesComparator);
-		
-		try {
-			
-			StyleBuilder bold = stl.style().bold();
-			StyleBuilder boldCentered = stl.style(bold).setHorizontalAlignment(HorizontalAlignment.CENTER);
-			
-			StyleBuilder title = stl.style(boldCentered)
-									.setVerticalAlignment(VerticalAlignment.MIDDLE)
-									.setFontSize(15);			
-			
-			StyleBuilder columnTitle = stl.style(boldCentered)
-					.setBorder(stl.pen1Point())
-					.setBackgroundColor(Color.LIGHT_GRAY);			
-			
-			
-			DynamicReports.report()
-				.title(cmp.verticalList()
-						.add(cmp.text("Datos Personales").setStyle(title))
-						.add(cmp.horizontalList()
-								.add(cmp.text("Fecha Reporte :"))
-								.add(cmp.currentDate())
-								)
-						.add(cmp.filler().setFixedHeight(10))
-						)
-						.setColumnTitleStyle(columnTitle)
-						.highlightDetailEvenRows()						
-						.columns(
-//							col.column("Id","getId",DataTypes.stringType()),
-							col.column("Apellido","getLastName",DataTypes.stringType()),
-							col.column("Nombre","getName",DataTypes.stringType()),
-							col.column("Dni","getDni",DataTypes.stringType()),
-							col.column("Oficinas","getOffices",DataTypes.stringType()),
-							col.column("Cargos","getPositions",DataTypes.stringType())
-						)
-				.setDataSource(new ListBeanDataSource<Report>(reports))
-				.toPdf(out);
-		
-		} catch (Exception e) {
-			throw new PersonException(e);
-		}		
-	}
-	
-	
-	
 	
 	private static final Comparator<Report> positionsComparator = new Comparator<Report>() {
 		@Override
@@ -182,11 +106,127 @@ public class ReportsGenerator {
 			
 			return namesComparator.compare(r1, r2);
 		}
-	}; 
+	}; 	
+	
+	
+	@Inject
+	public ReportsGenerator(PersonsManager personsManager, GroupsManager groupsManager) {
+		this.personsManager = personsManager;
+		this.groupsManager = groupsManager;
+	}
+	
+	
+	/**
+	 * Genero los datos del reporte.
+	 * @param persons
+	 * @return
+	 * @throws PersonException
+	 */
+	private List<Report> generateReports(List<Person> persons) throws PersonException {
+		List<Report> rs = new ArrayList<>();
+		for (Person p : persons) {
+			List<Group> groups = groupsManager.findByPerson(p);
+			Report r = new Report();
+			r.setPerson(p);
+			r.setGroups(groups);
+			rs.add(r);
+		}
+		return rs;
+	}
+
+	/**
+	 * Genero los datos del reporte para todas las peronsa.
+	 * @return
+	 * @throws PersonException
+	 */
+	private List<Report> generateAllReports() throws PersonException {
+		List<Person> persons = personsManager.findAll();
+		if (persons == null || persons.size() <= 0) {
+			throw new PersonException("ninguna persona existente");
+		}
+		
+		List<Report> reports = generateReports(persons);
+		return reports;
+	}
+	
+	
+	/**
+	 * Retorno las columnas que van a ser incluídas dentro del reporte para todas las peronas.
+	 * @return
+	 */
+	private List<TextColumnBuilder<? extends Serializable>> getPersonColumns() {
+		List<TextColumnBuilder<? extends Serializable>> columns = new ArrayList<>();
+		columns.add(col.column("Apellido","getLastName",DataTypes.stringType()));
+		columns.add(col.column("Nombre","getName",DataTypes.stringType()));
+		columns.add(col.column("Dni","getDni",DataTypes.stringType()));
+		columns.add(col.column("Dirección","getAddress",DataTypes.stringType()));
+		columns.add(col.column("Ciudad","getCity",DataTypes.stringType()));
+		columns.add(col.column("Pais","getCountry",DataTypes.stringType()));
+		columns.add(col.column("Género","getGender",DataTypes.stringType()));
+		columns.add(col.column("Fecha de nacimiento","getBirthDate",DataTypes.dateType()));
+		return columns;
+	}
 	
 	
 	
 	
+	
+	/**
+	 * Reporte de personas con todos sus datos sin agrupar.
+	 * @param out
+	 * @throws PersonException
+	 */
+	public synchronized void reportPersons(OutputStream out) throws PersonException {
+		
+		List<Report> reports = generateAllReports();
+		Collections.sort(reports,namesComparator);
+		
+		try {
+			
+			StyleBuilder bold = stl.style().bold();
+			StyleBuilder boldCentered = stl.style(bold).setHorizontalAlignment(HorizontalAlignment.CENTER);
+			
+			StyleBuilder title = stl.style(boldCentered)
+									.setVerticalAlignment(VerticalAlignment.MIDDLE)
+									.setFontSize(15);			
+			
+			StyleBuilder columnTitle = stl.style(boldCentered)
+					.setBorder(stl.pen1Point())
+					.setBackgroundColor(Color.LIGHT_GRAY);			
+			
+			
+			JasperReportBuilder report = DynamicReports.report()
+				.title(cmp.verticalList()
+						.add(cmp.text("Datos Personales").setStyle(title))
+						.add(cmp.horizontalList()
+								.add(cmp.text("Fecha Reporte :"))
+								.add(cmp.currentDate())
+								)
+						.add(cmp.filler().setFixedHeight(10))
+						)
+				.setColumnTitleStyle(columnTitle)
+				.highlightDetailEvenRows()
+				.setDataSource(new ListBeanDataSource<Report>(reports));
+				
+			for (TextColumnBuilder<? extends Serializable> t : getPersonColumns()) {
+				report.addColumn(t);
+			}
+			report.addColumn(col.column("Oficinas","getOffices",DataTypes.stringType()));
+			report.addColumn(col.column("Cargos","getPositions",DataTypes.stringType()));
+			
+			report.toExcelApiXls(out);
+		
+		} catch (Exception e) {
+			throw new PersonException(e);
+		}		
+	}
+	
+
+	/**
+	 * Reporte de personas agrupadas por oficina
+	 * @param out
+	 * @throws PersonException
+	 */
 	public synchronized void reportPersonsByOffice(OutputStream out) throws PersonException {
 		
 		List<Report> reports = generateAllReports();
@@ -211,7 +251,7 @@ public class ReportsGenerator {
 						.groupByDataType()
 						.addFooterComponent(cmp.pageBreak());
 			
-			DynamicReports.report()
+			JasperReportBuilder report = DynamicReports.report()
 				.title(cmp.verticalList()
 						.add(cmp.text("Datos Personales").setStyle(title))
 						.add(cmp.horizontalList()
@@ -220,19 +260,19 @@ public class ReportsGenerator {
 								)
 						.add(cmp.filler().setFixedHeight(10))
 						)
-						.setColumnTitleStyle(columnTitle)
-						.highlightDetailEvenRows()						
-						.columns(
-//							col.column("Id","getId",DataTypes.stringType()),
-							col.column("Apellido","getLastName",DataTypes.stringType()),
-							col.column("Nombre","getName",DataTypes.stringType()),
-							col.column("Dni","getDni",DataTypes.stringType()),
-							office,
-							col.column("Cargos","getPositions",DataTypes.stringType())
-						)
-				.groupBy(officeG)
-				.setDataSource(new ListBeanDataSource<Report>(reports))
-				.toPdf(out);
+				.setColumnTitleStyle(columnTitle)
+				.highlightDetailEvenRows()						
+				.setDataSource(new ListBeanDataSource<Report>(reports));
+
+			
+			for (TextColumnBuilder<? extends Serializable> t : getPersonColumns()) {
+				report.addColumn(t);
+			}
+			report.addColumn(office);
+			report.addColumn(col.column("Cargos","getPositions",DataTypes.stringType()));
+			
+			report.groupBy(officeG);
+			report.toExcelApiXls(out);
 		
 		} catch (Exception e) {
 			throw new PersonException(e);
@@ -263,7 +303,7 @@ public class ReportsGenerator {
 					.groupByDataType()
 					.addFooterComponent(cmp.pageBreak());			
 			
-			DynamicReports.report()
+			JasperReportBuilder report = DynamicReports.report()
 				.title(cmp.verticalList()
 						.add(cmp.text("Datos Personales").setStyle(title))
 						.add(cmp.horizontalList()
@@ -272,20 +312,19 @@ public class ReportsGenerator {
 								)
 						.add(cmp.filler().setFixedHeight(10))
 						)
-						.setColumnTitleStyle(columnTitle)
-						.highlightDetailEvenRows()						
-						.columns(
-//							col.column("Id","getId",DataTypes.stringType()),
-							col.column("Apellido","getLastName",DataTypes.stringType()),
-							col.column("Nombre","getName",DataTypes.stringType()),
-							col.column("Dni","getDni",DataTypes.stringType()),
-							col.column("Oficinas","getOffices",DataTypes.stringType()),
-							position
-						)
-				.groupBy(positionG)
-				.setDataSource(new ListBeanDataSource<Report>(reports))
-				.toPdf(out);
-		
+				.setColumnTitleStyle(columnTitle)
+				.highlightDetailEvenRows()						
+				.setDataSource(new ListBeanDataSource<Report>(reports));
+
+			for (TextColumnBuilder<? extends Serializable> t : getPersonColumns()) {
+				report.addColumn(t);
+			}
+			report.addColumn(col.column("Oficinas","getOffices",DataTypes.stringType()));
+			report.addColumn(position);
+			
+			report.groupBy(positionG);
+			report.toExcelApiXls(out);
+			
 		} catch (Exception e) {
 			throw new PersonException(e);
 		}		

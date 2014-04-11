@@ -34,7 +34,7 @@ public class IndexServlet extends HttpServlet {
 		
 		
 		
-		resp.setHeader("content-disposition", "attachment; filename=\"personas.pdf\"");
+		resp.setHeader("content-disposition", "attachment; filename=\"personas.xls\"");
 		OutputStream out = resp.getOutputStream();
 		
 		try {

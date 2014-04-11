@@ -1,9 +1,11 @@
 package ar.com.dcsys.model.reports;
 
+import java.util.Date;
 import java.util.List;
 
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.group.GroupType;
+import ar.com.dcsys.data.person.Gender;
 import ar.com.dcsys.data.person.Person;
 
 public class Report {
@@ -54,7 +56,32 @@ public class Report {
 		return person.getDni();
 	}
 
-	
+	public String getAddress() {
+		return person.getAddress();
+	}
+
+	public String getCity() {
+		return person.getCity();
+	}
+
+	public String getCountry() {
+		return person.getCountry();
+	}
+
+	public String getGender() {
+		if (Gender.M.equals(person.getGender())) {
+			return "Masculino";
+		}
+		if (Gender.F.equals(person.getGender())) {
+			return "Femenino";
+		}
+		return "Desconocido";
+	}
+
+	public Date getBirthDate() {
+		return person.getBirthDate();
+	}
+
 	
 	
 
