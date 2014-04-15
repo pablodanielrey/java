@@ -14,6 +14,7 @@ public class Report {
 	
 	private Person person;
 	private Group group;
+	private List<Group> groups;
 	private Period period;
 	private List<Justification> justifications = new ArrayList<>();
 	private List<Justification> gjustifications = new ArrayList<>();
@@ -96,6 +97,14 @@ public class Report {
 		this.person = person;
 	}
 	
+	public List<Group> getGroups() {
+		return groups;
+	}
+
+	public void setGroups(List<Group> groups) {
+		this.groups = groups;
+	}
+
 	public Group getGroup() {
 		return group;
 	}
