@@ -12,6 +12,11 @@ import ar.com.dcsys.gwt.person.shared.PersonValueProxy;
 
 public class JustificationsManagerBean implements JustificationsManager {
 
+	
+	public JustificationsManagerBean() {
+		
+	}
+	
 	@Override
 	public void getJustifications(Receiver<List<Justification>> receiver) {
 		// TODO Auto-generated method stub
