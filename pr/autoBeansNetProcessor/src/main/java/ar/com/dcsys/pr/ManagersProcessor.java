@@ -14,7 +14,6 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.Name;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
@@ -75,17 +74,9 @@ public class ManagersProcessor extends AbstractProcessor {
 								
 								ExecutableElement eee = (ExecutableElement)ee;
 								
-								TypeMirror tm = eee.getReturnType();
-								List<? extends VariableElement> params = eee.getParameters();
-								String name = eee.getSimpleName().toString();
+								String method = processMethod(eee);
 								
-								
-								out.println("public " + tm.toString() + " " + name + "(");
-								for (VariableElement va : params) {
-									out.println(va.toString());
-								}
-								out.println(") {}");
-								
+								out.println(method);
 								
 							}
 							
@@ -113,14 +104,86 @@ public class ManagersProcessor extends AbstractProcessor {
 	}
 
 	
+	/**
+	 * procesa a ver si el método coincide con el prototipo que debería tener.
+	 * 
+	 * public void metodo(Parametro1 p1, Parametro2 p2, .., Receiver<Resultado> rec)
+	 * 
+	 * los parámetros a codificar son opcionales, pero NO el receiver final
+	 * el el caso de que no corresponda con el prototipo retorna un string = ""
+	 * 
+	 * @param ee
+	 * @return
+	 */
 	private String processMethod(ExecutableElement ee) {
 		
 		StringBuilder sb = new StringBuilder();
 		
+		// debe ser void el retorno del mensaje. si no lo ignoro.
 		TypeMirror tm = ee.getReturnType();
-		if (tm.getKind() == TypeKind.) {
-			
+		if (tm.getKind() != TypeKind.VOID) {
+			return "";
 		}
+		sb.append("    ").append("public void ");
+		
+		String name = ee.getSimpleName().toString();
+		sb.append(name);
+		
+		sb.append("(");
+		List<? extends VariableElement> params = ee.getParameters();
+		if (params.size() == 0) {
+			return "";
+		}
+		
+		if (params.size() >= 2) {
+			int end = params.size() - 1;
+			for (int i = 0; i < end; i++) {
+				VariableElement ve = params.get(i);
+				
+				TypeMirror clazz = ve.asType();
+				//String clazz = ve.getSimpleName().toString();
+				String pname = ve.toString();
+
+				sb.append(clazz).append(" ").append(pname).append(",");
+			}
+		}
+		
+		// aca proceso el parametro del tipo de retorno
+		
+		VariableElement receiver = params.get(params.size() - 1);
+		TypeMirror clazz = receiver.asType();
+		
+		sb.append(clazz).append(" ").append("rec");
+		
+		sb.append(")").append(" ").append("{").append("\n");
+		
+		
+		/// ahora escribo el cuerpo del mensaje que es codificar los parámetros y llamar al websocket 
+		
+		String type = clazz.toString();
+		String subtype = type.substring(type.indexOf("<") + 1, type.lastIndexOf(">"));
+		sb.append("//" + subtype);
+		
+		if (type.startsWith("java.lang.")) {
+			// es un tipo primitivo, no necesita codificacion.
+			
+		} else if (type.startsWith(List.class.getName())) {
+			// es una lista. asi que saco el tipo de la lista
+			int ini = type.indexOf("<") + 1;
+			int end = type.indexOf(">");
+			String subsubtype = type.substring(ini, end);
+			
+			sb.append("        ").append(" // ").append(subsubtype).append("\n");
+			
+		} else {
+			sb.append("// no se reconoce el tipo de parámetro").append("\n");
+		}
+		
+		
+		/// fin dle método 
+		
+		sb.append("};").append("\n");
+		
 		
 		return sb.toString();
 	}
