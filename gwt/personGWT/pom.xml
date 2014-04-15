@@ -18,7 +18,6 @@
 
   <dependencies>
 
-
    <!-- para arreglar el WeldDecorator con la nueva interface de Decorator que jetty 9.1 tiene ahora -->
 <!--
    <dependency>
@@ -35,8 +34,7 @@
 	<scope>provided</scope>
    </dependency>
 -->
-   <!--  -->
-	
+
 
     <dependency>
       <groupId>com.google.gwt</groupId>
@@ -130,6 +128,42 @@
     <outputDirectory>${webappDirectory}/WEB-INF/classes</outputDirectory>
 
     <plugins>
+
+<!--
+             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                  <source>${java.version}</source>
+                  <target>${java.version}</target>
+                  <annotationProcessors>
+                        <annotationProcessor>ar.com.dcsys.pr.ManagersProcessor</annotationProcessor>
+                  </annotationProcessors>
+                  <compilerArguments>
+                    <AaddGeneratedAnnotation>true</AaddGeneratedAnnotation>
+                    <Adebug>true</Adebug>
+                  </compilerArguments>
+                </configuration>
+
+                <dependencies>
+                    <dependency>
+                      <groupId>ar.com.dcsys.pr</groupId>
+                      <artifactId>annotations</artifactId>
+                      <version>1.0-SNAPSHOT</version>
+                      <scope>compile</scope>
+                    </dependency>
+
+                    <dependency>
+                      <groupId>ar.com.dcsys.pr</groupId>
+                      <artifactId>autoBeansNetProcessor</artifactId>
+                      <version>1.0-SNAPSHOT</version>
+                      <scope>compile</scope>
+                    </dependency>
+                </dependencies>
+
+              </plugin>
+-->
 
 
       <!-- GWT Maven Plugin -->
@@ -227,16 +261,6 @@
         <configuration>
           <webappDirectory>${webappDirectory}</webappDirectory>
 	  <packagingExcludes>WEB-INF/classes/ar/com/dcsys/gwt/person/client/**.class</packagingExcludes>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3.2</version>
-        <configuration>
-          <source>${java.version}</source>
-          <target>${java.version}</target>
         </configuration>
       </plugin>
 

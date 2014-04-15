@@ -9,6 +9,7 @@
 
   <modules>
 	<module>workarrounds</module>
+	<module>pr</module>
 	<module>dcsysUtils</module>
 	<module>data</module>
 	<module>config-privada</module>
