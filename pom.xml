@@ -12,7 +12,6 @@
 	<module>pr</module>
 	<module>dcsysUtils</module>
 	<module>data</module>
-	<module>config-privada</module>
 	<module>config</module>
 	<module>mail</module>
 	<module>document</module>
