@@ -5,32 +5,27 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
+import ar.com.dcsys.config.Config;
 import ar.com.dcsys.persistence.JdbcConnectionProvider;
-import ar.com.dcsys.persistence.PersistenceData;
 
-@Named
+
 public class PostgresSqlConnectionProvider implements JdbcConnectionProvider {
 
-	private final PersistenceData data;
-	
-	@Inject
-	public PostgresSqlConnectionProvider(@Named("sql") PersistenceData data) {
-		this.data = data;
-	}
+	@Inject @Config String server;
+	@Inject @Config String port;
+	@Inject @Config String database;
+	@Inject @Config String user;
+	@Inject @Config String password;
 	
 	@Override
-	public Connection getConnection() throws SQLException {
+	public synchronized Connection getConnection() throws SQLException {
 		try {
 			
 			StringBuilder sb = new StringBuilder();
-			sb.append("jdbc:postgresql://").append(data.getServer()).append(":").append(data.getPort()).append("/").append(data.getDatabase());
+			sb.append("jdbc:postgresql://").append(server).append(":").append(port).append("/").append(database);
 			String url = sb.toString();
 			
-			String user = data.getUserName();
-			String password = data.getPassword();
-
 			Class.forName("org.postgresql.Driver");
 			return DriverManager.getConnection(url, user,password);					
 			
@@ -41,7 +36,7 @@ public class PostgresSqlConnectionProvider implements JdbcConnectionProvider {
 	
 	
 	@Override
-	public void closeConnection(Connection con) throws SQLException {
+	public synchronized void closeConnection(Connection con) throws SQLException {
 		con.close();
 	}
 
