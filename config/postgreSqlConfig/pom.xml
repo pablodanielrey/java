@@ -9,7 +9,7 @@
   </parent>
     
   
-  <groupId>ar.com.dcsys.data</groupId>
+  <groupId>ar.com.dcsys.config</groupId>
   <artifactId>postgreSqlConfig</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
