@@ -6,6 +6,16 @@ public class JustificationModifiedEvent extends GwtEvent<JustificationModifiedEv
 	
 	public static final com.google.gwt.event.shared.GwtEvent.Type<JustificationModifiedEventHandler> TYPE = new com.google.gwt.event.shared.GwtEvent.Type<JustificationModifiedEventHandler>();
 
+	private final String id;
+	
+	public JustificationModifiedEvent(String id) {
+		this.id = id;
+	}
+	
+	public String getId() {
+		return id;
+	}
+	
 	@Override
 	public com.google.gwt.event.shared.GwtEvent.Type<JustificationModifiedEventHandler> getAssociatedType() {
 		return TYPE;

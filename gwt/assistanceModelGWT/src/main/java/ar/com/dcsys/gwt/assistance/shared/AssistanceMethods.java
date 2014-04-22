@@ -15,4 +15,6 @@ public class AssistanceMethods {
 	public static final String findGeneralJustificationDateBy = "findGeneralJustificationDateBy";
 	public static final String removeGeneralJustificationDate = "removeGeneralJustificationDate";
 	
+	public static final String justificationModifiedEvent = "justificationModifiedEvent";
+	
 }

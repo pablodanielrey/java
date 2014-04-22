@@ -77,7 +77,7 @@ public class GeneralsJustificationActivity extends AbstractActivity implements G
 
 			@Override
 			public void onSuccess(List<Justification> justifications) {
-				if(view == null || justifications == null || justifications.size() < 1) {
+				if (view == null || justifications == null || justifications.size() < 1) {
 					return;
 				}
 				view.setTypes(justifications);

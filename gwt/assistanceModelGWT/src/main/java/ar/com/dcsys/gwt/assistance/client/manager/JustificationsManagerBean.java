@@ -1,38 +1,203 @@
 package ar.com.dcsys.gwt.assistance.client.manager;
 
 import java.util.Date;
+
+import com.google.gwt.event.shared.EventBus;
+import com.google.inject.Inject;
+
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import ar.com.dcsys.data.justification.GeneralJustificationDate;
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.person.Person;
+import ar.com.dcsys.gwt.assistance.client.manager.events.JustificationModifiedEvent;
+import ar.com.dcsys.gwt.assistance.shared.AssistanceEncoderDecoder;
+import ar.com.dcsys.gwt.assistance.shared.AssistanceFactory;
+import ar.com.dcsys.gwt.assistance.shared.AssistanceMethods;
+import ar.com.dcsys.gwt.manager.client.ManagerUtils;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
+import ar.com.dcsys.gwt.message.shared.Event;
+import ar.com.dcsys.gwt.message.shared.Message;
+import ar.com.dcsys.gwt.message.shared.MessageException;
+import ar.com.dcsys.gwt.message.shared.MessageType;
+import ar.com.dcsys.gwt.message.shared.MessageUtils;
 import ar.com.dcsys.gwt.person.shared.PersonValueProxy;
+import ar.com.dcsys.gwt.ws.client.WebSocket;
+import ar.com.dcsys.gwt.ws.client.WebSocketReceiver;
+import ar.com.dcsys.gwt.ws.shared.SocketMessageEvent;
+import ar.com.dcsys.gwt.ws.shared.SocketMessageEventHandler;
 
 public class JustificationsManagerBean implements JustificationsManager {
 
+	private static Logger logger = Logger.getLogger(JustificationsManagerBean.class.getName());
 	
-	public JustificationsManagerBean() {
+	private final ManagerUtils managerUtils;
+	private final AssistanceFactory assistanceFactory;
+	private final MessageUtils messagesFactory;
+	private final AssistanceEncoderDecoder assistanceEncoderDecoder;
+	private final WebSocket socket;
+	
+	private final EventBus eventBus;
+	private final SocketMessageEventHandler eventHandler = new SocketMessageEventHandler() {
 		
+		@Override
+		public void onMessage(Message msg) {
+			
+			if (!MessageType.EVENT.equals(msg.getType())) {
+				return;
+			}
+			
+			Event event = messagesFactory.event(msg);
+			if (!AssistanceMethods.justificationModifiedEvent.equals(event.getName())) {
+				return;
+			}
+			
+			String id = event.getParams();
+			if (id == null) {
+				logger.log(Level.SEVERE, "JustificationModifiedEvent but id == null");
+				return;
+			}
+			
+			try {
+				eventBus.fireEvent(new JustificationModifiedEvent(id));
+			} catch (Exception e) {
+				logger.log(Level.SEVERE, e.getMessage(),e);
+			}
+		}
+	};
+	
+	
+	@Inject
+	public JustificationsManagerBean(EventBus eventBus,
+									 ManagerUtils managerUtils,
+									 AssistanceFactory assistanceFactory, AssistanceEncoderDecoder assistanceEncoderDecoder,
+									 MessageUtils messagesFactory, WebSocket ws) {
+		this.eventBus = eventBus;
+		this.managerUtils = managerUtils;
+		this.assistanceFactory = assistanceFactory;
+		this.messagesFactory = messagesFactory;
+		this.assistanceEncoderDecoder = assistanceEncoderDecoder;
+		this.socket = ws;
+		
+		eventBus.addHandler(SocketMessageEvent.TYPE, eventHandler);
+	}
+	
+	private boolean handleError(Message response, Receiver<?> receiver) {
+		if (MessageType.ERROR.equals(response.getType())) {
+			String error = response.getPayload();
+			receiver.onFailure(new MessageException(error));
+			return true;
+		}
+		return false;
 	}
 	
 	@Override
-	public void getJustifications(Receiver<List<Justification>> receiver) {
-		// TODO Auto-generated method stub
-		
+	public void getJustifications(final Receiver<List<Justification>> receiver) {
+		try {
+			Message msg = messagesFactory.method(AssistanceMethods.getJustifications);
+			
+			//envio el mensaje al servidor
+			socket.open();
+			socket.send(msg, new WebSocketReceiver() {
+				
+				@Override
+				public void onSuccess(Message response) {
+					
+					if (handleError(response, receiver)) {
+						return;
+					}
+					
+					List<Justification> justifications = null;
+					try {
+						String list = response.getPayload();
+						justifications = assistanceEncoderDecoder.decodeJustificationList(list);
+					} catch (Exception e) {
+						receiver.onFailure(e);
+					}
+					
+					try {
+						receiver.onSuccess(justifications);
+					} catch (Exception e) {
+						logger.log(Level.SEVERE,e.getMessage(),e);
+					}
+					
+				}
+				
+				@Override
+				public void onFailure(Throwable t) {
+					receiver.onFailure(t);
+				}
+			});
+		} catch (Exception e) {
+			receiver.onFailure(e);
+		}
 	}
 
 	@Override
-	public void persist(Justification justification, Receiver<Void> receiver) {
-		// TODO Auto-generated method stub
-		
+	public void persist(Justification justification, final Receiver<Void> receiver) {
+		try {
+			//serializo los parametros y genero el mensaje
+			String json = ManagerUtils.encode(assistanceFactory, Justification.class, justification);
+			Message msg = messagesFactory.method(AssistanceMethods.persistJustification,json);
+			
+			//envío el mensaje al servidor
+			socket.open();
+			socket.send(msg, new WebSocketReceiver() {
+
+				@Override
+				public void onSuccess(Message response) {
+					if (handleError(response, receiver)) {
+						return;
+					}
+					receiver.onSuccess(null);
+				}
+
+				@Override
+				public void onFailure(Throwable t) {
+					logger.log(Level.SEVERE,t.getMessage());
+					receiver.onFailure(t);
+				}
+				
+			});
+		} catch (Exception e) {
+			logger.log(Level.SEVERE,e.getMessage());
+			receiver.onFailure(e);
+		}
 	}
 
 	@Override
-	public void remove(Justification justification, Receiver<Void> receiver) {
-		// TODO Auto-generated method stub
-		
+	public void remove(Justification justification,final Receiver<Void> receiver) {
+		try {
+			//serializo los parametros y genero el mensaje
+			String json = ManagerUtils.encode(assistanceFactory, Justification.class, justification);
+			Message msg = messagesFactory.method(AssistanceMethods.removeJustification,json);
+			
+			//envío el mensaje al servidor
+			socket.open();
+			socket.send(msg, new WebSocketReceiver() {
+
+				@Override
+				public void onSuccess(Message response) {
+					if (handleError(response, receiver)) {
+						return;
+					}
+					receiver.onSuccess(null);
+				}
+
+				@Override
+				public void onFailure(Throwable t) {
+					logger.log(Level.SEVERE,t.getMessage());
+					receiver.onFailure(t);
+				}
+				
+			});
+		} catch (Exception e) {
+			logger.log(Level.SEVERE,e.getMessage());
+			receiver.onFailure(e);
+		}
 	}
 
 	@Override
