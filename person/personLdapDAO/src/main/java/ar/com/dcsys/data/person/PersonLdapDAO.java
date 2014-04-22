@@ -51,8 +51,6 @@ import ar.com.dcsys.persistence.DirContextProvider;
 
 public class PersonLdapDAO extends AbstractLdapPersonDAO {
 
-	private static final long serialVersionUID = 1L;
-
 	private static final String[] userAttrs = {"entryUUID", 
 												"dn","uid",
 												"userPassword", 
@@ -64,7 +62,6 @@ public class PersonLdapDAO extends AbstractLdapPersonDAO {
 												"friendlyCountryName", "co",
 												"registeredAddress",
 												"x-dcsys-dni",
-												"x-dcsys-legajo",
 												"x-dcsys-gender",
 												"x-dcsys-uuid",
 												"x-dcsys-mail",
@@ -137,7 +134,6 @@ public class PersonLdapDAO extends AbstractLdapPersonDAO {
 						String gender = getStringAtt("x-dcsys-gender",attrs);
 						String locality = getStringAtt("l",attrs);
 						String country = getStringAtt("co",attrs);
-						String studentNumber = getStringAtt("x-dcsys-legajo",attrs);
 						
 						String version = getStringAtt("modifyTimestamp",attrs);
 						
@@ -192,7 +188,6 @@ public class PersonLdapDAO extends AbstractLdapPersonDAO {
 							
 							person.setCity(locality);
 							person.setCountry(country);
-							person.setStudentNumber(studentNumber);
 							person.setTypes(types);
 							
 							Attribute tels = attrs.get("telephoneNumber");
@@ -643,11 +638,6 @@ public class PersonLdapDAO extends AbstractLdapPersonDAO {
 					Attribute uid = new BasicAttribute("uid",p.getDni());
 					attrs.put(uid);
 					
-					if (checkType(p, PersonType.STUDENT)) {
-						Attribute legajo = new BasicAttribute("x-dcsys-legajo",p.getStudentNumber());
-						attrs.put(legajo);
-					}
-					
 					Attribute cn = new BasicAttribute("cn");
 					cn.add(p.getName() + " " + p.getLastName());
 					attrs.put(cn);
@@ -707,17 +697,6 @@ public class PersonLdapDAO extends AbstractLdapPersonDAO {
 					 * 
 					 */
 					List<ModificationItem> lMods = new ArrayList<ModificationItem>();
-					
-					Attribute legajo = new BasicAttribute("x-dcsys-legajo");
-					if (checkType(p, PersonType.STUDENT)) {
-						String studentNumber = p.getStudentNumber();
-						if (studentNumber != null && (!studentNumber.trim().equals(""))) {
-							legajo.add(studentNumber);
-						}
-						lMods.add(new ModificationItem(DirContext.REPLACE_ATTRIBUTE,legajo));
-					} else {
-						lMods.add(new ModificationItem(DirContext.REPLACE_ATTRIBUTE,legajo));
-					}
 					
 					Attribute cn = new BasicAttribute("cn",p.getName() + " " + p.getLastName());
 					lMods.add(new ModificationItem(DirContext.REPLACE_ATTRIBUTE,cn));

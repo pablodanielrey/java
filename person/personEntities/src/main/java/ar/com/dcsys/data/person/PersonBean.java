@@ -19,7 +19,6 @@ public class PersonBean implements Person, Serializable {
 	private String country;
 	private Gender gender = Gender.M;
 	private Date birthDate;
-	private String studentNumber;
 
 	
 	private List<PersonType> types;

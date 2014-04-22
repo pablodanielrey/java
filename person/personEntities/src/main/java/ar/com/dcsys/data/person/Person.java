@@ -34,9 +34,6 @@ public interface Person {
 	public Date getBirthDate();
 	public void setBirthDate(Date d);
 	
-	public String getStudentNumber();
-	public void setStudentNumber(String number);
-	
 	public List<PersonType> getTypes();
 	public void setTypes(List<PersonType> types);
 	
