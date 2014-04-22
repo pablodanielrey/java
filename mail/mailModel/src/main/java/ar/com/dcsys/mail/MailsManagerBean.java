@@ -19,31 +19,33 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
 import javax.mail.internet.MimeMultipart;
 
+import ar.com.dcsys.config.Config;
+
 public class MailsManagerBean implements MailsManager {
 
 	
 	private static final Logger logger = Logger.getLogger(MailsManagerBean.class.getName());
-	private final MailData mailData;
 	
-	@Inject
-	public MailsManagerBean(MailData mailData) {
-		this.mailData = mailData;
-	}
+	@Inject @Config String user;
+	@Inject @Config String password;
+	@Inject @Config String server;
+	@Inject @Config String auth;			// true o false
 	
 	
 	private Session getSession() {
 
-		final String user = mailData.serverUser();
-		final String password = mailData.serverPassword();
-		final String host = mailData.server();
-		
-		
 		Properties env = new Properties();
-		env.put("mail.smtp.host", host);
+		env.put("mail.smtp.host", server);
 		env.put("mail.debug",true);
 		
-		if (user != null && password != null) {
-			env.put("mail.smtp.auth","true");
+		if (auth == null) {
+			if (user != null && password != null) {
+				env.put("mail.smtp.auth",true);
+			} else {
+				env.put("mail.smtp.auth",false);
+			}
+		} else {
+			env.put("mail.smtp.auth",auth);
 		}
 	
 		return Session.getInstance(env,new Authenticator() {
