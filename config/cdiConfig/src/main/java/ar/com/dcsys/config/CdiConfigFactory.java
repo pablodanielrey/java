@@ -9,15 +9,13 @@ import java.util.logging.Logger;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
 
-
-
 public class CdiConfigFactory {
 
 	private static final Logger logger = Logger.getLogger(CdiConfigFactory.class.getName());
-	private static final String configValues = "/etc/glassfish/dcsys.properties";
-	private volatile static Properties properties;
+	private final String configValues = "/etc/glassfish/dcsys.properties";
+	private Properties properties;
 	
-	private synchronized static Properties getProperties() {
+	private synchronized Properties getProperties() {
 		if (properties == null) {
 			properties = new Properties();
 			try {
