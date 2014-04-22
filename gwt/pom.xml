@@ -30,10 +30,15 @@
     <module>personModelGWT</module>
     <module>personGWT</module>
 
-    <module>mapauModelGWT</module>
-    <module>mapauGWT</module>
     <module>assistanceGWT</module>
     <module>assistanceModelGWT</module>
+
+    <!--
+	deshabilitados hasta que nos pongamos a laburar en eso.
+    <module>mapauModelGWT</module>
+    <module>mapauGWT</module>
+    -->
+
   </modules>
 
 
