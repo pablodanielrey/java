@@ -119,13 +119,6 @@
     </dependency>
 
     <dependency>
-      <groupId>ar.com.dcsys.data</groupId>
-      <artifactId>firmwareConfig</artifactId>
-      <version>1.0-SNAPSHOT</version>
-      <scope>compile</scope>
-    </dependency>
-
-    <dependency>
       <groupId>ar.com.dcsys.gwt</groupId>
       <artifactId>mapauModelGWT</artifactId>
       <version>1.0-SNAPSHOT</version>
@@ -221,30 +214,6 @@
 	  <packagingExcludes>WEB-INF/classes/ar/com/dcsys/gwt/mapau/client/**.class</packagingExcludes>
         </configuration>
       </plugin>
-
-
-     <plugin>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-maven-plugin</artifactId>
-        <version>${jetty.version}</version>
-
-        <!-- para que sea acorde con el gwt-maven-plugin -->
-        <configuration>
-                <!--
-                <scanIntervalSeconds>2</scanIntervalSeconds>
-                <reload>automatic</reload>
-                -->
-                <webAppSourceDirectory>${webappDirectory}</webAppSourceDirectory>
-
-                <!-- referencias : http://agorava.org/news/2012/07/10/Starting-a-CDI-webapp-from-Maven-with-Weld-servlet-and-jetty-plugin/ -->
-                <webApp>
-                  <overrideDescriptor>${webappDirectory}/WEB-INF/web-add.xml</overrideDescriptor>
-                </webApp>
-                <jettyEnvXml>${webappDirectory}/WEB-INF/jetty-env.xml</jettyEnvXml>
-                <contextXml>${webappDirectory}/WEB-INF/jetty-context.xml</contextXml>
-        </configuration>
-
-     </plugin>
 
 
  <plugin>
