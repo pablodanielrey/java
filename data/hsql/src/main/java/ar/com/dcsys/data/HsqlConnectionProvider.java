@@ -6,30 +6,26 @@ import java.sql.SQLException;
 
 import javax.inject.Inject;
 
+import ar.com.dcsys.config.Config;
 import ar.com.dcsys.persistence.JdbcConnectionProvider;
-import ar.com.dcsys.persistence.PersistenceData;
 
 public class HsqlConnectionProvider implements JdbcConnectionProvider {
 
-	private final PersistenceData data;
+	@Inject @Config String database;	// target/testdb
+	@Inject @Config String user;		// "SA"
+	@Inject @Config String password;	// ""
 	
-	@Inject
-	public HsqlConnectionProvider(PersistenceData data) {
-		this.data = data;
-	}
 	
 	@Override
 	public Connection getConnection() throws SQLException {
 		try {
 			
 			StringBuilder sb = new StringBuilder();
-			sb.append("jdbc:hsqldb:file:").append(data.getDatabase());
+			sb.append("jdbc:hsqldb:file:").append(database);
 			String url = sb.toString();
-			String user = data.getUserName();
-			String pass = data.getPassword();
 			
 			Class.forName("org.hsqldb.jdbc.JDBCDriver" );
-			Connection c = DriverManager.getConnection(url, user, pass);
+			Connection c = DriverManager.getConnection(url, user, password);
 			return c;
 			
 		} catch (ClassNotFoundException e) {
