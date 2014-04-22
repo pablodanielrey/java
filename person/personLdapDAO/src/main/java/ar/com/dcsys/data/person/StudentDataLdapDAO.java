@@ -237,7 +237,7 @@ public class StudentDataLdapDAO implements StudentDataDAO {
 	}
 
 	@Override
-	public StudentData findByStudentNumber(String sn) throws PersonException {
+	public String findByStudentNumber(String sn) throws PersonException {
 		
 		if (sn == null) {
 			throw new PersonException("StudentNumber == null");
@@ -245,7 +245,7 @@ public class StudentDataLdapDAO implements StudentDataDAO {
 		
 		try {
 			SearchControls sc = new SearchControls();
-			sc.setReturningAttributes(new String[]{"x-dcsys-legajo","x-dcsys-uuid"});
+			sc.setReturningAttributes(new String[]{"x-dcsys-uuid"});
 			sc.setSearchScope(SearchControls.SUBTREE_SCOPE);
 	
 			String filter = "(x-dcsys-legajo= " +  sn + ")";
@@ -263,17 +263,10 @@ public class StudentDataLdapDAO implements StudentDataDAO {
 					SearchResult res = (SearchResult)data.next();
 					Attributes attrs = res.getAttributes();
 
-					Attribute legajo = attrs.get("x-dcsys-legajo");
-					String studentNumber = (String)legajo.get();
-						
 					Attribute uuid = attrs.get("x-dcsys-uuid");
 					String id = (String)uuid.get();
 						
-					StudentDataBean sd = new StudentDataBean();
-					sd.setId(id);
-					sd.setStudentNumber(studentNumber);
-						
-					return sd;
+					return id;
 					
 				} finally {
 					data.close();

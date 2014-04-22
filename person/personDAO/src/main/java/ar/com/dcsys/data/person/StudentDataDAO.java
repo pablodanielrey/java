@@ -10,6 +10,6 @@ public interface StudentDataDAO {
 	public StudentData findById(String id) throws PersonException;
 	public List<StudentData> findAll() throws PersonException;
 	
-	public StudentData findByStudentNumber(String sn) throws PersonException;
+	public String findByStudentNumber(String sn) throws PersonException;
 	
 }
