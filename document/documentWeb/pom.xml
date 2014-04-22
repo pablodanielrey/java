@@ -62,6 +62,34 @@
 
     <plugins>
 
+                        <plugin>
+                                <groupId>org.glassfish.maven.plugin</groupId>
+                                <artifactId>maven-glassfish-plugin</artifactId>
+                                <version>2.1</version>
+                                <configuration>
+                                <glassfishDirectory>${glassfish.home}</glassfishDirectory>
+                                        <user>admin</user>
+                                        <passwordFile>${glassfish.passwd}</passwordFile>
+                                        <domain>
+                                                <name>domain1</name>
+                                                <httpPort>8080</httpPort>
+                                                <adminPort>4848</adminPort>
+                                        </domain>
+                                        <components>
+                                                <component>
+                                                        <name>${project.artifactId}</name>
+		                                        <artifact>target/${project.build.finalName}.war</artifact>
+                                                </component>
+                                        </components>
+                                        <debug>true</debug>
+                                        <terse>false</terse>
+                                        <echo>true</echo>
+                                </configuration>
+                        </plugin>
+
+
+
+<!--
         <plugin>
                 <groupId>org.glassfish.embedded</groupId>
                 <artifactId>maven-embedded-glassfish-plugin</artifactId>
@@ -84,7 +112,7 @@
                   </execution>
                </executions>
         </plugin>
-
+-->
 
     </plugins>
 
