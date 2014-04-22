@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <!-- POM file generated with GWT webAppCreator -->
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>gwt</artifactId>
+    <groupId>ar.com.dcsys.gwt</groupId>
+    <version>1.0</version>
+  </parent>
+
+  <groupId>ar.com.dcsys.gwt.auth</groupId>
+  <artifactId>auth</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0</version>
+  <name>proyectos de autentificacion de GWT</name>
+
+  <modules>
+    <module>authGWT</module>
+    <module>authModelGWT</module>
+  </modules>
+
+
+</project>
