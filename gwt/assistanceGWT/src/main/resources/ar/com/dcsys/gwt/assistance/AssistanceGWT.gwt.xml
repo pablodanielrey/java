@@ -23,6 +23,7 @@
   <inherits name="ar.com.dcsys.PersonEntities"/>
   <inherits name="ar.com.dcsys.AssistanceEntities"/>
   <inherits name="ar.com.dcsys.gwt.clientMessages.ClientMessagesGWT"/>
+  <inherits name="ar.com.dcsys.gwt.person.PersonModelGWT"/>
   <inherits name="ar.com.dcsys.gwt.auth.AuthModelGWT"/>
   <inherits name="ar.com.dcsys.gwt.assistance.AssistanceModelGWT"/>
   <!-- <inherits name="ar.com.dcsys.data.AssistanceEntities"/>    -->                              

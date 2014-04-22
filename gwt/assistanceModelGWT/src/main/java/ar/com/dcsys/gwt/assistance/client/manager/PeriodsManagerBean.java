@@ -5,6 +5,10 @@ import ar.com.dcsys.gwt.person.shared.PersonValueProxy;
 
 public class PeriodsManagerBean implements PeriodsManager {
 
+	public PeriodsManagerBean() {
+		
+	}
+	
 	@Override
 	public void findIdsPersonsWithPeriodAssignation(
 			Receiver<PersonValueProxy> receiver) {
