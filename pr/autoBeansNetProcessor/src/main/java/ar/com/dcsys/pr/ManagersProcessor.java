@@ -189,4 +189,55 @@ public class ManagersProcessor extends AbstractProcessor {
 	}
 	
 	
+	private Param processParam(VariableElement ve) {
+		TypeMirror tm = ve.asType();
+		String type = tm.toString();
+		
+		Param p = new Param();
+		
+		if (hasSubtype(type)) {
+			
+		}
+		
+		return p;
+	}
+	
+	
+	private class Param {
+		boolean isList;
+		String clazz;
+		String name;
+	}
+	
+	
+	
+	private boolean hasSubtype(String t) {
+		return ((t.indexOf("<") != -1) && (t.indexOf(">") != -1));
+	}
+	
+	private String getSubtype(String t) {
+		int ini = t.indexOf("<") + 1;
+		int end = t.lastIndexOf(">");
+		String subtype = t.substring(ini, end);
+		return subtype;
+		
+	}
+	
+	private String getType(String t) {
+		return t.substring(0,t.indexOf("<"));
+	}
+	
+	
+	
+	private <T> boolean isType(TypeMirror type, Class<T> t) {
+		return type.toString().startsWith(t.getName());
+	}
+	
+	private boolean isPrimitive(String type) {
+		return type.startsWith("java.lang.");
+		
+	}
+	
+	
+	
 }
