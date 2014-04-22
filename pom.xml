@@ -18,14 +18,15 @@
 	<module>document</module>
 	<module>person</module>
 	<module>auth</module>
-	<module>mapau</module>
+<!--	<module>mapau</module> -->
+	<module>tutoria</module>
 	<module>assistance</module>
 	<module>gwt</module>
 	<module>ear</module>
   </modules>
   
   <properties>
-    <glassfish.home>/home/pablo/glassfish4/glassfish</glassfish.home>
+    <glassfish.home>/home/pablo/java/glassfish4/glassfish</glassfish.home>
     <glassfish.passwd>${glassfish.home}/domains/domain1/config/domain-passwords</glassfish.passwd>
     <servlet.version>3.1.0</servlet.version>
     <cdi.version>1.1</cdi.version>
