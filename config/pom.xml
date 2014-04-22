@@ -18,11 +18,6 @@
 
   <modules>
 	<module>cdiConfig</module>
-	<module>firmwareConfig</module>
-	<module>postgreSqlConfig</module>
-	<module>mailNullConfig</module>
-	<module>mailSqlConfig</module>
-	<module>openLdapConfig</module>
   </modules>
 
 </project>
