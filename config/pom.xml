@@ -17,6 +17,7 @@
   <name>Config</name>
 
   <modules>
+	<module>cdiConfig</module>
 	<module>firmwareConfig</module>
 	<module>postgreSqlConfig</module>
 	<module>mailNullConfig</module>
