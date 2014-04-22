@@ -8,6 +8,7 @@
   <name>Projectos de Java</name>
 
   <modules>
+    	<module>cdiUtils</module>
 	<module>workarrounds</module>
 	<module>pr</module>
 	<module>dcsysUtils</module>
@@ -21,7 +22,6 @@
 	<module>assistance</module>
 	<module>gwt</module>
 	<module>ear</module>
-    	<module>cdiUtils</module>
   </modules>
   
   <properties>
