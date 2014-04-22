@@ -48,16 +48,6 @@ public class PersonBean implements Person, Serializable {
 	}
 
 	@Override
-	public String getStudentNumber() {
-		return studentNumber;
-	}
-
-	@Override
-	public void setStudentNumber(String studentNumber) {
-		this.studentNumber = studentNumber;
-	}
-
-	@Override
 	public List<Telephone> getTelephones() {
 		return telephones;
 	}
