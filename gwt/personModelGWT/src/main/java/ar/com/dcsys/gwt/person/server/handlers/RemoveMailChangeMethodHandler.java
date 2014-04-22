@@ -20,7 +20,6 @@ import ar.com.dcsys.gwt.message.shared.Method;
 import ar.com.dcsys.gwt.person.shared.PersonEncoderDecoder;
 import ar.com.dcsys.gwt.person.shared.PersonFactory;
 import ar.com.dcsys.gwt.person.shared.PersonMethods;
-import ar.com.dcsys.mail.MailData;
 import ar.com.dcsys.mail.MailsManager;
 import ar.com.dcsys.model.MailChangesManager;
 
@@ -34,7 +33,6 @@ public class RemoveMailChangeMethodHandler extends AbstractMessageHandler {
 	private final MailChangesManager mailChangesModel;
 	private final PersonFactory personFactory;
 	private final MailsManager mailsManager;
-	private final MailData mailData;
 	
 	@Override
 	protected Logger getLogger() {
@@ -52,14 +50,12 @@ public class RemoveMailChangeMethodHandler extends AbstractMessageHandler {
 									  PersonEncoderDecoder encoderDecoder, 
 									  MessageUtils messagesFactory,
 									  MailChangesManager mailChangesManager,
-									  MailsManager mailsManager,
-									  MailData mailData) {
+									  MailsManager mailsManager) {
 		this.encoderDecoder = encoderDecoder;
 		this.mf = messagesFactory;
 		this.mailChangesModel = mailChangesManager;
 		this.personFactory = personFactory;
 		this.mailsManager = mailsManager;
-		this.mailData = mailData;
 	}
 
 	/**

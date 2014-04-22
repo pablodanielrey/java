@@ -8,10 +8,11 @@ import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import ar.com.dcsys.config.Config;
 import ar.com.dcsys.data.person.MailChange;
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.gwt.manager.server.ServerManagerUtils;
 import ar.com.dcsys.gwt.manager.server.AbstractMessageHandler;
+import ar.com.dcsys.gwt.manager.server.ServerManagerUtils;
 import ar.com.dcsys.gwt.message.server.MessageContext;
 import ar.com.dcsys.gwt.message.server.handlers.MessageHandlers;
 import ar.com.dcsys.gwt.message.shared.Message;
@@ -22,7 +23,6 @@ import ar.com.dcsys.gwt.message.shared.Method;
 import ar.com.dcsys.gwt.person.shared.PersonEncoderDecoder;
 import ar.com.dcsys.gwt.person.shared.PersonFactory;
 import ar.com.dcsys.gwt.person.shared.PersonMethods;
-import ar.com.dcsys.mail.MailData;
 import ar.com.dcsys.mail.MailException;
 import ar.com.dcsys.mail.MailsManager;
 import ar.com.dcsys.model.MailChangesManager;
@@ -37,7 +37,8 @@ public class PersistMailChangeMethodHandler extends AbstractMessageHandler {
 	private final MailChangesManager mailChangesModel;
 	private final PersonFactory personFactory;
 	private final MailsManager mailsManager;
-	private final MailData mailData;
+	
+	@Inject @Config String from;
 	
 	@Override
 	protected Logger getLogger() {
@@ -55,14 +56,13 @@ public class PersistMailChangeMethodHandler extends AbstractMessageHandler {
 									  PersonEncoderDecoder encoderDecoder, 
 									  MessageUtils messagesFactory,
 									  MailChangesManager mailChangesManager,
-									  MailsManager mailsManager,
-									  MailData mailData) {
+									  MailsManager mailsManager) {
 		this.encoderDecoder = encoderDecoder;
 		this.mf = messagesFactory;
 		this.mailChangesModel = mailChangesManager;
 		this.personFactory = personFactory;
 		this.mailsManager = mailsManager;
-		this.mailData = mailData;
+
 	}
 
 	/**
@@ -120,7 +120,6 @@ public class PersistMailChangeMethodHandler extends AbstractMessageHandler {
 	}
 	
 	private void sendMail(Person person, MailChange mailChange) throws MailException {
-		String from = mailData.from();
 		String to = mailChange.getMail().getMail();
 		
 		String token = mailChange.getToken();
