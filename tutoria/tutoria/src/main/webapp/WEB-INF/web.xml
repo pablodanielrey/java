@@ -15,10 +15,25 @@
             <listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
         </listener>
 
+<!-- 
+		<filter>
+			<filter-name>encodingFilter</filter-name>
+			<filter-class>ar.com.dcsys.server.EncodingFilter</filter-class>
+		</filter>
+
+        <filter-mapping>
+        	<filter-name>encodingFilter</filter-name>
+        	<url-pattern>/*</url-pattern>
+        </filter-mapping>
+
+ -->
+ 
         <filter>
             <filter-name>ShiroFilter</filter-name>
             <filter-class>org.apache.shiro.web.servlet.IniShiroFilter</filter-class>
         </filter>
+        
+        
         
         <filter-mapping>
             <filter-name>ShiroFilter</filter-name>

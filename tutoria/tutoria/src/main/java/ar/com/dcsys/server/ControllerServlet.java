@@ -42,29 +42,64 @@ public class ControllerServlet extends HttpServlet {
 		process(req, resp);
 	}
 	
+	private static final String[] situations = {"Situaciones Administrativas",
+												"Situaciones Académicas y de Estudio",
+												"Situaciones Personales",
+												"Situaciones Económicas"};
+	
+	
 	private void process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		try {
-		
+			req.setCharacterEncoding("UTF-8");
+			
+			
 			String sdate = req.getParameter("date");
 			String sn = req.getParameter("studentNumber");
 			String situation = req.getParameter("situation");
 			
-			if (sdate != null && sn != null && situation != null) {
-				
-				// agrego la situación
-				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-				Date date = df.parse(sdate);
-				
-				String id = getLoggedUserId();
-				
-				tutoriaManager.add(id, date, sn, situation);
+			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			Date date = null;
+			if (sdate != null) {
+				try {
+					date = df.parse(sdate);
+				} catch (Exception e) {
+					// nada la ignoro. date queda == null
+				}
 			}
 			
-			req.setAttribute("situations", new String[]{"Situaciones Administrativas",
-														"Situaciones Académicas y de Estudio",
-														"Situaciones Personales",
-														"Situaciones Económicas"});
+			
+			// por el maldito encoding tuve que usar esto.
+			try {
+				Integer index = Integer.parseInt(situation);
+				situation = situations[index];
+				
+			} catch (Exception e) {
+				situation = null;
+			}
+			
+			if (date != null && sn != null && situation != null) {
+				
+				
+				// agrego la situación
+				String id = getLoggedUserId();
+				try {
+					tutoriaManager.add(id, date, sn, situation);
+					req.setAttribute("message", "Registro agregado exitósamente");
+					
+				} catch (Exception e) {
+					req.setAttribute("message", "Error agregando registro, chequee los datos ingresados");	
+				}
+				
+			}
+			
+			req.setAttribute("situations", situations);
+
+			if (date == null) {
+				date = new Date();
+			}
+			sdate = df.format(date); 
+			req.setAttribute("date",sdate);
 			
 			req.getRequestDispatcher("/index.jsp").forward(req, resp);
 		
