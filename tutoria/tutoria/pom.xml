@@ -1,0 +1,209 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>ar.com.dcsys</groupId>
+    <artifactId>tutoria</artifactId>
+    <version>1.0</version>
+  </parent>
+
+  <groupId>ar.com.dcsys.tutoria</groupId>
+  <artifactId>tutoria</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>war</packaging>
+  <name>tutoria</name>
+
+  <dependencies>
+
+	<!-- dynamic reports -->
+
+<dependency>
+  <groupId>net.sourceforge.dynamicreports</groupId>
+  <artifactId>dynamicreports-core</artifactId>
+  <version>${dynamic-reports.version}</version>
+  <scope>compile</scope>
+</dependency>
+
+<dependency>
+  <groupId>net.sourceforge.dynamicreports</groupId>
+  <artifactId>dynamicreports-adhoc</artifactId>
+  <version>${dynamic-reports.version}</version>
+  <scope>compile</scope>
+</dependency>  
+
+<dependency>
+  <groupId>net.sourceforge.dynamicreports</groupId>
+  <artifactId>dynamicreports-googlecharts</artifactId>
+  <version>${dynamic-reports.version}</version>
+  <scope>compile</scope>
+</dependency>
+
+
+<dependency>
+    <groupId>net.sourceforge.jexcelapi</groupId>
+    <artifactId>jxl</artifactId>
+    <version>2.6.12</version>
+    <scope>compile</scope>
+</dependency>
+
+<!--
+	<dependency>
+      	   <groupId>javax.enterprise</groupId>
+	   <artifactId>cdi-api</artifactId>
+	   <version>1.1</version>
+	   <scope>provided</scope>
+	</dependency>
+-->
+    	<dependency>
+	      <groupId>javax.inject</groupId>
+	      <artifactId>javax.inject</artifactId>
+	      <version>1</version>
+	      <scope>provided</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${servlet.version}</version>
+	    <scope>provided</scope>
+        </dependency>
+
+
+	<!-- postgresql -->
+
+	<dependency>
+	  <groupId>ar.com.dcsys.config</groupId>
+	  <artifactId>cdiConfig</artifactId>
+	  <version>1.0-SNAPSHOT</version>
+	</dependency>
+
+	<dependency>
+	    <groupId>ar.com.dcsys.data</groupId>
+	    <artifactId>postgresql</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+	</dependency>
+
+
+	<!-- auth -->
+
+       <dependency>
+            <groupId>ar.com.dcsys.data</groupId>
+            <artifactId>authEntities</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>ar.com.dcsys.model</groupId>
+            <artifactId>authModel</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>ar.com.dcsys.auth</groupId>
+            <artifactId>userPasswordAuthLdapModule</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+
+
+	<!-- person -->
+
+        <dependency>
+            <groupId>ar.com.dcsys.data</groupId>
+            <artifactId>personEntities</artifactId>
+	    <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+		
+        <dependency>
+            <groupId>ar.com.dcsys.model</groupId>
+            <artifactId>personModel</artifactId>
+	    <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+	<dependency>
+	   <groupId>ar.com.dcsys.data</groupId>
+	   <artifactId>personLdapDAO</artifactId>
+	   <version>1.0-SNAPSHOT</version>
+	</dependency>
+
+	<dependency>
+	   <groupId>ar.com.dcsys.mail</groupId>
+	   <artifactId>mailModel</artifactId>
+	   <version>1.0-SNAPSHOT</version>
+	</dependency>
+
+
+  </dependencies>
+
+  <build>
+    <finalName>tutoria</finalName>
+
+
+    <plugins>
+
+			<plugin>
+				<groupId>org.glassfish.maven.plugin</groupId>
+				<artifactId>maven-glassfish-plugin</artifactId>
+				<version>2.1</version>
+				<configuration>
+				<glassfishDirectory>${glassfish.home}</glassfishDirectory>
+					<user>admin</user>
+					<passwordFile>${glassfish.passwd}</passwordFile>
+					<domain>
+						<name>domain1</name>
+						<httpPort>8080</httpPort>
+						<adminPort>4848</adminPort>
+					</domain>
+					<components>
+						<component>
+							<name>${project.artifactId}</name>
+					<artifact>target/${project.build.finalName}.war</artifact>
+						</component>
+					</components>
+					<debug>true</debug>
+					<terse>false</terse>
+					<echo>true</echo>
+				</configuration>
+			</plugin>
+
+<!--
+        <plugin>
+                <groupId>org.glassfish.embedded</groupId>
+                <artifactId>maven-embedded-glassfish-plugin</artifactId>
+                <version>4.0</version>
+
+                <configuration>
+                        <app>target/shortener</app>
+                        <port>8080</port>
+                        <contextRoot>/s</contextRoot>
+                        <debug>true</debug>
+                        <autoCreate>true</autoCreate>
+                </configuration>
+                <executions>
+                <execution>
+                     <phase>install</phase>
+                     <goals>
+                            <goal>deploy</goal>
+                            <goal>run</goal>
+                     </goals>
+                  </execution>
+               </executions>
+        </plugin>
+
+-->
+    </plugins>
+
+
+
+  </build>
+
+</project>

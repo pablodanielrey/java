@@ -248,7 +248,7 @@ public class StudentDataLdapDAO implements StudentDataDAO {
 			sc.setReturningAttributes(new String[]{"x-dcsys-uuid"});
 			sc.setSearchScope(SearchControls.SUBTREE_SCOPE);
 	
-			String filter = "(x-dcsys-legajo= " +  sn + ")";
+			String filter = "(x-dcsys-legajo=" +  sn + ")";
 
 			DirContext ctx = cp.getDirContext();
 			try {
