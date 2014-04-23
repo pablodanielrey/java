@@ -3,15 +3,15 @@
 <html>
 <body>
 	
-	<form name="loginform" action="index" method="post">
+	<form name="loginform" action="" method="post">
 		<table align="left" border="0" cellspacing="0" cellpadding="3">
 		    <tr>
 		        <td>Username:</td>
-		        <td><input type="text" name="username" maxlength="30"></td>
+		        <td><input type="text" name="j_username" maxlength="30"></td>
 		    </tr>
 		    <tr>
 		        <td>Password:</td>
-		        <td><input type="password" name="password" maxlength="30"></td>
+		        <td><input type="password" name="j_password" maxlength="30"></td>
 		    </tr>
 		    <tr>
 		        <td colspan="2" align="left"><input type="checkbox" name="rememberMe"><font size="2">Remember Me</font></td>
