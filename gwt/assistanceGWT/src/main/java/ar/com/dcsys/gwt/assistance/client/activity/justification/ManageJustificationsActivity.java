@@ -44,7 +44,7 @@ public class ManageJustificationsActivity extends AbstractActivity implements Ma
 			if (view == null) {
 				return;
 			}
-			view.clear();
+			view.clearData();
 			update();
 		}
 	};

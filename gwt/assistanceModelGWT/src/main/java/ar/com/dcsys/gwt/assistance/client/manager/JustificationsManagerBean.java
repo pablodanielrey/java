@@ -1,5 +1,6 @@
 package ar.com.dcsys.gwt.assistance.client.manager;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import com.google.gwt.event.shared.EventBus;
@@ -17,6 +18,7 @@ import ar.com.dcsys.gwt.assistance.client.manager.events.JustificationModifiedEv
 import ar.com.dcsys.gwt.assistance.shared.AssistanceEncoderDecoder;
 import ar.com.dcsys.gwt.assistance.shared.AssistanceFactory;
 import ar.com.dcsys.gwt.assistance.shared.AssistanceMethods;
+import ar.com.dcsys.gwt.assistance.shared.lists.GeneralJustificationDateList;
 import ar.com.dcsys.gwt.manager.client.ManagerUtils;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.message.shared.Event;
@@ -229,25 +231,115 @@ public class JustificationsManagerBean implements JustificationsManager {
 	}
 
 	@Override
-	public void persist(List<GeneralJustificationDate> justifications,
-			Receiver<Void> receiver) {
-		// TODO Auto-generated method stub
+	public void persist(List<GeneralJustificationDate> justifications, final Receiver<Void> receiver) {
+		try {
+			//serializo los parametros y genero el mensaje
+			String json = assistanceEncoderDecoder.encodeGeneralJustificationDateList(justifications);
+			Message msg = messagesFactory.method(AssistanceMethods.persistGeneralJustificationDate,json);
+			
+			//envío el mensaje al servidor
+			socket.open();
+			socket.send(msg, new WebSocketReceiver() {
+
+				@Override
+				public void onSuccess(Message response) {
+					if (handleError(response, receiver)) {
+						return;
+					}
+					receiver.onSuccess(null);
+				}
+
+				@Override
+				public void onFailure(Throwable t) {
+					logger.log(Level.SEVERE,t.getMessage());
+					receiver.onFailure(t);
+				}
+				
+			});
+		} catch (Exception e) {
+			logger.log(Level.SEVERE,e.getMessage());
+			receiver.onFailure(e);
+		}
+	}
+
+	@Override
+	public void findGeneralJustificationDateBy(Date start, Date end, final Receiver<List<GeneralJustificationDate>> receiver) {
+		try {
+			String[] params = new String[2];
+			params[0] = start.toString();
+			params[1] = end.toString(); 
+			String json = ManagerUtils.encodeParams(params);
+			Message msg = messagesFactory.method(AssistanceMethods.findGeneralJustificationDateBy,json);
+			
+			//envio el mensaje al servidor
+			socket.open();
+			socket.send(msg, new WebSocketReceiver() {
+	
+				@Override
+				public void onSuccess(Message response) {
+					if (handleError(response, receiver)) {
+						return;
+					}
+					
+					List<GeneralJustificationDate> justifications = null;
+					try {
+						String list = response.getPayload();
+						justifications = assistanceEncoderDecoder.decodeGeneralJustificationDateList(list);
+					} catch (Exception e) {
+						receiver.onFailure(e);
+					}
+					
+					try {
+						receiver.onSuccess(justifications);
+					} catch (Exception e) {
+						logger.log(Level.SEVERE,e.getMessage(),e);
+					}
+				}
+	
+				@Override
+				public void onFailure(Throwable t) {
+					receiver.onFailure(t);
+				}
+				
+			});
+			
+		} catch (Exception e) {
+			logger.log(Level.SEVERE,e.getMessage());
+			receiver.onFailure(e);
+		}
 		
 	}
 
 	@Override
-	public void findGeneralJustificationDateBy(Date start, Date end,
-			Receiver<List<GeneralJustificationDate>> receiver) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void removeGeneralJustificationDate(List<GeneralJustificationDate> justifications,final Receiver<Void> receiver) {
+		try {
+			//serializo los parametros y genero el mensaje
+			String json = assistanceEncoderDecoder.encodeGeneralJustificationDateList(justifications);
+			Message msg = messagesFactory.method(AssistanceMethods.removeGeneralJustificationDate,json);
+			
+			//envío el mensaje al servidor
+			socket.open();
+			socket.send(msg, new WebSocketReceiver() {
 
-	@Override
-	public void removeGeneralJustificationDate(
-			List<GeneralJustificationDate> justifications,
-			Receiver<Void> receiver) {
-		// TODO Auto-generated method stub
-		
+				@Override
+				public void onSuccess(Message response) {
+					if (handleError(response, receiver)) {
+						return;
+					}
+					receiver.onSuccess(null);
+				}
+
+				@Override
+				public void onFailure(Throwable t) {
+					logger.log(Level.SEVERE,t.getMessage());
+					receiver.onFailure(t);
+				}
+				
+			});
+		} catch (Exception e) {
+			logger.log(Level.SEVERE,e.getMessage());
+			receiver.onFailure(e);
+		}
 	}
 
 }

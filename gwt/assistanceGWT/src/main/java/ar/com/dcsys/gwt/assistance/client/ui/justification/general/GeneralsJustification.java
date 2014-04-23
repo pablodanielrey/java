@@ -30,7 +30,7 @@ import com.google.gwt.user.datepicker.client.DatePicker;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-public class GeneralsJustification extends Composite implements GeneralsJustificationView{
+public class GeneralsJustification extends Composite implements GeneralsJustificationView {
 
 	private static GeneralsJustificationUiBinder uiBinder = GWT.create(GeneralsJustificationUiBinder.class);
 
