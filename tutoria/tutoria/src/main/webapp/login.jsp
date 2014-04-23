@@ -6,15 +6,12 @@
 	<form name="loginform" action="" method="post">
 		<table align="left" border="0" cellspacing="0" cellpadding="3">
 		    <tr>
-		        <td>Username:</td>
+		        <td>Usuario:</td>
 		        <td><input type="text" name="j_username" maxlength="30"></td>
 		    </tr>
 		    <tr>
-		        <td>Password:</td>
+		        <td>Clave:</td>
 		        <td><input type="password" name="j_password" maxlength="30"></td>
-		    </tr>
-		    <tr>
-		        <td colspan="2" align="left"><input type="checkbox" name="rememberMe"><font size="2">Remember Me</font></td>
 		    </tr>
 		    <tr>
 		        <td colspan="2" align="right"><input type="submit" name="submit" value="Login"></td>

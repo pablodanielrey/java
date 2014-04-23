@@ -3,6 +3,7 @@
 <html>
 <body>
 	<div>
+		<div><a href="logout">salir</a></div>
 		<div>Ingreso de datos de tutorías</div>
 		<div>
 			<form action="index" method="POST">
