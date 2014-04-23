@@ -17,7 +17,7 @@ import ar.com.dcsys.model.PersonsManager;
 import ar.com.dcsys.model.auth.AuthManager;
 import ar.com.dcsys.server.tutoria.TutoriaManager;
 
-@WebServlet("/index")
+@WebServlet(urlPatterns={"/","/index"})
 public class ControllerServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
@@ -60,7 +60,7 @@ public class ControllerServlet extends HttpServlet {
 														"Situaciones Personales",
 														"Situaciones Económicas"});
 			
-			req.getRequestDispatcher("index.jsp").forward(req, resp);
+			req.getRequestDispatcher("/index.jsp").forward(req, resp);
 		
 		} catch (Exception e) {
 			logger.log(Level.SEVERE,e.getMessage(),e);
