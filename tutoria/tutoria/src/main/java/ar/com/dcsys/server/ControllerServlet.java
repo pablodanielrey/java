@@ -13,6 +13,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
+
+import ar.com.dcsys.data.auth.principals.IdPrincipal;
 import ar.com.dcsys.model.PersonsManager;
 import ar.com.dcsys.model.auth.AuthManager;
 import ar.com.dcsys.server.tutoria.TutoriaManager;
@@ -52,7 +56,9 @@ public class ControllerServlet extends HttpServlet {
 				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 				Date date = df.parse(sdate);
 				
-				tutoriaManager.add("1", date, sn, situation);
+				String id = getLoggedUserId();
+				
+				tutoriaManager.add(id, date, sn, situation);
 			}
 			
 			req.setAttribute("situations", new String[]{"Situaciones Administrativas",
@@ -66,6 +72,12 @@ public class ControllerServlet extends HttpServlet {
 			logger.log(Level.SEVERE,e.getMessage(),e);
 			throw new ServletException(e);
 		}
+	}
+
+	private String getLoggedUserId() {
+		Subject currentUser = SecurityUtils.getSubject();
+		IdPrincipal p = (IdPrincipal)currentUser.getPrincipals().getPrimaryPrincipal();
+		return p.getName();
 	}
 	
 	
