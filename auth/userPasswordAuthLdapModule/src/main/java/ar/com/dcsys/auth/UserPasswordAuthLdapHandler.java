@@ -170,7 +170,7 @@ public class UserPasswordAuthLdapHandler extends AbstractAuthHandler {
 		DirContext ctx = cp.getDirContext();
 		try {
 		
-			String filter = "&((uid=" + username + ")(userPassword=" + password + "))";
+			String filter = "(&(uid=" + username + ")(userPassword=" + password + "))";
 			
 			SearchControls sc = new SearchControls();
 			sc.setReturningAttributes(userAttrs);
