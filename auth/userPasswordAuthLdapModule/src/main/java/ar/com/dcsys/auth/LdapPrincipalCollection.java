@@ -11,6 +11,10 @@ import java.util.Set;
 
 import org.apache.shiro.subject.PrincipalCollection;
 
+import ar.com.dcsys.data.auth.principals.DniPrincipal;
+import ar.com.dcsys.data.auth.principals.IdPrincipal;
+import ar.com.dcsys.data.auth.principals.UserNamePrincipal;
+
 public class LdapPrincipalCollection implements PrincipalCollection {
 
 	private static final long serialVersionUID = 1L;
@@ -28,7 +32,16 @@ public class LdapPrincipalCollection implements PrincipalCollection {
 
 	@Override
 	public Object getPrimaryPrincipal() {
-		return principals.get(0);
+		for (Principal p : principals) {
+			if (p instanceof IdPrincipal) {
+				return p;
+			}
+		}
+		if (principals.size() > 0) {
+			return principals.get(0);	
+		} else {
+			return null;
+		}
 	}
 
 	@Override
@@ -54,7 +67,9 @@ public class LdapPrincipalCollection implements PrincipalCollection {
 
 	@Override
 	public List asList() {
-		return principals;
+		List<Principal> ps = new ArrayList<>();
+		ps.addAll(principals);
+		return ps;
 	}
 
 	@Override
@@ -62,9 +77,15 @@ public class LdapPrincipalCollection implements PrincipalCollection {
 		return new HashSet(principals);
 	}
 
+	
 	@Override
 	public Collection fromRealm(String realmName) {
-		return Arrays.asList(UserPasswordAuthLdapHandler.class.getName());
+
+		if (realmName.equals(UserPasswordAuthLdapHandler.class.getName())) {
+			return asList();
+		} else {
+			return new ArrayList<>();
+		}
 	}
 
 	@Override
