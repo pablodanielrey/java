@@ -63,6 +63,10 @@ public class ControllerServlet extends HttpServlet {
 				sn = null;
 			}
 			
+			if (sn != null && sn.trim().equals("")) {
+				sn = null;
+			}
+			
 			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			Date date = null;
 			if (sdate != null) {
@@ -83,7 +87,7 @@ public class ControllerServlet extends HttpServlet {
 				situation = null;
 			}
 			
-			if (date != null && situation != null) {
+			if (date != null && situation != null && (unknown != null || sn != null)) {
 				
 				
 				// agrego la situación
