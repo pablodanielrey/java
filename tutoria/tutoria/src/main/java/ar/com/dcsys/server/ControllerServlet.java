@@ -94,7 +94,7 @@ public class ControllerServlet extends HttpServlet {
 				String id = getLoggedUserId();
 				try {
 					tutoriaManager.add(id, date, sn, situation);
-					req.setAttribute("message", "Registro agregado exitósamente");
+					req.setAttribute("message", "Registro agregado exitosamente");
 					
 				} catch (Exception e) {
 					req.setAttribute("message", "Error agregando registro, chequee los datos ingresados");	
