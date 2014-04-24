@@ -20,9 +20,10 @@
 	<module>assistanceDAO</module>
 	<module>assistanceHsqlDAO</module>
 	<module>assistancePostgreSqlDAO</module>
+    	<module>assistanceParams</module>
 	<module>assistanceModel</module>
-	<module>reportsWar</module>
-    <module>assistanceParams</module>
+	<module>assistanceReportsModel</module>
+	<module>assistanceReportsWar</module>
   </modules>
 
 </project>
