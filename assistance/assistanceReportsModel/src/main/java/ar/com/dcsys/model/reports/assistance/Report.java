@@ -39,17 +39,17 @@ public class Report {
 		}
 		
 		StringBuilder sb = new StringBuilder();
-		if (person.getName() != null) {
-			sb.append(person.getName());
-		} else {
-			sb.append("nulo");
-		}
-		
 		if (person.getLastName() != null) {
-			sb.append(" " + person.getLastName());
+			sb.append(person.getLastName());
 		} else {
 			sb.append(" nulo");
 		}
+
+		if (person.getName() != null) {
+			sb.append(" ").append(person.getName());
+		} else {
+			sb.append("nulo");
+		}		
 		
 		return sb.toString();
 	}
