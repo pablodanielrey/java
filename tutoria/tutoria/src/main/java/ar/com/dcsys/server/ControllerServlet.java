@@ -57,6 +57,11 @@ public class ControllerServlet extends HttpServlet {
 			String sdate = req.getParameter("date");
 			String sn = req.getParameter("studentNumber");
 			String situation = req.getParameter("situation");
+			String unknown = req.getParameter("unknown");
+			
+			if (unknown != null && unknown.equals("true")) {
+				sn = null;
+			}
 			
 			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			Date date = null;
@@ -78,7 +83,7 @@ public class ControllerServlet extends HttpServlet {
 				situation = null;
 			}
 			
-			if (date != null && sn != null && situation != null) {
+			if (date != null && situation != null) {
 				
 				
 				// agrego la situación

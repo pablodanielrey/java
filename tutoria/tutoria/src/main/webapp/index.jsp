@@ -6,6 +6,7 @@
 	<style>
 		#message {
 			color: red;
+			text-align: center;
 		}
 		
 		#logout {
@@ -46,6 +47,10 @@
 				<div>
 					Legajo:
 					<input name="studentNumber"/>
+				</div>
+				<div>
+					Legajo desconocido
+					<input type="checkbox" name="unknown" value="true"/>  
 				</div>
 				<div>
 					Tipo:
