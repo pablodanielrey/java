@@ -8,17 +8,28 @@
 		}
 		
 		#title {
+			display: float:
+			text-align: center;
 			font-size: large;
 		}
 		
+		#logout {
+			color: red;
+			text-align: right;
+		}
 	</style>
 <body>
 
 	<jsp:useBean id="constants" class="ar.com.dcsys.server.assistance.ConstantsBean"/>
 
+	<div id="logout">
+		<a href="/asistencia/logout">Salir</a>
+	</div> 
+
+	<div id="title">Tipo de reporte</div>
+
 	<div id="form">
 		<form action="/asistencia/absence" method="POST">
-			<div id="title">Tipo de reporte</div>
 			<div>
 				<div>
 					Inicio: 
