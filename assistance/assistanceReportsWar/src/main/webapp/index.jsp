@@ -7,8 +7,8 @@
 			text-align: center;
 		}
 		
-		#title {
-			display: float:
+		#titulo {
+			display: float;
 			text-align: center;
 			font-size: large;
 		}
@@ -26,7 +26,9 @@
 		<a href="/asistencia/logout">Salir</a>
 	</div> 
 
-	<div id="title">Tipo de reporte</div>
+	<div id="titulo">
+		Reportes
+	</div>
 
 	<div id="form">
 		<form action="/asistencia/absence" method="POST">
