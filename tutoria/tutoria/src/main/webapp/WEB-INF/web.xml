@@ -33,8 +33,6 @@
             <filter-class>org.apache.shiro.web.servlet.IniShiroFilter</filter-class>
         </filter>
         
-        
-        
         <filter-mapping>
             <filter-name>ShiroFilter</filter-name>
             <url-pattern>/*</url-pattern>
@@ -44,5 +42,15 @@
             <dispatcher>ERROR</dispatcher>
         </filter-mapping>
 	
+		<security-constraint>
+			<web-resource-collection>
+				<web-resource-name>tutoria</web-resource-name>
+				<url-pattern>/*</url-pattern>
+			</web-resource-collection>
+			<user-data-constraint>
+				<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+			</user-data-constraint>
+		</security-constraint>
+
 	
 </web-app>
