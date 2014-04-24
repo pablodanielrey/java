@@ -92,9 +92,9 @@ public class GroupAbsenceReportServlet extends HttpServlet {
 			
 
 			if (group == null || group.getName() == null) {
-			resp.setHeader("content-disposition", "attachment; filename=\"ausencias-grupos." + type + "\"");
+			resp.setHeader("content-disposition", "attachment; filename=\"ausencias-grupos." + exportType + "\"");
 			} else {
-				resp.setHeader("content-disposition", "attachment; filename=\"ausencias-grupo-" + group.getName() + "." + type + "\"");
+				resp.setHeader("content-disposition", "attachment; filename=\"ausencias-grupo-" + group.getName() + "." + exportType + "\"");
 			}
 			OutputStream out = resp.getOutputStream();
 			
