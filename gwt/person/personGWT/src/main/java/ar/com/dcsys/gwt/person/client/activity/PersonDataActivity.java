@@ -15,9 +15,8 @@ import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.person.client.manager.PersonsManager;
 import ar.com.dcsys.gwt.person.client.place.UpdatePersonDataPlace;
 import ar.com.dcsys.gwt.person.client.ui.basicData.PersonDataView;
-import ar.com.dcsys.gwt.person.client.ui.basicData.PersonDataViewCss;
-import ar.com.dcsys.gwt.person.client.ui.basicData.PersonDataViewResources;
 import ar.com.dcsys.gwt.person.shared.PersonFactory;
+import ar.com.dcsys.model.StudentDataManager;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
@@ -108,9 +107,14 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 			}
 		}
 
-		view.setStudentDataVisible(true);
+		/**
+		 * TODO: Hasta que implemente el manager de studentData del lado del cliente.
+		 * ahora lo pongo en false.
+		 */
+		view.setStudentDataVisible(false);
 		view.setStudentNumberReadOnly(true);
-		view.setStudentNumber(person.getStudentNumber());
+		
+		
 	}
 	
 	
@@ -390,7 +394,12 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 		eP.setCity(view.getCity());
 		eP.setCountry(view.getCountry());
 		eP.setGender(view.getGender());
-		eP.setStudentNumber(view.getStudentNumber());
+		
+		/**
+		 * TODO: Hasta que tenga el manager e studentDataManager del lado del cliente loc comento.
+		 * 
+		 */
+		//eP.setStudentNumber(view.getStudentNumber());
 		
 		String tel = view.getTelephone();
 		if (tel != null && (!tel.trim().equals(""))) {
