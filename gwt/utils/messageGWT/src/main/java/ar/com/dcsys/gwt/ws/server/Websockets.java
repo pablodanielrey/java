@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.enterprise.event.Event;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpSession;
@@ -44,6 +46,7 @@ public class Websockets {
 	private static Logger logger = Logger.getLogger(Websockets.class.getName());
 
 	private Map<String,Session> sessions = new ConcurrentHashMap<>();
+	
 	
 	private final MessageTransport transport = new MessageTransport() {
 		
@@ -146,8 +149,11 @@ public class Websockets {
 	
 	private final List<MethodHandler> handlers = new ArrayList<>();
 	private final List<MessageFilter> filters = new ArrayList<>();
+	private final ExecutorService execService;
 
 	public Websockets() {
+		
+		execService = Executors.newCachedThreadPool();
 		
 		try {
 			BeanManager bm = BeanManagerLocator.getBeanManager();
@@ -239,6 +245,66 @@ public class Websockets {
 	}
 
 	
+	/**
+	 * Implementa el procesamiento de un mensaje en un Thread diferente. asi se libera el websocket para recibir mas mensajes.
+	 * @author pablo
+	 *
+	 */
+	private class OnMessageRunnable implements Runnable {
+		
+		private final DefaultMessageContext ctx;
+		private final Message msg; 
+		private final Session session;
+		
+		public OnMessageRunnable(Message msg, DefaultMessageContext ctx, Session session) {
+			this.msg = msg;
+			this.ctx = ctx;
+			this.session = session;
+		}
+		
+		@Override
+		public void run() {
+			
+			// aplico todos los filtros registrados
+			for (MessageFilter mf : filters) {
+				mf.filter(ctx,msg);
+			}
+			
+			
+			if (MessageType.FUNCTION.equals(msg.getType())) {
+				
+				///////////// METODO ////////////
+				
+				MessageUtils mf = getMessagesFactory();
+				Method method = mf.method(msg);
+				
+				logger.info("Metodo : " + method.getName());
+				logger.info("Parametros : " + method.getParams());
+				
+				logger.info("Buscando handler para manejarlo");
+				boolean handled = false;
+				for (MethodHandler mh : handlers) {
+					if (mh.handles(method)) {
+						logger.info("Handler encontrado - manejando el mensaje");
+						mh.handle(ctx,msg,method);
+						handled = true;
+					}
+				}
+				
+				if (!handled) {
+					MessageEncoderDecoder med = getEncoderDecoder();
+					sendError(med,session,msg.getId(),"No se encontró handler para la función : " + method.getName());
+				}			
+			
+			} else {
+				MessageEncoderDecoder med = getEncoderDecoder();
+				sendError(med,session,msg.getId(),"Tipo de mensaje desconocido");
+			}
+		}
+	}
+	
+	
+	
 	@OnMessage
 	public void onMessage(Session session, String json) {
 		logger.log(Level.INFO,"Msg : " + json);
@@ -256,43 +322,8 @@ public class Websockets {
 		Message msg = med.decode(Message.class,json);
 		msg.setSessionId(sId);
 
+		execService.execute(new OnMessageRunnable(msg, ctx, session));
 		
-		// aplico todos los filtros registrados
-		for (MessageFilter mf : filters) {
-			mf.filter(ctx,msg);
-		}
-		
-		
-		if (MessageType.FUNCTION.equals(msg.getType())) {
-			
-			///////////// METODO ////////////
-			
-			MessageUtils mf = getMessagesFactory();
-			Method method = mf.method(msg);
-			
-			logger.info("Metodo : " + method.getName());
-			logger.info("Parametros : " + method.getParams());
-			
-			logger.info("Buscando handler para manejarlo");
-			boolean handled = false;
-			for (MethodHandler mh : handlers) {
-				if (mh.handles(method)) {
-					mh.handle(ctx,msg,method);
-					handled = true;
-				}
-			}
-			
-			if (!handled) {
-				sendError(med,session,msg.getId(),"No se encontró handler para la función : " + method.getName());
-			}
-			
-			return;
-		} 
-	
-		
-		///////// no se conoce el tipo de mensaje asi que se envía un error /////////////////
-		
-		sendError(med,session,msg.getId(),"Tipo de mensaje desconocido");
 	}
 	
 	

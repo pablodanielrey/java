@@ -9,7 +9,6 @@ public class DefaultMessageContext implements MessageContext {
 	private MessageTransport messageTransport;
 	private HttpSession httpSession;
 	
-	
 	public DefaultMessageContext() {
 	}
 	
