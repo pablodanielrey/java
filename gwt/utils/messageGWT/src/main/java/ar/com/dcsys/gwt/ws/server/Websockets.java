@@ -103,7 +103,6 @@ public class Websockets {
 		}
 	};
 
-	
 	private MessageUtils messagesFactory = null;
 	private MessageEncoderDecoder encoderDecoder = null;
 	private MessageFactory messageFactory = null;
@@ -285,7 +284,7 @@ public class Websockets {
 				boolean handled = false;
 				for (MethodHandler mh : handlers) {
 					if (mh.handles(method)) {
-						logger.info("Handler encontrado - manejando el mensaje");
+						logger.info("Handler encontrado " + mh.getClass().getName() + "- manejando el mensaje");
 						mh.handle(ctx,msg,method);
 						handled = true;
 					}
