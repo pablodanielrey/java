@@ -2,6 +2,8 @@ package ar.com.dcsys.gwt.messages.shared;
 
 public class MessageEncoderDecoder {
 
+	public static final String BROADCAST = "00000000000000000000000000000000";			// 32 lenght
+	
 	/**
 	 * Codifico el mensaje en id + mensage
 	 * @param msg

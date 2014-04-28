@@ -2,9 +2,12 @@ package ar.com.dcsys.gwt.messages.server;
 
 import javax.servlet.http.HttpSession;
 
+import ar.com.dcsys.gwt.messages.shared.Transport;
+
 public interface MessageContext {
 
-	String sessionId();
+	Transport getTransport();
 	HttpSession getHttpSession();
+	
 	
 }
