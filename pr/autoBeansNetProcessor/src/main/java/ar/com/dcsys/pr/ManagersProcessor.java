@@ -111,26 +111,29 @@ public class ManagersProcessor extends AbstractProcessor {
 			sb.append("public class ").append(clientSimpleName).append(" {").append("\n");
 			
 			for (Method method : manager.methods) {
-				sb.append(methodSpacer).append("public void ").append(method.name).append("(");
+				sb.append("\n").append(methodSpacer).append("public void ").append(method.name).append("(");
 				
 				// los parametros
 				for (Param param : method.params) {
-					sb.append(param.typeMirror.toString());
-					sb.append(" ").append(param.name).append(",");
+					String t = param.typeMirror.toString();
+					if (t.startsWith("java.lang.")) {
+						t = t.replace("java.lang.", "");
+					}
+					sb.append(t).append(" ").append(param.name).append(", ");
 				}
 
 				// el receiver
 				sb.append(method.receiver.typeMirror.toString());
 				sb.append(" ").append(method.receiver.name);
 				
-				sb.append(") {");
+				sb.append(") {\n");
 				
 				// implementacion del metodo.
 				
-				sb.append("}");				// method }
+				sb.append("\n").append(methodSpacer).append("}");				// method }
 			}
 			
-			sb.append("}");		// class }
+			sb.append("\n").append("}");		// class }
 			
 			
 			try {
@@ -146,6 +149,12 @@ public class ManagersProcessor extends AbstractProcessor {
 			
 		}
 	}
+	
+	private void generateFactories(List<Manager> managers) {
+		
+	}
+	
+	
 	
 	@Override
 	public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
