@@ -1,7 +1,7 @@
 package ar.com.dcsys.pr;
 
-import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -23,12 +23,125 @@ import javax.tools.Diagnostic.Kind;
 import javax.tools.JavaFileObject;
 
 
-@SupportedAnnotationTypes(
-		{"ar.com.dcsys.pr.ClientManager"}
-	)
+@SupportedAnnotationTypes({"ar.com.dcsys.pr.ClientManager"})
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
 public class ManagersProcessor extends AbstractProcessor {
 
+
+	private static final String methodSpacer = "    ";
+	private static final String sentenceSpacer = methodSpacer + "    ";
+
+	
+	private String getPackageName(Element e) {
+		return ((PackageElement)e.getEnclosingElement()).getQualifiedName().toString();
+	};
+
+
+	private void generateServerFiles(List<Manager> managers) {
+		for (Manager manager : managers) {
+			
+			String serverPackage = manager.packageName.replace(".shared", ".server");
+			String serverName = serverPackage + "." + manager.className + "ServerHandler";
+			
+			StringBuilder sb = new StringBuilder();
+			sb.append("package " + serverPackage).append("\n\n");
+			
+			// imports
+			sb.append("import ar.com.dcsys.gwt.manager.server.handler.MethodHandler;\n");
+			sb.append("import ar.com.dcsys.gwt.messages.server.cdi.handler.HandlersContainer;\n");
+
+			
+			sb.append("public class ").append(manager.className).append(" ").append("implements MethodHandler").append(" {").append("\n");
+
+			// el register del handler
+			sb.append(methodSpacer).append("public void register(@Observes HandlersContainer<MethodHandler> handlers) { handlers.add(this); }").append("\n\n");
+
+			// metodo principal de procesamiento del mensaje
+			sb.append(methodSpacer).append("public void handle() {").append("\n");
+			
+			sb.append("/*");		// comentario de prueba
+			
+			for (Method method : manager.methods) {
+				sb.append(sentenceSpacer).append(method.name).append("(");
+				
+				for (Param param : method.params) {
+					sb.append(param.name).append(",");
+				}
+				sb.append(method.receiver.name);
+				
+				sb.append(");");				
+			}
+			
+			sb.append("*/");		// comentario de prueba
+			
+			sb.append("}").append("\n");		// method }
+			
+			sb.append("}");						// class }
+			
+			
+			try {
+				JavaFileObject jfo = processingEnv.getFiler().createSourceFile(serverName);
+				PrintWriter out = new PrintWriter(jfo.openWriter());
+				
+				// genero el codigo.
+				
+				out.flush();
+				out.close();
+				
+			} catch (Exception e) {
+				
+			}
+			
+		}
+	}
+
+	private void generateClientFiles(List<Manager> managers) {
+		for (Manager manager : managers) {
+			
+			String clientPackage = manager.packageName.replace(".shared", ".client"); 
+			String clientName =  clientPackage + "." + manager.className + "Client";
+
+			StringBuilder sb = new StringBuilder();
+			sb.append("package " + clientPackage).append("\n\n");
+			sb.append("public class ").append(manager.className).append(" {").append("\n");
+			
+			for (Method method : manager.methods) {
+				sb.append(methodSpacer).append("public void ").append(method.name).append("(");
+				
+				// los parametros
+				for (Param param : method.params) {
+					sb.append(param.typeMirror.toString());
+					sb.append(" ").append(param.name).append(",");
+				}
+
+				// el receiver
+				sb.append(method.receiver.typeMirror.toString());
+				sb.append(" ").append(method.receiver.name);
+				
+				sb.append(") {");
+				
+				// implementacion del metodo.
+				
+				sb.append("}");				// method }
+			}
+			
+			sb.append("}");		// class }
+			
+			
+			try {
+				JavaFileObject jfo = processingEnv.getFiler().createSourceFile(clientName);
+				PrintWriter out = new PrintWriter(jfo.openWriter());
+				out.println(sb.toString());
+				out.flush();
+				out.close();
+				
+			} catch (Exception e) {
+				
+			}
+			
+		}
+	}
+	
 	@Override
 	public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 		
@@ -36,67 +149,55 @@ public class ManagersProcessor extends AbstractProcessor {
 		
 		messager.printMessage(Kind.WARNING, "Iniciando procesamiento de los clients");
 		
-		try {
+		List<Manager> managers = new ArrayList<>();
 		
-			for (TypeElement te : annotations) {
+		for (TypeElement te : annotations) {
+			
+			Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(te);
+			for (Element e : elements) {
 				
-				Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(te);
-				for (Element e : elements) {
+				if (e.getKind() == ElementKind.INTERFACE) {
 					
-					if (e.getKind() == ElementKind.INTERFACE) {
-						
-						PackageElement packageElement = (PackageElement)e.getEnclosingElement();
-						
-						String className = e.getSimpleName() + "BeanAuto";
-						String classQName = packageElement.getQualifiedName() + "." + className;
-						
-						JavaFileObject jfo = processingEnv.getFiler().createSourceFile(classQName);
-						PrintWriter out = new PrintWriter(jfo.openWriter());
-						
-						out.println("package " + packageElement.getQualifiedName() + ";");
-						out.println("");
-						out.println("public class " + className + " {");
-						out.println("");
-	
-						
-						List<? extends Element> eelements = e.getEnclosedElements();
-						for (Element ee : eelements) {
+					String pName = getPackageName(e);
+					if (!pName.endsWith("shared")) {
+						// debe estar definida la interfaz en shared.
+						continue;
+					}
+					
+					Manager manager = new Manager();
+					manager.packageName = getPackageName(e);
+					manager.className = ((TypeElement)e).getSimpleName().toString();
 
-							if (ee.getKind() == ElementKind.FIELD) {
-								
-								VariableElement ve = (VariableElement)ee;
-								
-								// las ignoro.
-								
-							}
+					
+					List<? extends Element> eelements = e.getEnclosedElements();
+					for (Element ee : eelements) {
+
+						if (ee.getKind() == ElementKind.FIELD) {
 							
-							if (ee.getKind() == ElementKind.METHOD) {
-								
-								ExecutableElement eee = (ExecutableElement)ee;
-								
-								String method = processMethod(eee);
-								
-								out.println(method);
-								
-							}
+							VariableElement ve = (VariableElement)ee;
+							
+							// las ignoro.
 							
 						}
 						
-						
-						out.println("}");
-						out.println("");
-						out.flush();
-						out.close();
+						if (ee.getKind() == ElementKind.METHOD) {
+							
+							ExecutableElement eee = (ExecutableElement)ee;
+							processMethod(manager,eee);
+							
+						}
 						
 					}
 					
+					managers.add(manager);
 				}
 				
-				
 			}
+		}
 	
-		} catch (IOException e) {
-			messager.printMessage(Kind.ERROR, e.getMessage());
+		if (managers.size() > 0) {
+			generateClientFiles(managers);
+			generateServerFiles(managers);
 		}
 		
 		return true;
@@ -104,36 +205,59 @@ public class ManagersProcessor extends AbstractProcessor {
 	}
 
 	
+
 	/**
 	 * procesa a ver si el método coincide con el prototipo que debería tener.
 	 * 
 	 * public void metodo(Parametro1 p1, Parametro2 p2, .., Receiver<Resultado> rec)
 	 * 
 	 * los parámetros a codificar son opcionales, pero NO el receiver final
-	 * el el caso de que no corresponda con el prototipo retorna un string = ""
 	 * 
 	 * @param ee
 	 * @return
 	 */
-	private String processMethod(ExecutableElement ee) {
-		
-		StringBuilder sb = new StringBuilder();
+	private void processMethod(Manager manager, ExecutableElement ee) {
 		
 		// debe ser void el retorno del mensaje. si no lo ignoro.
 		TypeMirror tm = ee.getReturnType();
 		if (tm.getKind() != TypeKind.VOID) {
-			return "";
+			return;
 		}
-		sb.append("    ").append("public void ");
-		
-		String name = ee.getSimpleName().toString();
-		sb.append(name);
-		
-		sb.append("(");
+
 		List<? extends VariableElement> params = ee.getParameters();
-		if (params.size() == 0) {
-			return "";
+		if (params.size() <= 0) {
+			return;
 		}
+		
+		VariableElement rec = params.get(params.size() - 1);
+		TypeMirror type = rec.asType();
+		if (!"ar.com.dcsys.manager.shared.Receiver".equals(type.toString())) {
+			return;
+		}
+		
+		Method method = new Method();
+		method.name = ee.getSimpleName().toString();
+
+		Param receiver = new Param();
+		receiver.name = "rec";
+		receiver.typeMirror = rec.asType();
+		receiver.typeKind = receiver.typeMirror.getKind();
+		method.receiver = receiver;
+		
+		params.remove(rec);
+		for (VariableElement ve : params) {
+			Param param = new Param();
+			param.name = ve.getSimpleName().toString();
+			param.typeMirror = ve.asType();
+			param.typeKind = param.typeMirror.getKind();
+			method.params.add(param);
+		}
+		
+		
+		manager.methods.add(method);
+	}
+
+		/*
 		
 		if (params.size() >= 2) {
 			int end = params.size() - 1;
@@ -188,28 +312,7 @@ public class ManagersProcessor extends AbstractProcessor {
 		return sb.toString();
 	}
 	
-	
-	private Param processParam(VariableElement ve) {
-		TypeMirror tm = ve.asType();
-		String type = tm.toString();
-		
-		Param p = new Param();
-		
-		if (hasSubtype(type)) {
-			
-		}
-		
-		return p;
-	}
-	
-	
-	private class Param {
-		boolean isList;
-		String clazz;
-		String name;
-	}
-	
-	
+	*/
 	
 	private boolean hasSubtype(String t) {
 		return ((t.indexOf("<") != -1) && (t.indexOf(">") != -1));

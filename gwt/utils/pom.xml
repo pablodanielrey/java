@@ -16,8 +16,12 @@
   <name>proyectos de utilidades GWT</name>
 
   <modules>
+    <module>utilsGWT</module>
     <module>clientMessagesGWT</module>
-    <module>messageGWT</module>
+    <module>messagesGWT</module>
+<!--    <module>messageGWT</module> -->
+    <module>webSocketGWT</module>
+    <module>managerGWT</module>
   </modules>
 
 
