@@ -41,17 +41,23 @@ public class ManagersProcessor extends AbstractProcessor {
 		for (Manager manager : managers) {
 			
 			String serverPackage = manager.packageName.replace(".shared", ".server");
-			String serverName = serverPackage + "." + manager.className + "ServerHandler";
+			String serverSimpleName = manager.className + "ServerHandler";
+			String serverName = serverPackage + "." + serverSimpleName;
 			
 			StringBuilder sb = new StringBuilder();
-			sb.append("package " + serverPackage).append("\n\n");
+			sb.append("package " + serverPackage).append(";\n\n");
 			
 			// imports
 			sb.append("import ar.com.dcsys.gwt.manager.server.handler.MethodHandler;\n");
-			sb.append("import ar.com.dcsys.gwt.messages.server.cdi.handler.HandlersContainer;\n");
+			sb.append("\n");
+			sb.append("import ar.com.dcsys.gwt.messages.server.cdi.HandlersContainer;\n");
+			sb.append("\n");
+			sb.append("import javax.enterprise.event.Observes;\n");
 
+			sb.append("\n\n");
 			
-			sb.append("public class ").append(manager.className).append(" ").append("implements MethodHandler").append(" {").append("\n");
+			
+			sb.append("public class ").append(serverSimpleName).append(" ").append("implements MethodHandler").append(" {").append("\n\n");
 
 			// el register del handler
 			sb.append(methodSpacer).append("public void register(@Observes HandlersContainer<MethodHandler> handlers) { handlers.add(this); }").append("\n\n");
@@ -59,7 +65,7 @@ public class ManagersProcessor extends AbstractProcessor {
 			// metodo principal de procesamiento del mensaje
 			sb.append(methodSpacer).append("public void handle() {").append("\n");
 			
-			sb.append("/*");		// comentario de prueba
+			sb.append("/*\n\n");		// comentario de prueba
 			
 			for (Method method : manager.methods) {
 				sb.append(sentenceSpacer).append(method.name).append("(");
@@ -72,7 +78,7 @@ public class ManagersProcessor extends AbstractProcessor {
 				sb.append(");");				
 			}
 			
-			sb.append("*/");		// comentario de prueba
+			sb.append("*/\n\n");		// comentario de prueba
 			
 			sb.append("}").append("\n");		// method }
 			
@@ -82,9 +88,7 @@ public class ManagersProcessor extends AbstractProcessor {
 			try {
 				JavaFileObject jfo = processingEnv.getFiler().createSourceFile(serverName);
 				PrintWriter out = new PrintWriter(jfo.openWriter());
-				
-				// genero el codigo.
-				
+				out.println(sb.toString());
 				out.flush();
 				out.close();
 				
@@ -98,12 +102,13 @@ public class ManagersProcessor extends AbstractProcessor {
 	private void generateClientFiles(List<Manager> managers) {
 		for (Manager manager : managers) {
 			
-			String clientPackage = manager.packageName.replace(".shared", ".client"); 
-			String clientName =  clientPackage + "." + manager.className + "Client";
+			String clientPackage = manager.packageName.replace(".shared", ".client");
+			String clientSimpleName = manager.className + "Client";
+			String clientName =  clientPackage + "." + clientSimpleName;
 
 			StringBuilder sb = new StringBuilder();
-			sb.append("package " + clientPackage).append("\n\n");
-			sb.append("public class ").append(manager.className).append(" {").append("\n");
+			sb.append("package " + clientPackage).append(";\n\n");
+			sb.append("public class ").append(clientSimpleName).append(" {").append("\n");
 			
 			for (Method method : manager.methods) {
 				sb.append(methodSpacer).append("public void ").append(method.name).append("(");
@@ -219,21 +224,29 @@ public class ManagersProcessor extends AbstractProcessor {
 	private void processMethod(Manager manager, ExecutableElement ee) {
 		
 		// debe ser void el retorno del mensaje. si no lo ignoro.
+		
+		/*
+		
 		TypeMirror tm = ee.getReturnType();
 		if (tm.getKind() != TypeKind.VOID) {
 			return;
 		}
-
+*/
+		
 		List<? extends VariableElement> params = ee.getParameters();
 		if (params.size() <= 0) {
 			return;
 		}
 		
+		
 		VariableElement rec = params.get(params.size() - 1);
+		
+		/*
 		TypeMirror type = rec.asType();
 		if (!"ar.com.dcsys.manager.shared.Receiver".equals(type.toString())) {
 			return;
 		}
+		*/
 		
 		Method method = new Method();
 		method.name = ee.getSimpleName().toString();
@@ -244,15 +257,14 @@ public class ManagersProcessor extends AbstractProcessor {
 		receiver.typeKind = receiver.typeMirror.getKind();
 		method.receiver = receiver;
 		
-		params.remove(rec);
-		for (VariableElement ve : params) {
+		for (int i = 0; i < params.size() - 1; i++) {
+			VariableElement ve = params.get(i);
 			Param param = new Param();
 			param.name = ve.getSimpleName().toString();
 			param.typeMirror = ve.asType();
 			param.typeKind = param.typeMirror.getKind();
 			method.params.add(param);
 		}
-		
 		
 		manager.methods.add(method);
 	}

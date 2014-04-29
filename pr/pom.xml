@@ -18,6 +18,7 @@
   <modules>
     <module>annotations</module>
     <module>autoBeansNetProcessor</module>
+    <module>processorTest</module>
   </modules>
 
   <build>
