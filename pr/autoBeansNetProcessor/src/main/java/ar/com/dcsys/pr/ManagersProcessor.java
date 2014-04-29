@@ -17,7 +17,6 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic.Kind;
 import javax.tools.JavaFileObject;
@@ -28,8 +27,9 @@ import javax.tools.JavaFileObject;
 public class ManagersProcessor extends AbstractProcessor {
 
 
-	private static final String methodSpacer = "    ";
-	private static final String sentenceSpacer = methodSpacer + "    ";
+	private static final String ms = "    ";
+	private static final String ss = ms + "    ";
+	private static final String autoBeanPackage = "com.google.web.bindery.autobean.shared";
 
 	
 	private String getPackageName(Element e) {
@@ -40,12 +40,8 @@ public class ManagersProcessor extends AbstractProcessor {
 	private void generateServerFiles(List<Manager> managers) {
 		for (Manager manager : managers) {
 			
-			String serverPackage = manager.packageName.replace(".shared", ".server");
-			String serverSimpleName = manager.className + "ServerHandler";
-			String serverName = serverPackage + "." + serverSimpleName;
-			
 			StringBuilder sb = new StringBuilder();
-			sb.append("package " + serverPackage).append(";\n\n");
+			sb.append("package " + manager.getServerPackage()).append(";\n\n");
 			
 			// imports
 			sb.append("import ar.com.dcsys.gwt.manager.server.handler.MethodHandler;\n");
@@ -57,18 +53,18 @@ public class ManagersProcessor extends AbstractProcessor {
 			sb.append("\n\n");
 			
 			
-			sb.append("public class ").append(serverSimpleName).append(" ").append("implements MethodHandler").append(" {").append("\n\n");
+			sb.append("public class ").append(manager.getServerSimpleName()).append(" ").append("implements MethodHandler").append(" {").append("\n\n");
 
 			// el register del handler
-			sb.append(methodSpacer).append("public void register(@Observes HandlersContainer<MethodHandler> handlers) { handlers.add(this); }").append("\n\n");
+			sb.append(ms).append("public void register(@Observes HandlersContainer<MethodHandler> handlers) { handlers.add(this); }").append("\n\n");
 
 			// metodo principal de procesamiento del mensaje
-			sb.append(methodSpacer).append("public void handle() {").append("\n");
+			sb.append(ms).append("public void handle() {").append("\n");
 			
 			sb.append("/*\n\n");		// comentario de prueba
 			
 			for (Method method : manager.methods) {
-				sb.append(sentenceSpacer).append(method.name).append("(");
+				sb.append(ss).append(method.name).append("(");
 				
 				for (Param param : method.params) {
 					sb.append(param.name).append(",");
@@ -86,7 +82,7 @@ public class ManagersProcessor extends AbstractProcessor {
 			
 			
 			try {
-				JavaFileObject jfo = processingEnv.getFiler().createSourceFile(serverName);
+				JavaFileObject jfo = processingEnv.getFiler().createSourceFile(manager.getServerName());
 				PrintWriter out = new PrintWriter(jfo.openWriter());
 				out.println(sb.toString());
 				out.flush();
@@ -99,19 +95,51 @@ public class ManagersProcessor extends AbstractProcessor {
 		}
 	}
 
+	
+	private String getAutoBeanName(Param p) {
+		return p.getName() + "AutoBean";
+	}
+	
 	private void generateClientFiles(List<Manager> managers) {
 		for (Manager manager : managers) {
 			
-			String clientPackage = manager.packageName.replace(".shared", ".client");
-			String clientSimpleName = manager.className + "Client";
-			String clientName =  clientPackage + "." + clientSimpleName;
-
 			StringBuilder sb = new StringBuilder();
-			sb.append("package " + clientPackage).append(";\n\n");
-			sb.append("public class ").append(clientSimpleName).append(" {").append("\n");
+			sb.append("package " + manager.getClientPackage()).append(";\n\n");
+			
+			///////// imports /////////////
+			
+			sb.append("\n").append("import ar.com.dcsys.gwt.messages.shared.TransportReceiver;");
+			sb.append("\n").append("import ar.com.dcsys.gwt.manager.shared.lang.TypeFactory;");
+			sb.append("\n").append("import ar.com.dcsys.gwt.ws.client.WebSocket;");
+
+			sb.append("\n").append("import javax.inject.Inject;");
+			
+			sb.append("\n").append("import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;");			// ESTO VA EN EL SERVIDOR. pero de prueba ahora.
+			sb.append("\n").append("import ").append(autoBeanPackage).append(".AutoBean;");
+			
+			sb.append("\n\n");
+			
+			////////// definicion de la clase /////////////////////
+						
+			sb.append("public class ").append(manager.getClientSimpleName()).append(" {").append("\n");
+			
+			////// variables de intancia //////
+			
+			sb.append("\n").append(ms).append("private final TypeFactory typeFactory = AutoBeanFactorySource.create(TypeFactory.class);");
+			sb.append("\n").append(ms).append("private final WebSocket ws;");
+			sb.append("\n\n");
+			
+			/////////////// constuctor //////////////////////////
+			
+			
+			sb.append("\n").append(ms).append("@Inject\n").append(ms).append("public ").append(manager.getClientSimpleName()).append("(WebSocket ws) {\n");
+			sb.append(ss).append("this.ws = ws;");
+			sb.append("\n").append(ms).append("}\n");
+			
+			//////////////// definición de metodos ////////////////
 			
 			for (Method method : manager.methods) {
-				sb.append("\n").append(methodSpacer).append("public void ").append(method.name).append("(");
+				sb.append("\n").append(ms).append("public void ").append(method.name).append("(");
 				
 				// los parametros
 				for (Param param : method.params) {
@@ -128,16 +156,70 @@ public class ManagersProcessor extends AbstractProcessor {
 				
 				sb.append(") {\n");
 				
-				// implementacion del metodo.
 				
-				sb.append("\n").append(methodSpacer).append("}");				// method }
+				//////////////// try inicial /////////////////////
+				
+				sb.append("\n").append(ss).append("try {\n");
+				
+				////////////////// codifico los parametros /////////////////////
+
+				for (Param param : method.params) {
+					
+					// Boolean, String, Integer, Long
+					
+					String type = param.getType();
+					if (type.startsWith("java.lang.")) {
+						String t = type.replace("java.lang.","");
+						String fname = "get" + t + "(" + param.getName() + ");";
+						sb.append("\n").append(ss).append(ss).append("AutoBean<").append(t).append("> ").append(param.getName()).append("AutoBean").append(" = typeFactory.").append(fname);
+					}
+					
+				}
+
+				//////////////////// codifico los autobeans en un mensaje ///////////////////////////
+
+				
+				sb.append("\n\n").append(ss).append(ss).append("String msg = \"\";");
+				sb.append("\n\n");
+				
+				
+				/////////////////// realizo la llamada al servidor /////////////////////
+				
+				
+				sb.append("\n").append(ss).append(ss).append("ws.open();");
+				sb.append("\n").append(ss).append(ss).append("ws.send(msg, new TransportReceiver() {");
+				
+				sb.append("\n").append(ss).append(ss).append(ss).append("@Override");
+				sb.append("\n").append(ss).append(ss).append(ss).append("public void onSuccess(String msg) {");
+				sb.append("\n").append(ss).append(ss).append(ss).append(ss).append(" // decodifico el mensaje");
+				sb.append("\n").append(ss).append(ss).append(ss).append("};");
+
+				sb.append("\n").append(ss).append(ss).append(ss).append("@Override");
+				sb.append("\n").append(ss).append(ss).append(ss).append("public void onFailure(String error) {");
+				sb.append("\n").append(ss).append(ss).append(ss).append(ss).append(" // envío el error");
+				sb.append("\n").append(ss).append(ss).append(ss).append("};");
+
+				sb.append("\n").append(ss).append(ss).append("});");
+
+				
+				/////////////////////// cierro el try inicial /////////////////////////////
+				
+				sb.append("\n\n");
+				sb.append("\n").append(ss).append("} catch (Exception e) {");
+				sb.append("\n").append(ss).append(ss).append("// nada por ahora.");
+				sb.append("\n").append(ss).append("};");
+				
+				
+				///////////////////////////////////////////////////////////////////////////
+				
+				sb.append("\n\n").append(ms).append("}");				// method }
 			}
 			
 			sb.append("\n").append("}");		// class }
 			
 			
 			try {
-				JavaFileObject jfo = processingEnv.getFiler().createSourceFile(clientName);
+				JavaFileObject jfo = processingEnv.getFiler().createSourceFile(manager.getClientName());
 				PrintWriter out = new PrintWriter(jfo.openWriter());
 				out.println(sb.toString());
 				out.flush();

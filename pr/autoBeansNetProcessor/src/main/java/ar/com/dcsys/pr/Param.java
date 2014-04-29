@@ -9,4 +9,12 @@ public class Param {
 	TypeMirror typeMirror;
 	TypeKind typeKind;
 	
+	public String getType() {
+		return typeMirror.toString();
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
 }
