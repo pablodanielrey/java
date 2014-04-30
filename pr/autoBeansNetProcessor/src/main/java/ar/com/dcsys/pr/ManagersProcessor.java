@@ -116,8 +116,14 @@ public class ManagersProcessor extends AbstractProcessor {
 			sb.append("\n").append("import ar.com.dcsys.gwt.manager.shared.lang.IntegerContainer;");
 			sb.append("\n").append("import ar.com.dcsys.gwt.manager.shared.lang.StringContainer;");
 			sb.append("\n").append("import ar.com.dcsys.gwt.manager.shared.lang.LongContainer;");
-			
+			sb.append("\n").append("import ar.com.dcsys.gwt.manager.shared.lang.BooleanListContainer;");
+			sb.append("\n").append("import ar.com.dcsys.gwt.manager.shared.lang.IntegerListContainer;");
+			sb.append("\n").append("import ar.com.dcsys.gwt.manager.shared.lang.LongListContainer;");
 			sb.append("\n").append("import ar.com.dcsys.gwt.manager.shared.lang.StringListContainer;");
+			
+			sb.append("\n").append("import ").append(manager.factory.getPackageName()).append(".*;");
+			
+			
 			sb.append("\n").append("import ar.com.dcsys.gwt.manager.shared.message.MessageFactory;");
 			sb.append("\n").append("import ar.com.dcsys.gwt.manager.shared.message.Message;");
 			
@@ -205,6 +211,40 @@ public class ManagersProcessor extends AbstractProcessor {
 					} else if (type.startsWith("java.util.List")) {
 						
 						// es una lista.
+						String subType = getSubtype(type);
+						if (subType.startsWith("java.lang.")) {
+							
+							// tipo primario.
+							String t = subType.replace("java.lang.","");
+							String flname = "get" + t + "ListContainer();";
+
+							/*
+							// hago el wrapping de cada elemento de la lista en un autobean.
+							sb.append("\n").append(ss).append(ss).append("List<").append(t).append("> ").append(listName).append(" = new ArrayList<>();");
+							sb.append("\n").append(ss).append(ss).append("for (").append(t).append(" e : ").append(param.getName()).append(") {");
+							sb.append("\n").append(ss).append(ss).append(ss).append("AutoBean<").append(t).append("Container").append("> ").append("eAutoBean").append(" = typeFactory.").append(fname);
+							sb.append("\n").append(ss).append(ss).append(ss).append("eAutoBean").append(".as().setValue(").append("e").append(");");
+							sb.append("\n").append(ss).append(ss).append(ss).append(listName).append(".add(").append("eAutoBean.as()").append(");");
+							sb.append("\n").append(ss).append(ss).append("}");
+							*/
+
+							// asigno la lista wrapeada al autobean de la lista.
+							sb.append("\n").append(ss).append(ss).append("AutoBean<").append(t).append("ListContainer").append("> ").append(getAutoBeanName(param)).append(" = typeFactory.").append(flname);
+							sb.append("\n").append(ss).append(ss).append(getAutoBeanName(param)).append(".as().setValue(").append(param.getName()).append(");");						
+														
+							
+						} else {
+							
+							// objeto definido por el usuario
+							
+							String t = subType.substring(subType.lastIndexOf(".") + 1);
+							String flname = "get" + t + "ListContainer();";
+							
+							// asigno la lista wrapeada al autobean de la lista.
+							sb.append("\n").append(ss).append(ss).append("AutoBean<").append(t).append("ListContainer").append("> ").append(getAutoBeanName(param)).append(" = ").append(manager.factory.getName()).append(".").append(flname);
+							sb.append("\n").append(ss).append(ss).append(getAutoBeanName(param)).append(".as().setValue(").append(param.getName()).append(");");									
+							
+						}
 						
 					} else {
 						
@@ -286,6 +326,46 @@ public class ManagersProcessor extends AbstractProcessor {
 		}
 	}
 	
+	
+	private void generateListContainers(List<Manager> managers) {
+		
+		for (Manager manager : managers) {
+			Factory factory = manager.factory;
+			
+			for (String lc : factory.listContainers) {
+				
+				String type = lc.substring(lc.lastIndexOf(".") + 1);
+				
+				StringBuilder sb = new StringBuilder();
+				
+				sb.append("package ").append(factory.getPackageName()).append(";");
+				
+				sb.append("\n\n");
+				sb.append("\nimport ar.com.dcsys.gwt.manager.shared.TypeContainer;");
+				sb.append("\nimport ").append(lc).append(";");
+				sb.append("\nimport java.util.List;");
+				
+				sb.append("\n\n");
+
+				sb.append("public interface ").append(type).append("ListContainer extends TypeContainer<List<").append(type).append(">> {");
+				sb.append("\n").append("}");
+				
+				
+				try {
+					JavaFileObject jfo = processingEnv.getFiler().createSourceFile(factory.getPackageName() + "." + type + "ListContainer");
+					PrintWriter out = new PrintWriter(jfo.openWriter());
+					out.println(sb.toString());
+					out.flush();
+					out.close();
+					
+				} catch (Exception e) {
+					
+				}
+			}
+		}
+		
+	}
+	
 	private void generateFactories(List<Manager> managers) {
 
 		StringBuilder sb = new StringBuilder();
@@ -302,10 +382,25 @@ public class ManagersProcessor extends AbstractProcessor {
 			
 			sb.append("public interface ").append(factory.getType()).append(" extends AutoBeanFactory {");
 			
+			////////////////// los factory methods ////////
+			
 			for (FactoryMethod fm : factory.methods) {
 				sb.append("\n");
 				sb.append("\n").append(ms).append("public AutoBean<").append(fm.param.getType()).append("> ").append(fm.name).append("();");
 				sb.append("\n").append(ms).append("public AutoBean<").append(fm.param.getType()).append("> ").append(fm.name).append("(").append(fm.param.getType()).append(" ").append(fm.param.getName()).append(");");
+			}
+			sb.append("\n");
+
+			///////////////// los list containers /////////
+			
+			for (String lc : factory.listContainers) {
+				
+				String type = lc.substring(lc.lastIndexOf(".") + 1) + "ListContainer";
+				
+				sb.append("\n");
+				sb.append("\n").append(ms).append("public AutoBean<").append(type).append("> ").append("get").append(type).append("();");
+				sb.append("\n").append(ms).append("public AutoBean<").append(type).append("> ").append("get").append(type).append("(").append(type).append(" ").append("l);");
+				
 			}
 			sb.append("\n\n");
 			
@@ -381,6 +476,7 @@ public class ManagersProcessor extends AbstractProcessor {
 		}
 	
 		if (managers.size() > 0) {
+			generateListContainers(managers);
 			generateFactories(managers);
 			generateClientFiles(managers);
 			generateServerFiles(managers);
@@ -455,7 +551,18 @@ public class ManagersProcessor extends AbstractProcessor {
 				
 			} else if (param.getType().startsWith("java.util.List")) {
 				
-				// lista, no hace falta factory
+				// es una lista.
+				String subType = getSubtype(param.getType());
+				if (!subType.startsWith("java.lang.")) {
+					
+					// no es un tipo primitivo asi que hay que generar los containers.
+					if (!manager.factory.listContainers.contains(subType)) {
+						manager.factory.listContainers.add(subType);
+					}
+					
+				}
+				
+				
 				
 			} else {
 				

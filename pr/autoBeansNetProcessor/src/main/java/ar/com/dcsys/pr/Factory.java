@@ -7,6 +7,7 @@ public class Factory {
 
 	Manager manager;
 	List<FactoryMethod> methods = new ArrayList<>();
+	List<String> listContainers = new ArrayList<>();
 	
 	
 	public Factory(Manager manager) {
