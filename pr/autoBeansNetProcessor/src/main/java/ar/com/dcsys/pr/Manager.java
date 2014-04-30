@@ -9,7 +9,11 @@ public class Manager {
 	String className;
 	String serverFactory;
 	List<Method> methods = new ArrayList<>();
-	Factory factory;
+	Factory factory = new Factory(this);
+	
+	public String getSharedPackage() {
+		return packageName;
+	}
 	
 	public String getClientPackage() {
 		return packageName.replace(".shared", ".client");
@@ -42,6 +46,6 @@ public class Manager {
 				return fm;
 			}
 		}
-		return null;
+		throw new RuntimeException("Factory Method for param : " + p.getName() + " does not exists");
 	}
 }

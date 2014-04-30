@@ -17,6 +17,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic.Kind;
 import javax.tools.JavaFileObject;
@@ -113,6 +114,8 @@ public class ManagersProcessor extends AbstractProcessor {
 			sb.append("\n").append("import ar.com.dcsys.gwt.manager.shared.lang.StringListContainer;");
 			sb.append("\n").append("import ar.com.dcsys.gwt.manager.shared.message.MessageFactory;");
 			sb.append("\n").append("import ar.com.dcsys.gwt.manager.shared.message.Message;");
+			
+			sb.append("\n").append("import ").append(manager.factory.getPackageName()).append(".").append(manager.factory.getType()).append(";");
 
 			sb.append("\n").append("import ar.com.dcsys.gwt.ws.client.WebSocket;");
 
@@ -134,6 +137,8 @@ public class ManagersProcessor extends AbstractProcessor {
 			
 			sb.append("\n").append(ms).append("private final TypeFactory typeFactory = AutoBeanFactorySource.create(TypeFactory.class);");
 			sb.append("\n").append(ms).append("private final MessageFactory messageFactory = AutoBeanFactorySource.create(MessageFactory.class);");
+			sb.append("\n").append(ms).append("private final ").append(manager.factory.getType()).append(" ").append(manager.factory.getName()).append(" = AutoBeanFactorySource.create(").append(manager.factory.getType()).append(".class);");
+			
 			sb.append("\n").append(ms).append("private final WebSocket ws;");
 			sb.append("\n\n");
 			
@@ -181,7 +186,10 @@ public class ManagersProcessor extends AbstractProcessor {
 					// Boolean, String, Integer, Long
 					
 					String type = param.getType();
+					
 					if (type.startsWith("java.lang.")) {
+						
+						// tipo primitivo.
 						String t = type.replace("java.lang.","");
 						String fname = "get" + t + "(" + param.getName() + ");";
 						
@@ -190,6 +198,17 @@ public class ManagersProcessor extends AbstractProcessor {
 						sb.append("\n").append(ss).append(ss).append("params.add(e").append(getAutoBeanName(param)).append(");");
 						sb.append("\n\n");
 						
+					} else if (type.startsWith("java.util.List")) {
+						
+						// es una lista.
+						
+					} else {
+						
+						// busco en las factories.
+						FactoryMethod fm = manager.getFactoryMethod(param);
+						Factory f = manager.factory;
+						sb.append("\n").append(ss).append(ss).append("AutoBean<").append(type).append("> ").append(getAutoBeanName(param)).append(" = ").append(f.getName()).append(".").append(fm.name).append("(").append(param.getName()).append(");");
+						sb.append("\n\n");
 						
 					}
 					
@@ -207,8 +226,7 @@ public class ManagersProcessor extends AbstractProcessor {
 				sb.append("\n").append(ss).append(ss).append("msg.as().setParams(params);");
 				sb.append("\n").append(ss).append(ss).append("String emsg = AutoBeanCodex.encode(msg).getPayload();");
 				sb.append("\n\n");
-				
-				
+								
 				
 				/////////////////// realizo la llamada al servidor /////////////////////
 				
@@ -240,6 +258,7 @@ public class ManagersProcessor extends AbstractProcessor {
 				///////////////////////////////////////////////////////////////////////////
 				
 				sb.append("\n\n").append(ms).append("}");				// method }
+				sb.append("\n\n");
 			}
 			
 			sb.append("\n").append("}");		// class }
@@ -260,7 +279,43 @@ public class ManagersProcessor extends AbstractProcessor {
 	}
 	
 	private void generateFactories(List<Manager> managers) {
-		
+
+		StringBuilder sb = new StringBuilder();
+		for (Manager manager : managers) {
+			Factory factory = manager.factory;
+			
+			sb.append("package ").append(factory.getPackageName()).append(";");
+			sb.append("\n\n");
+			
+			sb.append("\nimport com.google.web.bindery.autobean.shared.AutoBean;");
+			sb.append("\nimport com.google.web.bindery.autobean.shared.AutoBeanFactory;");
+			sb.append("\n\n");
+
+			
+			sb.append("public interface ").append(factory.getType()).append(" extends AutoBeanFactory {");
+			
+			for (FactoryMethod fm : factory.methods) {
+				sb.append("\n");
+				sb.append("\n").append(ms).append("public AutoBean<").append(fm.param.getType()).append("> ").append(fm.name).append("();");
+				sb.append("\n").append(ms).append("public AutoBean<").append(fm.param.getType()).append("> ").append(fm.name).append("(").append(fm.param.getType()).append(" ").append(fm.param.getName()).append(");");
+			}
+			sb.append("\n\n");
+			
+			sb.append("}");
+			sb.append("\n\n");
+			
+			try {
+				JavaFileObject jfo = processingEnv.getFiler().createSourceFile(factory.getPackageName() + "." + factory.getType());
+				PrintWriter out = new PrintWriter(jfo.openWriter());
+				out.println(sb.toString());
+				out.flush();
+				out.close();
+				
+			} catch (Exception e) {
+				
+			}
+			
+		}
 	}
 	
 	
@@ -290,7 +345,6 @@ public class ManagersProcessor extends AbstractProcessor {
 					Manager manager = new Manager();
 					manager.packageName = getPackageName(e);
 					manager.className = ((TypeElement)e).getSimpleName().toString();
-
 					
 					List<? extends Element> eelements = e.getEnclosedElements();
 					for (Element ee : eelements) {
@@ -319,6 +373,7 @@ public class ManagersProcessor extends AbstractProcessor {
 		}
 	
 		if (managers.size() > 0) {
+			generateFactories(managers);
 			generateClientFiles(managers);
 			generateServerFiles(managers);
 		}
@@ -341,30 +396,30 @@ public class ManagersProcessor extends AbstractProcessor {
 	 */
 	private void processMethod(Manager manager, ExecutableElement ee) {
 		
-		// debe ser void el retorno del mensaje. si no lo ignoro.
-		
-		/*
+		/////////// controlo las precondiciones de los métodos antes de procesarlos //////////////
+		//
+		//  retorno = void y último parámetro = Receiver.
+		//
+		///////////////
 		
 		TypeMirror tm = ee.getReturnType();
 		if (tm.getKind() != TypeKind.VOID) {
 			return;
 		}
-*/
 		
 		List<? extends VariableElement> params = ee.getParameters();
 		if (params.size() <= 0) {
 			return;
 		}
-		
-		
 		VariableElement rec = params.get(params.size() - 1);
-		
-		/*
 		TypeMirror type = rec.asType();
-		if (!"ar.com.dcsys.manager.shared.Receiver".equals(type.toString())) {
+		if (!type.toString().startsWith("ar.com.dcsys.gwt.manager.shared.Receiver")) {
 			return;
 		}
-		*/
+		
+		/////////////////////////////////////////
+		
+		
 		
 		Method method = new Method();
 		method.name = ee.getSimpleName().toString();
@@ -376,12 +431,34 @@ public class ManagersProcessor extends AbstractProcessor {
 		method.receiver = receiver;
 		
 		for (int i = 0; i < params.size() - 1; i++) {
+			
 			VariableElement ve = params.get(i);
 			Param param = new Param();
 			param.name = ve.getSimpleName().toString();
 			param.typeMirror = ve.asType();
 			param.typeKind = param.typeMirror.getKind();
 			method.params.add(param);
+			
+			
+			if (param.getType().startsWith("java.lang.")) {
+				
+				// tipo primitivo, no hace falta factory
+				
+				
+			} else if (param.getType().startsWith("java.util.List")) {
+				
+				// lista, no hace falta factory
+				
+			} else {
+				
+				// tipo definido por el usuario. debe generarse mediante un factory del manager.
+				FactoryMethod fm = new FactoryMethod();
+				fm.param = param;
+				fm.name = "get_" + param.getType().replace(".","_");
+				manager.factory.methods.add(fm);
+				
+			}
+			
 		}
 		
 		manager.methods.add(method);
