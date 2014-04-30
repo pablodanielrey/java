@@ -111,6 +111,9 @@ public class ManagersProcessor extends AbstractProcessor {
 			sb.append("\n").append("import ar.com.dcsys.gwt.messages.shared.TransportReceiver;");
 			sb.append("\n").append("import ar.com.dcsys.gwt.manager.shared.lang.TypeFactory;");
 			sb.append("\n").append("import ar.com.dcsys.gwt.manager.shared.lang.StringListContainer;");
+			sb.append("\n").append("import ar.com.dcsys.gwt.manager.shared.message.MessageFactory;");
+			sb.append("\n").append("import ar.com.dcsys.gwt.manager.shared.message.Message;");
+
 			sb.append("\n").append("import ar.com.dcsys.gwt.ws.client.WebSocket;");
 
 			sb.append("\n").append("import javax.inject.Inject;");
@@ -130,6 +133,7 @@ public class ManagersProcessor extends AbstractProcessor {
 			////// variables de intancia //////
 			
 			sb.append("\n").append(ms).append("private final TypeFactory typeFactory = AutoBeanFactorySource.create(TypeFactory.class);");
+			sb.append("\n").append(ms).append("private final MessageFactory messageFactory = AutoBeanFactorySource.create(MessageFactory.class);");
 			sb.append("\n").append(ms).append("private final WebSocket ws;");
 			sb.append("\n\n");
 			
@@ -143,6 +147,7 @@ public class ManagersProcessor extends AbstractProcessor {
 			//////////////// definición de metodos ////////////////
 			
 			for (Method method : manager.methods) {
+				
 				sb.append("\n").append(ms).append("public void ").append(method.name).append("(");
 				
 				// los parametros
@@ -190,17 +195,26 @@ public class ManagersProcessor extends AbstractProcessor {
 					
 				}
 
+				/*
 				sb.append("\n").append(ss).append(ss).append("AutoBean<StringListContainer> slc = typeFactory.getStringListContainer();");
 				sb.append("\n").append(ss).append(ss).append("slc.as().setValue(params);");
 				sb.append("\n").append(ss).append(ss).append("String eslc = AutoBeanCodex.encode(slc).getPayload();");
 				sb.append("\n\n");
+				*/
+
+				sb.append("\n").append(ss).append(ss).append("AutoBean<Message> msg = messageFactory.getMessage();");
+				sb.append("\n").append(ss).append(ss).append("msg.as().setFunction(\"").append(method.getSignature()).append("\");");
+				sb.append("\n").append(ss).append(ss).append("msg.as().setParams(params);");
+				sb.append("\n").append(ss).append(ss).append("String emsg = AutoBeanCodex.encode(msg).getPayload();");
+				sb.append("\n\n");
+				
 				
 				
 				/////////////////// realizo la llamada al servidor /////////////////////
 				
 				
 				sb.append("\n").append(ss).append(ss).append("ws.open();");
-				sb.append("\n").append(ss).append(ss).append("ws.send(eslc, new TransportReceiver() {");
+				sb.append("\n").append(ss).append(ss).append("ws.send(emsg, new TransportReceiver() {");
 				
 				sb.append("\n").append(ss).append(ss).append(ss).append("@Override");
 				sb.append("\n").append(ss).append(ss).append(ss).append("public void onSuccess(String msg) {");
