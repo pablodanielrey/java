@@ -12,6 +12,7 @@ import ar.com.dcsys.data.period.PeriodAssignation;
 import ar.com.dcsys.data.period.PeriodDAO;
 import ar.com.dcsys.data.period.PeriodType;
 import ar.com.dcsys.data.person.Person;
+import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.exceptions.PeriodException;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.model.PersonsManager;
@@ -24,6 +25,8 @@ public class PeriodsManagerBean implements PeriodsManager {
 	private final AttLogsManager attLogsManager;
 	private final PeriodDAO periodManager;
 	
+	private final PersonsManager personsManager;
+	
 	private final static PeriodProvider[] providers = {
 		new NullPeriodProvider(),
 		new DailyPeriodProvider(),
@@ -32,9 +35,10 @@ public class PeriodsManagerBean implements PeriodsManager {
 	};
 
 	@Inject
-	public PeriodsManagerBean(PeriodDAO periodDAO, AttLogsManager attLogsManager) {
+	public PeriodsManagerBean(PeriodDAO periodDAO, AttLogsManager attLogsManager,PersonsManager personsManager) {
 		this.periodManager = periodDAO;
 		this.attLogsManager = attLogsManager;
+		this.personsManager = personsManager;
 	}
 	
 	

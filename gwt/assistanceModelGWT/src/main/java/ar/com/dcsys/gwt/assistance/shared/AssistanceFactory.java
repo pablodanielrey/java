@@ -9,10 +9,14 @@ import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.gwt.assistance.shared.lists.JustificationList;
 import ar.com.dcsys.gwt.assistance.shared.lists.JustificationDateList;
 import ar.com.dcsys.gwt.assistance.shared.lists.GeneralJustificationDateList;
+import ar.com.dcsys.gwt.assistance.shared.lists.PeriodAssignationList;
+import ar.com.dcsys.gwt.assistance.shared.lists.PeriodTypeList;
 
 import ar.com.dcsys.data.justification.GeneralJustificationDate;
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
+import ar.com.dcsys.data.period.PeriodAssignation;
+import ar.com.dcsys.data.period.PeriodType;
 
 public interface AssistanceFactory extends AutoBeanFactory {
 	public AutoBean<PersonValueProxy> personValue();
@@ -28,6 +32,10 @@ public interface AssistanceFactory extends AutoBeanFactory {
 	
 	public AutoBean<GeneralJustificationDate> generalJustificationDate();
 	public AutoBean<GeneralJustificationDateList> generalJustificationDateList();
+
+	public AutoBean<PeriodAssignation> periodAssignation();
+	public AutoBean<PeriodAssignationList> periodAssignationList();
+	public AutoBean<PeriodTypeList> periodTypeList();
 	
 
 }

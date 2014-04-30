@@ -67,6 +67,13 @@
     </dependency>	
 
     <dependency>
+      <groupId>ar.com.dcsys.data</groupId>
+      <artifactId>documentEntities</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
       <groupId>ar.com.dcsys.gwt</groupId>
       <artifactId>assistanceModelGWT</artifactId>
       <version>1.0-SNAPSHOT</version>
@@ -116,6 +123,7 @@
 
           <compileSourcesArtifacts>
               <artifact>ar.com.dcsys.data:personEntities</artifact>
+              <artifact>ar.com.dcsys.data:documentEntities</artifact>
               <artifact>ar.com.dcsys.gwt:personModelGWT</artifact>
               <artifact>ar.com.dcsys.data:assistanceEntities</artifact>
               <artifact>ar.com.dcsys.gwt:assistanceModelGWT</artifact>

@@ -4,21 +4,26 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import ar.com.dcsys.gwt.assistance.client.activity.justification.JustificationStatistic;
 
+import ar.com.dcsys.gwt.assistance.client.activity.justification.JustificationStatistic;
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
+import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.gwt.assistance.client.common.JustificationDatesSort;
 import ar.com.dcsys.gwt.assistance.client.common.JustificationsSort;
 import ar.com.dcsys.gwt.assistance.client.common.PersonValueSort;
+import ar.com.dcsys.gwt.assistance.client.ui.cell.PersonCell;
 import ar.com.dcsys.gwt.assistance.client.ui.cell.PersonValueCell;
 import ar.com.dcsys.gwt.assistance.client.ui.common.AssistanceResources;
 import ar.com.dcsys.gwt.assistance.client.ui.justification.widget.SelectionJustificationDateListWidget;
 import ar.com.dcsys.gwt.assistance.client.ui.justification.widget.selectionJustificationDateList.SelectionJustificationDateList;
+import ar.com.dcsys.gwt.person.client.common.filter.FilterPerson;
+import ar.com.dcsys.gwt.person.client.common.filter.FilterPersonDni;
+import ar.com.dcsys.gwt.person.client.common.filter.FilterPersonName;
 import ar.com.dcsys.gwt.person.client.common.filter.FilterPersonValue;
 import ar.com.dcsys.gwt.person.client.common.filter.FilterPersonValueDni;
 import ar.com.dcsys.gwt.person.client.common.filter.FilterPersonValueName;
-import ar.com.dcsys.gwt.person.shared.PersonValueProxy;
+import ar.com.dcsys.utils.PersonSort;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -62,10 +67,10 @@ public class JustificationPerson extends Composite implements JustificationPerso
 	
 	
 	// filtros de dni y nombre
-	private final FilterPersonValue[] filters = new FilterPersonValue[] { new FilterPersonValueDni(), new FilterPersonValueName() };
+	private final FilterPerson[] filters = new FilterPerson[] { new FilterPersonDni(), new FilterPersonName() };
 	
-	private final List<PersonValueProxy> personsFilteredData;
-	private final List<PersonValueProxy> personsData;
+	private final List<Person> personsFilteredData;
+	private final List<Person> personsData;
 	
 	private final AssistanceResources resources = GWT.create(AssistanceResources.class);
 
@@ -74,7 +79,7 @@ public class JustificationPerson extends Composite implements JustificationPerso
 	
 	@UiField(provided=true) TextBox filter;
 	@UiField(provided=true) Label usersCount;
-	@UiField(provided=true) DataGrid<PersonValueProxy> persons;	
+	@UiField(provided=true) DataGrid<Person> persons;	
 	@UiField(provided=true) DataGrid<JustificationStatistic> statistics;
 	@UiField(provided=true) ValueListBox<Justification> types;
 	@UiField(provided=true) DateBox start;
@@ -148,11 +153,11 @@ public class JustificationPerson extends Composite implements JustificationPerso
 	
 	private void createPersons() {
 		String imageHtml = AbstractImagePrototype.create(resources.user()).getHTML();
-		PersonValueCell pc = new PersonValueCell(imageHtml);
+		PersonCell pc = new PersonCell(imageHtml);
 		
-		IdentityColumn<PersonValueProxy> person = new IdentityColumn<PersonValueProxy>(pc);
+		IdentityColumn<Person> person = new IdentityColumn<Person>(pc);
 		
-		persons = new DataGrid<PersonValueProxy>();
+		persons = new DataGrid<Person>();
 		persons.addColumn(person);
 	}	
 	
@@ -225,8 +230,8 @@ public class JustificationPerson extends Composite implements JustificationPerso
 		openJustify.setEnabled(false);
 		selectionJustificationDates = new SelectionJustificationDateList();
 		initWidget(uiBinder.createAndBindUi(this));
-		personsFilteredData = new ArrayList<PersonValueProxy>();
-		personsData = new ArrayList<PersonValueProxy>();
+		personsFilteredData = new ArrayList<Person>();
+		personsData = new ArrayList<Person>();
 		setEnabledJustifications(false);
 		dialogJustify.hide();	
 		dialogJustify.setGlassEnabled(true);
@@ -304,17 +309,17 @@ public class JustificationPerson extends Composite implements JustificationPerso
 	}	
 	
 	@Override
-	public void setSelectionModel(MultiSelectionModel<PersonValueProxy> selection) {
+	public void setSelectionModel(MultiSelectionModel<Person> selection) {
 		this.persons.setSelectionModel(selection);		
 	}
 
 	@Override
-	public void setPersons(List<PersonValueProxy> persons) {
+	public void setPersons(List<Person> persons) {
 		personsData.clear();
 		if (persons == null) {
 			return;
 		}
-		PersonValueSort.sort(persons);
+		PersonSort.sort(persons);
 		personsData.addAll(persons);
 		filterPersons();
 	}
@@ -330,8 +335,8 @@ public class JustificationPerson extends Composite implements JustificationPerso
 		// ahora solo es el dni y si no el nombre.
 		ft = ft.toLowerCase();
 		personsFilteredData.clear();
-		for (PersonValueProxy p : personsData) {
-			for (FilterPersonValue f : filters) {
+		for (Person p : personsData) {
+			for (FilterPerson f : filters) {
 				if (f.checkFilter(p, ft)) {
 					personsFilteredData.add(p);
 					break;

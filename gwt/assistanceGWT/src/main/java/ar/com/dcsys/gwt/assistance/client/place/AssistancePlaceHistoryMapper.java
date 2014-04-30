@@ -8,6 +8,7 @@ import com.google.gwt.place.shared.WithTokenizers;
 				  GeneralsJustificationPlace.Tokenizer.class,
 				  JustificationPersonPlace.Tokenizer.class,
 				  ManageJustificationPlace.Tokenizer.class,
+				  PeriodsAssignationPersonPlace.Tokenizer.class,
 				  DailyPeriodsPlace.Tokenizer.class })
 public interface AssistancePlaceHistoryMapper extends PlaceHistoryMapper {
 

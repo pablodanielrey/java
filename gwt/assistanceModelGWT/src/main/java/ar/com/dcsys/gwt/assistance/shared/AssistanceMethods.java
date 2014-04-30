@@ -1,8 +1,6 @@
 package ar.com.dcsys.gwt.assistance.shared;
 
 public class AssistanceMethods {
-
-	public static final String findIdsPersonsWithPeriodAssignation = "findIdsPersonsWithPeriodAssignation";
 	
 	public static final String getJustifications = "getJustifications";
 	public static final String persistJustification = "persistJustification";
@@ -16,5 +14,11 @@ public class AssistanceMethods {
 	public static final String removeGeneralJustificationDate = "removeGeneralJustificationDate";
 	
 	public static final String justificationModifiedEvent = "justificationModifiedEvent";
+	public static final String periodModifiedEvent = "periodModifiedEvent";
 	
+	public static final String findPersonsWithPeriodAssignation = "findPersonsWithPeriodAssignation";
+	public static final String findPeriodsAssignationsBy = "findPeriodsAssignationsBy";
+	public static final String findAllTypesPeriods = "findAllTypesPeriods";
+	public static final String removePeriods = "removePeriods";
+	public static final String persistPeriods = "persistPeriods";
 }

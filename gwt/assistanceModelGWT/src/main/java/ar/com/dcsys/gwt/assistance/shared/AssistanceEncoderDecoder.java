@@ -6,6 +6,8 @@ import java.util.List;
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.justification.GeneralJustificationDate;
+import ar.com.dcsys.data.period.PeriodAssignation;
+import ar.com.dcsys.data.period.PeriodType;
 
 import javax.inject.Inject;
 
@@ -15,6 +17,8 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import ar.com.dcsys.gwt.assistance.shared.lists.GeneralJustificationDateList;
 import ar.com.dcsys.gwt.assistance.shared.lists.JustificationDateList;
 import ar.com.dcsys.gwt.assistance.shared.lists.JustificationList;
+import ar.com.dcsys.gwt.assistance.shared.lists.PeriodAssignationList;
+import ar.com.dcsys.gwt.assistance.shared.lists.PeriodTypeList;
 import ar.com.dcsys.gwt.autoBeans.shared.AutoBeanUtils;
 
 public class AssistanceEncoderDecoder {
@@ -73,12 +77,49 @@ public class AssistanceEncoderDecoder {
 		return json;
 	}
 	
+	public List<PeriodAssignation> decodePeriodAssignationList(String list) {
+		AutoBean<PeriodAssignationList> bean = AutoBeanCodex.decode(assistanceFactory, PeriodAssignationList.class, list);
+		PeriodAssignationList l = bean.as();
+		List<PeriodAssignation> values = l.getList();
+		return values;
+	}
+	
+	public String encodePeriodAssignationList(List<PeriodAssignation> pt) {
+		AutoBean<PeriodAssignationList> aptl = assistanceFactory.periodAssignationList();
+		PeriodAssignationList ptl = aptl.as();
+		
+		List<PeriodAssignation> wpt = AutoBeanUtils.wrapList(assistanceFactory, PeriodAssignation.class, pt);
+		ptl.setList(wpt);
+		
+		String json = AutoBeanCodex.encode(aptl).getPayload();
+		return json;
+	}
+	
 	public List<GeneralJustificationDate> decodeGeneralJustificationDateList(String list) {
 		AutoBean<GeneralJustificationDateList> bean = AutoBeanCodex.decode(assistanceFactory, GeneralJustificationDateList.class, list);
 		GeneralJustificationDateList l = bean.as();
 		List<GeneralJustificationDate> values = l.getList();
 		return values;
 	}
+	
+	
+	public String encodePeriodTypeList(List<PeriodType> pt) {
+		AutoBean<PeriodTypeList> aptl = assistanceFactory.periodTypeList();
+		PeriodTypeList ptl = aptl.as();
+
+		// no es necesario hacerle wrapping porque los elementos son enumerativos.
+		ptl.setList(pt);
+		
+		String json = AutoBeanCodex.encode(aptl).getPayload();
+		return json;
+	}
+	
+	public List<PeriodType> decodePeriodTypeList(String list) {
+		AutoBean<PeriodTypeList> bean = AutoBeanCodex.decode(assistanceFactory, PeriodTypeList.class, list);
+		PeriodTypeList l = bean.as();
+		List<PeriodType> values = l.getList();
+		return values;
+	}	
 	
 	
 	

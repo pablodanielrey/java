@@ -2,11 +2,9 @@ package ar.com.dcsys.gwt.assistance.client;
 
 
 import ar.com.dcsys.gwt.assistance.client.activity.AssistanceActivityMapper;
-import ar.com.dcsys.gwt.assistance.client.activity.auth.PinAuthDataActivity;
 import ar.com.dcsys.gwt.assistance.client.gin.Injector;
 import ar.com.dcsys.gwt.assistance.client.place.AssistancePlaceHistoryMapper;
 import ar.com.dcsys.gwt.assistance.client.place.DailyPeriodsPlace;
-import ar.com.dcsys.gwt.assistance.client.place.PinAuthDataPlace;
 import ar.com.dcsys.gwt.assistance.client.ui.common.AcceptsOneWidgetAdapter;
 import ar.com.dcsys.gwt.assistance.client.ui.menu.Menu;
 import ar.com.dcsys.gwt.ws.shared.SocketException;

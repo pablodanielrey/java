@@ -5,11 +5,13 @@ import ar.com.dcsys.gwt.assistance.client.place.DailyPeriodsPlace;
 import ar.com.dcsys.gwt.assistance.client.place.GeneralsJustificationPlace;
 import ar.com.dcsys.gwt.assistance.client.place.JustificationPersonPlace;
 import ar.com.dcsys.gwt.assistance.client.place.ManageJustificationPlace;
+import ar.com.dcsys.gwt.assistance.client.place.PeriodsAssignationPersonPlace;
 import ar.com.dcsys.gwt.assistance.client.place.PinAuthDataPlace;
 
 import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.place.shared.Place;
+
 import javax.inject.Inject;
 
 public class AssistanceActivityMapper implements ActivityMapper {
@@ -42,6 +44,10 @@ public class AssistanceActivityMapper implements ActivityMapper {
 		
 		if (place instanceof ManageJustificationPlace) {
 			return factory.manageJustificationsActivity((ManageJustificationPlace)place);
+		}
+		
+		if (place instanceof PeriodsAssignationPersonPlace) {
+			return factory.periodsAssignationPersonActivity((PeriodsAssignationPersonPlace) place);
 		}
 				
 		return null;
