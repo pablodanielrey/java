@@ -5,10 +5,10 @@ import com.google.web.bindery.autobean.shared.AutoBeanFactory;
 
 public interface TypeFactory extends AutoBeanFactory {
 
-	AutoBean<Boolean> getBoolean(Boolean b);
-	AutoBean<Integer> getInteger(Integer i);
-	AutoBean<Long> getLong(Long l);
-	AutoBean<String> getString(String s);
+	AutoBean<BooleanContainer> getBoolean();
+	AutoBean<IntegerContainer> getInteger();
+	AutoBean<LongContainer> getLong();
+	AutoBean<StringContainer> getString();
 	
 	AutoBean<StringListContainer> getStringListContainer();
 	AutoBean<StringListContainer> getStringListContainer(StringListContainer slc);

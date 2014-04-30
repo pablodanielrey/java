@@ -110,7 +110,13 @@ public class ManagersProcessor extends AbstractProcessor {
 			///////// imports /////////////
 			
 			sb.append("\n").append("import ar.com.dcsys.gwt.messages.shared.TransportReceiver;");
+			
 			sb.append("\n").append("import ar.com.dcsys.gwt.manager.shared.lang.TypeFactory;");
+			sb.append("\n").append("import ar.com.dcsys.gwt.manager.shared.lang.BooleanContainer;");
+			sb.append("\n").append("import ar.com.dcsys.gwt.manager.shared.lang.IntegerContainer;");
+			sb.append("\n").append("import ar.com.dcsys.gwt.manager.shared.lang.StringContainer;");
+			sb.append("\n").append("import ar.com.dcsys.gwt.manager.shared.lang.LongContainer;");
+			
 			sb.append("\n").append("import ar.com.dcsys.gwt.manager.shared.lang.StringListContainer;");
 			sb.append("\n").append("import ar.com.dcsys.gwt.manager.shared.message.MessageFactory;");
 			sb.append("\n").append("import ar.com.dcsys.gwt.manager.shared.message.Message;");
@@ -191,12 +197,10 @@ public class ManagersProcessor extends AbstractProcessor {
 						
 						// tipo primitivo.
 						String t = type.replace("java.lang.","");
-						String fname = "get" + t + "(" + param.getName() + ");";
+						String fname = "get" + t + "();";
 						
-						sb.append("\n").append(ss).append(ss).append("AutoBean<").append(t).append("> ").append(getAutoBeanName(param)).append(" = typeFactory.").append(fname);
-						sb.append("\n").append(ss).append(ss).append("String e").append(getAutoBeanName(param)).append(" = ").append("AutoBeanCodex.encode(").append(getAutoBeanName(param)).append(").getPayload();");
-						sb.append("\n").append(ss).append(ss).append("params.add(e").append(getAutoBeanName(param)).append(");");
-						sb.append("\n\n");
+						sb.append("\n").append(ss).append(ss).append("AutoBean<").append(t).append("Container").append("> ").append(getAutoBeanName(param)).append(" = typeFactory.").append(fname);
+						sb.append("\n").append(ss).append(ss).append(getAutoBeanName(param)).append(".as().setValue(").append(param.getName()).append(");");						
 						
 					} else if (type.startsWith("java.util.List")) {
 						
@@ -208,9 +212,13 @@ public class ManagersProcessor extends AbstractProcessor {
 						FactoryMethod fm = manager.getFactoryMethod(param);
 						Factory f = manager.factory;
 						sb.append("\n").append(ss).append(ss).append("AutoBean<").append(type).append("> ").append(getAutoBeanName(param)).append(" = ").append(f.getName()).append(".").append(fm.name).append("(").append(param.getName()).append(");");
-						sb.append("\n\n");
 						
 					}
+					
+					sb.append("\n").append(ss).append(ss).append("String e").append(getAutoBeanName(param)).append(" = ").append("AutoBeanCodex.encode(").append(getAutoBeanName(param)).append(").getPayload();");
+					sb.append("\n").append(ss).append(ss).append("params.add(e").append(getAutoBeanName(param)).append(");");
+					sb.append("\n\n");
+					
 					
 				}
 
