@@ -10,5 +10,7 @@ public interface TypeFactory extends AutoBeanFactory {
 	AutoBean<Long> getLong(Long l);
 	AutoBean<String> getString(String s);
 	
+	AutoBean<StringListContainer> getStringListContainer();
+	AutoBean<StringListContainer> getStringListContainer(StringListContainer slc);
 	
 }

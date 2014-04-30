@@ -110,11 +110,15 @@ public class ManagersProcessor extends AbstractProcessor {
 			
 			sb.append("\n").append("import ar.com.dcsys.gwt.messages.shared.TransportReceiver;");
 			sb.append("\n").append("import ar.com.dcsys.gwt.manager.shared.lang.TypeFactory;");
+			sb.append("\n").append("import ar.com.dcsys.gwt.manager.shared.lang.StringListContainer;");
 			sb.append("\n").append("import ar.com.dcsys.gwt.ws.client.WebSocket;");
 
 			sb.append("\n").append("import javax.inject.Inject;");
+			sb.append("\n").append("import java.util.List;");
+			sb.append("\n").append("import java.util.ArrayList;");
 			
 			sb.append("\n").append("import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;");			// ESTO VA EN EL SERVIDOR. pero de prueba ahora.
+			sb.append("\n").append("import ").append(autoBeanPackage).append(".AutoBeanCodex;");
 			sb.append("\n").append("import ").append(autoBeanPackage).append(".AutoBean;");
 			
 			sb.append("\n\n");
@@ -163,6 +167,10 @@ public class ManagersProcessor extends AbstractProcessor {
 				
 				////////////////// codifico los parametros /////////////////////
 
+				sb.append("\n").append(ss).append(ss).append("List<String> params = new ArrayList<>();");
+				sb.append("\n");
+				
+				
 				for (Param param : method.params) {
 					
 					// Boolean, String, Integer, Long
@@ -171,15 +179,20 @@ public class ManagersProcessor extends AbstractProcessor {
 					if (type.startsWith("java.lang.")) {
 						String t = type.replace("java.lang.","");
 						String fname = "get" + t + "(" + param.getName() + ");";
-						sb.append("\n").append(ss).append(ss).append("AutoBean<").append(t).append("> ").append(param.getName()).append("AutoBean").append(" = typeFactory.").append(fname);
+						
+						sb.append("\n").append(ss).append(ss).append("AutoBean<").append(t).append("> ").append(getAutoBeanName(param)).append(" = typeFactory.").append(fname);
+						sb.append("\n").append(ss).append(ss).append("String e").append(getAutoBeanName(param)).append(" = ").append("AutoBeanCodex.encode(").append(getAutoBeanName(param)).append(").getPayload();");
+						sb.append("\n").append(ss).append(ss).append("params.add(e").append(getAutoBeanName(param)).append(");");
+						sb.append("\n\n");
+						
+						
 					}
 					
 				}
 
-				//////////////////// codifico los autobeans en un mensaje ///////////////////////////
-
-				
-				sb.append("\n\n").append(ss).append(ss).append("String msg = \"\";");
+				sb.append("\n").append(ss).append(ss).append("AutoBean<StringListContainer> slc = typeFactory.getStringListContainer();");
+				sb.append("\n").append(ss).append(ss).append("slc.as().setValue(params);");
+				sb.append("\n").append(ss).append(ss).append("String eslc = AutoBeanCodex.encode(slc).getPayload();");
 				sb.append("\n\n");
 				
 				
@@ -187,7 +200,7 @@ public class ManagersProcessor extends AbstractProcessor {
 				
 				
 				sb.append("\n").append(ss).append(ss).append("ws.open();");
-				sb.append("\n").append(ss).append(ss).append("ws.send(msg, new TransportReceiver() {");
+				sb.append("\n").append(ss).append(ss).append("ws.send(eslc, new TransportReceiver() {");
 				
 				sb.append("\n").append(ss).append(ss).append(ss).append("@Override");
 				sb.append("\n").append(ss).append(ss).append(ss).append("public void onSuccess(String msg) {");
