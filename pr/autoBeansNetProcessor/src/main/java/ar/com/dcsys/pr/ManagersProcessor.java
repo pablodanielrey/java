@@ -218,17 +218,7 @@ public class ManagersProcessor extends AbstractProcessor {
 							String t = subType.replace("java.lang.","");
 							String flname = "get" + t + "ListContainer();";
 
-							/*
-							// hago el wrapping de cada elemento de la lista en un autobean.
-							sb.append("\n").append(ss).append(ss).append("List<").append(t).append("> ").append(listName).append(" = new ArrayList<>();");
-							sb.append("\n").append(ss).append(ss).append("for (").append(t).append(" e : ").append(param.getName()).append(") {");
-							sb.append("\n").append(ss).append(ss).append(ss).append("AutoBean<").append(t).append("Container").append("> ").append("eAutoBean").append(" = typeFactory.").append(fname);
-							sb.append("\n").append(ss).append(ss).append(ss).append("eAutoBean").append(".as().setValue(").append("e").append(");");
-							sb.append("\n").append(ss).append(ss).append(ss).append(listName).append(".add(").append("eAutoBean.as()").append(");");
-							sb.append("\n").append(ss).append(ss).append("}");
-							*/
-
-							// asigno la lista wrapeada al autobean de la lista.
+							// asigno la lista al autobean para codificarla.
 							sb.append("\n").append(ss).append(ss).append("AutoBean<").append(t).append("ListContainer").append("> ").append(getAutoBeanName(param)).append(" = typeFactory.").append(flname);
 							sb.append("\n").append(ss).append(ss).append(getAutoBeanName(param)).append(".as().setValue(").append(param.getName()).append(");");						
 														
@@ -236,13 +226,23 @@ public class ManagersProcessor extends AbstractProcessor {
 						} else {
 							
 							// objeto definido por el usuario
-							
+
 							String t = subType.substring(subType.lastIndexOf(".") + 1);
 							String flname = "get" + t + "ListContainer();";
+							String listName = param.getName() + "List";
+							
+							// hago el wrapping de cada elemento de la lista en un autobean.
+							sb.append("\n").append(ss).append(ss).append("List<").append(subType).append("> ").append(listName).append(" = new ArrayList<>();");
+							sb.append("\n").append(ss).append(ss).append("for (").append(subType).append(" e : ").append(param.getName()).append(") {");
+							sb.append("\n").append(ss).append(ss).append(ss).append("AutoBean<").append(t).append("> ").append("eAutoBean").append(" = ").append(manager.factory.getName()).append(".get_").append(subType.replace(".", "_")).append("(e);");
+//							sb.append("\n").append(ss).append(ss).append(ss).append("eAutoBean").append(".as().setValue(").append("e").append(");");
+							sb.append("\n").append(ss).append(ss).append(ss).append(listName).append(".add(").append("eAutoBean.as()").append(");");
+							sb.append("\n").append(ss).append(ss).append("}");
+							
 							
 							// asigno la lista wrapeada al autobean de la lista.
 							sb.append("\n").append(ss).append(ss).append("AutoBean<").append(t).append("ListContainer").append("> ").append(getAutoBeanName(param)).append(" = ").append(manager.factory.getName()).append(".").append(flname);
-							sb.append("\n").append(ss).append(ss).append(getAutoBeanName(param)).append(".as().setValue(").append(param.getName()).append(");");									
+							sb.append("\n").append(ss).append(ss).append(getAutoBeanName(param)).append(".as().setValue(").append(listName).append(");");									
 							
 						}
 						
@@ -400,6 +400,18 @@ public class ManagersProcessor extends AbstractProcessor {
 				sb.append("\n");
 				sb.append("\n").append(ms).append("public AutoBean<").append(type).append("> ").append("get").append(type).append("();");
 				sb.append("\n").append(ms).append("public AutoBean<").append(type).append("> ").append("get").append(type).append("(").append(type).append(" ").append("l);");
+				
+				FactoryMethod fm = manager.getFactoryMethodByType(lc);
+				if (fm == null) {
+					
+					// genero los metodos para obtener los AutoBean para el wrapping.
+					sb.append("\n");
+					sb.append("\n").append(ms).append("public AutoBean<").append(lc).append("> ").append("get_").append(lc.replace(".", "_")).append("();");
+					sb.append("\n").append(ms).append("public AutoBean<").append(lc).append("> ").append("get_").append(lc.replace(".", "_")).append("(").append(lc).append(" ").append("l);");
+					
+					
+				}
+				
 				
 			}
 			sb.append("\n\n");
@@ -570,6 +582,7 @@ public class ManagersProcessor extends AbstractProcessor {
 				FactoryMethod fm = new FactoryMethod();
 				fm.param = param;
 				fm.name = "get_" + param.getType().replace(".","_");
+				fm.type = param.getType();
 				manager.factory.methods.add(fm);
 				
 			}

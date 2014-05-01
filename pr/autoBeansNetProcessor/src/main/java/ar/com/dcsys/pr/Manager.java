@@ -48,4 +48,15 @@ public class Manager {
 		}
 		throw new RuntimeException("Factory Method for param : " + p.getName() + " does not exists");
 	}
+	
+	public FactoryMethod getFactoryMethodByType(String type) {
+		for (FactoryMethod fm : factory.methods) {
+			if (fm.type.equals(type)) {
+				return fm;
+			}
+		}
+		return null;
+	}
+	
+	
 }
