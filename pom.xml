@@ -8,23 +8,26 @@
   <name>Projectos de Java</name>
 
   <modules>
+    	<module>cdiUtils</module>
 	<module>workarrounds</module>
+	<module>pr</module>
 	<module>dcsysUtils</module>
 	<module>data</module>
-	<module>config-privada</module>
 	<module>config</module>
 	<module>mail</module>
 	<module>document</module>
 	<module>person</module>
 	<module>auth</module>
-	<module>mapau</module>
+<!--	<module>mapau</module> -->
+	<module>tutoria</module>
 	<module>assistance</module>
 	<module>gwt</module>
 	<module>ear</module>
-    	<module>cdiUtils</module>
   </modules>
   
   <properties>
+    <glassfish.home>/home/pablo/java/glassfish4/glassfish</glassfish.home>
+    <glassfish.passwd>${glassfish.home}/domains/domain1/config/domain-passwords</glassfish.passwd>
     <servlet.version>3.1.0</servlet.version>
     <cdi.version>1.1</cdi.version>
     <weld.version>2.1.0.Final</weld.version>

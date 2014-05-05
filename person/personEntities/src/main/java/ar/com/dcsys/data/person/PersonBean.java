@@ -19,7 +19,6 @@ public class PersonBean implements Person, Serializable {
 	private String country;
 	private Gender gender = Gender.M;
 	private Date birthDate;
-	private String studentNumber;
 
 	
 	private List<PersonType> types;
@@ -46,16 +45,6 @@ public class PersonBean implements Person, Serializable {
 	@Override
 	public void setTypes(List<PersonType> types) {
 		this.types = types;
-	}
-
-	@Override
-	public String getStudentNumber() {
-		return studentNumber;
-	}
-
-	@Override
-	public void setStudentNumber(String studentNumber) {
-		this.studentNumber = studentNumber;
 	}
 
 	@Override

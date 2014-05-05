@@ -17,11 +17,7 @@
   <name>Config</name>
 
   <modules>
-	<module>firmwareConfig</module>
-	<module>postgreSqlConfig</module>
-	<module>mailNullConfig</module>
-	<module>mailSqlConfig</module>
-	<module>openLdapConfig</module>
+	<module>cdiConfig</module>
   </modules>
 
 </project>

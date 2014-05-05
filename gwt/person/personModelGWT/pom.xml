@@ -1,0 +1,169 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>ar.com.dcsys.gwt.person</groupId>
+    <artifactId>person</artifactId>
+    <version>1.0</version>
+  </parent>
+
+  <groupId>ar.com.dcsys.gwt.person</groupId>
+  <artifactId>personModelGWT</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <name>personModelGWT</name>
+
+
+
+  <dependencies>
+
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-user</artifactId>
+      <version>${gwt.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.gwt.inject</groupId>
+      <artifactId>gin</artifactId>
+      <version>${gin.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.enterprise</groupId>
+      <artifactId>cdi-api</artifactId>
+      <version>${cdi.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>${servlet.version}</version>
+    </dependency>
+
+   <!-- procesador de anotaciones -->
+
+    <dependency>
+      <groupId>ar.com.dcsys.pr</groupId>
+      <artifactId>annotations</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+<!--
+    <dependency>
+      <groupId>ar.com.dcsys.pr</groupId>
+      <artifactId>autoBeansNetProcessor</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+-->
+
+
+    <dependency>
+      <groupId>ar.com.dcsys.gwt.utils</groupId>
+      <artifactId>messageGWT</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+
+    <dependency>
+      <groupId>ar.com.dcsys.data</groupId>
+      <artifactId>documentEntities</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.model</groupId>
+      <artifactId>documentModel</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.data</groupId>
+      <artifactId>personEntities</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.model</groupId>
+      <artifactId>personModel</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.model</groupId>
+      <artifactId>personReportsModel</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.mail</groupId>
+      <artifactId>mailModel</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.config</groupId>
+      <artifactId>cdiConfig</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+
+  </dependencies>
+
+
+  <build>
+	<plugins>
+	    <plugin>
+	        <artifactId>maven-compiler-plugin</artifactId>
+	        <configuration>
+                  <source>${java.version}</source>
+                  <target>${java.version}</target>
+	            <compilerArgument>-proc:none</compilerArgument>
+	        </configuration>
+	    </plugin>
+
+	    <plugin>
+	        <groupId>org.bsc.maven</groupId>
+	        <artifactId>maven-processor-plugin</artifactId>
+	        <version>2.2.4</version>
+	        <executions>
+	            <execution>
+	                <id>process</id>
+	                <goals>
+	                    <goal>process</goal>
+	                </goals>
+	                <phase>process-sources</phase>
+	            </execution>
+	        </executions>
+	        <dependencies>
+                    <dependency>
+                      <groupId>ar.com.dcsys.pr</groupId>
+                      <artifactId>autoBeansNetProcessor</artifactId>
+                      <version>1.0-SNAPSHOT</version>
+                      <scope>compile</scope>
+                    </dependency>
+	        </dependencies>
+	    </plugin>
+
+	</plugins>
+  </build>
+
+
+
+
+
+
+</project>

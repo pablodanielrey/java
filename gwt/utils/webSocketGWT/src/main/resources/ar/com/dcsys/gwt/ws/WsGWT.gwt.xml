@@ -1,0 +1,10 @@
+<module>
+  <inherits name="com.google.gwt.user.User"/>
+  <inherits name="ar.com.dcsys.gwt.utils.UtilsGWT"/>
+  <inherits name="ar.com.dcsys.gwt.utils.messagesGWT"/>
+  
+  <inherits name="com.sksamuel.gwt.GwtWebsockets"/>
+
+  <source path="client"/>
+  <source path="shared"/>
+</module>

@@ -170,7 +170,7 @@ public class UserPasswordAuthLdapHandler extends AbstractAuthHandler {
 		DirContext ctx = cp.getDirContext();
 		try {
 		
-			String filter = "&((uid=" + username + ")(userPassword=" + password + "))";
+			String filter = "(&(uid=" + username + ")(userPassword=" + password + "))";
 			
 			SearchControls sc = new SearchControls();
 			sc.setReturningAttributes(userAttrs);
@@ -185,6 +185,7 @@ public class UserPasswordAuthLdapHandler extends AbstractAuthHandler {
 					Attribute uuid = attrs.get("x-dcsys-uuid");
 					String suuid = (String)uuid.get();
 					IdPrincipal idPrincipal = new IdPrincipal(suuid);
+					principals.add(idPrincipal);
 					
 					UserNamePrincipal userPrincipal = new UserNamePrincipal(username);
 					principals.add(userPrincipal);
@@ -195,7 +196,7 @@ public class UserPasswordAuthLdapHandler extends AbstractAuthHandler {
 						principals.add(dniPrincipal);
 					}
 					
-					AuthenticationInfo info = new SimpleAuthenticationInfo(new LdapPrincipalCollection(principals), token.getPassword(), this.getClass().getName());
+					AuthenticationInfo info = new SimpleAuthenticationInfo(new LdapPrincipalCollection(principals), token.getPassword());
 					return info;
 					
 				} else {

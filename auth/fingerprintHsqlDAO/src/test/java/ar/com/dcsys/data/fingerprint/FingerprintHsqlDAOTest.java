@@ -1,18 +1,18 @@
 package ar.com.dcsys.data.fingerprint;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 import java.sql.SQLException;
 import java.util.UUID;
 
+import javax.inject.Inject;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import ar.com.dcsys.data.DatabasePersistenceData;
-import ar.com.dcsys.data.HsqlConnectionProvider;
 import ar.com.dcsys.data.fingerprint.FingerprintDAO.Params;
-import ar.com.dcsys.data.person.PersonBean;
 import ar.com.dcsys.data.person.Person;
+import ar.com.dcsys.data.person.PersonBean;
 import ar.com.dcsys.exceptions.FingerprintException;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.security.Finger;
@@ -20,12 +20,11 @@ import ar.com.dcsys.security.FingerprintCredentials;
 
 public class FingerprintHsqlDAOTest {
 
-	private static FingerprintHsqlDAO dao;
-
+	@Inject FingerprintHsqlDAO dao;
+	
+/*
 	@BeforeClass
 	public static void setEnvironment() {
-		DatabasePersistenceData data = new DatabasePersistenceData();
-		HsqlConnectionProvider cp = new HsqlConnectionProvider(data);
 		
 		FingerprintDAO.Params params = new Params() {
 			@Override
@@ -35,13 +34,14 @@ public class FingerprintHsqlDAOTest {
 		};
 		dao = new FingerprintHsqlDAO(cp,params);
 	}
+	*/
 	
-	@Test
+//	@Test
 	public void testCreateTables() throws SQLException {
 		dao.createTables();
 	}
 	
-	@Test
+//	@Test
 	public void testPersistFingerprint() throws SQLException, FingerprintException {
 		dao.createTables();
 		
@@ -56,7 +56,7 @@ public class FingerprintHsqlDAOTest {
 	}
 
 
-	@Test
+//	@Test
 	public void testFindById() throws SQLException, PersonException, FingerprintException {
 		dao.createTables();
 		

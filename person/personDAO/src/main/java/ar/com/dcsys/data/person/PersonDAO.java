@@ -1,11 +1,10 @@
 package ar.com.dcsys.data.person;
 
-import java.io.Serializable;
 import java.util.List;
 
 import ar.com.dcsys.exceptions.PersonException;
 
-public interface PersonDAO extends Serializable {
+public interface PersonDAO {
 	
 	public List<String> findAllIds() throws PersonException;
 	public String findIdByDni(String dni) throws PersonException;
@@ -22,8 +21,8 @@ public interface PersonDAO extends Serializable {
 	public void remove(Person p) throws PersonException;
 	public String persist(Person p) throws PersonException;
 	
-	
 	public void addMail(String personId, Mail mail) throws PersonException;
 	public void removeMail(String personId, Mail mail) throws PersonException;
 	public List<Mail> findAllMails(String personId) throws PersonException;
+	
 }

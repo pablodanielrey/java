@@ -11,7 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 
 import ar.com.dcsys.data.HsqlConnectionProvider;
 import ar.com.dcsys.data.person.Person;
@@ -23,14 +22,17 @@ import ar.com.dcsys.security.FingerprintCredentials;
 public class FingerprintHsqlDAO implements FingerprintDAO {
 
 	private final Logger logger = Logger.getLogger(FingerprintHsqlDAO.class.getName());
-	private final HsqlConnectionProvider cp;
-	private final Params params;
+	private final HsqlConnectionProvider cp = null;
+	private final Params params = null;
 	
+	/*
 	@Inject
 	public FingerprintHsqlDAO(HsqlConnectionProvider cp, Params params) {
 		this.cp = cp;
 		this.params = params;
 	}
+	*/
+	
 
 	@PostConstruct
 	public void init() {

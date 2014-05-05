@@ -21,19 +21,15 @@
   </properties>
 
   <modules>
-    <module>messageGWT</module>
-    <module>clientMessagesGWT</module>
+    <module>utils</module>
+    <module>auth</module>
+    <module>person</module>
+    <module>assistance</module>
+<!--    
+	hasta agarrar de nuevo el proyecto. falta acomodar los poms etc.
+	<module>mapau</module> -->
 
-    <module>authGWT</module>
-    <module>authModelGWT</module>
-
-    <module>personModelGWT</module>
-    <module>personGWT</module>
-
-    <module>mapauModelGWT</module>
-    <module>mapauGWT</module>
-    <module>assistanceGWT</module>
-    <module>assistanceModelGWT</module>
   </modules>
+
 
 </project>

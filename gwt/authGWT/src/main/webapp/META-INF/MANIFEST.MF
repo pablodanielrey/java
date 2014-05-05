@@ -1,7 +1,0 @@
-Manifest-Version: 1.0
-Class-Path: authModelGWT.jar javax.servlet-api-3.1.0.jar shiro-1.0-SNA
- PSHOT.jar authModel-1.0-SNAPSHOT.jar authEntities-1.0-SNAPSHOT.jar cd
- iUtils-1.0-SNAPSHOT.jar dcsysUtils-1.0-SNAPSHOT.jar postgresql-1.0-SN
- APSHOT.jar postgresql-9.3-1100-jdbc41.jar messageGWT.jar org.json-cha
- rgebee-1.0.jar gwt-websockets-1.0.3.jar clientMessagesGWT.jar
-

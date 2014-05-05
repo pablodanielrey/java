@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <!-- POM file generated with GWT webAppCreator -->
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>gwt</artifactId>
+    <groupId>ar.com.dcsys.gwt</groupId>
+    <version>1.0</version>
+  </parent>
+
+  <groupId>ar.com.dcsys.gwt.utils</groupId>
+  <artifactId>utils</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0</version>
+  <name>proyectos de utilidades GWT</name>
+
+  <modules>
+    <module>utilsGWT</module>
+    <module>clientMessagesGWT</module>
+    <module>messagesGWT</module>
+    <module>webSocketGWT</module>
+    <module>managerGWT</module>
+  </modules>
+
+
+</project>

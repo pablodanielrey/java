@@ -1,0 +1,7 @@
+<module>
+  <inherits name="com.google.gwt.user.User"/>
+  <inherits name="ar.com.dcsys.gwt.utils.UtilsGWT"/>
+
+  <source path="client"/>
+  <source path="shared"/>
+</module>
