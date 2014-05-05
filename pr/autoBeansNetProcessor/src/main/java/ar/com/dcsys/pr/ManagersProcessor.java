@@ -234,7 +234,7 @@ public class ManagersProcessor extends AbstractProcessor {
 							// hago el wrapping de cada elemento de la lista en un autobean.
 							sb.append("\n").append(ss).append(ss).append("List<").append(subType).append("> ").append(listName).append(" = new ArrayList<>();");
 							sb.append("\n").append(ss).append(ss).append("for (").append(subType).append(" e : ").append(param.getName()).append(") {");
-							sb.append("\n").append(ss).append(ss).append(ss).append("AutoBean<").append(t).append("> ").append("eAutoBean").append(" = ").append(manager.factory.getName()).append(".get_").append(subType.replace(".", "_")).append("(e);");
+							sb.append("\n").append(ss).append(ss).append(ss).append("AutoBean<").append(subType).append("> ").append("eAutoBean").append(" = ").append(manager.factory.getName()).append(".get_").append(subType.replace(".", "_")).append("(e);");
 //							sb.append("\n").append(ss).append(ss).append(ss).append("eAutoBean").append(".as().setValue(").append("e").append(");");
 							sb.append("\n").append(ss).append(ss).append(ss).append(listName).append(".add(").append("eAutoBean.as()").append(");");
 							sb.append("\n").append(ss).append(ss).append("}");
