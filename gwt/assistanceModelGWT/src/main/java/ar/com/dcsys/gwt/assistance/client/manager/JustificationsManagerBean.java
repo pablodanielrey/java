@@ -26,6 +26,7 @@ import ar.com.dcsys.gwt.message.shared.Message;
 import ar.com.dcsys.gwt.message.shared.MessageException;
 import ar.com.dcsys.gwt.message.shared.MessageType;
 import ar.com.dcsys.gwt.message.shared.MessageUtils;
+import ar.com.dcsys.gwt.person.shared.PersonEncoderDecoder;
 import ar.com.dcsys.gwt.person.shared.PersonValueProxy;
 import ar.com.dcsys.gwt.ws.client.WebSocket;
 import ar.com.dcsys.gwt.ws.client.WebSocketReceiver;
@@ -40,6 +41,7 @@ public class JustificationsManagerBean implements JustificationsManager {
 	private final AssistanceFactory assistanceFactory;
 	private final MessageUtils messagesFactory;
 	private final AssistanceEncoderDecoder assistanceEncoderDecoder;
+	private final PersonEncoderDecoder personEncoderDecoder;
 	private final WebSocket socket;
 	
 	private final EventBus eventBus;
@@ -75,13 +77,15 @@ public class JustificationsManagerBean implements JustificationsManager {
 	@Inject
 	public JustificationsManagerBean(EventBus eventBus,
 									 ManagerUtils managerUtils,
-									 AssistanceFactory assistanceFactory, AssistanceEncoderDecoder assistanceEncoderDecoder,
+									 AssistanceFactory assistanceFactory,
+									 AssistanceEncoderDecoder assistanceEncoderDecoder, PersonEncoderDecoder personEncoderDecoder,
 									 MessageUtils messagesFactory, WebSocket ws) {
 		this.eventBus = eventBus;
 		this.managerUtils = managerUtils;
 		this.assistanceFactory = assistanceFactory;
 		this.messagesFactory = messagesFactory;
 		this.assistanceEncoderDecoder = assistanceEncoderDecoder;
+		this.personEncoderDecoder = personEncoderDecoder;
 		this.socket = ws;
 		
 		eventBus.addHandler(SocketMessageEvent.TYPE, eventHandler);
@@ -203,17 +207,92 @@ public class JustificationsManagerBean implements JustificationsManager {
 	}
 
 	@Override
-	public void justify(PersonValueProxy person, Date start, Date end,
-			Justification justification, String notes, Receiver<Void> receiver) {
-		// TODO Auto-generated method stub
-		
+	public void justify(Person person, Date start, Date end, Justification justification, String notes, final Receiver<Void> receiver) {
+		try {
+			//serializo los parametros y genero el mensaje
+			String[] params = new String[5];
+			params[0] = ManagerUtils.encode(assistanceFactory, Person.class, person);
+			params[1] = start.toString();
+			params[2] = end.toString();
+			params[3] = ManagerUtils.encode(assistanceFactory, Justification.class, justification);			
+			params[4] = notes;
+			
+			String json = ManagerUtils.encodeParams(params);
+			Message msg = messagesFactory.method(AssistanceMethods.justify,json);
+			
+			//envio el mensaje
+			socket.open();
+			socket.send(msg, new WebSocketReceiver() {
+
+				@Override
+				public void onSuccess(Message response) {
+					if (handleError(response, receiver)) {
+						return;
+					}
+					receiver.onSuccess(null);
+				}
+
+				@Override
+				public void onFailure(Throwable t) {
+					logger.log(Level.SEVERE,t.getMessage());
+					receiver.onFailure(t);
+				}
+				
+			});
+			
+		} catch (Exception e) {
+			logger.log(Level.SEVERE,e.getMessage());
+			receiver.onFailure(e);
+		}
 	}
 
 	@Override
-	public void findBy(List<Person> persons, Date start, Date end,
-			Receiver<List<JustificationDate>> receiver) {
-		// TODO Auto-generated method stub
-		
+	public void findBy(List<Person> persons, Date start, Date end, final Receiver<List<JustificationDate>> receiver) {
+		try {
+			//serializo los parametros y genero el mensaje
+			String[] params = new String[3];
+			params[0] = personEncoderDecoder.encodePersonList(persons);
+			params[1] = start.toString();
+			params[2] = end.toString(); 
+			String json = ManagerUtils.encodeParams(params);
+			Message msg = messagesFactory.method(AssistanceMethods.findByPerson,json);
+			
+			//envio el mensaje
+			socket.open();
+			socket.send(msg, new WebSocketReceiver() {
+
+				@Override
+				public void onSuccess(Message response) {
+					if (handleError(response, receiver)) {
+						return;
+					}
+					
+					List<JustificationDate> justifications = null;
+					try {
+						String list = response.getPayload();
+						justifications = assistanceEncoderDecoder.decodeJustificationDateList(list);
+					} catch (Exception e) {
+						receiver.onFailure(e);
+					}
+					
+					try {
+						receiver.onSuccess(justifications);
+					} catch (Exception e) {
+						logger.log(Level.SEVERE,e.getMessage(),e);
+					}					
+				}
+
+				@Override
+				public void onFailure(Throwable e) {
+					logger.log(Level.SEVERE,e.getMessage());
+					receiver.onFailure(e);
+				}
+				
+			});
+		} catch (Exception e) {
+			logger.log(Level.SEVERE,e.getMessage());
+			receiver.onFailure(e);
+		}
 	}
 
 	@Override
@@ -224,10 +303,34 @@ public class JustificationsManagerBean implements JustificationsManager {
 	}
 
 	@Override
-	public void remove(List<JustificationDate> justifications,
-			Receiver<Void> receiver) {
-		// TODO Auto-generated method stub
-		
+	public void remove(List<JustificationDate> justifications,final Receiver<Void> receiver) {
+		try {
+			//serializo los parámetros y genero el mensaje
+			String json = assistanceEncoderDecoder.encodeJustificationDateList(justifications);
+			Message msg = messagesFactory.method(AssistanceMethods.removeJustificationDate,json);
+			
+			//envío el mensaje al servidor
+			socket.open();
+			socket.send(msg, new WebSocketReceiver() {
+				
+				@Override
+				public void onSuccess(Message response) {
+					if (handleError(response, receiver)) {
+						return;
+					}
+					receiver.onSuccess(null);
+				}
+				
+				@Override
+				public void onFailure(Throwable t) {
+					logger.log(Level.SEVERE,t.getMessage());
+					receiver.onFailure(t);
+				}
+			});
+		} catch (Exception e) {
+			logger.log(Level.SEVERE,e.getMessage());
+			receiver.onFailure(e);
+		}
 	}
 
 	@Override

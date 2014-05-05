@@ -18,7 +18,7 @@ public interface JustificationsManager {
 	
 	public void remove(Justification justification, Receiver<Void> receiver);
 	
-	public void justify(PersonValueProxy person, Date start, Date end, Justification justification, String notes, Receiver<Void> receiver);
+	public void justify(Person person, Date start, Date end, Justification justification, String notes, Receiver<Void> receiver);
 	
 	public void findBy(List<Person> persons, Date start, Date end, Receiver<List<JustificationDate>> receiver);
 	
