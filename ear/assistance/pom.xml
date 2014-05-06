@@ -97,14 +97,14 @@
    <!-- auth -->
 
     <dependency>
-	<groupId>ar.com.dcsys.gwt</groupId>
+	<groupId>ar.com.dcsys.gwt.auth</groupId>
 	<artifactId>authGWT</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	 <type>war</type>
     </dependency>
 
     <dependency>
-        <groupId>ar.com.dcsys.gwt</groupId>
+        <groupId>ar.com.dcsys.gwt.auth</groupId>
         <artifactId>authModelGWT</artifactId>
         <version>1.0-SNAPSHOT</version>
     </dependency>
@@ -125,14 +125,14 @@
     <!-- assistance -->
 
     <dependency>
-      <groupId>ar.com.dcsys.gwt</groupId>
+      <groupId>ar.com.dcsys.gwt.assistance</groupId>
       <artifactId>assistanceGWT</artifactId>
       <version>1.0-SNAPSHOT</version>
       <type>war</type>
     </dependency>
 
     <dependency>
-      <groupId>ar.com.dcsys.gwt</groupId>
+      <groupId>ar.com.dcsys.gwt.assistance</groupId>
       <artifactId>assistanceModelGWT</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
@@ -165,14 +165,14 @@
     <!-- persona -->
 
     <dependency>
-      <groupId>ar.com.dcsys.gwt</groupId>
+      <groupId>ar.com.dcsys.gwt.person</groupId>
       <artifactId>personGWT</artifactId>
       <version>1.0-SNAPSHOT</version>
       <type>war</type>
     </dependency>
 
     <dependency>
-      <groupId>ar.com.dcsys.gwt</groupId>
+      <groupId>ar.com.dcsys.gwt.person</groupId>
       <artifactId>personModelGWT</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
@@ -220,7 +220,7 @@
 
 
     <!-- config -->
-
+<!--
     <dependency>
       <groupId>ar.com.dcsys.data</groupId>
       <artifactId>postgreSqlConfig</artifactId>
@@ -232,7 +232,7 @@
       <artifactId>mailSqlConfig</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
-
+-->
 
 
     <!-- mapau -->
@@ -272,13 +272,13 @@
    <!-- utilidades usadas en todos los proyectos -->
 
     <dependency>
-      <groupId>ar.com.dcsys.gwt</groupId>
+      <groupId>ar.com.dcsys.gwt.utils</groupId>
       <artifactId>messageGWT</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
 
     <dependency>
-      <groupId>ar.com.dcsys.gwt</groupId>
+      <groupId>ar.com.dcsys.gwt.utils</groupId>
       <artifactId>clientMessagesGWT</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
@@ -299,30 +299,30 @@
         </configuration>
       </plugin>
 
-        <plugin>
-                <groupId>org.glassfish.embedded</groupId>
-                <artifactId>maven-embedded-glassfish-plugin</artifactId>
-                <version>4.0</version>
-
-                <configuration>
-			<app>target/assistance-1.0.ear</app>
-<!--                        <app>${project.build.directory}/${project.build.finalName}.ear</app> -->
-                        <port>8080</port>
-<!--                            <contextRoot>${project.artifactId}</contextRoot> -->
-                        <contextRoot>/</contextRoot>
-			<debug>true</debug>
-			<autoCreate>true</autoCreate>
-                </configuration>
-		<executions>
-          	<execution>
-	             <phase>install</phase>
-        	     <goals>
-			    <goal>deploy</goal>
-           		    <goal>run</goal>
-	             </goals>
-        	  </execution>
-	       </executions>
-        </plugin>
+                        <plugin>
+                                <groupId>org.glassfish.maven.plugin</groupId>
+                                <artifactId>maven-glassfish-plugin</artifactId>
+                                <version>2.1</version>
+                                <configuration>
+                                <glassfishDirectory>${glassfish.home}</glassfishDirectory>
+                                        <user>admin</user>
+                                        <passwordFile>${glassfish.passwd}</passwordFile>
+                                        <domain>
+                                                <name>domain1</name>
+                                                <httpPort>8080</httpPort>
+                                                <adminPort>4848</adminPort>
+                                        </domain>
+                                        <components>
+                                                <component>
+                                                        <name>${project.artifactId}</name>
+		                                        <artifact>target/${project.build.finalName}.ear</artifact>
+                                                </component>
+                                        </components>
+                                        <debug>true</debug>
+                                        <terse>false</terse>
+                                        <echo>true</echo>
+                                </configuration>
+                        </plugin>
 
     </plugins>
 
