@@ -2,6 +2,7 @@ package ar.com.dcsys.pr;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -284,7 +285,10 @@ public class ManagersProcessor extends AbstractProcessor {
 				
 				sb.append("\n").append(ss).append(ss).append(ss).append("@Override");
 				sb.append("\n").append(ss).append(ss).append(ss).append("public void onSuccess(String msg) {");
+				
 				sb.append("\n").append(ss).append(ss).append(ss).append(ss).append(" // decodifico el mensaje");
+				
+				
 				sb.append("\n").append(ss).append(ss).append(ss).append("};");
 
 				sb.append("\n").append(ss).append(ss).append(ss).append("@Override");
@@ -324,6 +328,53 @@ public class ManagersProcessor extends AbstractProcessor {
 			}
 			
 		}
+	}
+	
+	/**
+	 * Genera los containers de los tipos retornados en rec.
+	 * @param managers
+	 */
+	private void generateReceiverContainers(List<Manager> managers) {
+		
+		for (Manager manager : managers) {
+			for (Method m : manager.methods) {
+				Param rec = m.receiver;
+				String type = rec.getType();
+				String rtype = type.substring(0,type.indexOf("<"));
+				String stype = type.substring(type.indexOf("<") + 1, type.indexOf(">"));
+				String ttype = stype.substring(stype.lastIndexOf(".") + 1);
+				
+				StringBuilder sb = new StringBuilder();
+				
+				sb.append("package ").append(manager.factory.getPackageName()).append(";");
+				
+				sb.append("\n\n");
+				sb.append("\nimport ar.com.dcsys.gwt.manager.shared.TypeContainer;");
+				sb.append("\nimport ").append(rtype).append(";");
+				sb.append("\nimport ").append(stype).append(";");
+				sb.append("\nimport java.util.List;");
+				
+				sb.append("\n\n");
+
+				sb.append("public interface ").append(ttype).append("ReceiverContainer extends TypeContainer<").append(stype).append("> {");
+				sb.append("\n").append("}");
+				
+				
+				try {
+					JavaFileObject jfo = processingEnv.getFiler().createSourceFile(manager.factory.getPackageName() + "." + ttype + "ReceiverContainer");
+					PrintWriter out = new PrintWriter(jfo.openWriter());
+					out.println(sb.toString());
+					out.flush();
+					out.close();
+					
+				} catch (Exception e) {
+					
+				}
+				
+			}
+		}
+		
+		
 	}
 	
 	
@@ -409,12 +460,38 @@ public class ManagersProcessor extends AbstractProcessor {
 					sb.append("\n").append(ms).append("public AutoBean<").append(lc).append("> ").append("get_").append(lc.replace(".", "_")).append("();");
 					sb.append("\n").append(ms).append("public AutoBean<").append(lc).append("> ").append("get_").append(lc.replace(".", "_")).append("(").append(lc).append(" ").append("l);");
 					
-					
 				}
+				
+			}
+			sb.append("\n\n");
+			
+			//////////////// los receiver containers //////////////
+			
+			Set<String> stypes = new HashSet<>();
+			for (Method m : manager.methods) {
+				Param rec = m.receiver;
+				String type = rec.getType();
+				String rtype = type.substring(0,type.indexOf("<"));
+				String stype = type.substring(type.indexOf("<") + 1, type.indexOf(">"));
+				
+				if (stypes.contains(stype)) {
+					continue;
+				}
+				stypes.add(stype);
+				
+				String ttype = stype.substring(stype.lastIndexOf(".") + 1);
+				
+				String rname = manager.factory.getPackageName() + "." + ttype + "ReceiverContainer";
+				
+				sb.append("\n");
+				sb.append("\n").append(ms).append("public AutoBean<").append(rname).append("> ").append("get").append(rname.replace(".", "_")).append("();");
+				sb.append("\n").append(ms).append("public AutoBean<").append(rname).append("> ").append("get").append(rname.replace(".", "_")).append("(").append(type).append(" ").append("l);");
 				
 				
 			}
 			sb.append("\n\n");
+
+			
 			
 			sb.append("}");
 			sb.append("\n\n");
@@ -488,6 +565,7 @@ public class ManagersProcessor extends AbstractProcessor {
 		}
 	
 		if (managers.size() > 0) {
+			generateReceiverContainers(managers);
 			generateListContainers(managers);
 			generateFactories(managers);
 			generateClientFiles(managers);
