@@ -178,6 +178,7 @@ public class ManagersProcessor extends AbstractProcessor {
 				}
 
 				// el receiver
+				sb.append("final ");
 				sb.append(method.receiver.typeMirror.toString());
 				sb.append(" ").append(method.receiver.name);
 				
@@ -276,7 +277,6 @@ public class ManagersProcessor extends AbstractProcessor {
 				sb.append("\n").append(ss).append(ss).append("String emsg = AutoBeanCodex.encode(msg).getPayload();");
 				sb.append("\n\n");
 								
-				
 				/////////////////// realizo la llamada al servidor /////////////////////
 				
 				
@@ -286,7 +286,15 @@ public class ManagersProcessor extends AbstractProcessor {
 				sb.append("\n").append(ss).append(ss).append(ss).append("@Override");
 				sb.append("\n").append(ss).append(ss).append(ss).append("public void onSuccess(String msg) {");
 				
-				sb.append("\n").append(ss).append(ss).append(ss).append(ss).append(" // decodifico el mensaje");
+				
+				String type = method.receiver.getType();
+				String rtype = type.substring(0,type.indexOf("<"));
+				String stype = type.substring(type.indexOf("<") + 1, type.indexOf(">"));
+				String ttype = stype.substring(stype.lastIndexOf(".") + 1);
+				String receiver = ttype + "ReceiverContainer";
+				
+				sb.append("\n").append(ss).append(ss).append(ss).append(ss).append("AutoBean<").append(receiver).append("> rec2 = AutoBeanCodex.decode(").append(manager.factory.getName()).append(",").append(receiver).append(".class,msg);");
+				sb.append("\n").append(ss).append(ss).append(ss).append(ss).append("rec.onSuccess(rec2.as().getValue());");
 				
 				
 				sb.append("\n").append(ss).append(ss).append(ss).append("};");

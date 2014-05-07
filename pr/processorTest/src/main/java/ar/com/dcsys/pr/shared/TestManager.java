@@ -10,7 +10,7 @@ import ar.com.dcsys.pr.ClientManager;
 @ClientManager
 public interface TestManager {
 
-	public void tr(List<Person> persons, Receiver<String> rec);
+	public void tr(List<Person> persons, Receiver<Person> rec);
 	
 	public void t(List<Message> m, Receiver<String> rec);
 	
