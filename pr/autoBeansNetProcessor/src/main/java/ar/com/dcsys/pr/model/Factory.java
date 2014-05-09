@@ -56,7 +56,7 @@ public class Factory {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("\npackage ").append(getPackage()).append(";\n");
-		sb.append("\npublic class ").append(Utils.extractName(getType())).append(" {");
+		sb.append("\npublic interface ").append(Utils.extractName(getType())).append(" extends com.google.web.bindery.autobean.shared.AutoBeanFactory {");
 		
 		for (Getter g : getGetters()) {
 			g.generateSourceFile(processingEnv);

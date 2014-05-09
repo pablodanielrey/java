@@ -64,23 +64,4 @@ public class BasicTypeContainer implements TypeContainer {
 		}
 	}
 	
-	/**
-	 * Genera el codigo necesario para codificar el parámetro a String y agregarlo a la lista de Strings paramsName.
-	 * @param f
-	 * @param paramsName
-	 * @param sb
-	 
-	public void generateCoder(Factory f, String paramsName, StringBuilder sb) {
-		
-		String varName = UUID.randomUUID().toString().replace("-","");
-		String encodedVarName = UUID.randomUUID().toString().replace("-","");
-		
-		sb.append("\n").append("AutoBean<").append(getType()).append(">").append(varName).append(" = ").append(f.getName()).append(".").append(getterName());
-		sb.append("\n").append(varName).append(".as().setValue(").append(param.getName()).append(");");
-		sb.append("\n").append("String").append(encodedVarName).append(" = ").append("AutoBeanCondex.encode(").append(varName).append(").getPayload();");
-		sb.append("\n").append(paramsName).append(".add(").append(encodedVarName).append(");");
-		
-	}
-	*/
-	
 }

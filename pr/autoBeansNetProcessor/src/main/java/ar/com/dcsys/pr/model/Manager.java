@@ -95,7 +95,7 @@ public class Manager {
 		ii.classType = getClienType();
 		ii.className = extractName(type);
 		ii.messageFactory = "messageFactory";
-		ii.messageFactoryClass = "ar.com.dcsys.gwt.manager.message.MessageFactory";
+		ii.messageFactoryClass = "ar.com.dcsys.gwt.manager.shared.message.MessageFactory";
 		ii.managerFactory = "managerFactory";
 		ii.managerFactoryClass = factory.getType();
 		ii.transport = "transport";
@@ -109,15 +109,15 @@ public class Manager {
 		sb.append("public class ").append(ii.className).append(" {").append("\n");
 		
 		// variables de intancia //////
-		sb.append("\n").append(Utils.ident(4)).append("private final ").append(ii.messageFactoryClass).append(" ").append(ii.messageFactory).append(" = AutoBeanFactorySource.create(").append(ii.messageFactoryClass).append(".class);");
-		sb.append("\n").append(Utils.ident(4)).append("private final ").append(ii.managerFactoryClass).append(" ").append(ii.managerFactory).append(" = AutoBeanFactorySource.create(").append(ii.managerFactoryClass).append(".class);");
+		sb.append("\n").append(Utils.ident(4)).append("private final ").append(ii.messageFactoryClass).append(" ").append(ii.messageFactory).append(" = com.google.web.bindery.autobean.vm.AutoBeanFactorySource.create(").append(ii.messageFactoryClass).append(".class);");
+		sb.append("\n").append(Utils.ident(4)).append("private final ").append(ii.managerFactoryClass).append(" ").append(ii.managerFactory).append(" = com.google.web.bindery.autobean.vm.AutoBeanFactorySource.create(").append(ii.managerFactoryClass).append(".class);");
 		sb.append("\n").append(Utils.ident(4)).append("private final ").append(ii.transportClass).append(" ").append(ii.transport).append(";");		// se injecta en el constructor
 		sb.append("\n\n");
 		
 		
 		///  constructor //////
 		
-		sb.append("\n").append(Utils.ident(4)).append("@Inject");
+		sb.append("\n").append(Utils.ident(4)).append("@javax.inject.Inject");
 		sb.append("\n").append(Utils.ident(4)).append("public ").append(extractName(getClienType())).append("(").append(ii.transportClass).append(" ").append(ii.transport).append(") {");
 		sb.append("\n").append(Utils.ident(8)).append("this.").append(ii.transport).append(" = ").append(ii.transport).append(";");
 		sb.append("\n").append(Utils.ident(4)).append("}");

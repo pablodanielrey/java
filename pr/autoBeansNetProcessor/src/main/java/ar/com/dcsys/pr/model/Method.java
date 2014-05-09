@@ -96,7 +96,7 @@ public class Method {
 
 		// el receiver  TODO: 
 		sb.append("final ");
-		sb.append("ar.com.dcsys.gwt.manager.Receiver<String> receiver");
+		sb.append("ar.com.dcsys.gwt.manager.shared.Receiver<String> receiver");
 		sb.append(") {\n");
 		
 		
@@ -106,7 +106,7 @@ public class Method {
 		
 		////////////////// codifico los parametros /////////////////////
 
-		sb.append("\n").append(Utils.ident(8)).append("List<String> params = new ArrayList<>();");
+		sb.append("\n").append(Utils.ident(8)).append("java.util.List<String> params = new java.util.ArrayList<>();");
 		sb.append("\n");
 		
 		for (Param param: getParams()) {
@@ -117,7 +117,7 @@ public class Method {
 		sb.append("\n").append(Utils.ident(8)).append("com.google.web.bindery.autobean.shared.AutoBean<ar.com.dcsys.gwt.manager.shared.Message> msg = ").append(ii.messageFactory).append(".getMessage();");
 		sb.append("\n").append(Utils.ident(8)).append("msg.as().setFunction(\"").append(getSignature()).append("\");");
 		sb.append("\n").append(Utils.ident(8)).append("msg.as().setParams(params);");
-		sb.append("\n").append(Utils.ident(8)).append("String emsg = AutoBeanCodex.encode(msg).getPayload();");
+		sb.append("\n").append(Utils.ident(8)).append("String emsg = com.google.web.bindery.autobean.shared.AutoBeanCodex.encode(msg).getPayload();");
 		sb.append("\n\n");
 	
 		
