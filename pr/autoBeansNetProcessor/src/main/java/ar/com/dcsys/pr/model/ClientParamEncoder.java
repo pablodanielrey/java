@@ -5,7 +5,19 @@ import java.util.UUID;
 import ar.com.dcsys.pr.Utils;
 
 public class ClientParamEncoder {
+	
+	
+	public static String decodeResponse(Manager manager, Manager.InstanceInfo ii, Receiver param, String coded) {
 
+		String type = Utils.getInteralType(param.getType());
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("\n").append("com.google.web.bindery.autobean.shared.AutoBean<").append(type).append(">");
+		
+		return sb.toString();
+	}
+	
+	
 	public static String encode(Manager manager, Manager.InstanceInfo ii, Param param) {
 		
 		StringBuilder sb = new StringBuilder();

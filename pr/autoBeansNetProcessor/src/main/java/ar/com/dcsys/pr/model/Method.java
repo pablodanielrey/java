@@ -133,19 +133,30 @@ public class Method {
 		sb.append("\n").append(Utils.ident(8)).append(ii.transport).append(".send(emsg,new ar.com.dcsys.gwt.messages.shared.TransportReceiver() {");
 		sb.append("\n").append(Utils.ident(10)).append("@Override");
 		sb.append("\n").append(Utils.ident(10)).append("public void onSuccess(String msg) {");
-		sb.append("\n").append(Utils.ident(12)).append("// aca decodifica");
+		sb.append("\n").append(Utils.ident(12)).append("try {");
+		
+		// se decodifica la respuesta.
+		
+		
+		sb.append("\n").append(Utils.ident(12)).append("} catch (Exception a) {");
+		sb.append("\n").append(Utils.ident(14)).append(getReceiver().getName()).append(".onError(a.getMessage());");
+		sb.append("\n").append(Utils.ident(12)).append("};");
+		
+		
 		sb.append("\n").append(Utils.ident(10)).append("}");
 		sb.append("\n");
 		sb.append("\n").append(Utils.ident(10)).append("@Override");
 		sb.append("\n").append(Utils.ident(10)).append("public void onFailure(String error) {");
-		sb.append("\n").append(Utils.ident(12)).append("// aca se majea el error");
+		sb.append("\n").append(Utils.ident(12)).append("try {");
+		sb.append("\n").append(Utils.ident(14)).append(getReceiver().getName()).append(".onError(error);");
+		sb.append("\n").append(Utils.ident(12)).append("} catch (Exception a) { };");
 		sb.append("\n").append(Utils.ident(10)).append("}");
 		sb.append("\n").append(Utils.ident(8)).append("});");
 		sb.append("\n");
 		
 		
 		sb.append("\n").append(Utils.ident(6)).append("} catch (Exception e) {");
-		sb.append("\n").append(Utils.ident(8)).append("e.printStackTrace();");
+		sb.append("\n").append(Utils.ident(8)).append(getReceiver().getName()).append(".onError(e.getMessage());");
 		sb.append("\n").append(Utils.ident(6)).append("}");
 		
 		sb.append("\n\n");
