@@ -4,17 +4,18 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import ar.com.dcsys.data.report.Report;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
 
 public class ReportDataSource implements JRDataSource {
 
-	private final ReportSummary rs;
-	private final List<Report> rss;
+	private final DefaultReportSummaryImpl rs;
+	private final List<? extends Report> rss;
 	private int index = -1;
 	
-	public ReportDataSource(ReportSummary rs) {
+	public ReportDataSource(DefaultReportSummaryImpl rs) {
 		this.rs = rs;
 		this.rss = rs.getReports();
 	}

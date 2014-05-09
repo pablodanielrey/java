@@ -16,13 +16,14 @@ import ar.com.dcsys.data.group.GroupType;
 import ar.com.dcsys.data.justification.GeneralJustificationDate;
 import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.person.Person;
+import ar.com.dcsys.data.report.Report;
 import ar.com.dcsys.exceptions.JustificationException;
 import ar.com.dcsys.exceptions.PeriodException;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.model.GroupsManager;
 import ar.com.dcsys.model.PersonsManager;
 import ar.com.dcsys.model.justification.JustificationsManager;
-import ar.com.dcsys.model.period.Period;
+import ar.com.dcsys.model.period.DefaultPeriodImpl;
 import ar.com.dcsys.model.period.PeriodComparator;
 import ar.com.dcsys.model.period.PeriodsManager;
 import ar.com.dcsys.utils.PersonSort;
@@ -37,7 +38,7 @@ public class ReportDataGenerator {
 	@Inject GroupsManager groupsManager;
 	
 
-	public ReportSummary getReport(Date start, Date end, List<Person> personsToReport) throws IOException {
+	public DefaultReportSummaryImpl getReport(Date start, Date end, List<Person> personsToReport) throws IOException {
 	
 		try {
 		
@@ -50,7 +51,7 @@ public class ReportDataGenerator {
 			PersonSort.sort(personsToReport);
 			
 			// genero el reporte.
-			ReportSummary as = new ReportSummary();
+			DefaultReportSummaryImpl as = new DefaultReportSummaryImpl();
 			as.setStart(start);
 			as.setEnd(end);
 			
@@ -58,7 +59,7 @@ public class ReportDataGenerator {
 				try {
 					
 					List<JustificationDate> justifications = justificationManager.findBy(Arrays.asList(p), start, end);			
-		            List<Period> periodsAux = periodsManager.findAll(p, start, end, true);
+		            List<DefaultPeriodImpl> periodsAux = periodsManager.findAll(p, start, end, true);
 		            if (periodsAux == null) {
 		            	continue;
 		            }
@@ -78,9 +79,9 @@ public class ReportDataGenerator {
 					}
 					
 
-		            for (Period period : periodsAux) {
+		            for (DefaultPeriodImpl period : periodsAux) {
 
-		            	Report r = new Report();
+		            	DefaultReportImpl r = new DefaultReportImpl();
 		            	r.setPerson(p);
 		            	r.setPeriod(period);
 		            	r.setGroup(groupToSet);
@@ -95,7 +96,7 @@ public class ReportDataGenerator {
 		            		r.getJustifications().add(j.getJustification());
 		            	}
 
-		            	as.getReports().add(r);
+		            	as.addReport(r);
 		            }
 					
 					
@@ -117,7 +118,7 @@ public class ReportDataGenerator {
 		}
 	}
 	
-	private List<GeneralJustificationDate> checkGeneralJustification(List<GeneralJustificationDate> justifications, Period p) {
+	private List<GeneralJustificationDate> checkGeneralJustification(List<GeneralJustificationDate> justifications, DefaultPeriodImpl p) {
 		Date startP = p.getStart();
 		Date endP = p.getEnd();
 		
@@ -137,7 +138,7 @@ public class ReportDataGenerator {
 		return jds;
 	}
 	
-	private List<JustificationDate> checkJustification(List<JustificationDate> justifications, Period p) {
+	private List<JustificationDate> checkJustification(List<JustificationDate> justifications, DefaultPeriodImpl p) {
 		Date startP = p.getStart();
 		Date endP = p.getEnd();
 		

@@ -12,8 +12,8 @@ import ar.com.dcsys.exceptions.PersonException;
 
 public interface PeriodsManager {
 
-	public List<Period> findAll(Person person, Date start, Date end) throws PeriodException;
-	public List<Period> findAll(Person person, Date start, Date end, boolean onlyWorkDays) throws PeriodException;
+	public List<DefaultPeriodImpl> findAll(Person person, Date start, Date end) throws PeriodException;
+	public List<DefaultPeriodImpl> findAll(Person person, Date start, Date end, boolean onlyWorkDays) throws PeriodException;
 	
 	public List<PeriodAssignation> findAll(Person p) throws PeriodException;
 	public PeriodAssignation findBy(Person person, Date date, PeriodType type) throws PeriodException;

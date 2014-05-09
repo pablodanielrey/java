@@ -22,7 +22,7 @@ public class SystemPeriodProvider implements PeriodProvider {
 	}
 
 	@Override
-	public List<Period> findPeriods(Date pstart, Date pend, Date start,	Date end, Person person, AttLogsManager logManager, boolean onlyWorkDays) throws PeriodException {
+	public List<DefaultPeriodImpl> findPeriods(Date pstart, Date pend, Date start,	Date end, Person person, AttLogsManager logManager, boolean onlyWorkDays) throws PeriodException {
 
 		try {
 			
@@ -51,19 +51,19 @@ public class SystemPeriodProvider implements PeriodProvider {
 
 			List<List<AttLog>> logsPerDay = organize(logs);
 			
-			List<Period> periods = new ArrayList<Period>();
+			List<DefaultPeriodImpl> periods = new ArrayList<DefaultPeriodImpl>();
 
 			long TOLERANCIA = 1000l * 60l * 15l;
 			
 			for (List<AttLog> ls : logsPerDay) {
 				
-				Period p = new Period();
+				DefaultPeriodImpl p = new DefaultPeriodImpl();
 				
-				List<WorkedHours> whs = new ArrayList<WorkedHours>();
+				List<DefaultWorkedHoursImpl> whs = new ArrayList<DefaultWorkedHoursImpl>();
 				if (ls.size() == 1) {
-					whs.add(new WorkedHours(ls.get(0),null,ls));
+					whs.add(new DefaultWorkedHoursImpl(ls.get(0),null,ls));
 				} else if (ls.size() >= 2) {
-					whs.add(new WorkedHours(ls.get(0),ls.get(ls.size() - 1),ls));
+					whs.add(new DefaultWorkedHoursImpl(ls.get(0),ls.get(ls.size() - 1),ls));
 				}
 				
 				// ya seteo los parámetros de la fecha y las marcaciones.
@@ -84,7 +84,7 @@ public class SystemPeriodProvider implements PeriodProvider {
 			
 			
 			// agrego las faltas.
-			List<Period> absent = new ArrayList<>();
+			List<DefaultPeriodImpl> absent = new ArrayList<>();
 			
 			if (periods.size() <= 0) {
 				
@@ -95,7 +95,7 @@ public class SystemPeriodProvider implements PeriodProvider {
 				long aDay = 1000l * 60l * 60l * 24l;
 				
 				// genero las faltas iniciales hasta el primer período
-				Period firstPeriod = periods.get(0);
+				DefaultPeriodImpl firstPeriod = periods.get(0);
 				if (estart.before(firstPeriod.getStart())) {
 					
 					Date endAbsent = new Date(firstPeriod.getStart().getTime() - aDay);
@@ -105,7 +105,7 @@ public class SystemPeriodProvider implements PeriodProvider {
 				
 				// geneero las faltas intermedias entre los perídos
 				long previousPeriod = firstPeriod.getStart().getTime();
-				for (Period p : periods) {
+				for (DefaultPeriodImpl p : periods) {
 					long actualPeriod = p.getStart().getTime();
 					
 					if (previousPeriod == actualPeriod) {
@@ -147,14 +147,14 @@ public class SystemPeriodProvider implements PeriodProvider {
 	 * @param end
 	 * @return
 	 */
-	private List<Period> getAbsent(Person person, Date start, Date end) {
+	private List<DefaultPeriodImpl> getAbsent(Person person, Date start, Date end) {
 		long aDay = 1000l * 60l * 60l * 24l;
 		long actualDayStart = initialInDay(start).getTime();
 		long queryEnd = initialInDay(end).getTime();
-		List<Period> absent = new ArrayList<Period>();
+		List<DefaultPeriodImpl> absent = new ArrayList<DefaultPeriodImpl>();
 		while (actualDayStart <= queryEnd) {
 			// genero una falta
-			Period a = new Period();
+			DefaultPeriodImpl a = new DefaultPeriodImpl();
 			a.setPerson(person);
 			a.setStart(new Date(actualDayStart));
 			a.setEnd(new Date(actualDayStart + aDay - 1l));

@@ -1,23 +1,23 @@
 package ar.com.dcsys.model.period;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import ar.com.dcsys.data.period.Period;
+import ar.com.dcsys.data.period.WorkedHours;
 import ar.com.dcsys.data.person.Person;
 
-public class Period implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+public class DefaultPeriodImpl implements Period {
 
 	private Person person;
 	private Date start;
 	private Date end;
-	private List<WorkedHours> whs = new ArrayList<WorkedHours>();
+	private List<? extends WorkedHours> whs = new ArrayList<>();
 	
+	@Override
 	public Person getPerson() {
 		return person;
 	}
@@ -25,7 +25,8 @@ public class Period implements Serializable {
 	public void setPerson(Person person) {
 		this.person = person;
 	}
-	
+
+	@Override
 	public Date getStart() {
 		return start;
 	}
@@ -34,6 +35,7 @@ public class Period implements Serializable {
 		this.start = resetMiliseconds(start);
 	}
 
+	@Override
 	public Date getEnd() {
 		return end;
 	}
@@ -42,11 +44,12 @@ public class Period implements Serializable {
 		this.end = resetMiliseconds(end);
 	}
 
-	public List<WorkedHours> getWorkedHours() {
+	@Override
+	public List<? extends WorkedHours> getWorkedHours() {
 		return whs;
 	}
 	
-	public void setWorkedHours(List<WorkedHours> whs) {
+	public void setWorkedHours(List<? extends WorkedHours> whs) {
 		this.whs = Collections.unmodifiableList(whs);
 	}
 

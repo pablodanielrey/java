@@ -10,7 +10,7 @@ import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.exceptions.JustificationException;
 import ar.com.dcsys.exceptions.PersonException;
-import ar.com.dcsys.model.period.Period;
+import ar.com.dcsys.model.period.DefaultPeriodImpl;
 
 public interface JustificationsManager extends Serializable {
 
@@ -30,8 +30,8 @@ public interface JustificationsManager extends Serializable {
 	
 	public void justify(Person person, Date start, Date end, Justification justification, boolean onlyWorkDays, String notes) throws JustificationException, PersonException;
 	public void justify(String personId, Date start, Date end, Justification justification, boolean onlyWorkDays, String notes) throws JustificationException, PersonException;
-	public void justify(Person person, List<Period> periods, Justification justification, String notes) throws JustificationException, PersonException;
-	public void justify(String personId, List<Period> periods, Justification justification, String notes) throws JustificationException, PersonException;
+	public void justify(Person person, List<DefaultPeriodImpl> periods, Justification justification, String notes) throws JustificationException, PersonException;
+	public void justify(String personId, List<DefaultPeriodImpl> periods, Justification justification, String notes) throws JustificationException, PersonException;
 	
 	// general justifications
 	

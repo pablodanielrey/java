@@ -22,7 +22,7 @@ public class WatchmanPeriodProvider implements PeriodProvider {
 	}
 
 	@Override
-	public List<Period> findPeriods(Date pstart, Date pend, Date start,	Date end, Person person, AttLogsManager logManager, boolean onlyWorkDays) throws PeriodException {
+	public List<DefaultPeriodImpl> findPeriods(Date pstart, Date pend, Date start,	Date end, Person person, AttLogsManager logManager, boolean onlyWorkDays) throws PeriodException {
 		return null;
 	}
 

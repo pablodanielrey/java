@@ -17,7 +17,7 @@ import ar.com.dcsys.exceptions.PeriodException;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.model.PersonsManager;
 import ar.com.dcsys.model.log.AttLogsManager;
-import ar.com.dcsys.model.period.Period;
+import ar.com.dcsys.model.period.DefaultPeriodImpl;
 import ar.com.dcsys.model.period.PeriodsManager;
 
 
@@ -113,7 +113,7 @@ public class JustificationsManagerBean implements JustificationsManager {
 		try {
 			// generar todas las justificaciones dentro de esas fechas.
 			// por lo que hay que generar los períodos a justificar.
-			List<Period> periods = periodsManager.findAll(person, start, end, onlyWorkDays);
+			List<DefaultPeriodImpl> periods = periodsManager.findAll(person, start, end, onlyWorkDays);
 			
 			justify(person,periods,justification, notes);
 			
@@ -139,8 +139,8 @@ public class JustificationsManagerBean implements JustificationsManager {
 	}
 
 	@Override
-	public void justify(Person person, List<Period> periods, Justification justification, String notes) throws JustificationException, PersonException {
-		for (Period p : periods) {
+	public void justify(Person person, List<DefaultPeriodImpl> periods, Justification justification, String notes) throws JustificationException, PersonException {
+		for (DefaultPeriodImpl p : periods) {
 			Date s = p.getStart();
 			Date e = p.getEnd();
 			
@@ -155,7 +155,7 @@ public class JustificationsManagerBean implements JustificationsManager {
 	}
 	
 	@Override
-	public void justify(String personId, List<Period> periods, Justification justification, String notes) throws JustificationException, PersonException {
+	public void justify(String personId, List<DefaultPeriodImpl> periods, Justification justification, String notes) throws JustificationException, PersonException {
 		Person person = personsManager.findById(personId);
 		this.justify(person, periods, justification, notes);
 	}

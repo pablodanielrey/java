@@ -1,25 +1,24 @@
 package ar.com.dcsys.model.period;
 
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
 import ar.com.dcsys.data.log.AttLog;
+import ar.com.dcsys.data.period.WorkedHours;
 
-public class WorkedHours implements Serializable {
+public class DefaultWorkedHoursImpl implements WorkedHours {
 
-	private static final long serialVersionUID = 1L;
 	private AttLog inLog;
 	private AttLog outLog;
 	private List<AttLog> logs;
 	private long milis;
 	
 	// constructor para los proxys y request factory. no porque lo use en el cógio.
-	public WorkedHours() {
+	public DefaultWorkedHoursImpl() {
 		
 	}
 	
-	public WorkedHours(AttLog inLog, AttLog outLog, List<AttLog> logs) {
+	public DefaultWorkedHoursImpl(AttLog inLog, AttLog outLog, List<AttLog> logs) {
 		this.inLog = inLog;
 		this.outLog = outLog;
 		this.logs = Collections.unmodifiableList(logs);
@@ -41,6 +40,7 @@ public class WorkedHours implements Serializable {
 		return Math.max(in, out) - Math.min(in, out);
 	}
 
+	@Override
 	public AttLog getInLog() {
 		return inLog;
 	}
@@ -57,14 +57,17 @@ public class WorkedHours implements Serializable {
 		this.logs = logs;
 	}
 
+	@Override
 	public AttLog getOutLog() {
 		return outLog;
 	}
 
+	@Override
 	public List<AttLog> getLogs() {
 		return logs;
 	}	
 	
+	@Override
 	public Long getWorkedMilis() {
 		return milis;
 	}

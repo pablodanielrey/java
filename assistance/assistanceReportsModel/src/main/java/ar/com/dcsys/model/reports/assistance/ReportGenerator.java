@@ -23,6 +23,7 @@ import net.sf.dynamicreports.report.constant.VerticalAlignment;
 import net.sf.dynamicreports.report.exception.DRException;
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.person.Person;
+import ar.com.dcsys.data.report.Report;
 import ar.com.dcsys.model.GroupsManager;
 import ar.com.dcsys.model.reports.ReportExportType;
 
@@ -55,7 +56,7 @@ public class ReportGenerator {
 	 * @param rs
 	 * @param reportType
 	 */
-	private void filterReport(ReportSummary rs, ReportType reportType) {
+	private void filterReport(DefaultReportSummaryImpl rs, ReportType reportType) {
 		
 		List<Report> reportsToRemove = new ArrayList<>();
 
@@ -102,7 +103,7 @@ public class ReportGenerator {
 	}	
 	
 	
-	private JasperReportBuilder formatReport(ReportSummary rs, ReportQuery query) throws DRException {
+	private JasperReportBuilder formatReport(DefaultReportSummaryImpl rs, ReportQuery query) throws DRException {
 		
 		ReportType type = query.type;
 		String reportType = (ReportType.ABSENCES.equals(type) ? "Todas" : ((ReportType.INJUSTIFICATED.equals(type)) ? "Justificadas" : ((ReportType.INJUSTIFICATED.equals(type)) ? "Injustificadas" : ""))); 
@@ -186,7 +187,7 @@ public class ReportGenerator {
 		
 
 		List<Person> persons = group.getPersons();
-		ReportSummary rs = rdg.getReport(start, end, persons);
+		DefaultReportSummaryImpl rs = rdg.getReport(start, end, persons);
 		filterReport(rs, ReportType.ABSENCES);
 		
 		try {
@@ -204,7 +205,7 @@ public class ReportGenerator {
 		ReportQuery query = new ReportQuery(start,end,ReportType.INJUSTIFICATED,name);
 
 		List<Person> persons = group.getPersons();
-		ReportSummary rs = rdg.getReport(start, end, persons);
+		DefaultReportSummaryImpl rs = rdg.getReport(start, end, persons);
 		filterReport(rs, ReportType.INJUSTIFICATED);
 		
 		try {
@@ -221,7 +222,7 @@ public class ReportGenerator {
 		ReportQuery query = new ReportQuery(start,end,ReportType.JUSTIFICATED,name);
 
 		List<Person> persons = group.getPersons();
-		ReportSummary rs = rdg.getReport(start, end, persons);
+		DefaultReportSummaryImpl rs = rdg.getReport(start, end, persons);
 		filterReport(rs, ReportType.JUSTIFICATED);
 		
 		try {

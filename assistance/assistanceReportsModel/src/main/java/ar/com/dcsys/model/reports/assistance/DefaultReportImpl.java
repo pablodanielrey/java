@@ -6,16 +6,18 @@ import java.util.List;
 
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.justification.Justification;
+import ar.com.dcsys.data.period.WorkedHours;
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.model.period.Period;
-import ar.com.dcsys.model.period.WorkedHours;
+import ar.com.dcsys.data.report.Report;
+import ar.com.dcsys.model.period.DefaultPeriodImpl;
+import ar.com.dcsys.model.period.DefaultWorkedHoursImpl;
 
-public class Report {
+public class DefaultReportImpl implements Report {
 	
 	private Person person;
 	private Group group;
 	private List<Group> groups;
-	private Period period;
+	private DefaultPeriodImpl period;
 	private List<Justification> justifications = new ArrayList<>();
 	private List<Justification> gjustifications = new ArrayList<>();
 	
@@ -25,6 +27,7 @@ public class Report {
 	
 	/// para el reporte /////////
 	
+	@Override
 	public String getGroupName() {
 		if (group == null || group.getName() == null) {
 			return "nulo";
@@ -32,6 +35,7 @@ public class Report {
 		return group.getName();
 	}
 	
+	@Override
 	public String getName() {
 		Person person = getPerson();
 		if (person == null) {
@@ -54,10 +58,12 @@ public class Report {
 		return sb.toString();
 	}
 	
+	@Override
 	public Date getDate() {
 		return getPeriod().getStart();
 	}
 	
+	@Override
 	public String getJustification() {
 		if (getJustifications() == null || getJustifications().size() <= 0) {
 			return "";
@@ -71,6 +77,7 @@ public class Report {
 		return sb.toString();
 	}
 	
+	@Override
 	public String getGeneralJustification() {
 		if (getGjustifications() == null || getGjustifications().size() <= 0) {
 			return "";
@@ -87,7 +94,7 @@ public class Report {
 	///////////////
 	
 	
-	
+	@Override
 	public Person getPerson() {
 		return person;
 	}
@@ -96,6 +103,7 @@ public class Report {
 		this.person = person;
 	}
 	
+	@Override
 	public List<Group> getGroups() {
 		return groups;
 	}
@@ -104,6 +112,7 @@ public class Report {
 		this.groups = groups;
 	}
 
+	@Override
 	public Group getGroup() {
 		return group;
 	}
@@ -112,14 +121,16 @@ public class Report {
 		this.group = group;
 	}
 
-	public Period getPeriod() {
+	@Override
+	public DefaultPeriodImpl getPeriod() {
 		return period;
 	}
 	
-	public void setPeriod(Period period) {
+	public void setPeriod(DefaultPeriodImpl period) {
 		this.period = period;
 	}
 
+	@Override
 	public List<Justification> getJustifications() {
 		return justifications;
 	}
@@ -128,6 +139,7 @@ public class Report {
 		this.justifications = justifications;
 	}
 
+	@Override
 	public List<Justification> getGjustifications() {
 		return gjustifications;
 	}
@@ -138,7 +150,7 @@ public class Report {
 
 	
 	public void calcReportData() {
-		List<WorkedHours> whs = period.getWorkedHours();
+		List<? extends WorkedHours> whs = period.getWorkedHours();
 		
 		if (whs == null || whs.size() == 0) {
 			isAbscence = true;
@@ -155,10 +167,12 @@ public class Report {
 		
 	}
 	
+	@Override
 	public Long getMinutes() {
 		return minutes;
 	}
 
+	@Override
 	public Boolean isAbscence() {
 		return isAbscence;
 	}

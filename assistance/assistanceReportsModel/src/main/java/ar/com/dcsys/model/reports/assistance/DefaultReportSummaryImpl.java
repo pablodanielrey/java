@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ReportSummary {
+import ar.com.dcsys.data.report.Report;
+import ar.com.dcsys.data.report.ReportSummary;
+
+public class DefaultReportSummaryImpl implements ReportSummary {
 
 	public static final String START = "start";
 	public static final String END = "end";
@@ -13,10 +16,11 @@ public class ReportSummary {
 	private Date start;
 	private Date end;
 	
-	private List<Report> reports = new ArrayList<>();
+	private List<DefaultReportImpl> reports = new ArrayList<>();
 	private Long minutes;
 
 	
+	@Override
 	public Date getStart() {
 		return start;
 	}
@@ -25,6 +29,7 @@ public class ReportSummary {
 		this.start = start;
 	}
 
+	@Override
 	public Date getEnd() {
 		return end;
 	}
@@ -33,17 +38,22 @@ public class ReportSummary {
 		this.end = end;
 	}
 
-	public List<Report> getReports() {
+	@Override
+	public List<? extends Report> getReports() {
 		return reports;
 	}
 
-	public void setReports(List<Report> reports) {
+	public void addReport(DefaultReportImpl r) {
+		reports.add(r);
+	}
+	
+	public void setReports(List<DefaultReportImpl> reports) {
 		this.reports = reports;
 	}
 
 	public void calcReportData() {
 		minutes = 0l;
-		for (Report r : reports) {
+		for (DefaultReportImpl r : reports) {
 			r.calcReportData();
 			minutes = minutes + r.getMinutes();
 		}
