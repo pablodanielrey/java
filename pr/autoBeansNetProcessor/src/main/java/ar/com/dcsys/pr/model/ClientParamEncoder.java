@@ -10,9 +10,24 @@ public class ClientParamEncoder {
 	public static String decodeResponse(Manager manager, Manager.InstanceInfo ii, Receiver param, String coded) {
 
 		String type = Utils.getInteralType(param.getType());
+		String varName = "a" + UUID.randomUUID().toString().replace("-", "");
+		String var2Name = "a" + UUID.randomUUID().toString().replace("-", "");
+		
+		Factory factory = manager.getFactory();
+		Getter g = factory.findByType(type);
+		TypeContainer tc = g.getTypeContainer();
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append("\n").append("com.google.web.bindery.autobean.shared.AutoBean<").append(type).append(">");
+		sb.append("\n").append("com.google.web.bindery.autobean.shared.AutoBean<").append(tc.getType()).append("> ").append(varName)
+					   .append("= com.google.web.bindery.autobean.shared.AutoBeanCodex.decode(").append(ii.managerFactory).append(",").append(tc.getType()).append(".class,").append(coded).append(");");
+		
+		if (type.startsWith("java.lang.") || (type.startsWith("java.util.List"))) {		
+			sb.append("\n").append(type).append(" ").append(var2Name).append(" = ").append(varName).append(".as().getValue();");
+		} else {
+			sb.append("\n").append(type).append(" ").append(var2Name).append(" = ").append(varName).append(".as();");
+		}
+		
+		sb.append("\n").append(param.getName()).append(".onSuccess(").append(var2Name).append(");");
 		
 		return sb.toString();
 	}

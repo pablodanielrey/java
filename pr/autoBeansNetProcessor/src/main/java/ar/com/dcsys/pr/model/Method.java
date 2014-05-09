@@ -134,10 +134,7 @@ public class Method {
 		sb.append("\n").append(Utils.ident(10)).append("@Override");
 		sb.append("\n").append(Utils.ident(10)).append("public void onSuccess(String msg) {");
 		sb.append("\n").append(Utils.ident(12)).append("try {");
-		
-		// se decodifica la respuesta.
-		
-		
+		sb.append(ClientParamEncoder.decodeResponse(getManager(), ii, getReceiver(), "msg"));
 		sb.append("\n").append(Utils.ident(12)).append("} catch (Exception a) {");
 		sb.append("\n").append(Utils.ident(14)).append(getReceiver().getName()).append(".onError(a.getMessage());");
 		sb.append("\n").append(Utils.ident(12)).append("};");
