@@ -114,7 +114,7 @@ public class Method {
 			sb.append(ClientParamEncoder.encode(manager, ii, param));
 		}
 		
-		sb.append("\n").append(Utils.ident(8)).append("com.google.web.bindery.autobean.shared.AutoBean<ar.com.dcsys.gwt.manager.shared.Message> msg = ").append(ii.messageFactory).append(".getMessage();");
+		sb.append("\n").append(Utils.ident(8)).append("com.google.web.bindery.autobean.shared.AutoBean<ar.com.dcsys.gwt.manager.shared.message.Message> msg = ").append(ii.messageFactory).append(".getMessage();");
 		sb.append("\n").append(Utils.ident(8)).append("msg.as().setFunction(\"").append(getSignature()).append("\");");
 		sb.append("\n").append(Utils.ident(8)).append("msg.as().setParams(params);");
 		sb.append("\n").append(Utils.ident(8)).append("String emsg = com.google.web.bindery.autobean.shared.AutoBeanCodex.encode(msg).getPayload();");

@@ -19,7 +19,8 @@ public class ClientParamEncoder {
 		TypeContainer tc = g.getTypeContainer();
 
 		
-		if (param.getType().startsWith("java.util.List")) {
+		// chequeo si es una lista de tipos definidos por usuario (o sea no de tipos primitivos.)
+		if (param.getType().startsWith("java.util.List") && (!param.getType().startsWith("java.util.List<java.lang."))) {
 			// hago wrapping de los valores de la lista.
 			
 			String subType = param.getType().substring(param.getType().indexOf("<") + 1, param.getType().lastIndexOf(">"));
@@ -33,10 +34,22 @@ public class ClientParamEncoder {
 			
 		}
 		
+
+		if (param.getType().startsWith("java.lang.") || param.getType().startsWith("java.util.List")) {
+			
+			// se generaron containers. asi que se setea el valor.
+			sb.append("\n").append(Utils.ident(8)).append("com.google.web.bindery.autobean.shared.AutoBean<").append(tc.getType()).append("> ").append(varName).append(" = ").append(ii.managerFactory).append(".").append(g.getName()).append("();");
+			sb.append("\n").append(Utils.ident(8)).append(varName).append(".as().setValue(").append(valueContainer).append(");");
+			
+		} else {
+
+			// es un tipo definido por el usuario asi que no se genera container. se usa el AutoBean<Tipo>
+			sb.append("\n").append(Utils.ident(8)).append("com.google.web.bindery.autobean.shared.AutoBean<").append(tc.getType()).append("> ").append(varName).append(" = ").append(ii.managerFactory).append(".").append(g.getName()).append("(").append(valueContainer).append(");");
+			
+		}
 		
-		sb.append("\n").append(Utils.ident(8)).append("com.google.web.bindery.autobean.shared.AutoBean<").append(tc.getType()).append("> ").append(varName).append(" = ").append(ii.managerFactory).append(".").append(g.getName()).append("();");
-		sb.append("\n").append(Utils.ident(8)).append(varName).append(".as().setValue(").append(valueContainer).append(");");
-		sb.append("\n").append(Utils.ident(8)).append(eVarName).append(" = com.google.web.bindery.autobean.shared.AutoBeanCodex.encode(").append(varName).append(").getPayload();");
+		
+		sb.append("\n").append(Utils.ident(8)).append("String ").append(eVarName).append(" = com.google.web.bindery.autobean.shared.AutoBeanCodex.encode(").append(varName).append(").getPayload();");
 		sb.append("\n").append(Utils.ident(8)).append("params.add(").append(eVarName).append(");");
 		
 		return sb.toString();
