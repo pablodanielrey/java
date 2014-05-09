@@ -9,9 +9,15 @@ import javax.inject.Inject;
 
 import ar.com.dcsys.gwt.manager.server.handler.MethodHandler;
 import ar.com.dcsys.gwt.manager.server.handler.MethodHandlersDetection;
+import ar.com.dcsys.gwt.manager.shared.message.Message;
+import ar.com.dcsys.gwt.manager.shared.message.MessageFactory;
 import ar.com.dcsys.gwt.messages.server.MessageContext;
 import ar.com.dcsys.gwt.messages.server.cdi.HandlersContainer;
 import ar.com.dcsys.gwt.messages.server.handlers.MessageHandler;
+
+import com.google.web.bindery.autobean.shared.AutoBean;
+import com.google.web.bindery.autobean.shared.AutoBeanCodex;
+import com.google.web.bindery.autobean.vm.AutoBeanFactorySource;
 
 public class MainMethodsHandler implements MessageHandler {
 
@@ -27,6 +33,7 @@ public class MainMethodsHandler implements MessageHandler {
 		handlers.add(this);
 	}
 	
+	private final MessageFactory messageFactory = AutoBeanFactorySource.create(MessageFactory.class);
 	private final List<MethodHandler> handlers = new ArrayList<>();
 	
 	@Inject
@@ -43,6 +50,21 @@ public class MainMethodsHandler implements MessageHandler {
 	@Override
 	public boolean handle(String id, String msg, MessageContext ctx) {
 		
+		Message dmsg = null;
+		try {
+			AutoBean<Message> message = AutoBeanCodex.decode(messageFactory, Message.class, msg);
+			dmsg = message.as();
+		} catch (Exception e) {
+			// no se pudo decodificar el mensaje, por ahi esta en otro formato que no se entiende. asi que se retorna false ya que no se lo manejo.
+			return false;
+		}
+			
+		
+		for (MethodHandler mh : handlers) {
+			if (mh.process(id, dmsg, ctx)) {
+				return true;
+			}
+		}
 		return false;
 	}
 

@@ -67,6 +67,7 @@ public class Manager {
 		factory.generateSourceFile(processingEnv);
 		
 		generateClientSourceFile(processingEnv);
+		generateServerSourceFiles(processingEnv);
 		
 	}
 	
@@ -84,13 +85,14 @@ public class Manager {
 		String transportReceiverClass;
 	}
 	
-	private void generateClientSourceFile(ProcessingEnvironment processingEnv) {
-
-		StringBuilder sb = new StringBuilder();
-
-		sb.append("package " + getClientPackage()).append(";\n\n");
-
+	private void generateServerSourceFiles(ProcessingEnvironment processingEnv) {
+		InstanceInfo ii = getInstanceInfo();
+		for (Method m : getMethods()) {
+			m.generateServerSourceFile(this, ii, processingEnv);
+		}
+	}
 	
+	private InstanceInfo getInstanceInfo() {
 		InstanceInfo ii = new InstanceInfo();
 		ii.classType = getClienType();
 		ii.className = extractName(type);
@@ -102,6 +104,18 @@ public class Manager {
 		ii.transportClass = "ar.com.dcsys.gwt.messages.shared.Transport";
 		ii.transportReceiver = "receiver";
 		ii.transportReceiverClass = "ar.com.dcsys.gwt.messages.shared.TransportReceiver";
+		return ii;
+	}
+	
+	
+	private void generateClientSourceFile(ProcessingEnvironment processingEnv) {
+
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("package " + getClientPackage()).append(";\n\n");
+
+	
+		InstanceInfo ii = getInstanceInfo();
 		
 		
 		////////definicion de la clase /////////////////////
