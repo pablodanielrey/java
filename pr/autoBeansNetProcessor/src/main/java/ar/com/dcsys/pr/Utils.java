@@ -21,4 +21,8 @@ public class Utils {
 		return sb.toString();
 	}
 	
+	public static String getInteralType(String type) {
+		return type.substring(type.indexOf("<") + 1, type.lastIndexOf(">"));
+	}
+	
 }

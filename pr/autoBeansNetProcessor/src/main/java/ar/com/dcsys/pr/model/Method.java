@@ -15,7 +15,7 @@ public class Method {
 	private final Manager manager;
 	private final String name;
 	private final List<Param> params = new ArrayList<>();
-	private Param receiver;
+	private Receiver receiver;
 	
 	public Method(Manager manager, String name) {
 		this.manager = manager;
@@ -34,6 +34,14 @@ public class Method {
 		return params;
 	}
 
+	public Receiver getReceiver() {
+		return receiver;
+	}
+	
+	public void setReceiver(Receiver r) {
+		this.receiver = r;
+	}
+	
 	public String getSignature() {
 		StringBuilder sb = new StringBuilder();
 		
@@ -81,6 +89,8 @@ public class Method {
 			
 		}		
 		
+		Receiver.process(method, params.get(params.size()-1));
+		
 		manager.getMethods().add(method);
 	}
 	
@@ -94,9 +104,9 @@ public class Method {
 			sb.append(param.getType()).append(" ").append(param.getName()).append(", ");
 		}
 
-		// el receiver  TODO: 
+		// el receiver 
 		sb.append("final ");
-		sb.append("ar.com.dcsys.gwt.manager.shared.Receiver<String> receiver");
+		sb.append(getReceiver().getType()).append(" ").append(getReceiver().getName());
 		sb.append(") {\n");
 		
 		
@@ -120,6 +130,19 @@ public class Method {
 		sb.append("\n").append(Utils.ident(8)).append("String emsg = com.google.web.bindery.autobean.shared.AutoBeanCodex.encode(msg).getPayload();");
 		sb.append("\n\n");
 	
+		sb.append("\n").append(Utils.ident(8)).append(ii.transport).append(".send(emsg,new ar.com.dcsys.gwt.messages.shared.TransportReceiver() {");
+		sb.append("\n").append(Utils.ident(10)).append("@Override");
+		sb.append("\n").append(Utils.ident(10)).append("public void onSuccess(String msg) {");
+		sb.append("\n").append(Utils.ident(12)).append("// aca decodifica");
+		sb.append("\n").append(Utils.ident(10)).append("}");
+		sb.append("\n");
+		sb.append("\n").append(Utils.ident(10)).append("@Override");
+		sb.append("\n").append(Utils.ident(10)).append("public void onFailure(String error) {");
+		sb.append("\n").append(Utils.ident(12)).append("// aca se majea el error");
+		sb.append("\n").append(Utils.ident(10)).append("}");
+		sb.append("\n").append(Utils.ident(8)).append("});");
+		sb.append("\n");
+		
 		
 		sb.append("\n").append(Utils.ident(6)).append("} catch (Exception e) {");
 		sb.append("\n").append(Utils.ident(8)).append("e.printStackTrace();");
