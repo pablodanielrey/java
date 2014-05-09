@@ -8,6 +8,8 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 
+import ar.com.dcsys.pr.Utils;
+
 public class Method {
 
 	private final Manager manager;
@@ -85,7 +87,7 @@ public class Method {
 
 	public void toClientStringBuilder(StringBuilder sb, Manager.InstanceInfo ii) {
 		
-		sb.append("\npublic void ").append(getName()).append("(");
+		sb.append("\n").append(Utils.ident(4)).append("public void ").append(getName()).append("(");
 		
 		// los parametros
 		for (Param param : getParams()) {
@@ -100,11 +102,11 @@ public class Method {
 		
 		//////////////// try inicial /////////////////////
 		
-		sb.append("\ntry {\n");
+		sb.append("\n").append(Utils.ident(6)).append("try {\n");
 		
 		////////////////// codifico los parametros /////////////////////
 
-		sb.append("\n").append("List<String> params = new ArrayList<>();");
+		sb.append("\n").append(Utils.ident(8)).append("List<String> params = new ArrayList<>();");
 		sb.append("\n");
 		
 		for (Param param: getParams()) {
@@ -112,12 +114,19 @@ public class Method {
 			sb.append(ClientParamEncoder.encode(manager, ii, param));
 		}
 		
-		sb.append("\n").append("com.google.web.bindery.autobean.shared.AutoBean<Message> msg = ").append(ii.messageFactory).append(".getMessage();");
-		sb.append("\n").append("msg.as().setFunction(\"").append(getSignature()).append("\");");
-		sb.append("\n").append("msg.as().setParams(params);");
-		sb.append("\n").append("String emsg = AutoBeanCodex.encode(msg).getPayload();");
+		sb.append("\n").append(Utils.ident(8)).append("com.google.web.bindery.autobean.shared.AutoBean<ar.com.dcsys.gwt.manager.shared.Message> msg = ").append(ii.messageFactory).append(".getMessage();");
+		sb.append("\n").append(Utils.ident(8)).append("msg.as().setFunction(\"").append(getSignature()).append("\");");
+		sb.append("\n").append(Utils.ident(8)).append("msg.as().setParams(params);");
+		sb.append("\n").append(Utils.ident(8)).append("String emsg = AutoBeanCodex.encode(msg).getPayload();");
 		sb.append("\n\n");
-						
+	
+		
+		sb.append("\n").append(Utils.ident(6)).append("} catch (Exception e) {");
+		sb.append("\n").append(Utils.ident(8)).append("e.printStackTrace();");
+		sb.append("\n").append(Utils.ident(6)).append("}");
+		
+		sb.append("\n\n");
+		sb.append("\n").append(Utils.ident(4)).append("}");
 		
 	}
 	

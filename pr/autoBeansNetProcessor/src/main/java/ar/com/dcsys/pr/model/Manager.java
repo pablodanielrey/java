@@ -12,6 +12,8 @@ import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.tools.JavaFileObject;
 
+import ar.com.dcsys.pr.Utils;
+
 public class Manager {
 
 	public static String extractName(String type) {
@@ -73,8 +75,13 @@ public class Manager {
 		String className;
 		String classType;
 		String messageFactory;
+		String messageFactoryClass;
 		String managerFactory;
+		String managerFactoryClass;
 		String transport;
+		String transportClass;
+		String transportReceiver;
+		String transportReceiverClass;
 	}
 	
 	private void generateClientSourceFile(ProcessingEnvironment processingEnv) {
@@ -83,17 +90,18 @@ public class Manager {
 
 		sb.append("package " + getClientPackage()).append(";\n\n");
 
-		/////// imports /////////////
-		
-		sb.append("\n").append("import ar.com.dcsys.gwt.messages.shared.TransportReceiver;");		
-		
 	
 		InstanceInfo ii = new InstanceInfo();
 		ii.classType = getClienType();
 		ii.className = extractName(type);
 		ii.messageFactory = "messageFactory";
+		ii.messageFactoryClass = "ar.com.dcsys.gwt.manager.message.MessageFactory";
 		ii.managerFactory = "managerFactory";
+		ii.managerFactoryClass = factory.getType();
 		ii.transport = "transport";
+		ii.transportClass = "ar.com.dcsys.gwt.messages.shared.Transport";
+		ii.transportReceiver = "receiver";
+		ii.transportReceiverClass = "ar.com.dcsys.gwt.messages.shared.TransportReceiver";
 		
 		
 		////////definicion de la clase /////////////////////
@@ -101,17 +109,18 @@ public class Manager {
 		sb.append("public class ").append(ii.className).append(" {").append("\n");
 		
 		// variables de intancia //////
-		sb.append("\n").append("private final MessageFactory ").append(ii.messageFactory).append(" = AutoBeanFactorySource.create(MessageFactory.class);");
-		sb.append("\n").append("private final ").append(factory.getType()).append(" ").append(ii.managerFactory).append(" = AutoBeanFactorySource.create(").append(factory.getType()).append(".class);");
-		sb.append("\n").append("private final ar.com.dcsys.gwt.messages.shared.Transport ").append(ii.transport).append(";");
+		sb.append("\n").append(Utils.ident(4)).append("private final ").append(ii.messageFactoryClass).append(" ").append(ii.messageFactory).append(" = AutoBeanFactorySource.create(").append(ii.messageFactoryClass).append(".class);");
+		sb.append("\n").append(Utils.ident(4)).append("private final ").append(ii.managerFactoryClass).append(" ").append(ii.managerFactory).append(" = AutoBeanFactorySource.create(").append(ii.managerFactoryClass).append(".class);");
+		sb.append("\n").append(Utils.ident(4)).append("private final ").append(ii.transportClass).append(" ").append(ii.transport).append(";");		// se injecta en el constructor
 		sb.append("\n\n");
 		
 		
 		///  constructor //////
 		
-		sb.append("\n@Inject\n").append("public ").append(extractName(getClienType())).append("(ar.com.dcsys.gwt.messages.shared.Transport transport) {\n");
-		sb.append("this.").append(ii.transport).append(" = transport;");
-		sb.append("\n").append("}");
+		sb.append("\n").append(Utils.ident(4)).append("@Inject");
+		sb.append("\n").append(Utils.ident(4)).append("public ").append(extractName(getClienType())).append("(").append(ii.transportClass).append(" ").append(ii.transport).append(") {");
+		sb.append("\n").append(Utils.ident(8)).append("this.").append(ii.transport).append(" = ").append(ii.transport).append(";");
+		sb.append("\n").append(Utils.ident(4)).append("}");
 		sb.append("\n\n");
 		
 		for (Method method : getMethods()) {

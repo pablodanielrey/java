@@ -10,4 +10,15 @@ public class Utils {
 		return t.substring(t.lastIndexOf(".") + 1);
 	}
 	
+	public static String ident(int j) {
+		if (j <= 0) {
+			return "";
+		}
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i <= j; i++) {
+			sb.append(" ");
+		}
+		return sb.toString();
+	}
+	
 }
