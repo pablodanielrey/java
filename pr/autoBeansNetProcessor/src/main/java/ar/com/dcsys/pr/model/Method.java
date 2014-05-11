@@ -146,10 +146,24 @@ public class Method {
 		sb.append("\n").append("};");
 
 		// decodifico los parámetros
+		StringBuilder sb2 = new StringBuilder();
+		sb2.append("\n").append("this.manager.").append(getName()).append("(");
+		sb.append("\n").append("int count = 0;");
+		for (Param p : getParams()) {
+			String feVarName = "e" + UUID.randomUUID().toString().replace("-", "");
+			String dVarName = "d" + UUID.randomUUID().toString().replace("-", "");
+			String type = p.getType();
+			
+			sb.append("\n").append("String ").append(feVarName).append(" = ").append("msg.getParams().get(count);");
+			sb.append("\n").append(TypesEncoderDecoder.decodeResponse(getManager().getFactory(), ii.managerFactory, p.getType(), feVarName, dVarName));
+			
+			sb2.append(dVarName).append(",");
+		}
 		
+		sb2.append("receiver);");
 		
 		// llamo al metodo de la clase que debería implemntarlo desde el lado del server.
-		sb.append("\n").append("//this.manager.");
+		sb.append(sb2.toString());
 		
 		
 		sb.append("\n").append("return true;");
