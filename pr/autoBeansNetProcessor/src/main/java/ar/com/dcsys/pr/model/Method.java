@@ -112,6 +112,12 @@ public class Method {
 		sb.append("\n");
 		sb.append("\n").append("private final ").append(ii.messageFactoryClass).append(" ").append(ii.messageFactory).append(" = com.google.web.bindery.autobean.vm.AutoBeanFactorySource.create(").append(ii.messageFactoryClass).append(".class);");
 		sb.append("\n").append("private final ").append(ii.managerFactoryClass).append(" ").append(ii.managerFactory).append(" = com.google.web.bindery.autobean.vm.AutoBeanFactorySource.create(").append(ii.managerFactoryClass).append(".class);");
+		sb.append("\n").append("private final ").append(manager.getServerType()).append("Bean manager;");
+		sb.append("\n");
+		sb.append("\n").append("@javax.inject.Inject");
+		sb.append("\n").append("public ").append(className).append("(").append(manager.getServerType() + "Bean").append(" manager) {");
+		sb.append("\n").append("this.manager = manager;");
+		sb.append("\n").append("}");
 		sb.append("\n");
 		sb.append("\n").append("private void register").append("(@javax.enterprise.event.Observes ar.com.dcsys.gwt.messages.server.cdi.HandlersContainer<ar.com.dcsys.gwt.manager.server.handler.MethodHandler> hs) {");
 		sb.append("\n").append("hs.add(this);");
@@ -139,8 +145,11 @@ public class Method {
 		sb.append("\n").append("};");
 		sb.append("\n").append("};");
 
-		// llamo al codigo del servidor. aca.
+		// decodifico los parámetros
 		
+		
+		// llamo al metodo de la clase que debería implemntarlo desde el lado del server.
+		sb.append("\n").append("//this.manager.");
 		
 		
 		sb.append("\n").append("return true;");
