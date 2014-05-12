@@ -32,7 +32,13 @@
     </dependency>
 -->
 
-    <!-- para autobeans -->
+
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-servlet</artifactId>
+      <version>${gwt.version}</version>
+      <scope>provided</scope>
+    </dependency>
 
     <dependency>
       <groupId>com.google.gwt</groupId>
@@ -41,7 +47,14 @@
       <scope>provided</scope>
     </dependency>
 
-    <!-- -->
+    <dependency>
+      <groupId>com.google.gwt.inject</groupId>
+      <artifactId>gin</artifactId>
+      <version>${gin.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+
 
     <dependency>
       <groupId>ar.com.dcsys.data</groupId>
@@ -114,7 +127,50 @@
                 </dependencies>
             </plugin>
 
+
+      <!-- GWT Maven Plugin -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>gwt-maven-plugin</artifactId>
+        <version>${gwt.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+              <goal>test</goal>
+<!--              <goal>i18n</goal> -->
+<!--              <goal>generateAsync</goal> -->
+            </goals>
+          </execution>
+        </executions>
+
+        <!-- Plugin configuration. There are many available options, see 
+          gwt-maven-plugin documentation at codehaus.org -->
+        <configuration>
+          <runTarget>ProcessorTest.html</runTarget>
+          <hostedWebapp>${webappDirectory}</hostedWebapp>
+<!--          <i18nMessagesBundle>ar.com.dcsys.gwt.person.client.Messages</i18nMessagesBundle> -->
+          <noServer>true</noServer>
+          <port>8181</port>
+          <style>DETAILED</style>
+
+          <compileSourcesArtifacts>
+              <artifact>ar.com.dcsys.pr:annotations</artifact>
+<!--              <artifact>ar.com.dcsys.data:documentEntities</artifact>
+              <artifact>ar.com.dcsys.gwt.utils:clientMessagesGWT</artifact>
+              <artifact>ar.com.dcsys.gwt.utils:messageGWT</artifact>
+              <artifact>ar.com.dcsys.gwt.person:personModelGWT</artifact>
+              <artifact>ar.com.dcsys.gwt.auth:authModelGWT</artifact> -->
+          </compileSourcesArtifacts>
+
+          <logLevel>INFO</logLevel>
+        </configuration>
+
+      </plugin>
+
         </plugins>
+
+
   </build>
 
 </project>

@@ -1,0 +1,15 @@
+<module>
+  <inherits name="com.google.gwt.user.User"/>
+  <source path="pr"/>
+  
+  <!-- 
+  Para que el compilador de gwt genere el codigo necesario para hacer interface con el procesador de anotaciones
+  se debe incluír un generate-with de ClientManagerGenerator con when-type-assignable = a cada interface a generar.
+  Ej : 
+  
+  <generate-with class="ar.com.dcsys.pr.ClientManagerGenerator"> 
+      <when-type-assignable class="ar.com.dcsys.pr.shared.ClientManager"/>  
+  </generate-with>
+   -->
+  
+</module>
