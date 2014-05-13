@@ -12,6 +12,7 @@
   <groupId>ar.com.dcsys.pr</groupId>
   <artifactId>processorTest</artifactId>
   <version>1.0-SNAPSHOT</version>
+  <packaging>war</packaging>
   <name>processorTest</name>
 
   <dependencies>
@@ -37,21 +38,24 @@
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-servlet</artifactId>
       <version>${gwt.version}</version>
-      <scope>provided</scope>
+<!--      <scope>provided</scope> -->
+      <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-user</artifactId>
       <version>${gwt.version}</version>
-      <scope>provided</scope>
+<!--      <scope>provided</scope> -->
+      <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>com.google.gwt.inject</groupId>
       <artifactId>gin</artifactId>
       <version>${gin.version}</version>
-      <scope>provided</scope>
+<!--      <scope>provided</scope> -->
+      <scope>compile</scope>
     </dependency>
 
 
@@ -94,7 +98,12 @@
   </dependencies>
 
   <build>
+    <!-- Generate compiled stuff in the folder used for developing mode -->
+    <outputDirectory>${webappDirectory}/WEB-INF/classes</outputDirectory>
+
+
         <plugins>
+
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
@@ -128,6 +137,30 @@
             </plugin>
 
 
+	<!-- para que se vea los fuentes generados en el gwt -->
+<!--
+	 <plugin>
+		<groupId>org.codehaus.mojo</groupId> 
+		<artifactId>build-helper-maven-plugin</artifactId> 
+		<version>${java.version}</version> 
+		<executions>
+			<execution>
+				<id>add-source</id> 
+				<phase>generate-sources</phase> 
+				<goals>
+					<goal>add-source</goal>
+				</goals>
+				<configuration>
+					<sources>
+						<source>${project.build.directory}/generated-sources/apt</source>
+					</sources>
+				</configuration>
+			</execution>
+		</executions>
+	</plugin>
+-->
+
+
       <!-- GWT Maven Plugin -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -136,10 +169,10 @@
         <executions>
           <execution>
             <goals>
+              <goal>generateAsync</goal>
               <goal>compile</goal>
-              <goal>test</goal>
+<!--              <goal>test</goal> -->
 <!--              <goal>i18n</goal> -->
-<!--              <goal>generateAsync</goal> -->
             </goals>
           </execution>
         </executions>
@@ -149,6 +182,8 @@
         <configuration>
           <runTarget>ProcessorTest.html</runTarget>
           <hostedWebapp>${webappDirectory}</hostedWebapp>
+	  <generateDirectory>${project.build.directory}/generated-sources/apt</generateDirectory>
+	  <gen>${project.build.directory}/generated-sources/apt</gen>
 <!--          <i18nMessagesBundle>ar.com.dcsys.gwt.person.client.Messages</i18nMessagesBundle> -->
           <noServer>true</noServer>
           <port>8181</port>
@@ -156,8 +191,14 @@
 
           <compileSourcesArtifacts>
               <artifact>ar.com.dcsys.pr:annotations</artifact>
+              <artifact>ar.com.dcsys.gwt.utils:utilsGWT</artifact>
+              <artifact>ar.com.dcsys.gwt.utils:messagesGWT</artifact>
+              <artifact>ar.com.dcsys.gwt.utils:webSocketGWT</artifact>
+              <artifact>ar.com.dcsys.gwt.utils:managerGWT</artifact>
+
+              <artifact>ar.com.dcsys.data:personEntities</artifact>
+
 <!--              <artifact>ar.com.dcsys.data:documentEntities</artifact>
-              <artifact>ar.com.dcsys.gwt.utils:clientMessagesGWT</artifact>
               <artifact>ar.com.dcsys.gwt.utils:messageGWT</artifact>
               <artifact>ar.com.dcsys.gwt.person:personModelGWT</artifact>
               <artifact>ar.com.dcsys.gwt.auth:authModelGWT</artifact> -->
@@ -167,6 +208,64 @@
         </configuration>
 
       </plugin>
+
+
+     <!-- para remover las clases client de gwt asi no tira error la injection -->
+     <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>2.4.1</version>
+        <executions>
+                <execution>
+                        <id>default-clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                                <goal>clean</goal>
+                        </goals>
+                </execution>
+                <execution>
+                        <id>remove-gwt-client-classes</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                                <goal>clean</goal>
+                        </goals>
+                        <configuration>
+                                <excludeDefaultDirectories>true</excludeDefaultDirectories>
+                                <filesets>
+                                        <fileset>
+                                                <directory>${webappDirectory}/WEB-INF/classes/ar/com/dcsys/pr/client</directory>
+                                                <includes>
+                                                        <include>**</include>
+                                                </includes>
+                                        </fileset>
+                                </filesets>
+                        </configuration>
+                </execution>
+        </executions>
+     </plugin>
+
+      <!-- Copy static web files before executing gwt:run -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.1.1</version>
+        <executions>
+          <execution>
+            <phase>compile</phase>
+            <goals>
+              <goal>exploded</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <webappDirectory>${webappDirectory}</webappDirectory>
+          <packagingExcludes>WEB-INF/classes/ar/com/dcsys/pr/client/**.class</packagingExcludes>
+        </configuration>
+      </plugin>
+
+
+
+
+
 
         </plugins>
 

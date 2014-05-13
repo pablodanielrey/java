@@ -12,4 +12,10 @@
   </generate-with>
    -->
   
+  
+  <generate-with class="ar.com.dcsys.pr.ClientManagerGenerator"> 
+      <when-type-assignable class="ar.com.dcsys.pr.GwtClientManager"/>  
+  </generate-with>
+  
+  
 </module>

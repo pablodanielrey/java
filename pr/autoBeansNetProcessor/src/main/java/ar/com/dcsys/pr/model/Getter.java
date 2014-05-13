@@ -14,7 +14,10 @@ public class Getter {
 	
 	public void toStringBuilder(StringBuilder sb) {
 		sb.append("\npublic com.google.web.bindery.autobean.shared.AutoBean<").append(getTypeContainer().getType()).append("> ").append(getName()).append("();");
-		sb.append("\npublic com.google.web.bindery.autobean.shared.AutoBean<").append(getTypeContainer().getType()).append("> ").append(getName()).append("(").append(getTypeContainer().getContainedType()).append(" l);");		
+/*		if (!getTypeContainer().getContainedType().startsWith("java.util.List")) {
+			sb.append("\npublic com.google.web.bindery.autobean.shared.AutoBean<").append(getTypeContainer().getType()).append("> ").append(getName()).append("(").append(getTypeContainer().getContainedType()).append(" l);");
+		}
+		*/
 	}
 
 	public String getName() {

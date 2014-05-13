@@ -1,9 +1,9 @@
 <module>
   <inherits name="com.google.gwt.user.User"/>
   <inherits name="ar.com.dcsys.gwt.utils.UtilsGWT"/>
-  <inherits name="ar.com.dcsys.gwt.utils.messagesGWT"/>
+  <inherits name="ar.com.dcsys.gwt.messages.MessagesGWT"/>
 
-  <inherits name="com.google.web.bindary.autobean.AutoBean"/>
+  <inherits name="com.google.web.bindery.autobean.AutoBean"/>
 
   <source path="client"/>
   <source path="shared"/>

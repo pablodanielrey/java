@@ -94,8 +94,8 @@ public class Manager {
 	
 	private InstanceInfo getInstanceInfo() {
 		InstanceInfo ii = new InstanceInfo();
-		ii.classType = getClienType();
-		ii.className = extractName(type);
+		ii.classType = getClienType() + "Bean";
+		ii.className = extractName(ii.classType);
 		ii.messageFactory = "messageFactory";
 		ii.messageFactoryClass = "ar.com.dcsys.gwt.manager.shared.message.MessageFactory";
 		ii.managerFactory = "managerFactory";
@@ -109,7 +109,7 @@ public class Manager {
 	
 	
 	private void generateClientSourceFile(ProcessingEnvironment processingEnv) {
-
+		
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("package " + getClientPackage()).append(";\n\n");
@@ -117,22 +117,24 @@ public class Manager {
 	
 		InstanceInfo ii = getInstanceInfo();
 		
-		
 		////////definicion de la clase /////////////////////
 		
 		sb.append("public class ").append(ii.className).append(" {").append("\n");
 		
 		// variables de intancia //////
-		sb.append("\n").append(Utils.ident(4)).append("private final ").append(ii.messageFactoryClass).append(" ").append(ii.messageFactory).append(" = com.google.web.bindery.autobean.vm.AutoBeanFactorySource.create(").append(ii.messageFactoryClass).append(".class);");
-		sb.append("\n").append(Utils.ident(4)).append("private final ").append(ii.managerFactoryClass).append(" ").append(ii.managerFactory).append(" = com.google.web.bindery.autobean.vm.AutoBeanFactorySource.create(").append(ii.managerFactoryClass).append(".class);");
-		sb.append("\n").append(Utils.ident(4)).append("private final ").append(ii.transportClass).append(" ").append(ii.transport).append(";");		// se injecta en el constructor
+		sb.append("\n").append(Utils.ident(4)).append("private final ").append(ii.messageFactoryClass).append(" ").append(ii.messageFactory).append(" = com.google.gwt.core.client.GWT.create(").append(ii.messageFactoryClass).append(".class);");
+		sb.append("\n").append(Utils.ident(4)).append("private final ").append(ii.managerFactoryClass).append(" ").append(ii.managerFactory).append(" = com.google.gwt.core.client.GWT.create(").append(ii.managerFactoryClass).append(".class);");
+		sb.append("\n").append(Utils.ident(4)).append("private ").append(ii.transportClass).append(" ").append(ii.transport).append(";");		// se injecta en el constructor
 		sb.append("\n\n");
 		
 		
 		///  constructor //////
+
+		sb.append("\n").append(Utils.ident(4)).append("public ").append(ii.className).append("() { }");
+		sb.append("\n\n");
 		
-		sb.append("\n").append(Utils.ident(4)).append("@javax.inject.Inject");
-		sb.append("\n").append(Utils.ident(4)).append("public ").append(extractName(getClienType())).append("(").append(ii.transportClass).append(" ").append(ii.transport).append(") {");
+		sb.append("\n").append(Utils.ident(4)).append("@com.google.inject.Inject");
+		sb.append("\n").append(Utils.ident(4)).append("public ").append(ii.className).append("(").append(ii.transportClass).append(" ").append(ii.transport).append(") {");
 		sb.append("\n").append(Utils.ident(8)).append("this.").append(ii.transport).append(" = ").append(ii.transport).append(";");
 		sb.append("\n").append(Utils.ident(4)).append("}");
 		sb.append("\n\n");
