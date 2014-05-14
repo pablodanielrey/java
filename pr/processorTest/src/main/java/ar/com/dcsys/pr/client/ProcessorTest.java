@@ -1,5 +1,7 @@
 package ar.com.dcsys.pr.client;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -46,7 +48,11 @@ public class ProcessorTest implements EntryPoint {
 				public void onOpen() {
 					logger.log(Level.INFO,"socket abierto");
 
-					tm.test3("pepe", new Receiver<String>() {
+					List<String> ps = new ArrayList<String>();
+					ps.add("1");
+					ps.add("2");
+
+					tm.test4(ps, new Receiver<String>() {
 						@Override
 						public void onSuccess(String t) {
 							Window.alert(t);
