@@ -39,16 +39,12 @@ public class BasicTypeContainer implements TypeContainer {
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append("package ").append(getPackage()).append(";");
-		
 		sb.append("\n\n");
-/*		sb.append("\nimport ar.com.dcsys.gwt.manager.shared.TypeContainer;");
-		sb.append("\n\n");
-*/
+
 		String type = getType();
 		String name = type.substring(type.lastIndexOf(".") + 1);
 		
 		
-//		sb.append("public interface ").append(name).append(" extends TypeContainer<").append(getContainedType()).append("> {");
 		sb.append("\n").append("public interface ").append(name).append(" {");
 		sb.append("\n").append("public ").append(getContainedType()).append(" getValue();");
 		sb.append("\n").append("public void setValue(").append(getContainedType()).append(" t);");
