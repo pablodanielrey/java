@@ -6,10 +6,11 @@ import ar.com.dcsys.pr.shared.TestManager;
 public class TestManagerBean implements TestManager {
 
 	@Override
-	public void test3(Receiver<String> rec) {
+	public void test3(String pepe, Receiver<String> rec) {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 	
 

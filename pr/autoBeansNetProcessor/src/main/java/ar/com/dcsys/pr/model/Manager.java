@@ -119,7 +119,7 @@ public class Manager {
 		
 		////////definicion de la clase /////////////////////
 		
-		sb.append("public class ").append(ii.className).append(" {").append("\n");
+		sb.append("public class ").append(ii.className).append(" implements ").append(getPackageName() + "." + getType()).append(" {").append("\n");
 		
 		// variables de intancia //////
 		sb.append("\n").append(Utils.ident(4)).append("private final ").append(ii.messageFactoryClass).append(" ").append(ii.messageFactory).append(" = com.google.gwt.core.client.GWT.create(").append(ii.messageFactoryClass).append(".class);");

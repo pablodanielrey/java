@@ -183,10 +183,11 @@
           <runTarget>ProcessorTest.html</runTarget>
           <hostedWebapp>${webappDirectory}</hostedWebapp>
 	  <generateDirectory>${project.build.directory}/generated-sources/apt</generateDirectory>
-	  <gen>${project.build.directory}/generated-sources/apt</gen>
+<!--	  <gen>${project.build.directory}/generated-sources/apt</gen> -->
 <!--          <i18nMessagesBundle>ar.com.dcsys.gwt.person.client.Messages</i18nMessagesBundle> -->
           <noServer>true</noServer>
-          <port>8181</port>
+          <port>9191</port>
+	  <debugPort>9292</debugPort>
           <style>DETAILED</style>
 
           <compileSourcesArtifacts>
@@ -211,7 +212,7 @@
 
 
      <!-- para remover las clases client de gwt asi no tira error la injection -->
-     <plugin>
+<!--     <plugin>
         <artifactId>maven-clean-plugin</artifactId>
         <version>2.4.1</version>
         <executions>
@@ -242,7 +243,7 @@
                 </execution>
         </executions>
      </plugin>
-
+-->
       <!-- Copy static web files before executing gwt:run -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
