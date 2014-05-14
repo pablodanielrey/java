@@ -128,16 +128,28 @@ public class Manager {
 		sb.append("\n\n");
 		
 		
+		////// implementacion de las internfaces /////////
+		
+		sb.append("\n").append("@Override");
+		sb.append("\n").append(Utils.ident(4)).append("public void setTransport(ar.com.dcsys.gwt.messages.shared.Transport t) {");
+		sb.append("\n").append(Utils.ident(8)).append("this.").append(ii.transport).append(" = t;");
+		sb.append("\n").append(Utils.ident(4)).append("}");
+		sb.append("\n\n");
+		
+		
 		///  constructor //////
 
 		sb.append("\n").append(Utils.ident(4)).append("public ").append(ii.className).append("() { }");
 		sb.append("\n\n");
-		
+
+		/*
+		 * 	esto era para probar la injection del transport. NO FUNCA
 		sb.append("\n").append(Utils.ident(4)).append("@com.google.inject.Inject");
 		sb.append("\n").append(Utils.ident(4)).append("public ").append(ii.className).append("(").append(ii.transportClass).append(" ").append(ii.transport).append(") {");
 		sb.append("\n").append(Utils.ident(8)).append("this.").append(ii.transport).append(" = ").append(ii.transport).append(";");
 		sb.append("\n").append(Utils.ident(4)).append("}");
 		sb.append("\n\n");
+		*/
 		
 		for (Method method : getMethods()) {
 			sb.append("\n");

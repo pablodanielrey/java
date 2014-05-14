@@ -4,7 +4,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.gwt.manager.shared.Receiver;
-import ar.com.dcsys.pr.GwtClientManager;
 import ar.com.dcsys.pr.shared.TestManager;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -15,16 +14,18 @@ public class ProcessorTest implements EntryPoint {
 
 	private final static Logger logger = Logger.getLogger(ProcessorTest.class.getName());
 	
+	/*
    	private interface GTestManager extends GwtClientManager<TestManager> {
  
  		
  	}
+ 	*/
 	
 	@Override
 	public void onModuleLoad() {
 		
 		try {
-			TestManager tm = GWT.create(GTestManager.class);
+			TestManager tm = GWT.create(TestManager.class);
 			
 			tm.test3("pepe", new Receiver<String>() {
 				@Override
