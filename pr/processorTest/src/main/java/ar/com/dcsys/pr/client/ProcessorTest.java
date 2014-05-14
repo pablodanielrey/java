@@ -4,10 +4,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.gwt.manager.shared.Receiver;
+import ar.com.dcsys.gwt.ws.client.WebSocket;
+import ar.com.dcsys.gwt.ws.shared.event.SocketStateEvent;
+import ar.com.dcsys.gwt.ws.shared.event.SocketStateEventHandler;
+import ar.com.dcsys.pr.client.gin.Injector;
 import ar.com.dcsys.pr.shared.TestManager;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Window;
 
 public class ProcessorTest implements EntryPoint {
@@ -21,29 +26,63 @@ public class ProcessorTest implements EntryPoint {
  	}
  	*/
 	
+	private final Injector injector = GWT.create(Injector.class);
+	
 	@Override
 	public void onModuleLoad() {
 		
+		final WebSocket ws = injector.getWebSocket();
+	
+		EventBus bus = injector.getEventBus();
+
+		
 		try {
-			TestManager tm = GWT.create(TestManager.class);
+			final TestManager tm = GWT.create(TestManager.class);
+			tm.setTransport(ws);
+
 			
-			tm.test3("pepe", new Receiver<String>() {
+			bus.addHandler(SocketStateEvent.TYPE, new SocketStateEventHandler() {
 				@Override
-				public void onSuccess(String t) {
-					Window.alert(t);
+				public void onOpen() {
+					logger.log(Level.INFO,"socket abierto");
+
+					tm.test3("pepe", new Receiver<String>() {
+						@Override
+						public void onSuccess(String t) {
+							Window.alert(t);
+							try {
+								ws.close();
+							} catch (Exception e) {
+								logger.log(Level.SEVERE,e.getMessage());
+							}
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+							try {
+								ws.close();
+							} catch (Exception e) {
+								logger.log(Level.SEVERE,e.getMessage());
+							}
+						}
+					});
+				
 				}
 				
 				@Override
-				public void onError(String error) {
-					Window.alert(error);
+				public void onClose() {
+					logger.log(Level.INFO,"socket cerrado");
 				}
 			});
 			
-			Window.alert("Hola Mundoooo");
+			
+			ws.open();
 			
 		} catch (Exception e) {
 			logger.log(Level.SEVERE,e.getMessage());
 		}
+		
 	}
 
 }
