@@ -26,8 +26,10 @@ public class TypesEncoderDecoder {
 		sb.append("\n").append("com.google.web.bindery.autobean.shared.AutoBean<").append(tc.getType()).append("> ").append(varName)
 					   .append("= com.google.web.bindery.autobean.shared.AutoBeanCodex.decode(").append(managerFactory).append(",").append(tc.getType()).append(".class,").append(encoded).append(");");
 		
-		if (type.startsWith("java.lang.") || (type.startsWith("java.util.List"))) {		
-			sb.append("\n").append(type).append(" ").append(decoded).append(" = ").append(varName).append(".as().getValue();");
+		if (type.startsWith("java.lang.") || (type.startsWith("java.util.List"))) {
+			String auxVarName = "aux" + UUID.randomUUID().toString().replace("-", "");
+			sb.append("\n").append(tc.getType()).append(" ").append(auxVarName).append(" = ").append(varName).append(".as();");
+			sb.append("\n").append(type).append(" ").append(decoded).append(" = ").append(auxVarName).append(".getValue();");
 		} else {
 			sb.append("\n").append(type).append(" ").append(decoded).append(" = ").append(varName).append(".as();");
 		}
