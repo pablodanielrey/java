@@ -13,5 +13,6 @@ public interface TestManager extends Manager {
 	public void test1(Person person, Receiver<String> rec);
 	public void test3(String pepe, Receiver<String> rec);
 	public void test4(List<String> pepe, Receiver<String> rec);
+	public void test5(List<Person> pepe, Receiver<String> rec);
 	
 }

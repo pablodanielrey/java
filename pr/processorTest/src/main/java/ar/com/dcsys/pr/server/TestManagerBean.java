@@ -45,6 +45,13 @@ public class TestManagerBean implements TestManager {
 		rec.onSuccess(pepe.get(pepe.size() - 1));
 	}
 
+	@Override
+	public void test5(List<Person> pepe, Receiver<String> rec) {
+		logger.log(Level.SEVERE, "mensaje : " + pepe.size());
+		
+		rec.onSuccess((pepe.get(pepe.size() - 1)).getDni());
+	}
+
 
 	
 
