@@ -149,13 +149,15 @@ public class Websockets implements Transport {
 			registerResponse(dmsg[0], session.getId());
 		}
 		
-		//execService.execute(new MessageWorker(dmsg[0], dmsg[1], ctx, handlers));
+		execService.execute(new MessageWorker(dmsg[0], dmsg[1], ctx, handlers));
+		/*
 		try {
 			MessageWorker mw = new MessageWorker(dmsg[0], dmsg[1], ctx, handlers);
 			mw.run();
 		} catch (Exception e) {
 			logger.log(Level.SEVERE,e.getMessage(),e);
 		}
+		*/
 	}
 	
 	
