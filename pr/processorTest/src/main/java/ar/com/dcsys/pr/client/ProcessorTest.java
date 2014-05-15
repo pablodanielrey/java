@@ -197,7 +197,7 @@ public class ProcessorTest implements EntryPoint {
 		
 		
 		try {
-			tm = GWT.create(TestManager.class);
+			tm = injector.testManagerProvider().get();
 			tm.setTransport(ws);
 
 			bus.addHandler(SocketStateEvent.TYPE, new SocketStateEventHandler() {

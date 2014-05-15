@@ -13,4 +13,6 @@ public interface Injector extends Ginjector {
 	WebSocket getWebSocket();
 	EventBus getEventBus();
 	
+	TestManagerProvider testManagerProvider();
+	
 }
