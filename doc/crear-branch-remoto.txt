@@ -1,0 +1,5 @@
+git branch branch-local
+git checkout branch-local
+.... se hacen cambios ....
+git commit
+git push -u origin branch-remoto		# esto lo crea en el repositorio git remoto y setea el tracking desde el branch local hacia el branch remoto
