@@ -23,9 +23,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ar.com.dcsys.gwt.message.shared.Message;
-import ar.com.dcsys.gwt.message.shared.MessageUtils;
-import ar.com.dcsys.gwt.person.shared.PersonMethods;
 import ar.com.dcsys.model.MailChangesManager;
 
 @WebServlet("/mailChanges/*")
@@ -37,17 +34,15 @@ public class MailChangeServlet extends HttpServlet {
 	
 	private final MailChangesManager changesManager;
 	private final BeanManager beanManager;
-	private final MessageUtils messageUtils;
 	private String changeMailTemplate; 
 	private String changeMailErrorTemplate;
 	
 	
 	@Inject
-	public MailChangeServlet(MailChangesManager changesManager, BeanManager beanManager, MessageUtils messageUtils) {
+	public MailChangeServlet(MailChangesManager changesManager, BeanManager beanManager) {
 		super();
 		this.changesManager = changesManager;
 		this.beanManager = beanManager;
-		this.messageUtils = messageUtils;
 
 		changeMailTemplate = "<html><head></head><body>operación procesada correctamente</body></html>";
 		changeMailErrorTemplate = "<html><head></head><body>error procesando operación</body></html>";
@@ -94,9 +89,6 @@ public class MailChangeServlet extends HttpServlet {
 			changesManager.processByToken(sToken);
 			
 			publishResponse(req,resp);
-			
-			Message msg = messageUtils.event(PersonMethods.mailChangeModifiedEvent,"");
-			beanManager.fireEvent(msg);
 			
 		} catch (Exception e) {
 			logger.log(Level.SEVERE,e.getMessage(),e);

@@ -45,14 +45,6 @@
       <version>${servlet.version}</version>
     </dependency>
 
-   <!-- procesador de anotaciones -->
-
-    <dependency>
-      <groupId>ar.com.dcsys.pr</groupId>
-      <artifactId>annotations</artifactId>
-      <version>1.0-SNAPSHOT</version>
-      <scope>compile</scope>
-    </dependency>
 
 <!--
     <dependency>
@@ -64,13 +56,45 @@
 -->
 
 
+<!-- para que funcione el procesador de anotaciones y la generacion de codigo -->
+
     <dependency>
-      <groupId>ar.com.dcsys.gwt.utils</groupId>
-      <artifactId>messageGWT</artifactId>
+      <groupId>ar.com.dcsys.pr</groupId>
+      <artifactId>annotations</artifactId>
       <version>1.0-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
 
+    <dependency>
+      <groupId>ar.com.dcsys.gwt.utils</groupId>
+      <artifactId>messagesGWT</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.gwt.utils</groupId>
+      <artifactId>managerGWT</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.gwt.utils</groupId>
+      <artifactId>utilsGWT</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.gwt.utils</groupId>
+      <artifactId>webSocketGWT</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+
+<!-- -->
 
     <dependency>
       <groupId>ar.com.dcsys.data</groupId>
