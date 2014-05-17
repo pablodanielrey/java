@@ -97,8 +97,8 @@ public class LoggedPersonActivity extends AbstractActivity {
 				}
 			}
 			@Override
-			public void onFailure(Throwable t) {
-				showMessage(t.getMessage());
+			public void onError(String t) {
+				showMessage(t);
 			}
 		});
 	}

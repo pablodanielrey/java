@@ -26,6 +26,11 @@
   <inherits name="ar.com.dcsys.gwt.clientMessages.ClientMessagesGWT"/>
   <inherits name="ar.com.dcsys.gwt.auth.AuthModelGWT"/>
 
+
+ <inherits name="ar.com.dcsys.gwt.messages.MessagesGWT"/>
+ <inherits name="ar.com.dcsys.gwt.ws.WsGWT"/>
+ 
+
   <!-- Specify the app entry point class.                         -->
   <entry-point class='ar.com.dcsys.gwt.person.client.PersonGWT' />
 

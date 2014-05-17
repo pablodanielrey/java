@@ -7,16 +7,16 @@ import java.util.List;
 import java.util.Set;
 
 import ar.com.dcsys.data.person.Person;
+import ar.com.dcsys.data.person.PersonBean;
 import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.data.person.Telephone;
+import ar.com.dcsys.data.person.TelephoneBean;
 import ar.com.dcsys.gwt.auth.client.manager.AuthManager;
 import ar.com.dcsys.gwt.clientMessages.client.MessageDialogEvent;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.person.client.manager.PersonsManager;
 import ar.com.dcsys.gwt.person.client.place.UpdatePersonDataPlace;
 import ar.com.dcsys.gwt.person.client.ui.basicData.PersonDataView;
-import ar.com.dcsys.gwt.person.shared.PersonFactory;
-import ar.com.dcsys.model.StudentDataManager;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
@@ -33,7 +33,6 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 	
 	private final PersonDataView view;
 	private final PersonsManager personsManager;
-	private final PersonFactory personFactory;
 	private final AuthManager authManager;
 	
 	private MultiSelectionModel<PersonType> typesSelection;
@@ -76,8 +75,7 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 	
 	
 	@Inject
-	public PersonDataActivity(PersonsManager personsManager, PersonFactory personFactory, AuthManager authManager, PersonDataView view, @Assisted UpdatePersonDataPlace place) {
-		this.personFactory = personFactory;
+	public PersonDataActivity(PersonsManager personsManager, AuthManager authManager, PersonDataView view, @Assisted UpdatePersonDataPlace place) {
 		this.personsManager = personsManager;
 		this.authManager = authManager;
 		this.view = view;
@@ -331,7 +329,7 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 	 * @param view
 	 */
 	private void addNewUser() {
-		Person eP = personFactory.person().as();
+		Person eP = new PersonBean();
 		updateUser(eP,view);
 	}
 	
@@ -403,7 +401,7 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 		
 		String tel = view.getTelephone();
 		if (tel != null && (!tel.trim().equals(""))) {
-			Telephone telP = personFactory.telephone().as();
+			Telephone telP = new TelephoneBean();
 			telP.setNumber(tel);
 			eP.setTelephones(Arrays.asList(telP));
 		}

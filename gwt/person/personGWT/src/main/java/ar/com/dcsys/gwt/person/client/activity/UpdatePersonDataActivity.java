@@ -7,7 +7,6 @@ import ar.com.dcsys.gwt.person.client.place.UpdatePersonDataPlace;
 import ar.com.dcsys.gwt.person.client.ui.UpdatePersonDataView;
 import ar.com.dcsys.gwt.person.client.ui.assistance.PersonAssistanceDataView;
 import ar.com.dcsys.gwt.person.client.ui.basicData.PersonDataView;
-import ar.com.dcsys.gwt.person.shared.PersonFactory;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
@@ -24,7 +23,7 @@ public class UpdatePersonDataActivity extends AbstractActivity implements Update
 	private final UpdatePersonDataView updatePersonDataView;
 	
 	@Inject
-	public UpdatePersonDataActivity(PersonsManager personsManager, PersonFactory personFactory, 
+	public UpdatePersonDataActivity(PersonsManager personsManager,  
 									AuthManager authManager,
 									UpdatePersonDataView updatePersonDataView,
 									PersonDataView personDataView, 
@@ -33,7 +32,7 @@ public class UpdatePersonDataActivity extends AbstractActivity implements Update
 		
 		this.updatePersonDataView = updatePersonDataView;
 		
-		personDataActivity = new PersonDataActivity(personsManager, personFactory, authManager, personDataView, place);
+		personDataActivity = new PersonDataActivity(personsManager, authManager, personDataView, place);
 		personAssistanceDataActivity = new PersonAssistanceDataActivity(personsManager, authManager, personAssistanceDataView);
 		
 	}

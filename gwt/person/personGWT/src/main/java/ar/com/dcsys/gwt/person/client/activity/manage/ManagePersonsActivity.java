@@ -20,7 +20,6 @@ import ar.com.dcsys.gwt.person.client.ui.UpdatePersonDataView;
 import ar.com.dcsys.gwt.person.client.ui.assistance.PersonAssistanceDataView;
 import ar.com.dcsys.gwt.person.client.ui.basicData.PersonDataView;
 import ar.com.dcsys.gwt.person.client.ui.manage.ManagePersonsView;
-import ar.com.dcsys.gwt.person.shared.PersonFactory;
 import ar.com.dcsys.gwt.person.shared.PersonValueProxy;
 
 import com.google.gwt.activity.shared.AbstractActivity;
@@ -91,7 +90,7 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 	
 	@Inject
 	public ManagePersonsActivity(EventBus eventBus, 
-								 PersonsManager personsManager, PersonFactory personFactory, 
+								 PersonsManager personsManager, 
 								 AuthManager authManager,
 								 ManagePersonsView view, 
 								 UpdatePersonDataView updatePersonDataView, 
@@ -112,10 +111,7 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 		selection.addSelectionChangeHandler(selectionChange);
 		
 		
-		updatePersonDataActivity = new UpdatePersonDataActivity(personsManager, personFactory, 
-																authManager, updatePersonDataView, 
-																 personDataView, 
-																 personAssistanceDataView, null);
+		updatePersonDataActivity = new UpdatePersonDataActivity(personsManager, authManager, updatePersonDataView, personDataView, personAssistanceDataView, null);
 		updatePersonDataActivity.setSelectionModel(personSelection);
 		
 		

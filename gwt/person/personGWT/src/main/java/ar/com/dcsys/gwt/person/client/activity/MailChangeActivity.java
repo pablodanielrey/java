@@ -3,6 +3,8 @@ package ar.com.dcsys.gwt.person.client.activity;
 import java.util.List;
 
 import ar.com.dcsys.data.person.Mail;
+import ar.com.dcsys.data.person.MailBean;
+import ar.com.dcsys.data.person.MailChangeBean;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.gwt.clientMessages.client.MessageDialogEvent;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
@@ -11,7 +13,6 @@ import ar.com.dcsys.gwt.person.client.manager.PersonsManager;
 import ar.com.dcsys.gwt.person.client.manager.events.MailChangeModifiedEvent;
 import ar.com.dcsys.gwt.person.client.manager.events.MailChangeModifiedEventHandler;
 import ar.com.dcsys.gwt.person.client.ui.mailchange.MailChangeView;
-import ar.com.dcsys.gwt.person.shared.PersonFactory;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
@@ -22,7 +23,6 @@ import com.google.inject.Inject;
 public class MailChangeActivity extends AbstractActivity implements MailChangeView.Presenter {
 
 	private final MailChangeView view;
-	private final PersonFactory personFactory;
 	private final PersonsManager personsManager;
 	private final MailChangesManager mailChangesManager;
 	private EventBus eventBus;   
@@ -42,11 +42,10 @@ public class MailChangeActivity extends AbstractActivity implements MailChangeVi
 	
 	
 	@Inject
-	public MailChangeActivity(PersonsManager personsManager, MailChangesManager mailChangesManager, PersonFactory personFactory, MailChangeView addMailChangeView) {
+	public MailChangeActivity(PersonsManager personsManager, MailChangesManager mailChangesManager, MailChangeView addMailChangeView) {
 	        this.personsManager = personsManager;
 	        this.mailChangesManager = mailChangesManager;
 	        this.view = addMailChangeView;
-	        this.personFactory = personFactory;
 	}
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
@@ -133,16 +132,16 @@ public class MailChangeActivity extends AbstractActivity implements MailChangeVi
 	    }
 	    
 	    
-	    Mail mail = personFactory.mail().as();
+	    Mail mail = new MailBean();
 	    mail.setMail(mailChangeText);
-	    ar.com.dcsys.data.person.MailChange mailChange = personFactory.mailChange().as();
+	    ar.com.dcsys.data.person.MailChange mailChange = new MailChangeBean();
 	    mailChange.setMail(mail);
 	    mailChange.setConfirmed(false);
 	    mailChange.setToken(null);
 	
-	    mailChangesManager.persist(mailChange, loggedPerson, new Receiver<String>() {  
+	    mailChangesManager.persist(mailChange, loggedPerson, new Receiver<Void>() {  
 	    	@Override
-	        public void onSuccess(String mailChangeId) {
+	        public void onSuccess(Void v) {
 	    		updateMailsFromPerson();
 	    	}
 	    	@Override
@@ -156,9 +155,9 @@ public class MailChangeActivity extends AbstractActivity implements MailChangeVi
 	@Override
 	public void remove(ar.com.dcsys.data.person.MailChange change) {
 		
-		mailChangesManager.remove(change, new Receiver<String>() {
+		mailChangesManager.remove(change, new Receiver<Void>() {
 			@Override
-			public void onSuccess(String t) {
+			public void onSuccess(Void t) {
 				updateMailsFromPerson();
 			}
 			

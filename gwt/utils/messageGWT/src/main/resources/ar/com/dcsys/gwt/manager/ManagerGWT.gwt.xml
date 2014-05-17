@@ -1,7 +1,0 @@
-<module>
-  <inherits name="com.google.gwt.user.User"/>
-  <inherits name="com.google.web.bindery.autobean.AutoBean"/>
-
-  <source path="client"/>
-  <source path="shared"/>
-</module>
