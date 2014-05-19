@@ -137,7 +137,6 @@
           <compileSourcesArtifacts>
 <!--              <artifact>ar.com.dcsys.data:personEntities</artifact> -->
               <artifact>ar.com.dcsys.gwt.utils:clientMessagesGWT</artifact>
-              <artifact>ar.com.dcsys.gwt.utils:messageGWT</artifact>
               <artifact>ar.com.dcsys.gwt.auth:authModelGWT</artifact>
           </compileSourcesArtifacts>
 

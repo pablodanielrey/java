@@ -6,7 +6,12 @@ import java.util.logging.Logger;
 
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
+import org.apache.shiro.subject.Subject;
+import org.apache.shiro.util.ThreadContext;
+
+import ar.com.dcsys.auth.shiro.SecurityUtils;
 import ar.com.dcsys.gwt.manager.server.handler.MethodHandler;
 import ar.com.dcsys.gwt.manager.server.handler.MethodHandlersDetection;
 import ar.com.dcsys.gwt.manager.shared.message.Message;
@@ -58,7 +63,11 @@ public class MainMethodsHandler implements MessageHandler {
 			// no se pudo decodificar el mensaje, por ahi esta en otro formato que no se entiende. asi que se retorna false ya que no se lo manejo.
 			return false;
 		}
-			
+		
+		if (dmsg != null) {
+			registerShiro(ctx);
+		}
+		
 		
 		for (MethodHandler mh : handlers) {
 			if (mh.process(id, dmsg, ctx)) {
@@ -66,6 +75,17 @@ public class MainMethodsHandler implements MessageHandler {
 			}
 		}
 		return false;
+	}
+	
+	
+	/**
+	 * crea el subject para que las funciones usando SecurityUtils de shiro funcionen.
+	 * @param ctx
+	 */
+	private void registerShiro(MessageContext ctx) {
+		HttpSession session = ctx.getHttpSession();
+		Subject subject = SecurityUtils.getSubject(session);
+		ThreadContext.bind(subject);		
 	}
 
 }

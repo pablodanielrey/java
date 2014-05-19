@@ -2,13 +2,9 @@ package ar.com.dcsys.gwt.auth.client.manager;
 
 import javax.inject.Inject;
 
-import ar.com.dcsys.gwt.auth.shared.AuthMethods;
-import ar.com.dcsys.gwt.manager.client.ManagerUtils;
+import ar.com.dcsys.gwt.auth.shared.AuthManagerTransfer;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
-import ar.com.dcsys.gwt.message.shared.Message;
-import ar.com.dcsys.gwt.message.shared.MessageUtils;
 import ar.com.dcsys.gwt.ws.client.WebSocket;
-import ar.com.dcsys.gwt.ws.client.WebSocketReceiver;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
@@ -21,18 +17,11 @@ import com.google.gwt.http.client.URL;
 
 public class AuthManagerBean implements AuthManager {
 
-	private final ManagerUtils managerUtils;
-	private final MessageUtils messageUtils;
+	private final AuthManagerTransfer authManagerTransfer = GWT.create(AuthManagerTransfer.class);
 	private final WebSocket socket;
 	
 	@Inject
-	public AuthManagerBean(EventBus eventBus, 
-			  ManagerUtils managerUtils,
-			  MessageUtils messageUtils, 
-			  WebSocket ws) {
-		
-		this.managerUtils = managerUtils;
-		this.messageUtils = messageUtils;
+	public AuthManagerBean(EventBus eventBus, WebSocket ws) {
 		this.socket = ws;
 	}
 	
@@ -70,34 +59,34 @@ public class AuthManagerBean implements AuthManager {
 							@Override
 							public void onSuccess(Boolean t) {
 								if (t == null || t.booleanValue() == false) {
-									rec.onFailure(new Exception("No se pudo autentificar al usuario"));
+									rec.onError("No se pudo autentificar al usuario");
 								} else {
 									rec.onSuccess(null);
 								}
 							}
 							@Override
-							public void onFailure(Throwable t) {
-								rec.onFailure(t);
+							public void onError(String t) {
+								rec.onError(t);
 							}							
 						});
 						
 						
 					} else {
 						
-						rec.onFailure(new Exception("No se pudo autentificar correctamente al usuario"));
+						rec.onError("No se pudo autentificar correctamente al usuario");
 						
 					}
 				}
 				@Override
 				public void onError(Request request, Throwable exception) {
 					
-					rec.onFailure(exception);
+					rec.onError(exception.getMessage());
 					
 				}
 			});
 		} catch (RequestException e) {
 			
-			rec.onFailure(e);
+			rec.onError(e.getMessage());
 			
 		}
 		
@@ -121,78 +110,45 @@ public class AuthManagerBean implements AuthManager {
 							@Override
 							public void onSuccess(Boolean t) {
 								if (t != null && t.booleanValue() == true) {
-									rec.onFailure(new Exception("No se pudo desloguear al usuario"));
+									rec.onError("No se pudo desloguear al usuario");
 								} else {
 									rec.onSuccess(null);
 								}
 							}
 							@Override
-							public void onFailure(Throwable t) {
-								rec.onFailure(t);
+							public void onError(String t) {
+								rec.onError(t);
 							}							
 						});						
 					} else {
 						
-						rec.onFailure(new Exception("No se pudo desloguear al usuario"));
+						rec.onError("No se pudo desloguear al usuario");
 						
 					}
 				}
 				@Override
 				public void onError(Request request, Throwable exception) {
 					
-					rec.onFailure(exception);
+					rec.onError(exception.getMessage());
 					
 				}
 			});
 		} catch (RequestException e) {
 			
-			rec.onFailure(e);
+			rec.onError(e.getMessage());
 			
 		}		
 		
 	}
 
 	@Override
-	public void isAuthenticated(final Receiver<Boolean> rec) {
-		
-		Message msg = messageUtils.method(AuthMethods.isAuthenticated);
-		
-		socket.send(msg, new WebSocketReceiver() {
-			@Override
-			public void onSuccess(Message message) {
-				
-				String json = message.getPayload();
-				Boolean b = managerUtils.decodeBoolean(json);
-				rec.onSuccess(b);
-				
-			}
-			@Override
-			public void onFailure(Throwable t) {
-				rec.onFailure(t);
-			}
-		});
+	public void isAuthenticated(Receiver<Boolean> rec) {
+		authManagerTransfer.isAuthenticated(rec);
 	}
 
 	@Override
-	public void hasPermission(String perm, final Receiver<Boolean> rec) {
-		
-		Message msg = messageUtils.method(AuthMethods.hasPermission,perm);
-		
-		socket.send(msg, new WebSocketReceiver() {
-			@Override
-			public void onSuccess(Message message) {
-				
-				String json = message.getPayload();
-				Boolean b = managerUtils.decodeBoolean(json);
-				rec.onSuccess(b);
-				
-			}
-			@Override
-			public void onFailure(Throwable t) {
-				rec.onFailure(t);
-			}
-		});
-			
+	public void hasPermission(String perm, Receiver<Boolean> rec) {
+		authManagerTransfer.hasPermission(perm, rec);
 	}
 
 	
