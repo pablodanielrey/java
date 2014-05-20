@@ -21,6 +21,8 @@
   <!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
 
+  <inherits name="ar.com.dcsys.AnnotationsProcessor"/>
+
   <inherits name="ar.com.dcsys.gwt.clientMessages.ClientMessagesGWT"/>
   
   <inherits name="ar.com.dcsys.gwt.auth.AuthModelGWT"/>

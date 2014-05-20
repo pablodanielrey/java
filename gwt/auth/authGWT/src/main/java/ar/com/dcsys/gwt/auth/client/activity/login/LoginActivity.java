@@ -58,9 +58,9 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
 			}
 			
 			@Override
-			public void onFailure(Throwable t) {
+			public void onError(String t) {
 				if (t != null) {
-					showMessage(t.getMessage());
+					showMessage(t);
 				} else {
 					showMessage("Error autentificando al usuario");
 				}

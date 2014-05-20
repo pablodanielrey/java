@@ -7,8 +7,6 @@
   <inherits name="ar.com.dcsys.gwt.messages.MessagesGWT"/>
   <inherits name="ar.com.dcsys.gwt.utils.UtilsGWT"/>
   <inherits name="ar.com.dcsys.gwt.manager.ManagerGWT"/> 
-  <inherits name="ar.com.dcsys.gwt.autoBeans.AutoBeanGWT"/>  
-   
   
   <source path="client"/>
   <source path="shared"/>

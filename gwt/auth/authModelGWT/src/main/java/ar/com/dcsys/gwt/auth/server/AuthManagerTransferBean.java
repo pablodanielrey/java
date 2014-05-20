@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import ar.com.dcsys.exceptions.AuthenticationException;
 import ar.com.dcsys.gwt.auth.shared.AuthManagerTransfer;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
+import ar.com.dcsys.gwt.messages.shared.Transport;
 import ar.com.dcsys.model.auth.AuthManager;
 
 public class AuthManagerTransferBean implements AuthManagerTransfer {
@@ -36,6 +37,12 @@ public class AuthManagerTransferBean implements AuthManagerTransfer {
 		} catch (AuthenticationException e) {
 			rec.onError(e.getMessage());
 		}
+	}
+
+	@Override
+	public void setTransport(Transport t) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

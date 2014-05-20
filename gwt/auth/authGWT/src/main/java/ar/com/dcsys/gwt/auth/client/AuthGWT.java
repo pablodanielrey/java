@@ -6,8 +6,8 @@ import ar.com.dcsys.gwt.auth.client.manager.AuthManager;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.ws.client.WebSocket;
 import ar.com.dcsys.gwt.ws.shared.SocketException;
-import ar.com.dcsys.gwt.ws.shared.SocketStateEvent;
-import ar.com.dcsys.gwt.ws.shared.SocketStateEventHandler;
+import ar.com.dcsys.gwt.ws.shared.event.SocketStateEvent;
+import ar.com.dcsys.gwt.ws.shared.event.SocketStateEventHandler;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.shared.GWT;
@@ -54,8 +54,8 @@ public class AuthGWT implements EntryPoint {
 						
 					}
 					@Override
-					public void onFailure(Throwable t) {
-						Window.alert(t.getMessage());
+					public void onError(String t) {
+						Window.alert(t);
 					}
 				});				
 				

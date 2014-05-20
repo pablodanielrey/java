@@ -59,6 +59,8 @@
       <scope>provided</scope>
     </dependency>
 
+   <!-- -->
+
     <dependency>
       <groupId>com.google.gwt.inject</groupId>
       <artifactId>gin</artifactId>
@@ -66,15 +68,6 @@
       <scope>provided</scope>
     </dependency>
 
-    <!-- referencias : http://www.eclipse.org/jetty/documentation/current/framework-weld.html -->
-<!--
-    <dependency>
-      <groupId>org.jboss.weld.servlet</groupId>
-      <artifactId>weld-servlet</artifactId>
-      <version>${weld.version}</version>
-      <scope>compile</scope>
-    </dependency>
--->
 
     <dependency>
       <groupId>ar.com.dcsys.gwt.auth</groupId>
@@ -91,15 +84,6 @@
     </dependency>
 
 
-<!--
-    <dependency>
-      <groupId>ar.com.dcsys.data</groupId>
-      <artifactId>personEntities</artifactId>
-      <version>1.0-SNAPSHOT</version>
-      <scope>compile</scope>
-    </dependency>
--->
-
 </dependencies>
 
   <build>
@@ -107,6 +91,48 @@
     <outputDirectory>${webappDirectory}/WEB-INF/classes</outputDirectory>
 
     <plugins>
+
+	<!-- esto va primero para que se pueda compilar el tema de la autogeneracion de codigo -->
+<!--
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                  <source>${java.version}</source>
+                  <target>${java.version}</target>
+                    <compilerArgument>-proc:none</compilerArgument>
+                </configuration>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.bsc.maven</groupId>
+                <artifactId>maven-processor-plugin</artifactId>
+                <version>2.2.4</version>
+                <executions>
+                    <execution>
+                        <id>process</id>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <phase>process-sources</phase>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                      <groupId>ar.com.dcsys.pr</groupId>
+                      <artifactId>autoBeansNetProcessor</artifactId>
+                      <version>1.0-SNAPSHOT</version>
+                      <scope>compile</scope>
+                    </dependency>
+                </dependencies>
+            </plugin>
+-->
+
+	<!--   -->
+
+
+
+
 
       <!-- GWT Maven Plugin -->
       <plugin>
@@ -135,8 +161,13 @@
           <port>8080</port>
 
           <compileSourcesArtifacts>
-<!--              <artifact>ar.com.dcsys.data:personEntities</artifact> -->
               <artifact>ar.com.dcsys.gwt.utils:clientMessagesGWT</artifact>
+
+              <artifact>ar.com.dcsys.gwt.utils:messagesGWT</artifact>
+              <artifact>ar.com.dcsys.gwt.utils:utilsGWT</artifact>
+              <artifact>ar.com.dcsys.gwt.utils:managerGWT</artifact>
+              <artifact>ar.com.dcsys.gwt.utils:webSocketGWT</artifact>
+
               <artifact>ar.com.dcsys.gwt.auth:authModelGWT</artifact>
           </compileSourcesArtifacts>
 
@@ -165,28 +196,6 @@
         </configuration>
       </plugin>
 
-     <plugin>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-maven-plugin</artifactId>
-        <version>${jetty.version}</version>
-
-        <!-- para que sea acorde con el gwt-maven-plugin -->
-        <configuration>
-                <!--
-                <scanIntervalSeconds>2</scanIntervalSeconds>
-                <reload>automatic</reload>
-                -->
-                <webAppSourceDirectory>${webappDirectory}</webAppSourceDirectory>
-
-                <!-- referencias : http://agorava.org/news/2012/07/10/Starting-a-CDI-webapp-from-Maven-with-Weld-servlet-and-jetty-plugin/ -->
-                <webApp>
-                  <overrideDescriptor>${webappDirectory}/WEB-INF/web-add.xml</overrideDescriptor>
-                </webApp>
-                <jettyEnvXml>${webappDirectory}/WEB-INF/jetty-env.xml</jettyEnvXml>
-                <contextXml>${webappDirectory}/WEB-INF/jetty-context.xml</contextXml>
-        </configuration>
-
-     </plugin>
 
 <plugin>
     <groupId>org.apache.maven.plugins</groupId>
@@ -250,6 +259,9 @@
      </configuration>
 
   </plugin>
+
+
+
 
     </plugins>
 
