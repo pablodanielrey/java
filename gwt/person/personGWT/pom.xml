@@ -18,24 +18,6 @@
 
   <dependencies>
 
-   <!-- para arreglar el WeldDecorator con la nueva interface de Decorator que jetty 9.1 tiene ahora -->
-<!--
-   <dependency>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-servlet</artifactId>
-	<version>${jetty.version}</version>
-	<scope>provided</scope>
-   </dependency>
-
-   <dependency>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-server</artifactId>
-	<version>${jetty.version}</version>
-	<scope>provided</scope>
-   </dependency>
--->
-
-
     <dependency>
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-servlet</artifactId>
@@ -57,15 +39,6 @@
       <scope>provided</scope>
     </dependency>
 
-    <!-- referencias : http://www.eclipse.org/jetty/documentation/current/framework-weld.html -->
-<!--
-    <dependency>
-      <groupId>org.jboss.weld.servlet</groupId>
-      <artifactId>weld-servlet</artifactId>
-      <version>2.1.0.Final</version>
-      <scope>compile</scope>
-    </dependency>
--->
 
     <dependency>
       <groupId>ar.com.dcsys.gwt.auth</groupId>
@@ -193,11 +166,14 @@
           <compileSourcesArtifacts>
               <artifact>ar.com.dcsys.data:personEntities</artifact>
               <artifact>ar.com.dcsys.data:documentEntities</artifact>
+
 	      <artifact>ar.com.dcsys.gwt.utils:clientMessagesGWT</artifact>
+
               <artifact>ar.com.dcsys.gwt.utils:messagesGWT</artifact>
               <artifact>ar.com.dcsys.gwt.utils:utilsGWT</artifact>
               <artifact>ar.com.dcsys.gwt.utils:managerGWT</artifact>
               <artifact>ar.com.dcsys.gwt.utils:webSocketGWT</artifact>
+
               <artifact>ar.com.dcsys.gwt.person:personModelGWT</artifact>
               <artifact>ar.com.dcsys.gwt.auth:authModelGWT</artifact>
           </compileSourcesArtifacts>
@@ -210,6 +186,7 @@
 
 
      <!-- para remover las clases client de gwt asi no tira error la injection -->
+<!--
      <plugin>
         <artifactId>maven-clean-plugin</artifactId>
         <version>2.4.1</version>
@@ -241,12 +218,13 @@
                 </execution>
         </executions>
      </plugin>
-
+-->
 
 
 
 
       <!-- Copy static web files before executing gwt:run -->
+<!--
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
@@ -264,7 +242,7 @@
 	  <packagingExcludes>WEB-INF/classes/ar/com/dcsys/gwt/person/client/**.class</packagingExcludes>
         </configuration>
       </plugin>
-
+-->
 
  <plugin>
     <groupId>org.apache.maven.plugins</groupId>
