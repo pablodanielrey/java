@@ -116,18 +116,6 @@
 
         <!-- esto va primero para que se pueda compilar el tema de la autogeneracion de codigo -->
 	
-<!--
-	   <plugin>
-		<artifactId>maven-source-plugin</artifactId>
-		<configuration>
-			<includes>
-				<include>**/*.java</include>
-				<include>../../../target/generated-sources/apt/**/*.java</include>
-			</includes>
-		</configuration>
-	   </plugin>
--->
-
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
