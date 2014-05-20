@@ -1,11 +1,9 @@
 package ar.com.dcsys.gwt.person.client.gin;
 
 import ar.com.dcsys.gwt.auth.client.gin.AuthModelGinModule;
-import ar.com.dcsys.gwt.manager.client.gin.ManagerGinModule;
-import ar.com.dcsys.gwt.message.client.MessageGinModule;
 import ar.com.dcsys.gwt.person.client.activity.PersonActivityMapper;
 import ar.com.dcsys.gwt.ws.client.WebSocket;
-import ar.com.dcsys.gwt.ws.client.WsGinModule;
+import ar.com.dcsys.gwt.ws.client.gin.WsGinModule;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.inject.client.GinModules;
@@ -14,8 +12,6 @@ import com.google.gwt.inject.client.Ginjector;
 
 @GinModules(value = {PersonGWTGinModule.class, 
 					 WsGinModule.class, 
-					 MessageGinModule.class,
-					 ManagerGinModule.class,
 					 PersonModelGinModule.class,
 					 AuthModelGinModule.class })
 public interface Injector extends Ginjector {

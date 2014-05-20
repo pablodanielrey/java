@@ -48,7 +48,7 @@ public class PersonReportActivity extends AbstractActivity implements PersonRepo
 				view.addReport(t);
 			}
 			@Override
-			public void onFailure(Throwable t) {
+			public void onError(String t) {
 
 			}
 		});
@@ -60,7 +60,7 @@ public class PersonReportActivity extends AbstractActivity implements PersonRepo
 		view.clear();
 		personsManager.findAllReports(new Receiver<List<Document>>() {
 			@Override
-			public void onFailure(Throwable t) {
+			public void onError(String t) {
 				
 			}
 			public void onSuccess(List<Document> t) {

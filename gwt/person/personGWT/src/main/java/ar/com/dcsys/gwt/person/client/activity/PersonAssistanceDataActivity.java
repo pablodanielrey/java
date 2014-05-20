@@ -199,8 +199,8 @@ public class PersonAssistanceDataActivity extends AbstractActivity implements Pe
 			}
 			
 			@Override
-			public void onFailure(Throwable error) {
-				showMessage("Error al obtener los datos de asistencia de la persona: " + error.getMessage());
+			public void onError(String error) {
+				showMessage("Error al obtener los datos de asistencia de la persona: " + error);
 			}
 		});
 	}
@@ -237,8 +237,8 @@ public class PersonAssistanceDataActivity extends AbstractActivity implements Pe
 			}
 			
 			@Override
-			public void onFailure(Throwable error) {
-				showMessage("Error al obtener los datos de asistencia de la persona:"+error.getMessage());
+			public void onError(String error) {
+				showMessage("Error al obtener los datos de asistencia de la persona:" + error);
 			}
 		});
 	}
