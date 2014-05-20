@@ -17,33 +17,14 @@
 
   <dependencies>
 
-   <!-- para arreglar el WeldDecorator con la nueva interface de Decorator que jetty 9.1 tiene ahora -->
-<!--
-   <dependency>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-servlet</artifactId>
-        <version>${jetty.version}</version>
-        <scope>provided</scope>
-   </dependency>
+   <!-- para tener shiro -->
 
    <dependency>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-server</artifactId>
-        <version>${jetty.version}</version>
-        <scope>provided</scope>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-core</artifactId>
+      <version>${shiro.version}</version>
+      <scope>provided</scope>
    </dependency>
--->
-   <!--  -->
-
-
-  	<!-- para tener shiro -->
-
-        <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-core</artifactId>
-            <version>${shiro.version}</version>
-            <scope>provided</scope>
-        </dependency>
 
     <dependency>
       <groupId>com.google.gwt</groupId>
@@ -178,6 +159,7 @@
       </plugin>
 
       <!-- Copy static web files before executing gwt:run -->
+<!--
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
@@ -195,7 +177,7 @@
 	  <packagingExcludes>WEB-INF/classes/ar/com/dcsys/gwt/mapau/client/**.class</packagingExcludes>
         </configuration>
       </plugin>
-
+-->
 
 <plugin>
     <groupId>org.apache.maven.plugins</groupId>
