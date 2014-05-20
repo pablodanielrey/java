@@ -1,4 +1,4 @@
-package ar.com.dcsys.gwt.person.shared.manager;
+package ar.com.dcsys.gwt.person.shared;
 
 import java.util.List;
 

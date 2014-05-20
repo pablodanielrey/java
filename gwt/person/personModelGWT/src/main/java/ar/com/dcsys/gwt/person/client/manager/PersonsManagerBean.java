@@ -18,7 +18,7 @@ public class PersonsManagerBean implements PersonsManager {
 
 	private static final Logger logger = Logger.getLogger(PersonsManagerBean.class.getName());
 	
-	private final ar.com.dcsys.gwt.person.shared.manager.PersonsManager pm = GWT.create(ar.com.dcsys.gwt.person.shared.manager.PersonsManager.class);
+	private final ar.com.dcsys.gwt.person.shared.PersonsManager pm = GWT.create(ar.com.dcsys.gwt.person.shared.PersonsManager.class);
 	private final WebSocket socket;
 	
 	/////////// reportes ///////////////////

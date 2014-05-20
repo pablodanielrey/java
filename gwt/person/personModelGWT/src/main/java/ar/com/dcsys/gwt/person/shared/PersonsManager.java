@@ -1,4 +1,4 @@
-package ar.com.dcsys.gwt.person.shared.manager;
+package ar.com.dcsys.gwt.person.shared;
 
 import java.util.List;
 
@@ -8,7 +8,6 @@ import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.gwt.manager.shared.Manager;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
-import ar.com.dcsys.gwt.person.shared.PersonValueProxy;
 import ar.com.dcsys.pr.ClientManager;
 
 @ClientManager

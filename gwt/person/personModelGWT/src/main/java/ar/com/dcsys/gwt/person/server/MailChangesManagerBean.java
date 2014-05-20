@@ -1,4 +1,4 @@
-package ar.com.dcsys.gwt.person.server.manager;
+package ar.com.dcsys.gwt.person.server;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.messages.shared.Transport;
-import ar.com.dcsys.gwt.person.shared.manager.MailChangesManager;
+import ar.com.dcsys.gwt.person.shared.MailChangesManager;
 
 public class MailChangesManagerBean implements MailChangesManager {
 

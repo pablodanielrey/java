@@ -1,4 +1,4 @@
-package ar.com.dcsys.gwt.person.server.manager;
+package ar.com.dcsys.gwt.person.server;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import ar.com.dcsys.data.document.Document;
 import ar.com.dcsys.data.document.DocumentBean;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.messages.shared.Transport;
-import ar.com.dcsys.gwt.person.shared.manager.ReportsManager;
+import ar.com.dcsys.gwt.person.shared.ReportsManager;
 import ar.com.dcsys.model.DocumentsManager;
 import ar.com.dcsys.model.reports.ReportExportType;
 import ar.com.dcsys.model.reports.ReportsGenerator;

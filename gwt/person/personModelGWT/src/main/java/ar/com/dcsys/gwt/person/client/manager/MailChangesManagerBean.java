@@ -14,7 +14,7 @@ import com.google.inject.Inject;
 public class MailChangesManagerBean implements MailChangesManager {
 	
 	private final WebSocket socket;
-	private final ar.com.dcsys.gwt.person.shared.manager.MailChangesManager mcm = GWT.create(ar.com.dcsys.gwt.person.shared.manager.MailChangesManager.class);
+	private final ar.com.dcsys.gwt.person.shared.MailChangesManager mcm = GWT.create(ar.com.dcsys.gwt.person.shared.MailChangesManager.class);
 
 	private static final Logger logger = Logger.getLogger(MailChangesManagerBean.class.getName());
 

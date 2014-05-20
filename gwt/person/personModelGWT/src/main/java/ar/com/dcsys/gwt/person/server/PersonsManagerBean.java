@@ -1,4 +1,4 @@
-package ar.com.dcsys.gwt.person.server.manager;
+package ar.com.dcsys.gwt.person.server;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +16,7 @@ import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.messages.shared.Transport;
 import ar.com.dcsys.gwt.person.shared.PersonValueProxy;
 import ar.com.dcsys.gwt.person.shared.PersonValueProxyImpl;
-import ar.com.dcsys.gwt.person.shared.manager.PersonsManager;
+import ar.com.dcsys.gwt.person.shared.PersonsManager;
 
 public class PersonsManagerBean implements PersonsManager {
 
