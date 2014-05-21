@@ -31,6 +31,14 @@
       <scope>provided</scope>
     </dependency>
 
+	<dependency>
+	    <groupId>javax.servlet</groupId>
+	    <artifactId>javax.servlet-api</artifactId>
+	    <version>${servlet.version}</version>
+	</dependency>
+
+<!-- para que funcione el procesador de anotaciones y la generacion de codigo -->
+
     <dependency>
       <groupId>javax.enterprise</groupId>
       <artifactId>cdi-api</artifactId>
@@ -38,19 +46,45 @@
       <scope>provided</scope>
     </dependency>
 
-	<dependency>
-	    <groupId>javax.servlet</groupId>
-	    <artifactId>javax.servlet-api</artifactId>
-	    <version>${servlet.version}</version>
-	</dependency>
 
 
     <dependency>
-      <groupId>ar.com.dcsys.gwt.utils</groupId>
-      <artifactId>messageGWT</artifactId>
+      <groupId>ar.com.dcsys.pr</groupId>
+      <artifactId>annotations</artifactId>
       <version>1.0-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.gwt.utils</groupId>
+      <artifactId>messagesGWT</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.gwt.utils</groupId>
+      <artifactId>managerGWT</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.gwt.utils</groupId>
+      <artifactId>utilsGWT</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.gwt.utils</groupId>
+      <artifactId>webSocketGWT</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+
+<!-- -->
 
     <dependency>
       <groupId>ar.com.dcsys.data</groupId>
@@ -80,8 +114,44 @@
       <scope>compile</scope>
     </dependency>
 
-
+    
   </dependencies>
 
+  <build>
+	<plugins>
+	    <plugin>
+	        <artifactId>maven-compiler-plugin</artifactId>
+	        <configuration>
+                  <source>${java.version}</source>
+                  <target>${java.version}</target>
+	            <compilerArgument>-proc:none</compilerArgument>
+	        </configuration>
+	    </plugin>
 
+	    <plugin>
+	        <groupId>org.bsc.maven</groupId>
+	        <artifactId>maven-processor-plugin</artifactId>
+	        <version>2.2.4</version>
+	        <executions>
+	            <execution>
+	                <id>process</id>
+	                <goals>
+	                    <goal>process</goal>
+	                </goals>
+	                <phase>process-sources</phase>
+	            </execution>
+	        </executions>
+	        <dependencies>
+                    <dependency>
+                      <groupId>ar.com.dcsys.pr</groupId>
+                      <artifactId>autoBeansNetProcessor</artifactId>
+                      <version>1.0-SNAPSHOT</version>
+                      <scope>compile</scope>
+                    </dependency>
+	        </dependencies>
+	    </plugin>
+
+	</plugins>
+  </build>
+  
 </project>

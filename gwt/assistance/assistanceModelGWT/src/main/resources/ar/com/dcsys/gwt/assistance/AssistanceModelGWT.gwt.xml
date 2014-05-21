@@ -4,10 +4,12 @@
   <inherits name="com.google.web.bindery.autobean.AutoBean"/>
 
   <inherits name="ar.com.dcsys.gwt.ws.WsGWT"/>
-  <inherits name="ar.com.dcsys.gwt.message.MessageGWT"/>
+  <inherits name="ar.com.dcsys.gwt.messages.MessagesGWT"/>
   <inherits name="ar.com.dcsys.gwt.utils.UtilsGWT"/>  
   <inherits name="ar.com.dcsys.gwt.autoBeans.AutoBeanGWT"/>  
   <inherits name="ar.com.dcsys.gwt.manager.ManagerGWT"/>  
+  
+  <inherits name="ar.com.dcsys.gwt.person.PersonModelGWT"/>
   
   <source path="client"/>
   <source path="shared"/>
