@@ -20,13 +20,24 @@
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
 
   <!-- Other module inherits                                      -->
+  
+  <inherits name="ar.com.dcsys.AnnotationsProcessor"/>
+  
   <inherits name="ar.com.dcsys.PersonEntities"/>
+  
   <inherits name="ar.com.dcsys.AssistanceEntities"/>
+  
   <inherits name="ar.com.dcsys.DocumentEntities"/>
+  
   <inherits name="ar.com.dcsys.gwt.clientMessages.ClientMessagesGWT"/>
+  
   <inherits name="ar.com.dcsys.gwt.person.PersonModelGWT"/>
+  
   <inherits name="ar.com.dcsys.gwt.auth.AuthModelGWT"/>
+  
   <inherits name="ar.com.dcsys.gwt.assistance.AssistanceModelGWT"/>
+  
+  <inherits name="com.google.gwt.http.HTTP"/>  
  
   <!-- Specify the app entry point class.                         -->
   <entry-point class='ar.com.dcsys.gwt.assistance.client.AssistanceGWT' />

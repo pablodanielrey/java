@@ -4,13 +4,13 @@ import java.util.Date;
 import java.util.List;
 
 import ar.com.dcsys.data.period.PeriodAssignation;
+import ar.com.dcsys.data.period.PeriodAssignationBean;
 import ar.com.dcsys.data.period.PeriodType;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.gwt.assistance.client.manager.PeriodsManager;
 import ar.com.dcsys.gwt.assistance.client.manager.events.PeriodModifiedEvent;
 import ar.com.dcsys.gwt.assistance.client.manager.events.PeriodModifiedEventHandler;
 import ar.com.dcsys.gwt.assistance.client.ui.period.person.PeriodsAssignationPersonView;
-import ar.com.dcsys.gwt.assistance.shared.AssistanceFactory;
 import ar.com.dcsys.gwt.clientMessages.client.MessageDialogEvent;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.person.client.manager.PersonsManager;
@@ -27,7 +27,6 @@ import com.google.gwt.view.client.SingleSelectionModel;
 public class PeriodsAssignationPersonActivity extends AbstractActivity implements PeriodsAssignationPersonView.Presenter {
 
 	private final PeriodsAssignationPersonView view;
-	private final AssistanceFactory assistanceFactory;
 	private final PeriodsManager periodsManager;
 	private final PersonsManager personsManager;
 	
@@ -55,9 +54,8 @@ public class PeriodsAssignationPersonActivity extends AbstractActivity implement
 	};
 	
 	@Inject
-	public PeriodsAssignationPersonActivity(PersonsManager personsManager, PeriodsManager periodsManager, AssistanceFactory assistanceFactory, PeriodsAssignationPersonView view) {
+	public PeriodsAssignationPersonActivity(PersonsManager personsManager, PeriodsManager periodsManager, PeriodsAssignationPersonView view) {
 		this.periodsManager = periodsManager;
-		this.assistanceFactory = assistanceFactory;
 		this.personsManager = personsManager;
 		this.view = view;
 		
@@ -134,8 +132,8 @@ public class PeriodsAssignationPersonActivity extends AbstractActivity implement
 			}
 
 			@Override
-			public void onFailure(Throwable t) {
-				showMessage(t.getMessage());
+			public void onError(String error) {
+				showMessage(error);
 			}
 			
 		});
@@ -154,8 +152,8 @@ public class PeriodsAssignationPersonActivity extends AbstractActivity implement
 			}
 
 			@Override
-			public void onFailure(Throwable t) {
-				showMessage(t.getMessage());
+			public void onError(String error) {
+				showMessage(error);
 			}
 			
 		});
@@ -184,8 +182,8 @@ public class PeriodsAssignationPersonActivity extends AbstractActivity implement
 			}
 
 			@Override
-			public void onFailure(Throwable t) {
-				showMessage(t.getMessage());
+			public void onError(String error) {
+				showMessage(error);
 			}
 			
 		});
@@ -203,8 +201,8 @@ public class PeriodsAssignationPersonActivity extends AbstractActivity implement
 			}
 
 			@Override
-			public void onFailure(Throwable t) {
-				showMessage(t.getMessage());
+			public void onError(String error) {
+				showMessage(error);
 			}
 			
 		});
@@ -223,8 +221,8 @@ public class PeriodsAssignationPersonActivity extends AbstractActivity implement
 			}
 
 			@Override
-			public void onFailure(Throwable t) {
-				showMessage(t.getMessage());
+			public void onError(String error) {
+				showMessage(error);
 			}
 			
 		});
@@ -242,7 +240,7 @@ public class PeriodsAssignationPersonActivity extends AbstractActivity implement
 		date.setSeconds(0);
 		PeriodType type = selectionType.getSelectedObject();
 		
-		PeriodAssignation periodAssignation = assistanceFactory.periodAssignation().as();
+		PeriodAssignation periodAssignation = new PeriodAssignationBean();
 		periodAssignation.setStart(date);
 		periodAssignation.setType(type);
 		
@@ -254,8 +252,8 @@ public class PeriodsAssignationPersonActivity extends AbstractActivity implement
 			}
 
 			@Override
-			public void onFailure(Throwable t) {
-				showMessage(t.getMessage());
+			public void onError(String error) {
+				showMessage(error);
 			}
 		});
 	}

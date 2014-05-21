@@ -17,7 +17,6 @@ import ar.com.dcsys.gwt.assistance.client.manager.JustificationsManager;
 import ar.com.dcsys.gwt.assistance.client.manager.events.JustificationModifiedEvent;
 import ar.com.dcsys.gwt.assistance.client.manager.events.JustificationModifiedEventHandler;
 import ar.com.dcsys.gwt.assistance.client.ui.justification.general.GeneralsJustificationView;
-import ar.com.dcsys.gwt.assistance.shared.AssistanceFactory;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.person.client.manager.events.MailChangeModifiedEvent;
 
@@ -33,7 +32,6 @@ import com.google.gwt.view.client.SingleSelectionModel;
 public class GeneralsJustificationActivity extends AbstractActivity implements GeneralsJustificationView.Presenter{
 
 	private final GeneralsJustificationView view;
-	private final AssistanceFactory assistanceFactory;
 	private final JustificationsManager justificationsManager;
 	private EventBus eventBus;
 	
@@ -60,16 +58,15 @@ public class GeneralsJustificationActivity extends AbstractActivity implements G
 
 		@Override
 		public GeneralJustificationDate getNew() {
-			return assistanceFactory.generalJustificationDate().as();
+			return new GeneralJustificationDateBean();
 		}
 		
 	};
 	
 	@Inject
-	public GeneralsJustificationActivity(JustificationsManager justificationsManager, AssistanceFactory assistanceFactory, GeneralsJustificationView view) {
+	public GeneralsJustificationActivity(JustificationsManager justificationsManager, GeneralsJustificationView view) {
 		this.justificationsManager = justificationsManager;
 		this.view = view;
-		this.assistanceFactory = assistanceFactory;
 		
 		selectionJustification = new SingleSelectionModel<Justification>();
 		selectionJustification.addSelectionChangeHandler(new Handler() {
@@ -118,8 +115,8 @@ public class GeneralsJustificationActivity extends AbstractActivity implements G
 			}
 
 			@Override
-			public void onFailure(Throwable t) {
-				showMessage(t.getMessage());
+			public void onError(String error) {
+				showMessage(error);
 			}
 			
 		});
@@ -154,8 +151,8 @@ public class GeneralsJustificationActivity extends AbstractActivity implements G
 			}
 
 			@Override
-			public void onFailure(Throwable t) {
-				showMessage(t.getMessage());				
+			public void onError(String error) {
+				showMessage(error);
 			}
 			
 		});
@@ -181,8 +178,8 @@ public class GeneralsJustificationActivity extends AbstractActivity implements G
 			}
 
 			@Override
-			public void onFailure(Throwable t) {
-				showMessage(t.getMessage());
+			public void onError(String error) {
+				showMessage(error);
 				view.clearGeneralJustificationDateList();
 			}
 			
@@ -211,8 +208,8 @@ public class GeneralsJustificationActivity extends AbstractActivity implements G
 			}
 
 			@Override
-			public void onFailure(Throwable t) {
-				showMessage(t.getMessage());
+			public void onError(String error) {
+				showMessage(error);
 			}
 			
 		});

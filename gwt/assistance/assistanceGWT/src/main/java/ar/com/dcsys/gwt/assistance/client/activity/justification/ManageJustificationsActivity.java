@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ar.com.dcsys.data.justification.Justification;
+import ar.com.dcsys.data.justification.JustificationBean;
 import ar.com.dcsys.gwt.assistance.client.manager.JustificationsManager;
 import ar.com.dcsys.gwt.assistance.client.manager.events.JustificationModifiedEvent;
 import ar.com.dcsys.gwt.assistance.client.manager.events.JustificationModifiedEventHandler;
 import ar.com.dcsys.gwt.assistance.client.ui.justification.manage.ManageJustificationsView;
-import ar.com.dcsys.gwt.assistance.shared.AssistanceFactory;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 
 import com.google.inject.Inject;
@@ -26,7 +26,6 @@ import ar.com.dcsys.gwt.clientMessages.client.MessageDialogEvent;
 public class ManageJustificationsActivity extends AbstractActivity implements ManageJustificationsView.Presenter{
 
 	private final ManageJustificationsView view;
-	private final AssistanceFactory assistanceFactory;
 	private final JustificationsManager justificationsManager;
 	private EventBus eventBus = null;
 	
@@ -51,9 +50,8 @@ public class ManageJustificationsActivity extends AbstractActivity implements Ma
 	
 	
 	@Inject
-	public ManageJustificationsActivity(JustificationsManager justificationsManager, AssistanceFactory assistanceFactory, ManageJustificationsView view) {
+	public ManageJustificationsActivity(JustificationsManager justificationsManager, ManageJustificationsView view) {
 		this.view = view;
-		this.assistanceFactory = assistanceFactory;
 		this.justificationsManager = justificationsManager;
 		
 		selection = new SingleSelectionModel<Justification>();
@@ -91,8 +89,8 @@ public class ManageJustificationsActivity extends AbstractActivity implements Ma
 			}
 
 			@Override
-			public void onFailure(Throwable t) {
-				showMessage(t.getMessage());
+			public void onError(String error) {
+				showMessage(error);
 			}
 			
 		});
@@ -140,7 +138,7 @@ public class ManageJustificationsActivity extends AbstractActivity implements Ma
 			}
 
 			@Override
-			public void onFailure(Throwable t) {
+			public void onError(String error) {
 				showMessage("No se permite eliminar esta justificación");
 			}
 			
@@ -182,7 +180,7 @@ public class ManageJustificationsActivity extends AbstractActivity implements Ma
 		final String msg;
 		
 		if (justification == null) {
-			justification = assistanceFactory.justification().as();
+			justification = new JustificationBean();
 			msg = "Se insertado correctamente la justificación";
 		} else {			
 			justificationsAux.remove(justification);
@@ -208,8 +206,8 @@ public class ManageJustificationsActivity extends AbstractActivity implements Ma
 			}
 
 			@Override
-			public void onFailure(Throwable t) {
-				showMessage(t.getMessage());
+			public void onError(String error) {
+				showMessage(error);
 				view.clearData();
 			}
 			

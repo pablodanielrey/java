@@ -22,7 +22,6 @@ import ar.com.dcsys.gwt.assistance.client.manager.PeriodsManager;
 import ar.com.dcsys.gwt.assistance.client.manager.events.JustificationModifiedEvent;
 import ar.com.dcsys.gwt.assistance.client.manager.events.JustificationModifiedEventHandler;
 import ar.com.dcsys.gwt.assistance.client.ui.justification.person.JustificationPersonView;
-import ar.com.dcsys.gwt.assistance.shared.AssistanceFactory;
 import ar.com.dcsys.gwt.clientMessages.client.MessageDialogEvent;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.person.client.manager.PersonsManager;
@@ -41,7 +40,6 @@ import com.google.gwt.view.client.MultiSelectionModel;
 public class JustificationPersonActivity extends AbstractActivity implements JustificationPersonView.Presenter {
 
 	private final JustificationPersonView view;
-	private final AssistanceFactory assistanceFactory;
 	private final JustificationsManager justificationsManager;
 	private final PeriodsManager periodsManager;
 	private EventBus eventBus = null;
@@ -78,9 +76,8 @@ public class JustificationPersonActivity extends AbstractActivity implements Jus
 	
 	
 	@Inject
-	public JustificationPersonActivity(JustificationsManager justificationsManager, PeriodsManager periodsManager, AssistanceFactory assistanceFactory, JustificationPersonView view) {
+	public JustificationPersonActivity(JustificationsManager justificationsManager, PeriodsManager periodsManager, JustificationPersonView view) {
 		this.view = view;
-		this.assistanceFactory = assistanceFactory;
 		this.justificationsManager = justificationsManager;
 		this.periodsManager = periodsManager;
 		
@@ -173,8 +170,8 @@ public class JustificationPersonActivity extends AbstractActivity implements Jus
 			}
 
 			@Override
-			public void onFailure(Throwable t) {
-				showMessage(t.getMessage());
+			public void onError(String error) {
+				showMessage(error);
 			}
 		});		
 	}
@@ -194,8 +191,8 @@ public class JustificationPersonActivity extends AbstractActivity implements Jus
 			}
 
 			@Override
-			public void onFailure(Throwable t) {
-				showMessage(t.getMessage());
+			public void onError(String error) {
+				showMessage(error);
 			}
 			
 		});
@@ -233,7 +230,7 @@ public class JustificationPersonActivity extends AbstractActivity implements Jus
 			}
 
 			@Override
-			public void onFailure(Throwable error) {
+			public void onError(String error) {				
 				view.clearJustificationData();
 				Date start = view.getStart();
 				Date end = view.getEnd();
@@ -242,7 +239,7 @@ public class JustificationPersonActivity extends AbstractActivity implements Jus
 					findBy(start,end);
 				}
 				processing = false;
-				showMessage(error.getMessage());
+				showMessage(error);
 			}
 			
 		});
@@ -276,8 +273,8 @@ public class JustificationPersonActivity extends AbstractActivity implements Jus
 				}
 
 				@Override
-				public void onFailure(Throwable t) {
-					receiver.onFailure(t);
+				public void onError(String error) {
+					showMessage(error);
 				}
 				
 			});
@@ -344,8 +341,8 @@ public class JustificationPersonActivity extends AbstractActivity implements Jus
 			}
 
 			@Override
-			public void onFailure(Throwable t) {
-				showMessage(t.getMessage());
+			public void onError(String error) {
+				showMessage(error);
 			}
 			
 		});
@@ -365,8 +362,8 @@ public class JustificationPersonActivity extends AbstractActivity implements Jus
 			}
 
 			@Override
-			public void onFailure(Throwable e) {
-				showMessage(e.getMessage());
+			public void onError(String error) {
+				showMessage(error);
 			}
 			
 		});
