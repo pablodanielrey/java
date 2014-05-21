@@ -1,10 +1,10 @@
 package ar.com.dcsys.pr.model;
 
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.Element;
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.TypeKind;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
-
-import ar.com.dcsys.pr.Utils;
 
 /**
  * Representa las clases receivers de los mensajes.
@@ -24,44 +24,37 @@ import ar.com.dcsys.pr.Utils;
  *
  */
 
-public class Receiver {
+public class Receiver extends Param {
 
-	private final String name;
-	private final TypeMirror typeMirror;
-	private final TypeKind typeKind;
+	private final Param internalParam;
 	
-	public Receiver(String name, TypeMirror mirror) {
-		this.name = name;
-		this.typeMirror = mirror;
-		this.typeKind = mirror.getKind();
+	public Receiver(VariableElement ve, ProcessingEnvironment env) {
+		super(ve,env);
+		internalParam = generateInternalParam(ve,env);		
 	}
 	
-	public String getType() {
-		return typeMirror.toString();
+	private final Param generateInternalParam(Element ve, ProcessingEnvironment env) {
+		DeclaredType tm = (DeclaredType)ve.asType();
+		TypeMirror it = tm.getTypeArguments().get(0);
+		Element e = env.getTypeUtils().asElement(it);
+		Param p2 = new Param(e,it,env);
+		return p2;
 	}
 	
-	public String getName() {
-		return name;
-	}
-	
-	public String getPackage() {
-		String t = getType();
-		if (t.contains("<")) {
-			String st = t.substring(0,t.indexOf("<")); 
-			return st.substring(0, st.lastIndexOf("."));
-		} else {
-			return t.substring(0, t.lastIndexOf("."));
-		}
-	}
-	
-	
-	public static void process(Method method, VariableElement ve) {
-		String name = ve.getSimpleName().toString();
-		Receiver param = new Receiver(name,ve.asType());
+	public static void process(Method method, VariableElement ve, ProcessingEnvironment env) {
+		Receiver param = new Receiver(ve,env);
 		method.setReceiver(param);
 		
+		Param p2 = param.getInternalParam();
+		
 		Factory factory = method.getManager().getFactory();
-		factory.createGetter(Utils.getInteralType(param.getType()));
+		factory.createGetter(p2);
 	}
+	
+	
+	public Param getInternalParam() {
+		return internalParam;
+	}
+	
 	
 }

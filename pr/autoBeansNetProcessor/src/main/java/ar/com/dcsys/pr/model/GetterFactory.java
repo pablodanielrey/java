@@ -1,5 +1,7 @@
 package ar.com.dcsys.pr.model;
 
+import javax.lang.model.type.TypeMirror;
+
 public class GetterFactory {
 
 	private static String getInternalType(String t) {
@@ -11,16 +13,17 @@ public class GetterFactory {
 		return t.contains("<") && t.contains(">");
 	}
 	
-	public static void create(Factory f, String type) {
+	public static void create(Factory f, Param param) {
 
 		String packageName = f.getPackage();
 
-		String t = type;
-		while (true) {
+		String t = param.getType();
 
+		while (true) {
+			
 			if (f.findByType(t) == null) {
 				
-				TypeContainer tc = TypeContainerFactory.create(packageName, t);
+				TypeContainer tc = TypeContainerFactory.create(packageName, param);
 				String name = "get_" + tc.getType().replace(".", "_");
 				
 				Getter g = new Getter(name,tc);

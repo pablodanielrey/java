@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.type.TypeMirror;
 import javax.tools.JavaFileObject;
 
 import ar.com.dcsys.pr.Utils;
@@ -21,12 +22,13 @@ public class Factory {
 		this.type = this.packageName + "." + t.substring(t.lastIndexOf(".") + 1) + "Factory";
 	}
 	
-	public void createGetter(String type) {
-		Getter g = findByType(type);
+	public void createGetter(Param p) {
+		String stype = p.getType();
+		Getter g = findByType(stype);
 		if (g != null) {
 			return;
 		}
-		GetterFactory.create(this,type);
+		GetterFactory.create(this,p);
 	}
 	
 	

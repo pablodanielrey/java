@@ -8,10 +8,10 @@ import javax.tools.JavaFileObject;
 public class BasicTypeContainer implements TypeContainer {
 
 	final String pack;
-	final String type;
+	final Param param;
 	
-	public BasicTypeContainer(String pack, String type) {
-		this.type = type;
+	public BasicTypeContainer(String pack, Param param) {
+		this.param = param;
 		this.pack = pack;
 	}
 	
@@ -23,11 +23,12 @@ public class BasicTypeContainer implements TypeContainer {
 	
 	@Override
 	public String getContainedType() {
-		return type;
+		return param.getType();
 	}
 	
 	@Override
 	public String getType() {
+		String type = param.getType();
 		String typeName = type.substring(type.lastIndexOf(".") + 1);
 		return getPackage() + "." + typeName + "Container"; 
 	}

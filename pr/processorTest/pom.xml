@@ -59,6 +59,24 @@
     </dependency>
 
 
+   <!-- para tener shiro de cual depende ManagerGWT -->
+
+   <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-core</artifactId>
+      <version>${shiro.version}</version>
+   </dependency>
+
+    <dependency>
+        <groupId>org.apache.shiro</groupId>
+        <artifactId>shiro-web</artifactId>
+        <version>${shiro.version}</version>
+    </dependency>
+
+   <!-- -->
+
+
+
 
     <dependency>
       <groupId>ar.com.dcsys.data</groupId>

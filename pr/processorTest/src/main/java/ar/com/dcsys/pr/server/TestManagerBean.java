@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonBean;
+import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.messages.shared.Transport;
 import ar.com.dcsys.pr.shared.TestManager;
@@ -96,6 +97,26 @@ public class TestManagerBean implements TestManager {
 			l.add(p);
 		}
 		rec.onSuccess(l);
+	}
+
+	@Override
+	public void testEnum(Receiver<PersonType> rec) {
+		rec.onSuccess(PersonType.PERSONAL);
+	}
+
+	@Override
+	public void testEnum2(PersonType pt, Receiver<PersonType> rec) {
+		rec.onSuccess(pt);
+	}
+
+	@Override
+	public void testEnum3(Person p, PersonType pt, Receiver<PersonType> rec) {
+		rec.onSuccess(pt);
+	}
+
+	@Override
+	public void testEnum4(String id, PersonType pt, Receiver<PersonType> rec) {
+		rec.onSuccess(pt);
 	}
 
 

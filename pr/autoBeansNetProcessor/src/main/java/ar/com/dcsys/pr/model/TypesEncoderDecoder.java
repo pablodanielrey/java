@@ -15,9 +15,11 @@ public class TypesEncoderDecoder {
 	 * @param decoded
 	 * @return
 	 */
-	public static String decodeResponse(Factory factory, String managerFactory, String type, String encoded, String decoded) {
+	public static String decodeResponse(Factory factory, String managerFactory, Param param, String encoded, String decoded) {
 
 		String varName = "a" + UUID.randomUUID().toString().replace("-", "");
+		
+		String type = param.getType();
 		
 		Getter g = factory.findByType(type);
 		TypeContainer tc = g.getTypeContainer();
@@ -26,7 +28,7 @@ public class TypesEncoderDecoder {
 		sb.append("\n").append("com.google.web.bindery.autobean.shared.AutoBean<").append(tc.getType()).append("> ").append(varName)
 					   .append("= com.google.web.bindery.autobean.shared.AutoBeanCodex.decode(").append(managerFactory).append(",").append(tc.getType()).append(".class,").append(encoded).append(");");
 		
-		if (type.startsWith("java.lang.") || (type.startsWith("java.util.List"))) {
+		if (param.isPrimitive() || param.isList()) {
 			String auxVarName = "aux" + UUID.randomUUID().toString().replace("-", "");
 			sb.append("\n").append(tc.getType()).append(" ").append(auxVarName).append(" = ").append(varName).append(".as();");
 			sb.append("\n").append(type).append(" ").append(decoded).append(" = ").append(auxVarName).append(".getValue();");
@@ -47,19 +49,22 @@ public class TypesEncoderDecoder {
 	 * @param paramName
 	 * @return
 	 */
-	public static String encode(Factory factory, String managerFactory, String type, String paramName, String eVarName) {
+	public static String encode(Factory factory, String managerFactory, Param param, String paramName, String eVarName) {
 		
 		StringBuilder sb = new StringBuilder();
 		
 		String varName = "a" + UUID.randomUUID().toString().replace("-", "");
 		String valueContainer = paramName;
 		
+		
+		String type = param.getType();
+		
 		Getter g = factory.findByType(type);
 		TypeContainer tc = g.getTypeContainer();
 
 		
 		// chequeo si es una lista de tipos definidos por usuario (o sea no de tipos primitivos.)
-		if (type.startsWith("java.util.List") && (!type.startsWith("java.util.List<java.lang."))) {
+		if (param.isDeclaredTypeList()) {
 			// hago wrapping de los valores de la lista.
 			
 			String subType = type.substring(type.indexOf("<") + 1, type.lastIndexOf(">"));
@@ -74,7 +79,7 @@ public class TypesEncoderDecoder {
 		}
 		
 
-		if (type.startsWith("java.lang.") || type.startsWith("java.util.List")) {
+		if (param.isList() || param.isPrimitive()) {
 			
 			// se generaron containers. asi que se setea el valor.
 			sb.append("\n").append(Utils.ident(8)).append("com.google.web.bindery.autobean.shared.AutoBean<").append(tc.getType()).append("> ").append(varName).append(" = ").append(managerFactory).append(".").append(g.getName()).append("();");
@@ -102,7 +107,7 @@ public class TypesEncoderDecoder {
 		String eVarName = "a" + UUID.randomUUID().toString().replace("-", "");
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append(encode(manager.getFactory(),ii.managerFactory,param.getType(),param.getName(),eVarName));
+		sb.append(encode(manager.getFactory(),ii.managerFactory,param,param.getName(),eVarName));
 		sb.append("params.add(").append(eVarName).append(");");
 		
 		return sb.toString();

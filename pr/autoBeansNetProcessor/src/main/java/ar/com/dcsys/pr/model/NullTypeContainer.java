@@ -4,8 +4,8 @@ import javax.annotation.processing.ProcessingEnvironment;
 
 public class NullTypeContainer extends BasicTypeContainer {
 
-	public NullTypeContainer(String pack, String type) {
-		super(type.substring(0,type.lastIndexOf(".")),type);
+	public NullTypeContainer(String pack, Param param) {
+		super(param.getType().substring(0,param.getType().lastIndexOf(".")),param);
 	}
 	
 	@Override

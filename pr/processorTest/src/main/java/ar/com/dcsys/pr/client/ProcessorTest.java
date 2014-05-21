@@ -1,15 +1,13 @@
 package ar.com.dcsys.pr.client;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import ar.com.dcsys.data.person.Gender;
 import ar.com.dcsys.data.person.Person;
+import ar.com.dcsys.data.person.PersonBean;
 import ar.com.dcsys.data.person.PersonType;
-import ar.com.dcsys.data.person.Telephone;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.ws.client.WebSocket;
 import ar.com.dcsys.gwt.ws.shared.event.SocketMessageEvent;
@@ -35,154 +33,11 @@ public class ProcessorTest implements EntryPoint {
 	
 	private final Injector injector = GWT.create(Injector.class);
 	
-	private class PersonB implements Person {
-
-		public PersonB(String dni) {
-			this.dni = dni;
-		}
-		
-		private String dni;
-		
-		@Override
-		public String getId() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public void setId(String id) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public String getName() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public void setName(String n) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public String getLastName() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public void setLastName(String n) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public String getDni() {
-			// TODO Auto-generated method stub
-			return dni;
-		}
-
-		@Override
-		public void setDni(String dni) {
-			this.dni = dni;
-		}
-
-		@Override
-		public String getAddress() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public void setAddress(String addr) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public String getCity() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public void setCity(String city) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public String getCountry() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public void setCountry(String country) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public Gender getGender() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public void setGender(Gender gender) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public Date getBirthDate() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public void setBirthDate(Date d) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public List<PersonType> getTypes() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public void setTypes(List<PersonType> types) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public List<Telephone> getTelephones() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public void setTelephones(List<Telephone> tels) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-	}
-	
 	private VerticalPanel vp = new VerticalPanel();
 	private TestManager tm;
 	
 	@Override
 	public void onModuleLoad() {
-		
-
 		
 		final WebSocket ws = injector.getWebSocket();
 	
@@ -251,11 +106,138 @@ public class ProcessorTest implements EntryPoint {
 			test7();
 			test8();
 			
+			testEnum();
+			testEnum2();
+			testEnum3();
+			testEnum4();
+			
+			
 		} catch (Exception e) {
 			logger.log(Level.SEVERE,e.getMessage());
 		}
 		
 	}
+	
+
+	
+	private void testEnum() {
+		
+		Button b = new Button("testEnum()");
+		
+		b.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+					tm.testEnum(new Receiver<PersonType>() {
+						@Override
+						public void onSuccess(PersonType t) {
+							logger.log(Level.INFO,t.toString());
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+						}
+					});
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		vp.add(b);
+	}
+	
+	private void testEnum2() {
+		
+		Button b = new Button("testEnum2()");
+		
+		b.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+					tm.testEnum2(PersonType.EXTERNAL,new Receiver<PersonType>() {
+						@Override
+						public void onSuccess(PersonType t) {
+							logger.log(Level.INFO,t.toString());
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+						}
+					});
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		vp.add(b);
+	}
+	
+	private void testEnum3() {
+		
+		Button b = new Button("testEnum3()");
+		
+		b.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+					Person p = new PersonBean();
+					p.setDni("1");
+					PersonType pt = PersonType.POSTGRADUATE;
+					
+					tm.testEnum3(p,pt,new Receiver<PersonType>() {
+						@Override
+						public void onSuccess(PersonType t) {
+							logger.log(Level.INFO,t.toString());
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+						}
+					});
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		vp.add(b);
+	}	
+	
+	
+	private void testEnum4() {
+		
+		Button b = new Button("testEnum4()");
+		
+		b.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+					Person p = new PersonBean();
+					
+					tm.testEnum4("algo",PersonType.STUDENT,new Receiver<PersonType>() {
+						@Override
+						public void onSuccess(PersonType t) {
+							logger.log(Level.INFO,t.toString());
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+						}
+					});
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		vp.add(b);
+	}	
 	
 	
 	
@@ -296,7 +278,11 @@ public class ProcessorTest implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				try {
-					Person p = new PersonB("1");
+					Person p = new PersonBean();
+					p.setDni("1");
+					p.setName("pablo");
+					p.setLastName("rey");
+					
 					tm.test1(p,new Receiver<String>() {
 						@Override
 						public void onSuccess(String t) {
@@ -419,11 +405,19 @@ public class ProcessorTest implements EntryPoint {
 			public void onClick(ClickEvent event) {
 				try {
 					List<Person> s = new ArrayList<Person>();
-					s.add(new PersonB("1"));
-					s.add(new PersonB("2"));
-					s.add(new PersonB("3"));
-					s.add(new PersonB("4"));
-					s.add(new PersonB("5"));
+					
+					Person p = new PersonBean();
+					p.setDni("1");
+					s.add(p);
+
+					p = new PersonBean();
+					p.setDni("2");
+					s.add(p);
+
+					p = new PersonBean();
+					p.setDni("3");
+					s.add(p);
+					
 					tm.test5(s,new Receiver<String>() {
 						@Override
 						public void onSuccess(String t) {
