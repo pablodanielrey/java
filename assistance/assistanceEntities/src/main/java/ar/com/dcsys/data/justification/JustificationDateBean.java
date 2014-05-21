@@ -2,7 +2,6 @@ package ar.com.dcsys.data.justification;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.UUID;
 
 import ar.com.dcsys.data.person.Person;
 
@@ -10,7 +9,7 @@ public class JustificationDateBean  implements Serializable, JustificationDate {
 
 	private static final long serialVersionUID = 1L;
 
-	private UUID id;
+	private String id;
 	private Person person;
 	private Justification justification;
 	private Date start;
@@ -28,14 +27,11 @@ public class JustificationDateBean  implements Serializable, JustificationDate {
 	}
 	
 	public String getId() {
-		if (id == null) {
-			return null;
-		}
-		return id.toString();
+		return id;
 	}
 
 	public void setId(String id) {
-		this.id = UUID.fromString(id);
+		this.id = id;
 	}	
 	
 	public Person getPerson() {

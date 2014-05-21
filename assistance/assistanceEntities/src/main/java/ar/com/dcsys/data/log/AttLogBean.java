@@ -2,7 +2,6 @@ package ar.com.dcsys.data.log;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.UUID;
 
 import ar.com.dcsys.data.device.Device;
 import ar.com.dcsys.data.person.Person;
@@ -11,7 +10,7 @@ public class AttLogBean implements Serializable, AttLog {
 
 	private static final long serialVersionUID = 1L;
 
-	private UUID id;
+	private String id;
 	
 	private Device device;
 	private Person person;
@@ -20,14 +19,11 @@ public class AttLogBean implements Serializable, AttLog {
 	private Long verifyMode;	
 
 	public String getId() {
-		if (id == null) {
-			return null;
-		}
-		return id.toString();
+		return id;
 	}
 
 	public void setId(String id) {
-		this.id = UUID.fromString(id);
+		this.id = id;
 	}
 
 	public Device getDevice() {

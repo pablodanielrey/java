@@ -1,7 +1,6 @@
 package ar.com.dcsys.data.justification;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 public class JustificationBean implements Serializable, Justification {
 
@@ -9,7 +8,7 @@ public class JustificationBean implements Serializable, Justification {
 	
 	private String code;
 	private String description;
-	private UUID id;
+	private String id;
 	
 	public String getDescription() {
 		return description;
@@ -27,15 +26,12 @@ public class JustificationBean implements Serializable, Justification {
 		this.code = code;
 	}
 
-	public String getId() {
-		if (id == null) {
-			return null;
-		}
-		return id.toString();
+	public String getId() {		
+		return id;
 	}
 
 	public void setId(String id) {
-		this.id = UUID.fromString(id);
+		this.id = id;
 	}
 
 }
