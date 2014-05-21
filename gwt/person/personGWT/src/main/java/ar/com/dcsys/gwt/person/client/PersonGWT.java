@@ -10,8 +10,8 @@ import ar.com.dcsys.gwt.person.client.place.UpdatePersonDataPlace;
 import ar.com.dcsys.gwt.person.client.ui.AcceptsOneWidgetAdapter;
 import ar.com.dcsys.gwt.person.client.ui.menu.Menu;
 import ar.com.dcsys.gwt.ws.shared.SocketException;
-import ar.com.dcsys.gwt.ws.shared.SocketStateEvent;
-import ar.com.dcsys.gwt.ws.shared.SocketStateEventHandler;
+import ar.com.dcsys.gwt.ws.shared.event.SocketStateEvent;
+import ar.com.dcsys.gwt.ws.shared.event.SocketStateEventHandler;
 
 import com.google.gwt.activity.shared.ActivityManager;
 import com.google.gwt.core.client.EntryPoint;

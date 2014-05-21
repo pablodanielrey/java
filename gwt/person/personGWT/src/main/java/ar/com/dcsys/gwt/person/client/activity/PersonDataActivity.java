@@ -277,8 +277,8 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 				setAllTypesInView(types);
 			}
 			@Override
-			public void onFailure(Throwable error) {
-				Window.alert(error.getMessage());
+			public void onError(String error) {
+				Window.alert(error);
 			}
 		});
 	}
@@ -318,8 +318,8 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 				}
 			}
 			@Override
-			public void onFailure(Throwable error) {
-				showMessage(error.getMessage());
+			public void onError(String error) {
+				showMessage(error);
 			}
 		});
 	}
@@ -376,7 +376,7 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 				*/
 			}
 			@Override
-			public void onFailure(Throwable error) {
+			public void onError(String error) {
 				showMessage("Error actualizando datos del usuario");
 			}
 		});

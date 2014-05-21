@@ -82,8 +82,8 @@ public class MailChangeActivity extends AbstractActivity implements MailChangeVi
 		
 		personsManager.getLoggedPerson(new Receiver<Person>() {
 			@Override
-			public void onFailure(Throwable t) {
-				showMessage(t.getMessage());
+			public void onError(String t) {
+				showMessage(t);
 			}
 			@Override
 			public void onSuccess(Person p) {
@@ -101,7 +101,7 @@ public class MailChangeActivity extends AbstractActivity implements MailChangeVi
 						view.setMails(t);
 					}
 					@Override
-					public void onFailure(Throwable t) {
+					public void onError(String t) {
 						showMessage("Error obteniendo los mails");
 					}
 				});
@@ -145,8 +145,8 @@ public class MailChangeActivity extends AbstractActivity implements MailChangeVi
 	    		updateMailsFromPerson();
 	    	}
 	    	@Override
-	        public void onFailure(Throwable t) {
-	           	showMessage(t.getMessage());
+	        public void onError(String t) {
+	           	showMessage(t);
 	    	}
 	    });  
 	    
@@ -162,8 +162,8 @@ public class MailChangeActivity extends AbstractActivity implements MailChangeVi
 			}
 			
 			@Override
-			public void onFailure(Throwable t) {
-				showMessage(t.getMessage());
+			public void onError(String t) {
+				showMessage(t);
 			}
 		});
 		

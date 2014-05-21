@@ -67,8 +67,8 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 					personSelection.setSelected(person, true);
 				};
 				@Override
-				public void onFailure(Throwable error) {
-					logger.log(Level.SEVERE,error.getMessage());
+				public void onError(String error) {
+					logger.log(Level.SEVERE,error);
 				}
 			});
 		}
@@ -189,9 +189,9 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 			public void onSuccess(List<PersonType> types) {
 				view.setAllTypes(types);
 			}
-			public void onFailure(Throwable error) {
+			public void onError(String error) {
 				if (error != null) {
-					showMessage(error.getMessage());
+					showMessage(error);
 				} else {
 					showMessage("Error llamando obteniendo los tipos de persona");
 				}
@@ -218,8 +218,8 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 					setPersons(persons);
 				};
 				@Override
-				public void onFailure(Throwable error) {
-					logger.log(Level.SEVERE,error.getMessage());
+				public void onError(String error) {
+					logger.log(Level.SEVERE,error);
 				}
 			});
 			return;
@@ -244,8 +244,8 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 								}
 							};
 							@Override
-							public void onFailure(Throwable error) {
-								logger.log(Level.SEVERE,error.getMessage());
+							public void onError(String error) {
+								logger.log(Level.SEVERE,error);
 							}
 						});
 					} else {
@@ -255,8 +255,8 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 					}
 				};
 				@Override
-				public void onFailure(Throwable error) {
-					logger.log(Level.SEVERE,error.getMessage());
+				public void onError(String error) {
+					logger.log(Level.SEVERE,error);
 				}
 			});
 		}
