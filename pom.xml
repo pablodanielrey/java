@@ -27,7 +27,7 @@
   
   <properties>
     <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
-    <glassfish.home>/home/pablo/java/glassfish4/glassfish</glassfish.home>
+    <glassfish.home>/home/programacion/java/glassfish4/glassfish</glassfish.home>
     <glassfish.passwd>${glassfish.home}/domains/domain1/config/domain-passwords</glassfish.passwd>
     <servlet.version>3.1.0</servlet.version>
     <cdi.version>1.1</cdi.version>

@@ -11,19 +11,20 @@ import com.google.gwt.inject.client.Ginjector;
 import ar.com.dcsys.gwt.assistance.client.gin.AssistanceGWTGinModule;
 import ar.com.dcsys.gwt.assistance.client.manager.JustificationsManager;
 import ar.com.dcsys.gwt.assistance.client.manager.PeriodsManager;
+import ar.com.dcsys.gwt.auth.client.gin.AuthModelGinModule;
 
 
 @GinModules(value = {AssistanceGWTGinModule.class,
 					AssistanceModelGinModule.class,
-					 WsGinModule.class/*,
-					 AuthModelGinModule.class */})
+					 WsGinModule.class,
+					 AuthModelGinModule.class})
 public interface Injector extends Ginjector {
+	
+	public AssistedInjectionFactory factory();
 	
 	public EventBus eventbus();
 
 	public AssistanceActivityMapper assistanceActivityMapper();
-	public PeriodsManager periodsManager();
-	public JustificationsManager justificationsManager();
 	
 	public WebSocket ws();
 	

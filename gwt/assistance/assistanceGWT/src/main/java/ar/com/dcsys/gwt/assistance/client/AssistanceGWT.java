@@ -2,12 +2,12 @@ package ar.com.dcsys.gwt.assistance.client;
 
 
 import ar.com.dcsys.gwt.assistance.client.activity.AssistanceActivityMapper;
+import ar.com.dcsys.gwt.assistance.client.activity.periods.DailyPeriodsActivity;
 import ar.com.dcsys.gwt.assistance.client.gin.Injector;
 import ar.com.dcsys.gwt.assistance.client.place.AssistancePlaceHistoryMapper;
 import ar.com.dcsys.gwt.assistance.client.place.DailyPeriodsPlace;
 import ar.com.dcsys.gwt.assistance.client.ui.common.AcceptsOneWidgetAdapter;
 import ar.com.dcsys.gwt.assistance.client.ui.menu.Menu;
-import ar.com.dcsys.gwt.ws.client.WebSocket;
 import ar.com.dcsys.gwt.ws.shared.SocketException;
 import ar.com.dcsys.gwt.ws.shared.event.SocketStateEvent;
 import ar.com.dcsys.gwt.ws.shared.event.SocketStateEventHandler;
@@ -48,7 +48,7 @@ public class AssistanceGWT implements EntryPoint {
 		  final PlaceHistoryHandler historyHandler = new PlaceHistoryHandler(historyMapper);
 		  historyHandler.register(pc,eventBus,new DailyPeriodsPlace());
 		   
-//		  final PinAuthDataActivity activity = injector.factory().pinAuthDataActivity(new PinAuthDataPlace());
+		  final DailyPeriodsActivity activity = injector.factory().dailyPeriodsActivity(new DailyPeriodsPlace());
 		  
 		  eventBus.addHandler(SocketStateEvent.TYPE, new SocketStateEventHandler() {
 			@Override

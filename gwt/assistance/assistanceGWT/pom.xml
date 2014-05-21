@@ -74,6 +74,7 @@
       <scope>compile</scope>
     </dependency>
 
+
     <dependency>
       <groupId>ar.com.dcsys.gwt.assistance</groupId>
       <artifactId>assistanceModelGWT</artifactId>
@@ -88,6 +89,52 @@
       <scope>compile</scope>
     </dependency>
 
+<!-- para que funcione el procesador de anotaciones y la generacion de codigo -->
+
+    <dependency>
+      <groupId>javax.enterprise</groupId>
+      <artifactId>cdi-api</artifactId>
+      <version>${cdi.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.pr</groupId>
+      <artifactId>annotations</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.gwt.utils</groupId>
+      <artifactId>messagesGWT</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.gwt.utils</groupId>
+      <artifactId>managerGWT</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.gwt.utils</groupId>
+      <artifactId>utilsGWT</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.gwt.utils</groupId>
+      <artifactId>webSocketGWT</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+<!-- -->
+
   </dependencies>
 
   <build>
@@ -95,7 +142,43 @@
     <outputDirectory>${webappDirectory}/WEB-INF/classes</outputDirectory>
 
     <plugins>
+	<!-- esto va primero para que se pueda compilar el tema de la autogeneracion de codigo -->
+<!--
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                  <source>${java.version}</source>
+                  <target>${java.version}</target>
+                    <compilerArgument>-proc:none</compilerArgument>
+                </configuration>
+            </plugin>
 
+
+            <plugin>
+                <groupId>org.bsc.maven</groupId>
+                <artifactId>maven-processor-plugin</artifactId>
+                <version>2.2.4</version>
+                <executions>
+                    <execution>
+                        <id>process</id>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <phase>process-sources</phase>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                      <groupId>ar.com.dcsys.pr</groupId>
+                      <artifactId>autoBeansNetProcessor</artifactId>
+                      <version>1.0-SNAPSHOT</version>
+                      <scope>compile</scope>
+                    </dependency>
+                </dependencies>
+            </plugin>
+-->
+
+	<!--   -->
       <!-- GWT Maven Plugin -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -123,13 +206,22 @@
 	  <style>DETAILED</style>
 
           <compileSourcesArtifacts>
+
+              <artifact>ar.com.dcsys.gwt.utils:clientMessagesGWT</artifact>
+
+              <artifact>ar.com.dcsys.gwt.utils:messagesGWT</artifact>
+              <artifact>ar.com.dcsys.gwt.utils:utilsGWT</artifact>
+              <artifact>ar.com.dcsys.gwt.utils:managerGWT</artifact>
+              <artifact>ar.com.dcsys.gwt.utils:webSocketGWT</artifact>          
+          
               <artifact>ar.com.dcsys.data:personEntities</artifact>
-              <artifact>ar.com.dcsys.data:documentEntities</artifact>
               <artifact>ar.com.dcsys.gwt.person:personModelGWT</artifact>
+
+              <artifact>ar.com.dcsys.data:documentEntities</artifact>
+
               <artifact>ar.com.dcsys.data:assistanceEntities</artifact>
               <artifact>ar.com.dcsys.gwt.assistance:assistanceModelGWT</artifact>
-	      <artifact>ar.com.dcsys.gwt.utils:clientMessagesGWT</artifact>
-              <artifact>ar.com.dcsys.gwt.utils:messageGWT</artifact>
+
               <artifact>ar.com.dcsys.gwt.auth:authModelGWT</artifact>
           </compileSourcesArtifacts>
 
@@ -139,7 +231,7 @@
 
 
      <!-- para remover las clases client de gwt asi no tira error la injection -->
-     <plugin>
+<!--     <plugin>
         <artifactId>maven-clean-plugin</artifactId>
         <version>2.4.1</version>
         <executions>
@@ -170,9 +262,9 @@
                 </execution>
         </executions>
      </plugin>
-
+-->
       <!-- Copy static web files before executing gwt:run -->
-      <plugin>
+<!--      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
         <version>2.1.1</version>
@@ -189,72 +281,70 @@
 	  <packagingExcludes>WEB-INF/classes/ar/com/dcsys/gwt/assistance/client/**.class</packagingExcludes>
         </configuration>
       </plugin>
+-->
 
-
- <plugin>
+<plugin>
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-eclipse-plugin</artifactId>
     <version>2.9</version>
 
     <configuration>
 
-	<!--
-	<sourceIncludes>
-		<sourceInclude>**/*.myExtension</sourceInclude>
-	</sourceIncludes>
-	-->
+        <!--
+        <sourceIncludes>
+                <sourceInclude>**/*.myExtension</sourceInclude>
+        </sourceIncludes>
+        -->
 
-	<downloadSources>true</downloadSources>
-	<downloadJavadocs>true</downloadJavadocs>
+        <downloadSources>true</downloadSources>
+        <downloadJavadocs>true</downloadJavadocs>
 
-	<!-- false = genera referencias a los jars instalados en los repositorios, true = genera referencias a los proyectos -->
-	<useProjectReferences>true</useProjectReferences>
+        <!-- false = genera referencias a los jars instalados en los repositorios, true = genera referencias a los proyectos -->
+        <useProjectReferences>true</useProjectReferences>
 
-	<!-- referencias : http://maven.apache.org/plugins/maven-eclipse-plugin/examples/multi-module-projects.html -->
-	<projectNameTemplate>[artifactId]-[version]</projectNameTemplate>
-	<wtpmanifest>true</wtpmanifest>
-	<wtpapplicationxml>true</wtpapplicationxml>
+        <!-- referencias : http://maven.apache.org/plugins/maven-eclipse-plugin/examples/multi-module-projects.html -->
+        <projectNameTemplate>[artifactId]-[version]</projectNameTemplate>
+        <wtpmanifest>true</wtpmanifest>
+        <wtpapplicationxml>true</wtpapplicationxml>
 
-	<!-- no soporta una version superior que la 2.0 -->
-	<wtpversion>2.0</wtpversion>
+        <!-- no soporta una version superior que la 2.0 -->
+        <wtpversion>2.0</wtpversion>
 
-	<manifest>${basedir}/src/main/resources/META-INF/MANIFEST.MF</manifest>
+        <manifest>${basedir}/src/main/resources/META-INF/MANIFEST.MF</manifest>
 
-	<classpathContainers>
-		<classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer>
-		<classpathContainer>com.google.gwt.eclipse.core.GWT_CONTAINER</classpathContainer>
-		<classpathContainer>org.eclipse.jst.j2ee.internal.web.container</classpathContainer>
-		<classpathContainer>org.eclipse.jst.j2ee.internal.module.container</classpathContainer>
-	</classpathContainers>
+        <classpathContainers>
+                <classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer>
+                <classpathContainer>com.google.gwt.eclipse.core.GWT_CONTAINER</classpathContainer>
+                <classpathContainer>org.eclipse.jst.j2ee.internal.web.container</classpathContainer>
+                <classpathContainer>org.eclipse.jst.j2ee.internal.module.container</classpathContainer>
+        </classpathContainers>
+        <additionalProjectFacets>
+                <java>1.7</java>
+                <wst.jsdt.web>1.0</wst.jsdt.web>
+                <jst.web>3.0</jst.web>
+         </additionalProjectFacets>
 
-	<additionalProjectFacets>
-		<java>1.7</java>
-		<wst.jsdt.web>1.0</wst.jsdt.web>
-		<jst.web>3.0</jst.web>
-	 </additionalProjectFacets>
+        <projectnatures>
+                <projectnature>org.eclipse.jem.workbench.JavaEMFNature</projectnature>
+                <projectnature>org.eclipse.wst.common.modulecore.ModuleCoreNature</projectnature>
+                <projectnature>org.eclipse.jdt.core.javanature</projectnature>
+                <projectnature>org.eclipse.wst.common.project.facet.core.nature</projectnature>
+                <projectnature>org.eclipse.wst.jsdt.core.jsNature</projectnature>
+                <projectnature>com.google.gwt.eclipse.core.gwtNature</projectnature>
+        </projectnatures>
 
-	<projectnatures>
-		<projectnature>org.eclipse.jem.workbench.JavaEMFNature</projectnature>
-		<projectnature>org.eclipse.wst.common.modulecore.ModuleCoreNature</projectnature>
-		<projectnature>org.eclipse.jdt.core.javanature</projectnature>
-		<projectnature>org.eclipse.wst.common.project.facet.core.nature</projectnature>
-		<projectnature>org.eclipse.wst.jsdt.core.jsNature</projectnature>
-		<projectnature>com.google.gwt.eclipse.core.gwtNature</projectnature>
-	</projectnatures>
-
-	<buildcommands>
-		<buildcommand>org.eclipse.wst.jsdt.core.javascriptValidator</buildcommand>
-		<buildcommand>org.eclipse.wst.common.project.facet.core.builder</buildcommand>
-		<buildcommand>org.eclipse.jdt.core.javabuilder</buildcommand>
-		<buildcommand>org.eclipse.wst.validation.validationbuilder</buildcommand>
-		<buildcommand>com.google.gdt.eclipse.core.webAppProjectValidator</buildcommand>
-		<buildcommand>com.google.gwt.eclipse.core.gwtProjectValidator</buildcommand>
-	</buildcommands>
+        <buildcommands>
+                <buildcommand>org.eclipse.wst.jsdt.core.javascriptValidator</buildcommand>
+                <buildcommand>org.eclipse.wst.common.project.facet.core.builder</buildcommand>
+                <buildcommand>org.eclipse.jdt.core.javabuilder</buildcommand>
+                <buildcommand>org.eclipse.wst.validation.validationbuilder</buildcommand>
+                <buildcommand>com.google.gdt.eclipse.core.webAppProjectValidator</buildcommand>
+                <buildcommand>com.google.gwt.eclipse.core.gwtProjectValidator</buildcommand>
+        </buildcommands>
 
      </configuration>
 
   </plugin>
-
 
     </plugins>
   </build>
