@@ -10,7 +10,7 @@ import ar.com.dcsys.data.person.Person;
 
 public class GroupBean implements Group {
 
-	private UUID id;
+	private String id;
 	private String name;
 	private List<Mail> mails = new ArrayList<Mail>();
 	private List<Person> persons = new ArrayList<Person>();
@@ -49,14 +49,11 @@ public class GroupBean implements Group {
 	}
 
 	public String getId() {
-		if (id == null) {
-			return null;
-		}
-		return id.toString();
+		return id;
 	}
 
 	public void setId(String id) {
-		this.id = UUID.fromString(id);
+		this.id = id;
 	}
 	
 	@Override

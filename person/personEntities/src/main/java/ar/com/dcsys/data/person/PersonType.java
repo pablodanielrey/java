@@ -1,8 +1,7 @@
 package ar.com.dcsys.data.person;
 
-import java.io.Serializable;
 
-public enum PersonType implements Serializable {
+public enum PersonType {
 	
 	PERSONAL("No Docente"), POSTGRADUATE("Posgrado"), STUDENT("Estudiante"), TEACHER("Docente"), EXTERNAL("Visitante");
 		
