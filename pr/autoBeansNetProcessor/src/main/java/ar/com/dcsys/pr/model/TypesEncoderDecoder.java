@@ -72,7 +72,15 @@ public class TypesEncoderDecoder {
 			
 			sb.append("\n").append(Utils.ident(8)).append("java.util.List<").append(subType).append("> ").append(valueContainer).append(" = new java.util.ArrayList<>();");
 			sb.append("\n").append(Utils.ident(8)).append("for (").append(subType).append(" e : ").append(paramName).append(") {");
-			sb.append("\n").append(Utils.ident(10)).append("com.google.web.bindery.autobean.shared.AutoBean<").append(subType).append("> eAutoBean = ").append(managerFactory).append(".").append(factory.findByType(subType).getName()).append("(e);");
+			
+			Getter get = factory.findByType(subType);
+			if (get == null) {
+				throw new RuntimeException("No se puede encontrar el getter para el tipo : " + subType);
+			}
+			String getName = get.getName();
+
+			
+			sb.append("\n").append(Utils.ident(10)).append("com.google.web.bindery.autobean.shared.AutoBean<").append(subType).append("> eAutoBean = ").append(managerFactory).append(".").append(getName).append("(e);");
 			sb.append("\n").append(Utils.ident(10)).append(valueContainer).append(".add(eAutoBean.as());");
 			sb.append("\n").append(Utils.ident(8)).append("};");
 			

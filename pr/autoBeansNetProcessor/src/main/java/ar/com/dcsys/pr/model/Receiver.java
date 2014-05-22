@@ -30,15 +30,7 @@ public class Receiver extends Param {
 	
 	public Receiver(VariableElement ve, ProcessingEnvironment env) {
 		super(ve,env);
-		internalParam = generateInternalParam(ve,env);		
-	}
-	
-	private final Param generateInternalParam(Element ve, ProcessingEnvironment env) {
-		DeclaredType tm = (DeclaredType)ve.asType();
-		TypeMirror it = tm.getTypeArguments().get(0);
-		Element e = env.getTypeUtils().asElement(it);
-		Param p2 = new Param(e,it,env);
-		return p2;
+		internalParam = Param.extractInternalParam(this,env);		
 	}
 	
 	public static void process(Method method, VariableElement ve, ProcessingEnvironment env) {
@@ -48,7 +40,7 @@ public class Receiver extends Param {
 		Param p2 = param.getInternalParam();
 		
 		Factory factory = method.getManager().getFactory();
-		factory.createGetter(p2);
+		factory.createGetter(p2,env);
 	}
 	
 	

@@ -7,11 +7,21 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
+import javax.tools.Diagnostic.Kind;
 
 import ar.com.dcsys.pr.Utils;
 
 public class Param {
 
+	public static final Param extractInternalParam(Param p, ProcessingEnvironment env) {
+		DeclaredType tm = (DeclaredType)p.getTypeMirror();
+		TypeMirror it = tm.getTypeArguments().get(0);
+		Element e = env.getTypeUtils().asElement(it);
+		Param p2 = new Param(e,it,env);
+		return p2;
+	}
+
+	
 	private final String name;
 	private final Element element;
 	private final TypeMirror typeMirror;
@@ -34,6 +44,10 @@ public class Param {
 		this.env = env;
 	}
 	
+	
+	public Param getParameter() {
+		return extractInternalParam(this, env);
+	}
 	
 	
 	/**
@@ -124,7 +138,7 @@ public class Param {
 		method.getParams().add(param);
 		
 		Factory factory = method.getManager().getFactory();
-		factory.createGetter(param);
+		factory.createGetter(param, env);
 	}
 	
 }

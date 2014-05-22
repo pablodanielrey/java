@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.type.TypeMirror;
+import javax.tools.Diagnostic.Kind;
 import javax.tools.JavaFileObject;
 
 import ar.com.dcsys.pr.Utils;
@@ -22,13 +22,16 @@ public class Factory {
 		this.type = this.packageName + "." + t.substring(t.lastIndexOf(".") + 1) + "Factory";
 	}
 	
-	public void createGetter(Param p) {
+	public void createGetter(Param p, ProcessingEnvironment env) {
+
 		String stype = p.getType();
+
+		env.getMessager().printMessage(Kind.NOTE, "buscando getter para : " + stype);
 		Getter g = findByType(stype);
 		if (g != null) {
 			return;
 		}
-		GetterFactory.create(this,p);
+		GetterFactory.create(this,p,env);
 	}
 	
 	

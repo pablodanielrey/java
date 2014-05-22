@@ -1,6 +1,7 @@
 package ar.com.dcsys.pr.model;
 
-import javax.lang.model.type.TypeMirror;
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.tools.Diagnostic.Kind;
 
 public class GetterFactory {
 
@@ -13,17 +14,18 @@ public class GetterFactory {
 		return t.contains("<") && t.contains(">");
 	}
 	
-	public static void create(Factory f, Param param) {
+	public static void create(Factory f, Param p, ProcessingEnvironment env) {
 
 		String packageName = f.getPackage();
-
-		String t = param.getType();
-
+		Param param = p;
+		
 		while (true) {
+
+			String t = param.getType();
 			
 			if (f.findByType(t) == null) {
 				
-				TypeContainer tc = TypeContainerFactory.create(packageName, param);
+				TypeContainer tc = TypeContainerFactory.create(packageName, param, env);
 				String name = "get_" + tc.getType().replace(".", "_");
 				
 				Getter g = new Getter(name,tc);
@@ -31,12 +33,12 @@ public class GetterFactory {
 				
 			}
 			
-		
-			if (!hasSubtype(t)) {
+			
+			if (!param.isList()) {
 				break;
 			}
-			
-			t = getInternalType(t);
+
+			param = param.getParameter();
 		}
 		
 	}
