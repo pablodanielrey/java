@@ -4,13 +4,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 public class PersonBean implements Person, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private UUID id;
+	private String id;
 	private String name;
 	private String lastName;
 	private String dni;
@@ -26,15 +25,12 @@ public class PersonBean implements Person, Serializable {
 		
 	@Override
 	public String getId() {
-		if (id == null) {
-			return null;
-		}
-		return id.toString();
+		return id;
 	}
 
 	@Override
 	public void setId(String id) {
-		this.id = UUID.fromString(id);
+		this.id = id;
 	}	
 	
 	@Override

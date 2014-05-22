@@ -2,6 +2,7 @@ package ar.com.dcsys.gwt.manager.server;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.enterprise.event.Observes;
@@ -80,12 +81,18 @@ public class MainMethodsHandler implements MessageHandler {
 	
 	/**
 	 * crea el subject para que las funciones usando SecurityUtils de shiro funcionen.
+	 * trata de registrarlo. si existe alguna exception queire decir que no se esta usando shiro del lado del cliente.
 	 * @param ctx
 	 */
 	private void registerShiro(MessageContext ctx) {
-		HttpSession session = ctx.getHttpSession();
-		Subject subject = SecurityUtils.getSubject(session);
-		ThreadContext.bind(subject);		
+		try {
+			HttpSession session = ctx.getHttpSession();
+			Subject subject = SecurityUtils.getSubject(session);
+			ThreadContext.bind(subject);
+			
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, e.getMessage() ,e);
+		}
 	}
 
 }

@@ -31,7 +31,7 @@ public class Manager {
 	 * @param e
 	 * @return
 	 */
-	public static Manager create(Element e) {
+	public static Manager create(Element e, ProcessingEnvironment env) {
 		
 		if (e.getKind() != ElementKind.INTERFACE) {
 			return null;
@@ -43,13 +43,13 @@ public class Manager {
 		
 		List<? extends Element> elements = e.getEnclosedElements();
 		for (Element ee : elements) {
-			m.processElement(ee);
+			m.processElement(ee, env);
 		}
 		
 		return m;
 	}
 
-	private void processElement(Element e) {
+	private void processElement(Element e, ProcessingEnvironment env) {
 
 		if (e.getKind() == ElementKind.FIELD) {
 			return;
@@ -57,7 +57,7 @@ public class Manager {
 		
 		if (e.getKind() == ElementKind.METHOD) {
 			ExecutableElement ee = (ExecutableElement)e;
-			Method.process(this, ee);
+			Method.process(this, ee, env);
 		}
 		
 	}

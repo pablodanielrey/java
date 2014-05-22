@@ -4,8 +4,8 @@ import ar.com.dcsys.pr.Utils;
 
 public class ListTypeContainer extends BasicTypeContainer {
 
-	public ListTypeContainer(String pack, String type) {
-		super(pack, type);
+	public ListTypeContainer(String pack, Param param) {
+		super(pack, param);
 	}
 
 	@Override

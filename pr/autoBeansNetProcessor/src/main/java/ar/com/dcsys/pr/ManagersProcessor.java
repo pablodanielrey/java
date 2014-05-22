@@ -45,7 +45,7 @@ public class ManagersProcessor extends AbstractProcessor {
 						continue;
 					}
 					
-					Manager manager = Manager.create(e);
+					Manager manager = Manager.create(e,processingEnv);
 					manager.generateSourceFiles(processingEnv);
 					
 				}

@@ -58,7 +58,7 @@ public class Method {
 	}
 	
 	
-	public static void process(Manager manager, ExecutableElement e) {
+	public static void process(Manager manager, ExecutableElement e, ProcessingEnvironment env) {
 		
 		/////////// controlo las precondiciones de los métodos antes de procesarlos //////////////
 		//
@@ -89,11 +89,11 @@ public class Method {
 		for (int i = 0; i < params.size() - 1; i++) {
 			
 			VariableElement ve = params.get(i);
-			Param.process(method, ve);
+			Param.process(method, ve, env);
 			
 		}		
 		
-		Receiver.process(method, params.get(params.size()-1));
+		Receiver.process(method, params.get(params.size()-1), env);
 		
 		manager.getMethods().add(method);
 	}
@@ -134,7 +134,7 @@ public class Method {
 		sb.append("\n").append("public void onSuccess(").append(Utils.getInteralType(getReceiver().getType())).append(" response) {");
 		sb.append("\n");
 		String eVarName = "a" + UUID.randomUUID().toString().replace("-", "");
-		sb.append("\n").append(TypesEncoderDecoder.encode(manager.getFactory(), ii.managerFactory, Utils.getInteralType(getReceiver().getType()), "response", eVarName));
+		sb.append("\n").append(TypesEncoderDecoder.encode(manager.getFactory(), ii.managerFactory, getReceiver().getInternalParam(), "response", eVarName));
 		sb.append("\n").append("ctx.getTransport().send(id,").append(eVarName).append(",new ").append(ii.transportReceiverClass).append("() { public void onSuccess(String msg){}; public void onFailure(String e){}; });");
 		sb.append("\n");
 		sb.append("\n").append("};");
@@ -155,7 +155,8 @@ public class Method {
 			String type = p.getType();
 			
 			sb.append("\n").append("String ").append(feVarName).append(" = ").append("msg.getParams().get(count);");
-			sb.append("\n").append(TypesEncoderDecoder.decodeResponse(getManager().getFactory(), ii.managerFactory, p.getType(), feVarName, dVarName));
+			sb.append("\n").append("count = count + 1;");
+			sb.append("\n").append(TypesEncoderDecoder.decodeResponse(getManager().getFactory(), ii.managerFactory, p, feVarName, dVarName));
 			
 			sb2.append(dVarName).append(",");
 		}
@@ -217,7 +218,7 @@ public class Method {
 		for (Param param: getParams()) {
 			sb.append("\n");
 			String eVarName = "a" + UUID.randomUUID().toString().replace("-", "");
-			sb.append(TypesEncoderDecoder.encode(manager.getFactory(), ii.managerFactory, param.getType(), param.getName(), eVarName));
+			sb.append(TypesEncoderDecoder.encode(manager.getFactory(), ii.managerFactory, param, param.getName(), eVarName));
 			sb.append("\n").append("params.add(").append(eVarName).append(");");
 		}
 		
@@ -231,7 +232,7 @@ public class Method {
 		sb.append("\n").append(Utils.ident(10)).append("@Override");
 		sb.append("\n").append(Utils.ident(10)).append("public void onSuccess(String msg) {");
 		sb.append("\n").append(Utils.ident(12)).append("try {");
-		sb.append(TypesEncoderDecoder.decodeResponse(getManager().getFactory(), ii.managerFactory, Utils.getInteralType(getReceiver().getType()), "msg", "response"));
+		sb.append(TypesEncoderDecoder.decodeResponse(getManager().getFactory(), ii.managerFactory, getReceiver().getInternalParam(), "msg", "response"));
 		sb.append("\n").append(Utils.ident(12)).append(getReceiver().getName()).append(".onSuccess(response);");
 		sb.append("\n").append(Utils.ident(12)).append("} catch (Exception a) {");
 		sb.append("\n").append(Utils.ident(14)).append(getReceiver().getName()).append(".onError(a.getMessage());");
