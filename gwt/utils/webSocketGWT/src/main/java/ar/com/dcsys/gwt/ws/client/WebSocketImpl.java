@@ -13,6 +13,8 @@ import ar.com.dcsys.gwt.ws.shared.event.SocketMessageEvent;
 import ar.com.dcsys.gwt.ws.shared.event.SocketStateEvent;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
 import com.sksamuel.gwt.websockets.Websocket;
@@ -55,19 +57,29 @@ public class WebSocketImpl implements WebSocket {
 		public void onMessage(String msg) {
 
 			String[] msgd = MessageEncoderDecoder.decode(msg);
-			String id = msgd[0];
-			msg = msgd[1];
+			final String id = msgd[0];
+			final String msg2 = msgd[1];
 			
-			TransportReceiver rec = receivers.get(id);
-			if (rec != null) {
-				try {
-					rec.onSuccess(msg);
-				} catch(Exception e) {
-					logger.log(Level.SEVERE,e.getMessage(),e);
+			Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+				@Override
+				public void execute() {
+					try {
+						TransportReceiver rec = receivers.get(id);
+						if (rec != null) {
+							rec.onSuccess(msg2);
+						}
+					} catch(Exception e) {
+						logger.log(Level.SEVERE,e.getMessage(),e);
+					}
 				}
-			}
+			});
 			
-			eventBus.fireEvent(new SocketMessageEvent(msg));
+			Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+				@Override
+				public void execute() {
+					eventBus.fireEvent(new SocketMessageEvent(msg2));
+				}
+			});
 		}
 	};
 	

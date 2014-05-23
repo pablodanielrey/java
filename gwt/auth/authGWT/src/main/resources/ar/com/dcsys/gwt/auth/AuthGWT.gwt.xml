@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module rename-to='AuthGWT'>
+
+
   <!-- Inherit the core Web Toolkit stuff.                        -->
   <inherits name='com.google.gwt.user.User' />
 
@@ -35,5 +37,8 @@
   <!-- Specify the paths for translatable code                    -->
   <source path='client' />
   <source path='shared' />
+
+  <add-linker name="xsiframe" />
+
 
 </module>
