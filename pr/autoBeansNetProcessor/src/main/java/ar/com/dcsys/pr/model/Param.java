@@ -50,15 +50,20 @@ public class Param {
 	}
 	
 	
+	private static final String[] primitives = {"java.lang.","java.util.Date"};
+	
 	/**
-	 * Retorna true en caso de ser un enum o un tipo primitivo.
+	 * Retorna true en caso de ser un enum o un tipo no soportado por autobeans
 	 * @return
 	 */
 	public boolean isPrimitive() {
-		if (typeMirror.toString().startsWith("java.lang.")) {
-			return true;
+		String t = typeMirror.toString();
+		for (String t2 : primitives) {
+			if (t.startsWith(t2)) {
+				return true;
+			}
 		}
-		
+				
 		Element e = env.getTypeUtils().asElement(typeMirror);
 		ElementKind ek = e.getKind();
 		

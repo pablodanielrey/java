@@ -69,7 +69,6 @@ public class MainMethodsHandler implements MessageHandler {
 			registerShiro(ctx);
 		}
 		
-		
 		for (MethodHandler mh : handlers) {
 			if (mh.process(id, dmsg, ctx)) {
 				return true;

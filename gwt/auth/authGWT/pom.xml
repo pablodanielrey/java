@@ -35,8 +35,16 @@
       <groupId>ar.com.dcsys.gwt.auth</groupId>
       <artifactId>authModelGWT</artifactId>
       <version>1.0-SNAPSHOT</version>
-      <scope>provided</scope>
+      <scope>compile</scope>
     </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.gwt.utils</groupId>
+      <artifactId>webSocketGWT</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
 
 
 </dependencies>
@@ -113,7 +121,8 @@
           <i18nMessagesBundle>ar.com.dcsys.gwt.auth.client.Messages</i18nMessagesBundle>
 
           <noServer>true</noServer>
-          <port>8181</port>
+          <port>8282</port>
+	  <debugPort>8181</debugPort>
 
           <compileSourcesArtifacts>
               <artifact>ar.com.dcsys.gwt.utils:clientMessagesGWT</artifact>
