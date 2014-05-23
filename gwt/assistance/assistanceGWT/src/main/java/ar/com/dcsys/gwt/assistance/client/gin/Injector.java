@@ -1,6 +1,7 @@
 package ar.com.dcsys.gwt.assistance.client.gin;
 
 import ar.com.dcsys.gwt.assistance.client.activity.AssistanceActivityMapper;
+import ar.com.dcsys.gwt.person.client.gin.PersonModelGinModule;
 import ar.com.dcsys.gwt.ws.client.WebSocket;
 import ar.com.dcsys.gwt.ws.client.gin.WsGinModule;
 
@@ -17,6 +18,7 @@ import ar.com.dcsys.gwt.auth.client.gin.AuthModelGinModule;
 @GinModules(value = {AssistanceGWTGinModule.class,
 					AssistanceModelGinModule.class,
 					 WsGinModule.class,
+					 PersonModelGinModule.class,
 					 AuthModelGinModule.class})
 public interface Injector extends Ginjector {
 	

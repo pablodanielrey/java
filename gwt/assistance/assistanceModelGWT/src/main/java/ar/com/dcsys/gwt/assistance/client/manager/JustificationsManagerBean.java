@@ -3,7 +3,6 @@ package ar.com.dcsys.gwt.assistance.client.manager;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
 
 import java.util.List;
@@ -31,14 +30,12 @@ public class JustificationsManagerBean implements JustificationsManager {
 	private static Logger logger = Logger.getLogger(JustificationsManagerBean.class.getName());
 	
 	private final WebSocket socket;	
-	private final EventBus eventBus;
 	
 	private final JustificationsManagerTransfer justificationsManagerTransfer;
 	
 	
 	@Inject
-	public JustificationsManagerBean(EventBus eventBus,WebSocket ws, JustificationsManagerProvider justificationsProvider) {
-		this.eventBus = eventBus;
+	public JustificationsManagerBean(WebSocket ws, JustificationsManagerProvider justificationsProvider) {
 		this.socket = ws;
 		this.justificationsManagerTransfer = justificationsProvider.get();
 	}

@@ -11,7 +11,6 @@ import ar.com.dcsys.gwt.assistance.client.gin.PeriodsManagerProvider;
 import ar.com.dcsys.gwt.assistance.shared.PeriodsManagerTransfer;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 
-import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
 
 import ar.com.dcsys.gwt.ws.client.WebSocket;
@@ -21,14 +20,12 @@ public class PeriodsManagerBean implements PeriodsManager {
 	private static Logger logger = Logger.getLogger(PeriodsManagerBean.class.getName());
 	
 	private final WebSocket socket;
-	private final EventBus eventBus;
 	
 	private final PeriodsManagerTransfer periodsManagerTransfer;
 	
 	@Inject
-	public PeriodsManagerBean(EventBus eventBus,WebSocket ws, PeriodsManagerProvider periodsProvider) {
+	public PeriodsManagerBean(WebSocket ws, PeriodsManagerProvider periodsProvider) {
 		this.socket = ws;
-		this.eventBus = eventBus;
 		this.periodsManagerTransfer = periodsProvider.get();
 	}
 	
