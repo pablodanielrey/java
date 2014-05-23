@@ -88,12 +88,12 @@ public class ReportDataGenerator {
 		            	
 		            	List<GeneralJustificationDate> jgds = checkGeneralJustification(generalJustifications, period);
 		            	for (GeneralJustificationDate j : jgds) {
-		            		r.getGjustifications().add(j.getJustification());
+		            		r.getGjustifications().add(j);
 		            	}
 		            	
 		            	List<JustificationDate> jds = checkJustification(justifications, period);
 		            	for (JustificationDate j : jds) {
-		            		r.getJustifications().add(j.getJustification());
+		            		r.getJustifications().add(j);
 		            	}
 
 		            	as.addReport(r);

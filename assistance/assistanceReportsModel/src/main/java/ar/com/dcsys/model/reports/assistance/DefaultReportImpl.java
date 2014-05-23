@@ -5,12 +5,13 @@ import java.util.Date;
 import java.util.List;
 
 import ar.com.dcsys.data.group.Group;
+import ar.com.dcsys.data.justification.GeneralJustificationDate;
 import ar.com.dcsys.data.justification.Justification;
+import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.period.WorkedHours;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.report.Report;
 import ar.com.dcsys.model.period.DefaultPeriodImpl;
-import ar.com.dcsys.model.period.DefaultWorkedHoursImpl;
 
 public class DefaultReportImpl implements Report {
 	
@@ -18,8 +19,8 @@ public class DefaultReportImpl implements Report {
 	private Group group;
 	private List<Group> groups;
 	private DefaultPeriodImpl period;
-	private List<Justification> justifications = new ArrayList<>();
-	private List<Justification> gjustifications = new ArrayList<>();
+	private List<JustificationDate> justifications = new ArrayList<>();
+	private List<GeneralJustificationDate> gjustifications = new ArrayList<>();
 	
 	private Long minutes = 0l;
 	private Boolean isAbscence;
@@ -70,9 +71,12 @@ public class DefaultReportImpl implements Report {
 		}
 		
 		StringBuilder sb = new StringBuilder();
-		for (Justification j : getJustifications()) {
-			sb.append(j.getDescription());
-			sb.append(" ");
+		for (JustificationDate jd : getJustifications()) {
+			Justification j = jd.getJustification();
+			if (j != null) {
+				sb.append(j.getDescription());
+				sb.append(" ");
+			}
 		}
 		return sb.toString();
 	}
@@ -84,9 +88,12 @@ public class DefaultReportImpl implements Report {
 		}
 		
 		StringBuilder sb = new StringBuilder();
-		for (Justification j : getGjustifications()) {
-			sb.append(j.getDescription());
-			sb.append(" ");
+		for (GeneralJustificationDate gjd : getGjustifications()) {
+			Justification j = gjd.getJustification();
+			if (j != null) {
+				sb.append(j.getDescription());				
+				sb.append(" ");
+			}
 		}
 		return sb.toString();
 	}	
@@ -131,20 +138,20 @@ public class DefaultReportImpl implements Report {
 	}
 
 	@Override
-	public List<Justification> getJustifications() {
+	public List<JustificationDate> getJustifications() {
 		return justifications;
 	}
 
-	public void setJustifications(List<Justification> justifications) {
+	public void setJustifications(List<JustificationDate> justifications) {
 		this.justifications = justifications;
 	}
 
 	@Override
-	public List<Justification> getGjustifications() {
+	public List<GeneralJustificationDate> getGjustifications() {
 		return gjustifications;
 	}
 
-	public void setGjustifications(List<Justification> gjustifications) {
+	public void setGjustifications(List<GeneralJustificationDate> gjustifications) {
 		this.gjustifications = gjustifications;
 	}
 

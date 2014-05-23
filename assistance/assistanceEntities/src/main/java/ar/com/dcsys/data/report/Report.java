@@ -4,7 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 import ar.com.dcsys.data.group.Group;
-import ar.com.dcsys.data.justification.Justification;
+import ar.com.dcsys.data.justification.GeneralJustificationDate;
+import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.period.Period;
 import ar.com.dcsys.data.person.Person;
 
@@ -19,8 +20,8 @@ public interface Report {
 	public List<Group> getGroups();
 	public Group getGroup();
 	public Period getPeriod();
-	public List<Justification> getJustifications();
-	public List<Justification> getGjustifications();
+	public List<JustificationDate> getJustifications();
+	public List<GeneralJustificationDate> getGjustifications();
 	public Long getMinutes();
 	public Boolean isAbscence();
 	
