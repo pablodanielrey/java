@@ -14,6 +14,7 @@ import com.google.gwt.view.client.SelectionChangeEvent.Handler;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.inject.Inject;
 
+import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.person.Person;
@@ -160,7 +161,8 @@ public class JustificationPersonActivity extends AbstractActivity implements Jus
 	}
 
 	private void updatePersons() {
-		this.periodsManager.findPersonsWithPeriodAssignation(new Receiver<List<Person>>() {
+		Group g = null;
+		this.periodsManager.findPersonsWithPeriodAssignation(g,new Receiver<List<Person>>() {
 			@Override
 			public void onSuccess(List<Person> persons) {
 				if (view == null || persons == null) {

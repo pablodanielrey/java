@@ -3,6 +3,7 @@ package ar.com.dcsys.gwt.assistance.client.activity.periods;
 import java.util.Date;
 import java.util.List;
 
+import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.period.PeriodAssignation;
 import ar.com.dcsys.data.period.PeriodAssignationBean;
 import ar.com.dcsys.data.period.PeriodType;
@@ -190,7 +191,8 @@ public class PeriodsAssignationPersonActivity extends AbstractActivity implement
 	}
 	
 	private void findPersonsWithPeriodAssignation() {
-		periodsManager.findPersonsWithPeriodAssignation(new Receiver<List<Person>>(){
+		Group g = null;
+		periodsManager.findPersonsWithPeriodAssignation(g,new Receiver<List<Person>>(){
 
 			@Override
 			public void onSuccess(List<Person> response) {
