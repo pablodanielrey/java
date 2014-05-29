@@ -3,6 +3,7 @@ package ar.com.dcsys.gwt.assistance.client.ui.period.cells;
 import java.util.LinkedList;
 import java.util.List;
 
+import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.report.Report;
 import ar.com.dcsys.gwt.assistance.client.ui.cell.JustificationCell;
@@ -28,16 +29,17 @@ public class JustificationActionCell extends CompositeCell<Report> {
 		// action cell que se muestra y maneja los eventos cuando tiene justificaciones
 		ActionCell<Report> deleteJustify = new ActionCell<Report>("X", new Delegate<Report>() {
 			@Override
-			public void execute(Report object) {
-				if (object == null || p == null) {
+			public void execute(Report value) {
+				if (value == null || p == null) {
 					return;
 				}
-				JustificationDate justifications = p.getJustifications(object);
-				if (justifications == null) {
+				List<JustificationDate> justifications = value.getJustifications();
+				if (justifications == null || justifications.size() <= 0) {
 					// NO DEBERÍA SER NUNCA, PERO POR LAS DUDAS
 					return;
 				}
-				p.deleteJustification(justifications);
+				JustificationDate justification = justifications.get(0);
+				p.deleteJustification(justification);
 			}
 		}) {
 			@Override
@@ -47,8 +49,8 @@ public class JustificationActionCell extends CompositeCell<Report> {
 					return;
 				}
 				
-				JustificationDate justifications = p.getJustifications(value);
-				if (justifications == null) {
+				List<JustificationDate> justifications = value.getJustifications();
+				if (justifications == null || justifications.size() <= 0) {
 					// si no tiene justificaciones entonces no hago nada en el click
 					return;
 				}
@@ -62,9 +64,8 @@ public class JustificationActionCell extends CompositeCell<Report> {
 					super.render(context, value, sb);
 					return;
 				}
-				
-				JustificationDate justifications = p.getJustifications(value);
-				if (justifications == null) {
+				List<JustificationDate> justifications = value.getJustifications();
+				if (justifications == null || justifications.size() <= 0) {
 					// si no tiene justificaciones entonces no hago nada en el click
 					return;
 				}
@@ -79,12 +80,13 @@ public class JustificationActionCell extends CompositeCell<Report> {
 			
 			@Override
 			public void render(com.google.gwt.cell.client.Cell.Context context,	Report value, SafeHtmlBuilder sb) {
-				JustificationDate justifications = p.getJustifications(value);
-				if (justifications == null) {
+				List<JustificationDate> justifications = value.getJustifications();
+				if (justifications == null || justifications.size() <= 0) {
 					// NO DEBERÍA SER NUNCA, PERO POR LAS DUDAS
 					return;
 				}
-				jc.render(context, justifications.getJustification(), sb);
+				Justification j = justifications.get(0).getJustification(); 
+				jc.render(context, j, sb);
 			}
 		};
 		
@@ -104,8 +106,8 @@ public class JustificationActionCell extends CompositeCell<Report> {
 					super.onBrowserEvent(context, parent, value, event, valueUpdater);
 					return;
 				}
-				JustificationDate justifications = p.getJustifications(value);
-				if (justifications == null) {
+				List<JustificationDate> justifications = value.getJustifications();
+				if (justifications == null || justifications.size() <= 0) {
 					super.onBrowserEvent(context, parent, value, event, valueUpdater);
 					return;
 				}
@@ -118,8 +120,8 @@ public class JustificationActionCell extends CompositeCell<Report> {
 					return;
 				}
 				
-				JustificationDate justifications = p.getJustifications(value);
-				if (justifications == null) {
+				List<JustificationDate> justifications = value.getJustifications();
+				if (justifications == null || justifications.size() <= 0) {
 					super.render(context, value, sb);
 					return;
 				}
