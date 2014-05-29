@@ -2,14 +2,15 @@ package ar.com.dcsys.gwt.assistance.client.manager;
 
 import java.util.List;
 
+import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.period.PeriodAssignation;
 import ar.com.dcsys.data.period.PeriodType;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 
 public interface PeriodsManager {
-	
-	public void findPersonsWithPeriodAssignation(Receiver<List<Person>> receiver);
+
+	public void findPersonsWithPeriodAssignation(Group group, Receiver<List<Person>> receiver);
 	public void findPeriodsAssignationsBy(Person person, Receiver<List<PeriodAssignation>> receiver);
 	public void findAllTypesPeriods(Receiver<List<PeriodType>> receiver);
 	

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.period.PeriodAssignation;
 import ar.com.dcsys.data.period.PeriodType;
 import ar.com.dcsys.data.person.Person;
@@ -30,9 +31,9 @@ public class PeriodsManagerBean implements PeriodsManager {
 	}
 	
 	@Override
-	public void findPersonsWithPeriodAssignation(Receiver<List<Person>> receiver) {
+	public void findPersonsWithPeriodAssignation(Group group, Receiver<List<Person>> receiver) {
 		try {
-			this.periodsManagerTransfer.findPersonsWithPeriodAssignation(receiver);
+			this.periodsManagerTransfer.findPersonsWithPeriodAssignation(group,receiver);
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, e.getMessage());
 		}
