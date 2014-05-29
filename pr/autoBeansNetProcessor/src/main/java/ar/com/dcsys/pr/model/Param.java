@@ -85,9 +85,8 @@ public class Param {
 		if (!isList()) {
 			return false;
 		}
-		
-		String t = typeMirror.toString();
-		if (Utils.getInteralType(t).startsWith("java.lang.")) {
+
+		if (Param.extractInternalParam(this, env).isPrimitive()) {
 			return true;
 		}
 		

@@ -1,5 +1,6 @@
 package ar.com.dcsys.pr.shared;
 
+import java.util.Date;
 import java.util.List;
 
 import ar.com.dcsys.data.person.Person;
@@ -24,5 +25,6 @@ public interface TestManager extends Manager {
 	public void test6(Receiver<List<Person>> rec);
 	public void test7(String id, Receiver<Person> rec);
 	public void test8(String id, Receiver<List<Person>> rec);
+	public void test9(Date d, Receiver<List<Date>> rec);
 
 }

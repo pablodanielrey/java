@@ -23,6 +23,7 @@ public class AuthManagerBean implements AuthManager {
 	@Inject
 	public AuthManagerBean(EventBus eventBus, WebSocket ws) {
 		this.socket = ws;
+		authManagerTransfer.setTransport(ws);
 	}
 	
 	private String getAuthUrl() {
