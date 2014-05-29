@@ -26,12 +26,14 @@ public class AuthGWT implements EntryPoint {
 	
 	public void onModuleLoad() {
 
+		WebSocket ws = injector.ws();
+		final AuthManager authManager = injector.authManager();
+
 		final EventBus eventBus = injector.eventBus();
 		eventBus.addHandler(SocketStateEvent.TYPE, new SocketStateEventHandler() {
 			@Override
 			public void onOpen() {
 				
-				AuthManager authManager = injector.authManager();
 				authManager.isAuthenticated(new Receiver<Boolean>() {
 					@Override
 					public void onSuccess(Boolean t) {
@@ -67,7 +69,7 @@ public class AuthGWT implements EntryPoint {
 		});
 		
 		
-		WebSocket ws = injector.ws();
+		
 		try {
 			ws.open();
 		} catch (SocketException e) {

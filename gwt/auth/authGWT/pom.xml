@@ -122,7 +122,7 @@
 
           <noServer>true</noServer>
           <port>8282</port>
-	  <debugPort>8181</debugPort>
+<!--	  <debugPort>8181</debugPort> -->
 
           <compileSourcesArtifacts>
               <artifact>ar.com.dcsys.gwt.utils:clientMessagesGWT</artifact>
