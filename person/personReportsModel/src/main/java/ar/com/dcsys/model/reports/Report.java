@@ -44,6 +44,11 @@ public class Report {
 		return getGroups(GroupType.POSITION);
 	}
 	
+	public String getTimetable() {
+		return getGroups(GroupType.TIMETABLE);
+	}
+	
+	
 	public String getName() {
 		return person.getName();
 	}
