@@ -225,6 +225,7 @@ public class ReportsGenerator {
 			}
 			report.addColumn(col.column("Oficinas","getOffices",DataTypes.stringType()));
 			report.addColumn(col.column("Cargos","getPositions",DataTypes.stringType()));
+			report.addColumn(col.column("Horario","getTimetable",DataTypes.stringType()));
 			
 			exportReport(report, type, out);
 		
