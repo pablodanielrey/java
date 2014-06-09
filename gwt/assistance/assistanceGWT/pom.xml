@@ -128,6 +128,7 @@
               <artifact>ar.com.dcsys.gwt.utils:webSocketGWT</artifact>          
           
               <artifact>ar.com.dcsys.data:personEntities</artifact>
+              <artifact>ar.com.dcsys.assistance:personEntities</artifact>
               <artifact>ar.com.dcsys.gwt.person:personModelGWT</artifact>
 
               <artifact>ar.com.dcsys.data:documentEntities</artifact>

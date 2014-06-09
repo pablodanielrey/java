@@ -21,15 +21,6 @@
 
   <dependencies>
 
-  <!-- para tener shiro con cdi -->
-<!--
-	<dependency>
-	    <groupId>org.ops4j.pax.shiro</groupId>
-	    <artifactId>pax-shiro-cdi-web</artifactId>
-	    <version>0.1.0</version>
-	</dependency>
--->
-
 
 <!-- para los reportes usando dynamic reports -->
 
@@ -92,34 +83,79 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- cdi -->
 
+        <dependency>
+          <groupId>ar.com.dcsys.config</groupId>
+          <artifactId>cdiConfig</artifactId>
+          <version>1.0-SNAPSHOT</version>
+        </dependency>
 
-   <!-- auth -->
+       <!-- para la capa de transporte -->
 
     <dependency>
-	<groupId>ar.com.dcsys.gwt.auth</groupId>
-	<artifactId>authGWT</artifactId>
-	<version>1.0-SNAPSHOT</version>
-	 <type>war</type>
+      <groupId>javax.enterprise</groupId>
+      <artifactId>cdi-api</artifactId>
+      <version>${cdi.version}</version>
     </dependency>
 
     <dependency>
-        <groupId>ar.com.dcsys.gwt.auth</groupId>
-        <artifactId>authModelGWT</artifactId>
-        <version>1.0-SNAPSHOT</version>
+      <groupId>ar.com.dcsys.pr</groupId>
+      <artifactId>annotations</artifactId>
+      <version>1.0-SNAPSHOT</version>
     </dependency>
 
     <dependency>
-        <groupId>ar.com.dcsys.auth</groupId>
-        <artifactId>shiro</artifactId>
-        <version>1.0-SNAPSHOT</version>
+      <groupId>ar.com.dcsys.gwt.utils</groupId>
+      <artifactId>messagesGWT</artifactId>
+      <version>1.0-SNAPSHOT</version>
     </dependency>
 
     <dependency>
-        <groupId>ar.com.dcsys.auth</groupId>
-        <artifactId>userPasswordAuthModule</artifactId>
-        <version>1.0-SNAPSHOT</version>
+      <groupId>ar.com.dcsys.gwt.utils</groupId>
+      <artifactId>managerGWT</artifactId>
+      <version>1.0-SNAPSHOT</version>
     </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.gwt.utils</groupId>
+      <artifactId>utilsGWT</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+
+        <!-- auth -->
+
+       <dependency>
+            <groupId>ar.com.dcsys.gwt.auth</groupId>
+            <artifactId>authGWT</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>war</type>
+        </dependency>
+
+       <dependency>
+            <groupId>ar.com.dcsys.data</groupId>
+            <artifactId>authEntities</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ar.com.dcsys.model</groupId>
+            <artifactId>authModel</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ar.com.dcsys.auth</groupId>
+            <artifactId>userPasswordAuthLdapModule</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+          <groupId>ar.com.dcsys.auth</groupId>
+          <artifactId>shiro</artifactId>
+          <version>1.0-SNAPSHOT</version>
+        </dependency>
 
 
     <!-- assistance -->
@@ -131,12 +167,12 @@
       <type>war</type>
     </dependency>
 
-    <dependency>
+<!--    <dependency>
       <groupId>ar.com.dcsys.gwt.assistance</groupId>
       <artifactId>assistanceModelGWT</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
-
+-->
     <dependency>
       <groupId>ar.com.dcsys.data</groupId>
       <artifactId>assistanceEntities</artifactId>
@@ -171,11 +207,14 @@
       <type>war</type>
     </dependency>
 
+<!--
     <dependency>
       <groupId>ar.com.dcsys.gwt.person</groupId>
       <artifactId>personModelGWT</artifactId>
       <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
     </dependency>
+-->
 
     <dependency>
       <groupId>ar.com.dcsys.data</groupId>
@@ -183,24 +222,42 @@
       <version>1.0-SNAPSHOT</version>
     </dependency>
 
-    <dependency>
+<!--    <dependency>
       <groupId>ar.com.dcsys.data</groupId>
       <artifactId>personPostgreSqlDAO</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
-
+-->
     <dependency>
       <groupId>ar.com.dcsys.model</groupId>
       <artifactId>personModel</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
 
+        <dependency>
+            <groupId>ar.com.dcsys.model</groupId>
+            <artifactId>personReportsModel</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+           <groupId>ar.com.dcsys.data</groupId>
+           <artifactId>personLdapDAO</artifactId>
+           <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+           <groupId>ar.com.dcsys.data</groupId>
+           <artifactId>personLdapParams</artifactId>
+           <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+
     <dependency>
       <groupId>ar.com.dcsys.mail</groupId>
       <artifactId>mailModel</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
-
 
     <!-- document -->
 
@@ -211,6 +268,12 @@
       <type>war</type>
     </dependency>
 
+
+    <dependency>
+      <groupId>ar.com.dcsys.model</groupId>
+      <artifactId>documentModel</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
 
     <dependency>
       <groupId>ar.com.dcsys.data</groupId>
@@ -273,14 +336,14 @@
 
     <dependency>
       <groupId>ar.com.dcsys.gwt.utils</groupId>
-      <artifactId>messageGWT</artifactId>
+      <artifactId>clientMessagesGWT</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
 
     <dependency>
-      <groupId>ar.com.dcsys.gwt.utils</groupId>
-      <artifactId>clientMessagesGWT</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <groupId>com.google.gwt.inject</groupId>
+      <artifactId>gin</artifactId>
+      <version>${gin.version}</version>
     </dependency>
 
 
