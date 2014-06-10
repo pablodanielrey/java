@@ -68,7 +68,7 @@ public class PostgreSqlDCSysSessionDAO implements SessionDAO {
 	private Connection getConnection() throws SQLException {
 		Connection con = null;
 		
-		if (dd.getServer() == null || dd.getPort() == null || dd.getDatabase() == null || dd.getUser() == null || dd.getPassword() == null) {
+		if (dd == null || dd.getServer() == null || dd.getPort() == null || dd.getDatabase() == null || dd.getUser() == null || dd.getPassword() == null) {
 			con = cp.getConnection();
 		} else {
 			con = cp.getConnection(dd.getServer(), dd.getPort(), dd.getDatabase(), dd.getUser(), dd.getPassword());
