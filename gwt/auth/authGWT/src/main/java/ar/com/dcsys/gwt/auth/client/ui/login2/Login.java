@@ -3,14 +3,15 @@ package ar.com.dcsys.gwt.auth.client.ui.login2;
 import ar.com.dcsys.gwt.auth.client.ui.login.LoginView;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
 
 public class Login extends Composite implements LoginView {
 
@@ -18,7 +19,7 @@ public class Login extends Composite implements LoginView {
 	
 	@UiField Button login;
 	@UiField TextBox username;
-	@UiField TextBox password;
+	@UiField PasswordTextBox password;
 
 	private Presenter p;
 	
