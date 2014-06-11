@@ -111,6 +111,7 @@ public class PersonsManagerBean implements PersonsManager {
 	@Inject
 	public PersonsManagerBean(WebSocket ws) {
 		socket = ws;
+		pm.setTransport(ws);
 		
 		//eventBus.addHandler(SocketMessageEvent.TYPE, eventHandler);
 	}

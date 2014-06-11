@@ -12,7 +12,7 @@
 		</g:FlowPanel>
 		<g:FlowPanel>
 			<g:Label text="Clave" styleName="${style.label}"/>
-			<g:TextBox ui:field="password"/>
+			<g:PasswordTextBox ui:field="password"/>
 		</g:FlowPanel>
 		<g:Button ui:field="login" text="Aceptar"/>
 	</g:FlowPanel>

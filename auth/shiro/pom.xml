@@ -60,6 +60,12 @@
             <version>3.1.0</version>
         </dependency>
 
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+      <version>1</version>
+      <scope>provided</scope>
+    </dependency>
 
         <dependency>
             <groupId>ar.com.dcsys.model</groupId>

@@ -37,7 +37,7 @@
     <logback.version>1.0.13</logback.version>
     <shiro.version>1.2.3</shiro.version>
     <gwt.version>2.6.1</gwt.version>
-    <gwt.websockets.version>1.0.3</gwt.websockets.version>
+    <gwt.websockets.version>1.0.4</gwt.websockets.version>
     <gin.version>2.1.2</gin.version>
     <jetty.version>9.1.0.v20131115</jetty.version>
     <junit.version>4.11</junit.version>
