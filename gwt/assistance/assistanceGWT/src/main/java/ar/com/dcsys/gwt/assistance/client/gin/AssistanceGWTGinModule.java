@@ -10,6 +10,8 @@ import ar.com.dcsys.gwt.assistance.client.ui.justification.manage.ManageJustific
 import ar.com.dcsys.gwt.assistance.client.ui.justification.manage.ManageJustificationsView;
 import ar.com.dcsys.gwt.assistance.client.ui.justification.person.JustificationPerson;
 import ar.com.dcsys.gwt.assistance.client.ui.justification.person.JustificationPersonView;
+import ar.com.dcsys.gwt.assistance.client.ui.period.Periods;
+import ar.com.dcsys.gwt.assistance.client.ui.period.PeriodsView;
 import ar.com.dcsys.gwt.assistance.client.ui.period.daily.DailyPeriods;
 import ar.com.dcsys.gwt.assistance.client.ui.period.daily.DailyPeriodsView;
 import ar.com.dcsys.gwt.assistance.client.ui.period.person.PeriodsAssignationPerson;
@@ -34,6 +36,7 @@ public class AssistanceGWTGinModule extends AbstractGinModule {
 		bind(JustificationPersonView.class).to(JustificationPerson.class).in(Singleton.class);
 		bind(ManageJustificationsView.class).to(ManageJustifications.class).in(Singleton.class);
 		bind(PeriodsAssignationPersonView.class).to(PeriodsAssignationPerson.class).in(Singleton.class);
+		bind(PeriodsView.class).to(Periods.class).in(Singleton.class);
 		
 		bind(AssistanceActivityMapper.class).in(Singleton.class);
 		

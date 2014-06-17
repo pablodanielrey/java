@@ -4,6 +4,7 @@ import ar.com.dcsys.gwt.assistance.client.place.GeneralsJustificationPlace;
 import ar.com.dcsys.gwt.assistance.client.place.JustificationPersonPlace;
 import ar.com.dcsys.gwt.assistance.client.place.ManageJustificationPlace;
 import ar.com.dcsys.gwt.assistance.client.place.PeriodsAssignationPersonPlace;
+import ar.com.dcsys.gwt.assistance.client.place.PeriodsPlace;
 import ar.com.dcsys.gwt.assistance.client.place.PinAuthDataPlace;
 
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
@@ -52,7 +53,14 @@ public class Menu {
 			}
 		}));	
 		
-		menu.addItem(new MenuItem("Asignar Periodos",false,new ScheduledCommand() {
+		menu.addItem(new MenuItem("Periodos",false,new ScheduledCommand() {
+			@Override
+			public void execute() {
+				ctrl.goTo(new PeriodsPlace());
+			}
+		}));
+
+		menu.addItem(new MenuItem("Asignación de Periodos",false,new ScheduledCommand() {
 			@Override
 			public void execute() {
 				ctrl.goTo(new PeriodsAssignationPersonPlace());

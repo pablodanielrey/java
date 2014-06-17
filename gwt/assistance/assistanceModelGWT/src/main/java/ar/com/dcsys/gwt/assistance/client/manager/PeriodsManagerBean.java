@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.period.PeriodAssignation;
+import com.google.gwt.core.client.GWT;
 import ar.com.dcsys.data.period.PeriodType;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.gwt.assistance.client.gin.PeriodsManagerProvider;
@@ -22,12 +23,12 @@ public class PeriodsManagerBean implements PeriodsManager {
 	
 	private final WebSocket socket;
 	
-	private final PeriodsManagerTransfer periodsManagerTransfer;
+	private final PeriodsManagerTransfer periodsManagerTransfer = GWT.create(PeriodsManagerTransfer.class);
 	
 	@Inject
-	public PeriodsManagerBean(WebSocket ws, PeriodsManagerProvider periodsProvider) {
+	public PeriodsManagerBean(WebSocket ws) {
 		this.socket = ws;
-		this.periodsManagerTransfer = periodsProvider.get();
+		this.periodsManagerTransfer.setTransport(ws);
 	}
 	
 	@Override

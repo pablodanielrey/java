@@ -6,6 +6,7 @@ import java.util.Date;
 import com.google.inject.Inject;
 
 import java.util.List;
+import com.google.gwt.core.client.GWT;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,13 +32,13 @@ public class JustificationsManagerBean implements JustificationsManager {
 	
 	private final WebSocket socket;	
 	
-	private final JustificationsManagerTransfer justificationsManagerTransfer;
+	private final JustificationsManagerTransfer justificationsManagerTransfer = GWT.create(JustificationsManagerTransfer.class);
 	
 	
 	@Inject
-	public JustificationsManagerBean(WebSocket ws, JustificationsManagerProvider justificationsProvider) {
+	public JustificationsManagerBean(WebSocket ws) {
 		this.socket = ws;
-		this.justificationsManagerTransfer = justificationsProvider.get();
+		this.justificationsManagerTransfer.setTransport(ws);
 	}
 	
 	
