@@ -1,7 +1,6 @@
 package ar.com.dcsys.gwt.assistance.client.gin;
 
 import ar.com.dcsys.gwt.assistance.client.activity.AssistanceActivityMapper;
-import ar.com.dcsys.gwt.assistance.client.place.ManageJustificationPlace;
 import ar.com.dcsys.gwt.assistance.client.ui.auth.PinAuthData;
 import ar.com.dcsys.gwt.assistance.client.ui.auth.PinAuthDataView;
 import ar.com.dcsys.gwt.assistance.client.ui.justification.general.GeneralsJustification;
