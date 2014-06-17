@@ -1,12 +1,7 @@
 package ar.com.dcsys.gwt.assistance.client.manager;
 
-import java.util.ArrayList;
 import java.util.Date;
-
-import com.google.inject.Inject;
-
 import java.util.List;
-import com.google.gwt.core.client.GWT;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,17 +9,13 @@ import ar.com.dcsys.data.justification.GeneralJustificationDate;
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.gwt.assistance.client.gin.Injector;
-import ar.com.dcsys.gwt.assistance.client.gin.JustificationsManagerProvider;
-import ar.com.dcsys.gwt.assistance.client.manager.events.JustificationModifiedEvent;
 import ar.com.dcsys.gwt.assistance.shared.JustificationsManagerTransfer;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.person.shared.PersonValueProxy;
 import ar.com.dcsys.gwt.ws.client.WebSocket;
-import ar.com.dcsys.gwt.ws.shared.event.SocketMessageEvent;
-import ar.com.dcsys.gwt.ws.shared.event.SocketMessageEventHandler;
-import ar.com.dcsys.gwt.ws.shared.event.SocketStateEvent;
-import ar.com.dcsys.gwt.ws.shared.event.SocketStateEventHandler;
+
+import com.google.gwt.core.client.GWT;
+import com.google.inject.Inject;
 
 public class JustificationsManagerBean implements JustificationsManager {
 
