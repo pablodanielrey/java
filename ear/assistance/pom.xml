@@ -200,39 +200,24 @@
 
     <!-- persona -->
 
-    <dependency>
-      <groupId>ar.com.dcsys.gwt.person</groupId>
-      <artifactId>personGWT</artifactId>
-      <version>1.0-SNAPSHOT</version>
-      <type>war</type>
-    </dependency>
+       <dependency>
+            <groupId>ar.com.dcsys.gwt.person</groupId>
+            <artifactId>personGWT</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>war</type>
+        </dependency>
 
-<!--
-    <dependency>
-      <groupId>ar.com.dcsys.gwt.person</groupId>
-      <artifactId>personModelGWT</artifactId>
-      <version>1.0-SNAPSHOT</version>
-      <scope>compile</scope>
-    </dependency>
--->
+        <dependency>
+            <groupId>ar.com.dcsys.data</groupId>
+            <artifactId>personEntities</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
-    <dependency>
-      <groupId>ar.com.dcsys.data</groupId>
-      <artifactId>personEntities</artifactId>
-      <version>1.0-SNAPSHOT</version>
-    </dependency>
-
-<!--    <dependency>
-      <groupId>ar.com.dcsys.data</groupId>
-      <artifactId>personPostgreSqlDAO</artifactId>
-      <version>1.0-SNAPSHOT</version>
-    </dependency>
--->
-    <dependency>
-      <groupId>ar.com.dcsys.model</groupId>
-      <artifactId>personModel</artifactId>
-      <version>1.0-SNAPSHOT</version>
-    </dependency>
+        <dependency>
+            <groupId>ar.com.dcsys.model</groupId>
+            <artifactId>personModel</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
         <dependency>
             <groupId>ar.com.dcsys.model</groupId>
@@ -252,6 +237,7 @@
            <version>1.0-SNAPSHOT</version>
         </dependency>
 
+    <!-- mail -->
 
     <dependency>
       <groupId>ar.com.dcsys.mail</groupId>
@@ -281,21 +267,6 @@
       <version>1.0-SNAPSHOT</version>
     </dependency>
 
-
-    <!-- config -->
-<!--
-    <dependency>
-      <groupId>ar.com.dcsys.data</groupId>
-      <artifactId>postgreSqlConfig</artifactId>
-      <version>1.0-SNAPSHOT</version>
-    </dependency>
-
-    <dependency>
-      <groupId>ar.com.dcsys.data</groupId>
-      <artifactId>mailSqlConfig</artifactId>
-      <version>1.0-SNAPSHOT</version>
-    </dependency>
--->
 
 
     <!-- mapau -->
@@ -350,6 +321,8 @@
   </dependencies>
 
   <build>
+
+ 	<finalName>Assistance</finalName>
 
     <plugins>
 
