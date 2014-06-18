@@ -79,9 +79,13 @@ public class TypesEncoderDecoder {
 			}
 			String getName = get.getName();
 
+			sb.append("\n").append(Utils.ident(10)).append("if (e == null) {").append("\n");
+			sb.append("\n").append(Utils.ident(12)).append("throw new RuntimeException(\"parametro e == null\");").append("\n");
+			sb.append("\n").append(Utils.ident(10)).append("}").append("\n");
 			
 			sb.append("\n").append(Utils.ident(10)).append("com.google.web.bindery.autobean.shared.AutoBean<").append(subType).append("> eAutoBean = ").append(managerFactory).append(".").append(getName).append("(e);");
 			sb.append("\n").append(Utils.ident(10)).append(valueContainer).append(".add(eAutoBean.as());");
+			
 			sb.append("\n").append(Utils.ident(8)).append("};");
 			
 		}
@@ -96,6 +100,10 @@ public class TypesEncoderDecoder {
 		} else {
 
 			// es un tipo definido por el usuario asi que no se genera container. se usa el AutoBean<Tipo>
+			sb.append("\n").append(Utils.ident(8)).append("if (").append(valueContainer).append(" == null) {").append("\n");
+			sb.append("\n").append(Utils.ident(8)).append("throw new RuntimeException(\"").append(valueContainer).append(" == null\");").append("\n");
+			sb.append("\n").append(Utils.ident(8)).append("}").append("\n");
+			
 			sb.append("\n").append(Utils.ident(8)).append("com.google.web.bindery.autobean.shared.AutoBean<").append(tc.getType()).append("> ").append(varName).append(" = ").append(managerFactory).append(".").append(g.getName()).append("(").append(valueContainer).append(");");
 			
 		}
