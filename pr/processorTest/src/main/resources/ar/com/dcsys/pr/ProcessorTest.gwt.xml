@@ -31,6 +31,9 @@
   <inherits name="ar.com.dcsys.gwt.utils.UtilsGWT"/>
   <inherits name="ar.com.dcsys.gwt.ws.WsGWT"/>
 
+	<inherits name="name.pehl.piriti.json.JSON" />
+	<!-- <inherits name="name.pehl.piriti.xml.XML" /> -->
+
   <inherits name="com.google.web.bindery.autobean.AutoBean"/>
   
 <!--
