@@ -14,6 +14,8 @@ import ar.com.dcsys.pr.ClientManager;
 public interface PeriodsManagerTransfer extends Manager {
 	
 	public void findPersonsWithPeriodAssignation(Group group, Receiver<List<Person>> receiver);
+	public void findPersonsWithPeriodAssignation(Receiver<List<Person>> receiver);
+	
 	public void findPeriodsAssignationsBy(Person person, Receiver<List<PeriodAssignation>> receiver);
 	public void findAllTypesPeriods(Receiver<List<PeriodType>> receiver);
 	

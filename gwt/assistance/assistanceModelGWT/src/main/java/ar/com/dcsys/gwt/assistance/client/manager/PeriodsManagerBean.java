@@ -34,14 +34,18 @@ public class PeriodsManagerBean implements PeriodsManager {
 	@Override
 	public void findPersonsWithPeriodAssignation(Group group, Receiver<List<Person>> receiver) {
 		try {
-			this.periodsManagerTransfer.findPersonsWithPeriodAssignation(group,receiver);
+			if (group != null) {
+				this.periodsManagerTransfer.findPersonsWithPeriodAssignation(group,receiver);
+			} else {
+				this.periodsManagerTransfer.findPersonsWithPeriodAssignation(receiver);
+			}
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, e.getMessage());
 		}
 	}
 
 	@Override
-	public void findPeriodsAssignationsBy(Person person,Receiver<List<PeriodAssignation>> receiver) {
+	public void findPeriodsAssignationsBy(Person person, Receiver<List<PeriodAssignation>> receiver) {
 		try {
 			this.periodsManagerTransfer.findPeriodsAssignationsBy(person, receiver);
 		} catch (Exception e) {

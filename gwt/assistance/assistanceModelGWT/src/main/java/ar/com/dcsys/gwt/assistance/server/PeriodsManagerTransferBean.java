@@ -48,29 +48,54 @@ public class PeriodsManagerTransferBean implements PeriodsManagerTransfer {
 		}
 		return false;
 	}
-
+	
 	@Override
-	public void findPersonsWithPeriodAssignation(Group group, Receiver<List<Person>> receiver) {
+	public void findPersonsWithPeriodAssignation(Receiver<List<Person>> receiver) {
 		try {
+			
 			List<Person> persons = periodsManager.findPersonsWithPeriodAssignations();
-			if (group == null) {
-				receiver.onSuccess(persons);
-				return;
-			}
-			
-			List<Person> personsRemove = new ArrayList<Person>();
-			
-			for (Person p : persons) {
-				if (!includePerson(p, group)) {
-					personsRemove.add(p);
-				}
-			}
-			
-			persons.removeAll(personsRemove);
 			receiver.onSuccess(persons);
+			
 		} catch (PeriodException | PersonException e) {
 			receiver.onError(e.getMessage());
 		}
+	}
+
+	@Override
+	public void findPersonsWithPeriodAssignation(final Group group, final Receiver<List<Person>> receiver) {
+
+		findPersonsWithPeriodAssignation(new Receiver<List<Person>>() {
+			@Override
+			public void onError(String error) {
+				receiver.onError(error);
+			}
+			
+			@Override
+			public void onSuccess(List<Person> persons) {
+				try {
+					if (group == null) {
+						receiver.onSuccess(persons);
+						return;
+					}
+					
+					List<Person> personsRemove = new ArrayList<Person>();
+					
+					for (Person p : persons) {
+						if (!includePerson(p, group)) {
+							personsRemove.add(p);
+						}
+					}
+					
+					persons.removeAll(personsRemove);
+					receiver.onSuccess(persons);
+				
+				} catch (PersonException e) {
+					receiver.onError(e.getMessage());
+				}
+				
+			}
+		});
+
 	}
 
 	@Override
