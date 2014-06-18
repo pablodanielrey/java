@@ -1,4 +1,7 @@
-package ar.com.dcsys.pr.model;
+package ar.com.dcsys.pr.runtime;
+
+import java.io.PrintWriter;
+import java.util.UUID;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
@@ -7,9 +10,7 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import javax.tools.Diagnostic.Kind;
-
-import ar.com.dcsys.pr.Utils;
+import javax.tools.JavaFileObject;
 
 public class Param {
 
@@ -140,9 +141,36 @@ public class Param {
 	public static void process(Method method, VariableElement ve, ProcessingEnvironment env) {
 		Param param = new Param(ve,env);
 		method.getParams().add(param);
+		param.generateSerializers(method, env);
+	}
+	
+	private void generateSerializers(Method method, ProcessingEnvironment env) {
+		generateClientSerializer(method, env);
+		generateServerSerializer(method, env);
+	}
+	
+	private void generateClientSerializer(Method method, ProcessingEnvironment env) {
 		
-		Factory factory = method.getManager().getFactory();
-		factory.createGetter(param, env);
+		// genero usando piriti
+		
+		Manager manager = method.getManager();
+		String clientPackage = manager.getClientPackage();
+		
+		RuntimeInfo ri = method.getManager().getRuntimeInfo();
+
+		SerializerGenerator.generateClientSerializer(getType(), clientPackage, ri, env);
+		
+	}
+	
+	private void generateServerSerializer(Method method, ProcessingEnvironment env) {
+		
+		Manager manager = method.getManager();
+		String serverPackage = manager.getServerPackage();
+		
+		RuntimeInfo ri = method.getManager().getRuntimeInfo();
+		
+		SerializerGenerator.generateServerSerializer(getType(), serverPackage, ri, env);
+
 	}
 	
 }

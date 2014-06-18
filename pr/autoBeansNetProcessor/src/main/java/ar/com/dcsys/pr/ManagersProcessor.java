@@ -14,7 +14,7 @@ import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic.Kind;
 
-import ar.com.dcsys.pr.model.Manager;
+import ar.com.dcsys.pr.runtime.Manager;
 
 @SupportedAnnotationTypes({"ar.com.dcsys.pr.ClientManager"})
 @SupportedSourceVersion(SourceVersion.RELEASE_7)

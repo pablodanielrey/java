@@ -1,4 +1,4 @@
-package ar.com.dcsys.pr.model;
+package ar.com.dcsys.pr.runtime;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -98,7 +98,7 @@ public class Method {
 		manager.getMethods().add(method);
 	}
 	
-	public void generateServerSourceFile(Manager manager, Manager.InstanceInfo ii, ProcessingEnvironment processingEnv) {
+	public void generateServerSourceFile(Manager manager, RuntimeInfo ii, ProcessingEnvironment processingEnv) {
 
 		String className = "M_" + getSignature().replace("<", "_").replace(">", "_").replace(".", "_");
 		String classType = manager.getServerPackage() + "." + className;
@@ -110,19 +110,46 @@ public class Method {
 		sb.append("\n");
 		sb.append("\n").append("public class ").append(className).append(" implements ar.com.dcsys.gwt.manager.server.handler.MethodHandler {");
 		sb.append("\n");
-		sb.append("\n").append("private final ").append(ii.messageFactoryClass).append(" ").append(ii.messageFactory).append(" = com.google.web.bindery.autobean.vm.AutoBeanFactorySource.create(").append(ii.messageFactoryClass).append(".class);");
-		sb.append("\n").append("private final ").append(ii.managerFactoryClass).append(" ").append(ii.managerFactory).append(" = com.google.web.bindery.autobean.vm.AutoBeanFactorySource.create(").append(ii.managerFactoryClass).append(".class);");
 		sb.append("\n").append("private final ").append(manager.getServerType()).append("Bean manager;");
 		sb.append("\n");
+		
+		// variables de instancia para guardar todos los serializers/deserializers
+		for (String type : ii.serverRuntimeVars.keySet()) {
+			String name = ii.serverRuntimeVars.get(type);
+			sb.append("\n").append("private final ").append(type).append(" ").append(name).append(";");
+		}
+		
+
+		// constructor donde se recibe el manager implementado por el usuario del lado del server.
 		sb.append("\n").append("@javax.inject.Inject");
-		sb.append("\n").append("public ").append(className).append("(").append(manager.getServerType() + "Bean").append(" manager) {");
+		sb.append("\n").append("public ").append(className).append("(").append(manager.getServerType() + "Bean").append(" manager ");
+		
+		// injecto cada serializer
+		for (String type : ii.serverRuntimeVars.keySet()) {
+			String name = ii.serverRuntimeVars.get(type);
+			sb.append(", ").append(type).append(" ").append(name);
+		}
+		
+		sb.append(") {");
 		sb.append("\n").append("this.manager = manager;");
+		
+		// asigno los serializers
+		for (String type : ii.serverRuntimeVars.keySet()) {
+			String name = ii.serverRuntimeVars.get(type);
+			sb.append("\n").append("this.").append(name).append(" = ").append(name).append(";");
+		}
+		
+		
 		sb.append("\n").append("}");
 		sb.append("\n");
+		
+		// metodo donde se registra como observer de los handlers de los mensajes.
 		sb.append("\n").append("private void register").append("(@javax.enterprise.event.Observes ar.com.dcsys.gwt.messages.server.cdi.HandlersContainer<ar.com.dcsys.gwt.manager.server.handler.MethodHandler> hs) {");
 		sb.append("\n").append("hs.add(this);");
 		sb.append("\n").append("}");
 		sb.append("\n");
+		
+		// procesa la llegada de un mensaje.
 		sb.append("\n").append("@Override");
 		sb.append("\n").append("public boolean process(final String id, ar.com.dcsys.gwt.manager.shared.message.Message msg, final ar.com.dcsys.gwt.messages.server.MessageContext ctx) {");
 		
@@ -131,11 +158,16 @@ public class Method {
 		// genero el receiver que responde al cliente el resultado.
 		sb.append("\n").append(getReceiver().getType()).append(" receiver = new ").append(getReceiver().getType()).append("() {");
 		sb.append("\n").append("@Override");
-		sb.append("\n").append("public void onSuccess(").append(Utils.getInteralType(getReceiver().getType())).append(" response) {");
+		sb.append("\n").append("public void onSuccess(").append(getReceiver().getInternalParam().getType()).append(" response) {");
 		sb.append("\n");
+		
+		// se codifica la respuesta
 		String eVarName = "a" + UUID.randomUUID().toString().replace("-", "");
-		sb.append("\n").append(TypesEncoderDecoder.encode(manager.getFactory(), ii.managerFactory, getReceiver().getInternalParam(), "response", eVarName));
-		sb.append("\n").append("ctx.getTransport().send(id,").append(eVarName).append(",new ").append(ii.transportReceiverClass).append("() { public void onSuccess(String msg){}; public void onFailure(String e){}; });");
+		String varSerializer = getServerSerializerVarName(getReceiver().getInternalParam().getType(), ii);
+		sb.append("\n").append("String ").append(eVarName).append(" = ").append(varSerializer).append(".toJson(response);");		
+
+		// se envía la respuesta al cliente.
+		sb.append("\n").append("ctx.getTransport().send(id,").append(eVarName).append(",new ").append(Manager.transportReceiverClass).append("() { public void onSuccess(String msg){}; public void onFailure(String e){}; });");
 		sb.append("\n");
 		sb.append("\n").append("};");
 		
@@ -156,7 +188,9 @@ public class Method {
 			
 			sb.append("\n").append("String ").append(feVarName).append(" = ").append("msg.getParams().get(count);");
 			sb.append("\n").append("count = count + 1;");
-			sb.append("\n").append(TypesEncoderDecoder.decodeResponse(getManager().getFactory(), ii.managerFactory, p, feVarName, dVarName));
+
+			String ser = getServerSerializerVarName(type, ii);
+			sb.append("\n").append(type).append(" ").append(dVarName).append(" = ").append(ser).append(".read(").append(feVarName).append(");");
 			
 			sb2.append(dVarName).append(",");
 		}
@@ -190,8 +224,39 @@ public class Method {
 		}		
 		
 	}
+	
+	
+	/**
+	 * Retorna el nombre de la variable instanciada de tipo del serializador que se usaría para serializar/deserializar la variable de tipo variableType
+	 * @param variableType
+	 * @param ii
+	 * @return
+	 */
+	private String getServerSerializerVarName(String variableType, RuntimeInfo ii) {
+		
+		String serializer = ii.serverSerializersMap.get(variableType);
+		String varSerializer = ii.serverRuntimeVars.get(serializer);
+		
+		return varSerializer;
+	}	
+	
 
-	public void toClientStringBuilder(StringBuilder sb, Manager.InstanceInfo ii) {
+	/**
+	 * Retorna el nombre de la variable instanciada de tipo del serializador que se usaría para serializar/deserializar la variable de tipo variableType
+	 * @param variableType
+	 * @param ii
+	 * @return
+	 */
+	private String getClientSerializerVarName(String variableType, RuntimeInfo ii) {
+		
+		String serializer = ii.clientSerializersMap.get(variableType);
+		String varSerializer = ii.clientRuntimeVars.get(serializer);
+		
+		return varSerializer;
+	}
+	
+
+	public void toClientStringBuilder(StringBuilder sb, RuntimeInfo ii) {
 		
 		sb.append("\n").append(Utils.ident(4)).append("public void ").append(getName()).append("(");
 		
@@ -218,22 +283,33 @@ public class Method {
 		for (Param param: getParams()) {
 			sb.append("\n");
 			String eVarName = "a" + UUID.randomUUID().toString().replace("-", "");
-			sb.append(TypesEncoderDecoder.encode(manager.getFactory(), ii.managerFactory, param, param.getName(), eVarName));
+			String varSerializer = getClientSerializerVarName(param.getType(), ii);
+			sb.append("\n").append("String ").append(eVarName).append(" = ").append(varSerializer).append(".toJson(").append(param.getName()).append(");");
 			sb.append("\n").append("params.add(").append(eVarName).append(");");
 		}
 		
-		sb.append("\n").append(Utils.ident(8)).append("com.google.web.bindery.autobean.shared.AutoBean<ar.com.dcsys.gwt.manager.shared.message.Message> msg = ").append(ii.messageFactory).append(".getMessage();");
-		sb.append("\n").append(Utils.ident(8)).append("msg.as().setFunction(\"").append(getSignature()).append("\");");
-		sb.append("\n").append(Utils.ident(8)).append("msg.as().setParams(params);");
-		sb.append("\n").append(Utils.ident(8)).append("String emsg = com.google.web.bindery.autobean.shared.AutoBeanCodex.encode(msg).getPayload();");
+		
+		sb.append("\n").append(Utils.ident(8)).append(Manager.messageClass).append(" msg = new ").append(Manager.messageClass).append("();");
+		sb.append("\n").append(Utils.ident(8)).append("msg.setFunction(\"").append(getSignature()).append("\");");
+		sb.append("\n").append(Utils.ident(8)).append("msg.setParams(params);");
+		String varSerializer = getClientSerializerVarName(Manager.messageClass, ii);
+		sb.append("\n").append(Utils.ident(8)).append("String emsg = ").append(varSerializer).append(".toJson(msg);");
 		sb.append("\n\n");
 	
-		sb.append("\n").append(Utils.ident(8)).append(ii.transport).append(".send(emsg,new ar.com.dcsys.gwt.messages.shared.TransportReceiver() {");
+		
+		/// creo un receiver que decodifique el mensaje y llame a onSuccess. el dato a decodificar esta dado por el tipo interno del receiver.
+		
+		sb.append("\n").append(Utils.ident(8)).append(Manager.transport).append(".send(emsg, new ").append(Manager.transportReceiverClass).append("() {");
 		sb.append("\n").append(Utils.ident(10)).append("@Override");
 		sb.append("\n").append(Utils.ident(10)).append("public void onSuccess(String msg) {");
 		sb.append("\n").append(Utils.ident(12)).append("try {");
-		sb.append(TypesEncoderDecoder.decodeResponse(getManager().getFactory(), ii.managerFactory, getReceiver().getInternalParam(), "msg", "response"));
+		
+		String internalType = getReceiver().getInternalParam().getType();
+		varSerializer = getClientSerializerVarName(internalType, ii);
+		sb.append("\n").append(internalType).append(" response = ").append(varSerializer).append(".read(msg);");
+
 		sb.append("\n").append(Utils.ident(12)).append(getReceiver().getName()).append(".onSuccess(response);");
+
 		sb.append("\n").append(Utils.ident(12)).append("} catch (Exception a) {");
 		sb.append("\n").append(Utils.ident(14)).append(getReceiver().getName()).append(".onError(a.getMessage());");
 		sb.append("\n").append(Utils.ident(12)).append("};");
@@ -249,6 +325,9 @@ public class Method {
 		sb.append("\n").append(Utils.ident(10)).append("}");
 		sb.append("\n").append(Utils.ident(8)).append("});");
 		sb.append("\n");
+		
+		
+		////////// aca termina el receiver /////////
 		
 		
 		sb.append("\n").append(Utils.ident(6)).append("} catch (Exception e) {");

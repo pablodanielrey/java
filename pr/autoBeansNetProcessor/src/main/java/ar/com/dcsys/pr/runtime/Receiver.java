@@ -1,4 +1,4 @@
-package ar.com.dcsys.pr.model;
+package ar.com.dcsys.pr.runtime;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
@@ -36,11 +36,15 @@ public class Receiver extends Param {
 	public static void process(Method method, VariableElement ve, ProcessingEnvironment env) {
 		Receiver param = new Receiver(ve,env);
 		method.setReceiver(param);
-		
 		Param p2 = param.getInternalParam();
+
+		Manager manager = method.getManager();
+		String clientPackage = manager.getClientPackage();
+		String serverPackage = manager.getServerPackage();
+		RuntimeInfo ri = method.getManager().getRuntimeInfo();
 		
-		Factory factory = method.getManager().getFactory();
-		factory.createGetter(p2,env);
+		SerializerGenerator.generateClientSerializer(p2.getType(), clientPackage, ri, env);
+		SerializerGenerator.generateServerSerializer(p2.getType(), serverPackage, ri, env);
 	}
 	
 	
