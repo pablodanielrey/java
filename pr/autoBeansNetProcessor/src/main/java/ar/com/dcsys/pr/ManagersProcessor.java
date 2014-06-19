@@ -1,6 +1,7 @@
 package ar.com.dcsys.pr;
 
 import java.util.Set;
+import java.util.UUID;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Messager;
@@ -15,6 +16,7 @@ import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic.Kind;
 
 import ar.com.dcsys.pr.runtime.Manager;
+import ar.com.dcsys.pr.runtime.RuntimeInfo;
 
 @SupportedAnnotationTypes({"ar.com.dcsys.pr.ClientManager"})
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
@@ -31,6 +33,8 @@ public class ManagersProcessor extends AbstractProcessor {
 		Messager messager = processingEnv.getMessager();
 		
 		messager.printMessage(Kind.WARNING, "Iniciando procesamiento de los clients");
+		
+		/*
 		
 		for (TypeElement te : annotations) {
 			
@@ -53,7 +57,59 @@ public class ManagersProcessor extends AbstractProcessor {
 			}
 		}
 		
+		*/
+
+		
+		Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(ClientManager.class);
+		for (Element e : elements) {
+			
+			if (e.getKind() == ElementKind.INTERFACE) {
+
+				String pName = getPackageName(e);
+				if (!pName.endsWith("shared")) {
+					// debe estar definida la interfaz en shared.
+					continue;
+				}
+				
+				ClientManager annotation = e.getAnnotation(ClientManager.class);
+				RuntimeInfo info = new RuntimeInfo();
+				registerSerializers(annotation, info);
+				
+				Manager manager = Manager.create(info, e,processingEnv);
+				manager.generateSourceFiles(processingEnv);
+				
+			}
+			
+		}
+		
+		
 		return true;
+	}
+	
+	/**
+	 * Obtengo todos los serializers y los agrego a la info de runtime.
+	 * @param annotation
+	 * @param info
+	 */
+	private void registerSerializers(ClientManager annotation, RuntimeInfo info) {
+		
+		Serializer[] serializers = annotation.serializers();
+		if (serializers != null) {
+			for (Serializer s : serializers) {
+				String type = s.clazz();
+				String ser = s.serializer();
+				if (s.type() == SerializerType.CLIENT) {
+					info.clientSerializersMap.put(type, ser);
+					String varName = "c" + UUID.randomUUID().toString().replace("-", "");
+					info.clientRuntimeVars.put(ser,varName);
+				} else {
+					info.serverSerializersMap.put(type, ser);
+					String varName = "s" + UUID.randomUUID().toString().replace("-", "");
+					info.serverRuntimeVars.put(ser,varName);
+				}
+			}
+		}
+		
 	}
 	
 }

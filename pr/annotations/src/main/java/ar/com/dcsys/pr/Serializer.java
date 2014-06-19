@@ -7,6 +7,8 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.TYPE)
-public @interface ClientManager {
-	Serializer[] serializers() default {};
+public @interface Serializer {
+	SerializerType type();
+	String clazz();
+	String serializer();
 }

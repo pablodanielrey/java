@@ -19,6 +19,13 @@ import ar.com.dcsys.pr.shared.TestManager;
 public class TestManagerBean implements TestManager {
 
 	private static Logger logger = Logger.getLogger(TestManagerBean.class.getName());
+
+	@Override
+	public void setTransport(Transport t) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 	
 	@Override
@@ -30,12 +37,7 @@ public class TestManagerBean implements TestManager {
 		rec.onSuccess("respuesta");
 	}
 
-	@Override
-	public void setTransport(Transport t) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	/*
 	@Override
 	public void test1(Person person, Receiver<String> rec) {
 
@@ -59,11 +61,16 @@ public class TestManagerBean implements TestManager {
 		rec.onSuccess((pepe.get(pepe.size() - 1)).getDni());
 	}
 
+*/
+
 	@Override
 	public void test(Receiver<String> rec) {
 		rec.onSuccess("funca");
 	}
 
+	
+	/*
+	
 	@Override
 	public void test2(Receiver<List<String>> rec) {
 		List<String> l = new ArrayList<>();
@@ -129,6 +136,6 @@ public class TestManagerBean implements TestManager {
 		rec.onSuccess(Arrays.asList(new Date(), new Date(), new Date()));
 	}
 	
-	
+	*/
 
 }

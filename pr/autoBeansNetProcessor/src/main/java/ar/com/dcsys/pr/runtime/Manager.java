@@ -24,7 +24,7 @@ public class Manager {
 	private final String packageName;
 	private final String type;
 	private final List<Method> methods = new ArrayList<>();
-	private final RuntimeInfo runtimeInfo = new RuntimeInfo();
+	private final RuntimeInfo runtimeInfo;
 	
 	public static final String messageClass = "ar.com.dcsys.gwt.manager.shared.message.MessageImpl";
 	public static final String transport = "transport";
@@ -43,7 +43,7 @@ public class Manager {
 	 * @param e
 	 * @return
 	 */
-	public static Manager create(Element e, ProcessingEnvironment env) {
+	public static Manager create(RuntimeInfo info, Element e, ProcessingEnvironment env) {
 		
 		if (e.getKind() != ElementKind.INTERFACE) {
 			return null;
@@ -51,7 +51,7 @@ public class Manager {
 		
 		String pack = ((PackageElement)e.getEnclosingElement()).getQualifiedName().toString();
 		String type = ((TypeElement)e).getSimpleName().toString();
-		Manager m = new Manager(pack,type);
+		Manager m = new Manager(info, pack,type);
 		
 		List<? extends Element> elements = e.getEnclosedElements();
 		for (Element ee : elements) {
@@ -174,9 +174,10 @@ public class Manager {
 	}
 
 	
-	public Manager(String packageName, String type) {
+	public Manager(RuntimeInfo info, String packageName, String type) {
 		this.packageName = packageName;
 		this.type = type;
+		this.runtimeInfo = info;
 	}
 	
 	public String getPackageName() {
