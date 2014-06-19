@@ -19,8 +19,4 @@ public enum PersonType {
 		return description;
 	}
 	
-	public void setDescription(String desc) {
-		this.description = desc;
-	}
-	
 }
