@@ -65,11 +65,16 @@ public class MainMethodsHandler implements MessageHandler {
 			return false;
 		}
 		
-		if (dmsg != null) {
-			registerShiro(ctx);
+		try {
+			if (dmsg != null) {
+				registerShiro(ctx);
+			}
+		} catch (Exception e) {
+			logger.info("Exception registrando shiro : " + e.getMessage());
 		}
 		
 		for (MethodHandler mh : handlers) {
+			logger.info("method handle : " + mh.getClass().getName());
 			if (mh.process(id, dmsg, ctx)) {
 				return true;
 			}

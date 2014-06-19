@@ -169,6 +169,7 @@ public class Websockets implements Transport {
 	public void send(String id, String msg, TransportReceiver rec) {
 		if (MessageEncoderDecoder.BROADCAST.equals(id)) {
 			
+			logger.info("BROADCAST : " + msg);
 			sendBroadcast(msg, rec);
 			
 		} else {
@@ -177,11 +178,13 @@ public class Websockets implements Transport {
 			if (sids == null || sids.size() <= 0) {
 				
 				// si no existe ninguna session registrada con ese id de mensaje entonces hace un broadcast.
+				logger.info("BROADCAST : " + msg);
 				sendBroadcast(msg, rec);
 				
 			} else {
 				
 				// se responde solo por las sessiones que se vio ese id.
+				logger.info("MESSAGE : SERVER -> CLIENT : " + msg);
 				
 				try {
 					String emsg = MessageEncoderDecoder.encode(id, msg);
