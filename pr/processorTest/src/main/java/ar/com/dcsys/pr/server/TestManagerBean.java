@@ -1,6 +1,8 @@
 package ar.com.dcsys.pr.server;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,6 +33,17 @@ public class TestManagerBean implements TestManager {
 		rec.onSuccess(pt);
 	}
 	
+	@Override
+	public void testEnum3(Person p, PersonType pt, Receiver<PersonType> rec) {
+		rec.onSuccess(pt);
+	}	
+	
+	@Override
+	public void testEnum4(String id, PersonType pt, Receiver<PersonType> rec) {
+		rec.onSuccess(pt);
+	}
+	
+	
 	
 	
 	@Override
@@ -46,6 +59,15 @@ public class TestManagerBean implements TestManager {
 		rec.onSuccess(person.getDni());
 		
 	}
+	
+	@Override
+	public void test2(Receiver<List<String>> rec) {
+		List<String> l = new ArrayList<>();
+		for (int i = 0; i < 10; i++) {
+			l.add(UUID.randomUUID().toString());
+		}
+		rec.onSuccess(l);
+	}	
 	
 	@Override
 	public void test3(String pepe, Receiver<String> rec) {
@@ -81,14 +103,7 @@ public class TestManagerBean implements TestManager {
 	
 	/*
 	
-	@Override
-	public void test2(Receiver<List<String>> rec) {
-		List<String> l = new ArrayList<>();
-		for (int i = 0; i < 10; i++) {
-			l.add(UUID.randomUUID().toString());
-		}
-		rec.onSuccess(l);
-	}
+
 
 	@Override
 	public void test6(Receiver<List<Person>> rec) {
@@ -122,15 +137,8 @@ public class TestManagerBean implements TestManager {
 
 
 
-	@Override
-	public void testEnum3(Person p, PersonType pt, Receiver<PersonType> rec) {
-		rec.onSuccess(pt);
-	}
 
-	@Override
-	public void testEnum4(String id, PersonType pt, Receiver<PersonType> rec) {
-		rec.onSuccess(pt);
-	}
+
 
 
 	@Override

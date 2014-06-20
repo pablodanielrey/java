@@ -98,7 +98,7 @@ public class ProcessorTest implements EntryPoint {
 			
 			test();
 			test1();
-//			test2();
+			test2();
 			test3();
 			test4();
 //			test5();
@@ -108,8 +108,8 @@ public class ProcessorTest implements EntryPoint {
 			
 			testEnum();
 			testEnum2();
-//			testEnum3();
-//			testEnum4();
+			testEnum3();
+			testEnum4();
 			
 			
 		} catch (Exception e) {
@@ -176,7 +176,6 @@ public class ProcessorTest implements EntryPoint {
 		vp.add(b);
 	}
 
-	/*
 	private void testEnum3() {
 		
 		Button b = new Button("testEnum3()");
@@ -240,7 +239,6 @@ public class ProcessorTest implements EntryPoint {
 		vp.add(b);
 	}	
 	
-	*/
 	
 	private void test() {
 		
@@ -303,7 +301,6 @@ public class ProcessorTest implements EntryPoint {
 		vp.add(b);
 	}	
 	
-	/*
 	private void test2() {
 		
 		Button b = new Button("test2()");
@@ -333,7 +330,6 @@ public class ProcessorTest implements EntryPoint {
 		
 		vp.add(b);
 	}	
-	*/
 	
 	private void test3() {
 		

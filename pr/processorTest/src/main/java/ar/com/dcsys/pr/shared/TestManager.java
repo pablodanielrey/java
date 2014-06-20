@@ -24,21 +24,18 @@ public interface TestManager extends Manager {
 
 	public void testEnum(Receiver<PersonType> rec);
 	public void testEnum2(PersonType pt, Receiver<PersonType> rec);
-
-	
-	/*
 	public void testEnum3(Person p, PersonType pt, Receiver<PersonType> rec);
 	public void testEnum4(String id, PersonType pt, Receiver<PersonType> rec);
-	*/
 	
 	public void test(Receiver<String> rec);
 	public void test1(Person person, Receiver<String> rec);
+	public void test2(Receiver<List<String>> rec);
 	public void test3(String pepe, Receiver<String> rec);
 	public void test4(List<String> pepe, Receiver<String> rec);
 	
 	/*
 
-	public void test2(Receiver<List<String>> rec);
+	
 	
 	
 	public void test5(List<Person> pepe, Receiver<String> rec);

@@ -16,6 +16,9 @@ public class PersonSerializer implements CSD<Person> {
 
 	private static final Logger logger = Logger.getLogger(PersonSerializer.class.getName());
 	
+	public interface TelephoneReader extends JsonReader<TelephoneBean> {};
+	public static final TelephoneReader TREADER = GWT.create(TelephoneReader.class);
+	
 	public interface Reader extends JsonReader<PersonBean> {}
 	public static final Reader READER = GWT.create(Reader.class);
 	
