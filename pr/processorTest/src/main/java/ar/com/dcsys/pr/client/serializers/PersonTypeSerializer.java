@@ -1,0 +1,21 @@
+package ar.com.dcsys.pr.client.serializers;
+
+import ar.com.dcsys.data.person.PersonType;
+import ar.com.dcsys.pr.CSD;
+
+public class PersonTypeSerializer implements CSD<PersonType> {
+	
+	
+	@Override
+	public PersonType read(String json) {
+		String data = json.replace("[", "").replace("]","").replace("\"", "");
+		return PersonType.valueOf(data);
+	}
+	
+	@Override
+	public String toJson(PersonType o) {
+		String data = "[" + o.toString() + "]";
+		return data;
+	}
+	
+}
