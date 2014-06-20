@@ -4,16 +4,21 @@ import java.io.PrintWriter;
 import java.util.UUID;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.tools.Diagnostic.Kind;
 import javax.tools.JavaFileObject;
 
 public class SerializerGenerator {
 
 	public static void generateServerSerializer(String paramType, String packageName, RuntimeInfo ri, ProcessingEnvironment env) {
 
+		env.getMessager().printMessage(Kind.WARNING, "chequeando serializer servidor para el tipo : " + paramType);
+		
 		if (ri.serverSerializersMap.get(paramType) != null) {
 			// ya fue generado asi que retorno
 			return;
 		}
+		
+		env.getMessager().printMessage(Kind.WARNING, "generando serializer servidor para el tipo : " + paramType);
 		
 		// genero usando gson
 		
@@ -71,10 +76,15 @@ public class SerializerGenerator {
 	
 	public static void generateClientSerializer(String paramType, String packageName, RuntimeInfo ri, ProcessingEnvironment env) {
 
+		env.getMessager().printMessage(Kind.WARNING, "chequeando serializer cliente para el tipo : " + paramType);
+		
 		if (ri.clientSerializersMap.get(paramType) != null) {
 			// ya fue generado asi que retorno.
 			return;
 		}
+
+		env.getMessager().printMessage(Kind.WARNING, "generando serializer cliente para el tipo : " + paramType);
+
 		
 		// genero usando piriti
 		

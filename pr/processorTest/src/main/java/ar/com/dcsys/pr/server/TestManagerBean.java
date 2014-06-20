@@ -37,6 +37,13 @@ public class TestManagerBean implements TestManager {
 		rec.onSuccess("respuesta");
 	}
 
+	@Override
+	public void test4(List<String> pepe, Receiver<String> rec) {
+		logger.log(Level.SEVERE, "mensaje : " + pepe.size());
+		
+		rec.onSuccess(pepe.get(pepe.size() - 1));
+	}	
+	
 	/*
 	@Override
 	public void test1(Person person, Receiver<String> rec) {
@@ -47,12 +54,7 @@ public class TestManagerBean implements TestManager {
 		
 	}
 
-	@Override
-	public void test4(List<String> pepe, Receiver<String> rec) {
-		logger.log(Level.SEVERE, "mensaje : " + pepe.size());
-		
-		rec.onSuccess(pepe.get(pepe.size() - 1));
-	}
+
 
 	@Override
 	public void test5(List<Person> pepe, Receiver<String> rec) {

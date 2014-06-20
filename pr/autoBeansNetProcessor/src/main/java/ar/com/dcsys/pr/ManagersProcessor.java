@@ -73,7 +73,7 @@ public class ManagersProcessor extends AbstractProcessor {
 				
 				ClientManager annotation = e.getAnnotation(ClientManager.class);
 				RuntimeInfo info = new RuntimeInfo();
-				registerSerializers(annotation, info);
+				registerSerializers(annotation, info, messager);
 				
 				Manager manager = Manager.create(info, e,processingEnv);
 				manager.generateSourceFiles(processingEnv);
@@ -91,13 +91,15 @@ public class ManagersProcessor extends AbstractProcessor {
 	 * @param annotation
 	 * @param info
 	 */
-	private void registerSerializers(ClientManager annotation, RuntimeInfo info) {
+	private void registerSerializers(ClientManager annotation, RuntimeInfo info, Messager messager) {
 		
 		Serializer[] serializers = annotation.serializers();
 		if (serializers != null) {
 			for (Serializer s : serializers) {
 				String type = s.clazz();
 				String ser = s.serializer();
+				
+				messager.printMessage(Kind.WARNING, "registrando : " + type + " s : " + ser);
 				
 				if (s.type() == SerializerType.CLIENT || s.type() == SerializerType.COMBINED) {
 					info.clientSerializersMap.put(type, ser);

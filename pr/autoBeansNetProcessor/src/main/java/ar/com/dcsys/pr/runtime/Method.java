@@ -116,6 +116,7 @@ public class Method {
 		// variables de instancia para guardar todos los serializers/deserializers
 		for (String type : ii.serverRuntimeVars.keySet()) {
 			String name = ii.serverRuntimeVars.get(type);
+			sb.append("\n // serializer para : ").append(type);
 			sb.append("\n").append("private final ").append(type).append(" ").append(name).append(";");
 		}
 		

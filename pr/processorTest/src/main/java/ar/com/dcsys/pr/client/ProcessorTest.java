@@ -100,7 +100,7 @@ public class ProcessorTest implements EntryPoint {
 //			test1();
 //			test2();
 			test3();
-//			test4();
+			test4();
 //			test5();
 //			test6();
 //			test7();
@@ -363,7 +363,7 @@ public class ProcessorTest implements EntryPoint {
 		vp.add(b);
 	}		
 
-	/*
+	
 	private void test4() {
 		
 		Button b = new Button("test4()");
@@ -396,7 +396,7 @@ public class ProcessorTest implements EntryPoint {
 	}			
 	
 	
-	
+	/*
 	private void test5() {
 		
 		Button b = new Button("test5()");
