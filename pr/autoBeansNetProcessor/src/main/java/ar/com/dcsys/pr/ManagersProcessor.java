@@ -98,15 +98,19 @@ public class ManagersProcessor extends AbstractProcessor {
 			for (Serializer s : serializers) {
 				String type = s.clazz();
 				String ser = s.serializer();
-				if (s.type() == SerializerType.CLIENT) {
+				
+				if (s.type() == SerializerType.CLIENT || s.type() == SerializerType.COMBINED) {
 					info.clientSerializersMap.put(type, ser);
 					String varName = "c" + UUID.randomUUID().toString().replace("-", "");
 					info.clientRuntimeVars.put(ser,varName);
-				} else {
+				}
+				
+				if (s.type() == SerializerType.SERVER || s.type() == SerializerType.COMBINED) {
 					info.serverSerializersMap.put(type, ser);
 					String varName = "s" + UUID.randomUUID().toString().replace("-", "");
 					info.serverRuntimeVars.put(ser,varName);
 				}
+				
 			}
 		}
 		

@@ -3,8 +3,13 @@ package ar.com.dcsys.pr.shared;
 import ar.com.dcsys.gwt.manager.shared.Manager;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.pr.ClientManager;
+import ar.com.dcsys.pr.Serializer;
+import ar.com.dcsys.pr.SerializerType;
+import ar.com.dcsys.pr.shared.serializers.StringSerializer;
 
-@ClientManager
+@ClientManager(serializers = {
+		@Serializer(serializer="ar.com.dcsys.pr.shared.serializers.StringSerializer", type=SerializerType.COMBINED, clazz="java.lang.String")
+})
 public interface TestManager extends Manager {
 
 	/*
