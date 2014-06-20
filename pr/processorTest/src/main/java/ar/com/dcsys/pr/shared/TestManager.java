@@ -12,8 +12,8 @@ import ar.com.dcsys.pr.SerializerType;
 
 @ClientManager(serializers = {
 		@Serializer(serializer="ar.com.dcsys.pr.serializers.shared.StringSerializer", clazz="java.lang.String", type=SerializerType.COMBINED),
-		@Serializer(serializer="ar.com.dcsys.pr.serializers.client.StringListSerializer", clazz="java.util.List<java.lang.String>", type=SerializerType.CLIENT),
-		@Serializer(serializer="ar.com.dcsys.pr.serializers.server.StringListSerializer", clazz="java.util.List<java.lang.String>", type=SerializerType.SERVER),
+		@Serializer(serializer="ar.com.dcsys.pr.serializers.client.ListSerializer", clazz="java.util.List<java.lang.String>", type=SerializerType.CLIENT),
+		@Serializer(serializer="ar.com.dcsys.pr.serializers.server.ListSerializer", clazz="java.util.List<java.lang.String>", type=SerializerType.SERVER),
 		@Serializer(serializer="ar.com.dcsys.gwt.person.client.PersonTypeSerializer", clazz="ar.com.dcsys.data.person.PersonType", type=SerializerType.CLIENT),
 		@Serializer(serializer="ar.com.dcsys.gwt.person.client.PersonSerializer", clazz="ar.com.dcsys.data.person.Person", type=SerializerType.CLIENT),
 		@Serializer(serializer="ar.com.dcsys.gwt.person.server.PersonSerializer", clazz="ar.com.dcsys.data.person.Person", type=SerializerType.SERVER)
