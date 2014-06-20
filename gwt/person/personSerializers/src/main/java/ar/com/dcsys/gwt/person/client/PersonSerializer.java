@@ -1,4 +1,4 @@
-package ar.com.dcsys.pr.client.serializers;
+package ar.com.dcsys.gwt.person.client;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

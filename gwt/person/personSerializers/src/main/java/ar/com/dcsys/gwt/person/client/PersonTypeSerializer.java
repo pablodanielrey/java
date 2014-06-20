@@ -1,4 +1,4 @@
-package ar.com.dcsys.pr.client.serializers;
+package ar.com.dcsys.gwt.person.client;
 
 import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.pr.CSD;

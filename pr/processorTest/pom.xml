@@ -129,6 +129,14 @@
     </dependency>
 
     <dependency>
+      <groupId>ar.com.dcsys.gwt.person</groupId>
+      <artifactId>personSerializers</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+
+    <dependency>
       <groupId>ar.com.dcsys.gwt.utils</groupId>
       <artifactId>managerGWT</artifactId>
       <version>1.0-SNAPSHOT</version>
@@ -254,12 +262,14 @@
           <compileSourcesArtifacts>
               <artifact>ar.com.dcsys.pr:annotations</artifact>
               <artifact>ar.com.dcsys.pr:serializers</artifact>
+
               <artifact>ar.com.dcsys.gwt.utils:utilsGWT</artifact>
               <artifact>ar.com.dcsys.gwt.utils:messagesGWT</artifact>
               <artifact>ar.com.dcsys.gwt.utils:webSocketGWT</artifact>
               <artifact>ar.com.dcsys.gwt.utils:managerGWT</artifact>
 
               <artifact>ar.com.dcsys.data:personEntities</artifact>
+              <artifact>ar.com.dcsys.gwt.person:personSerializers</artifact>
 
 <!--              <artifact>ar.com.dcsys.data:documentEntities</artifact>
               <artifact>ar.com.dcsys.gwt.utils:messageGWT</artifact>
