@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.messages.shared.Transport;
@@ -37,6 +38,14 @@ public class TestManagerBean implements TestManager {
 		rec.onSuccess("funca");
 	}
 	
+	@Override
+	public void test1(Person person, Receiver<String> rec) {
+
+		logger.log(Level.SEVERE, "mensaje : " + person.toString());
+		
+		rec.onSuccess(person.getDni());
+		
+	}
 	
 	@Override
 	public void test3(String pepe, Receiver<String> rec) {
@@ -55,14 +64,7 @@ public class TestManagerBean implements TestManager {
 	}	
 	
 	/*
-	@Override
-	public void test1(Person person, Receiver<String> rec) {
 
-		logger.log(Level.SEVERE, "mensaje : " + person.toString());
-		
-		rec.onSuccess(person.getDni());
-		
-	}
 
 
 

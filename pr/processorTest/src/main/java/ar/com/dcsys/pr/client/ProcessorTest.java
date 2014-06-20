@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import ar.com.dcsys.data.person.Person;
+import ar.com.dcsys.data.person.PersonBean;
 import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.ws.client.WebSocket;
@@ -95,7 +97,7 @@ public class ProcessorTest implements EntryPoint {
 			vp.add(close);
 			
 			test();
-//			test1();
+			test1();
 //			test2();
 			test3();
 			test4();
@@ -268,8 +270,6 @@ public class ProcessorTest implements EntryPoint {
 		vp.add(b);
 	}
 
-	/*
-	
 	private void test1() {
 		
 		Button b = new Button("test1()");
@@ -303,6 +303,7 @@ public class ProcessorTest implements EntryPoint {
 		vp.add(b);
 	}	
 	
+	/*
 	private void test2() {
 		
 		Button b = new Button("test2()");
