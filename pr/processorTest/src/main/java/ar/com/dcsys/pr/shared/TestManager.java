@@ -2,6 +2,7 @@ package ar.com.dcsys.pr.shared;
 
 import java.util.List;
 
+import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.gwt.manager.shared.Manager;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.pr.ClientManager;
@@ -9,14 +10,15 @@ import ar.com.dcsys.pr.Serializer;
 import ar.com.dcsys.pr.SerializerType;
 
 @ClientManager(serializers = {
-		@Serializer(serializer="ar.com.dcsys.pr.shared.serializers.StringSerializer", clazz="java.lang.String", type=SerializerType.COMBINED),
-		@Serializer(serializer="ar.com.dcsys.pr.client.serializers.StringListSerializer", clazz="java.util.List<java.lang.String>", type=SerializerType.CLIENT),
-		@Serializer(serializer="ar.com.dcsys.pr.server.serializers.StringListSerializer", clazz="java.util.List<java.lang.String>", type=SerializerType.SERVER)
+		@Serializer(serializer="ar.com.dcsys.pr.serializers.shared.StringSerializer", clazz="java.lang.String", type=SerializerType.COMBINED),
+		@Serializer(serializer="ar.com.dcsys.pr.serializers.client.StringListSerializer", clazz="java.util.List<java.lang.String>", type=SerializerType.CLIENT),
+		@Serializer(serializer="ar.com.dcsys.pr.serializers.server.StringListSerializer", clazz="java.util.List<java.lang.String>", type=SerializerType.SERVER)
 })
 public interface TestManager extends Manager {
 
-	/*
+
 	public void testEnum(Receiver<PersonType> rec);
+	/*
 	public void testEnum2(PersonType pt, Receiver<PersonType> rec);
 	public void testEnum3(Person p, PersonType pt, Receiver<PersonType> rec);
 	public void testEnum4(String id, PersonType pt, Receiver<PersonType> rec);

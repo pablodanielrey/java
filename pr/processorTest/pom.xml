@@ -24,6 +24,14 @@
       <scope>compile</scope>
     </dependency>
 
+    <dependency>
+      <groupId>ar.com.dcsys.pr</groupId>
+      <artifactId>serializers</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+
 
    <!-- para los convertidores de codigo a json y la inversa -->
 
@@ -241,6 +249,7 @@
 
           <compileSourcesArtifacts>
               <artifact>ar.com.dcsys.pr:annotations</artifact>
+              <artifact>ar.com.dcsys.pr:serializers</artifact>
               <artifact>ar.com.dcsys.gwt.utils:utilsGWT</artifact>
               <artifact>ar.com.dcsys.gwt.utils:messagesGWT</artifact>
               <artifact>ar.com.dcsys.gwt.utils:webSocketGWT</artifact>

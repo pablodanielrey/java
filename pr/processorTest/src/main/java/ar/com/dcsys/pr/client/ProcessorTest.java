@@ -106,7 +106,7 @@ public class ProcessorTest implements EntryPoint {
 //			test7();
 //			test8();
 			
-//			testEnum();
+			testEnum();
 //			testEnum2();
 //			testEnum3();
 //			testEnum4();
@@ -118,7 +118,7 @@ public class ProcessorTest implements EntryPoint {
 		
 	}
 	
-/*
+
 	
 	private void testEnum() {
 		
@@ -147,6 +147,8 @@ public class ProcessorTest implements EntryPoint {
 		
 		vp.add(b);
 	}
+
+	/*
 	
 	private void testEnum2() {
 		

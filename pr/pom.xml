@@ -17,6 +17,7 @@
 
   <modules>
     <module>annotations</module>
+    <module>serializers</module>
     <module>autoBeansNetProcessor</module>
     <module>processorTest</module>
   </modules>

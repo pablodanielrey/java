@@ -1,0 +1,10 @@
+<module>
+
+  <inherits name="com.google.gwt.user.User"/>
+  
+  <inherits name="name.pehl.piriti.json.JSON" />
+
+  <source path="serializers/client"/>
+  <source path="serializers/shared"/>
+
+</module>

@@ -1,16 +1,9 @@
 package ar.com.dcsys.pr.server;
 
-import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.data.person.PersonBean;
 import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.messages.shared.Transport;
@@ -25,7 +18,17 @@ public class TestManagerBean implements TestManager {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
+	
+	@Override
+	public void testEnum(Receiver<PersonType> rec) {
+		rec.onSuccess(PersonType.PERSONAL);
+	}
+	
+	@Override
+	public void test(Receiver<String> rec) {
+		rec.onSuccess("funca");
+	}
 	
 	
 	@Override
@@ -65,10 +68,6 @@ public class TestManagerBean implements TestManager {
 
 */
 
-	@Override
-	public void test(Receiver<String> rec) {
-		rec.onSuccess("funca");
-	}
 
 	
 	/*
@@ -111,10 +110,7 @@ public class TestManagerBean implements TestManager {
 		rec.onSuccess(l);
 	}
 
-	@Override
-	public void testEnum(Receiver<PersonType> rec) {
-		rec.onSuccess(PersonType.PERSONAL);
-	}
+
 
 	@Override
 	public void testEnum2(PersonType pt, Receiver<PersonType> rec) {

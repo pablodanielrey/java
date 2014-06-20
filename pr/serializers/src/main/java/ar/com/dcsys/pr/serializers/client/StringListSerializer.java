@@ -1,4 +1,4 @@
-package ar.com.dcsys.pr.client.serializers;
+package ar.com.dcsys.pr.serializers.client;
 
 import java.util.List;
 import java.util.logging.Level;

@@ -1,4 +1,4 @@
-package ar.com.dcsys.pr.shared.serializers;
+package ar.com.dcsys.pr.serializers.shared;
 
 import ar.com.dcsys.pr.CSD;
 
