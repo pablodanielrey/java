@@ -20,8 +20,10 @@ public interface TestManager extends Manager {
 
 
 	public void testEnum(Receiver<PersonType> rec);
-	/*
 	public void testEnum2(PersonType pt, Receiver<PersonType> rec);
+
+	
+	/*
 	public void testEnum3(Person p, PersonType pt, Receiver<PersonType> rec);
 	public void testEnum4(String id, PersonType pt, Receiver<PersonType> rec);
 	*/

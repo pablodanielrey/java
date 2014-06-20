@@ -24,6 +24,13 @@ public class TestManagerBean implements TestManager {
 	public void testEnum(Receiver<PersonType> rec) {
 		rec.onSuccess(PersonType.PERSONAL);
 	}
+
+	@Override
+	public void testEnum2(PersonType pt, Receiver<PersonType> rec) {
+		rec.onSuccess(pt);
+	}
+	
+	
 	
 	@Override
 	public void test(Receiver<String> rec) {
@@ -112,10 +119,6 @@ public class TestManagerBean implements TestManager {
 
 
 
-	@Override
-	public void testEnum2(PersonType pt, Receiver<PersonType> rec) {
-		rec.onSuccess(pt);
-	}
 
 	@Override
 	public void testEnum3(Person p, PersonType pt, Receiver<PersonType> rec) {
