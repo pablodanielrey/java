@@ -236,7 +236,7 @@
 <!--          <i18nMessagesBundle>ar.com.dcsys.gwt.person.client.Messages</i18nMessagesBundle> -->
           <noServer>true</noServer>
           <port>9191</port>
-	  <debugPort>9292</debugPort>
+	  <debugPort>8000</debugPort>
           <style>DETAILED</style>
 
           <compileSourcesArtifacts>

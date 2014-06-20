@@ -10,8 +10,8 @@ import ar.com.dcsys.pr.SerializerType;
 
 @ClientManager(serializers = {
 		@Serializer(serializer="ar.com.dcsys.pr.shared.serializers.StringSerializer", clazz="java.lang.String", type=SerializerType.COMBINED),
-		@Serializer(serializer="ar.com.dcsys.pr.client.serializers.StringListSerializer", clazz="java.util.List<java.lang.String>>", type=SerializerType.CLIENT),
-		@Serializer(serializer="ar.com.dcsys.pr.server.serializers.StringListSerializer", clazz="java.util.List<java.lang.String>>", type=SerializerType.SERVER)
+		@Serializer(serializer="ar.com.dcsys.pr.client.serializers.StringListSerializer", clazz="java.util.List<java.lang.String>", type=SerializerType.CLIENT),
+		@Serializer(serializer="ar.com.dcsys.pr.server.serializers.StringListSerializer", clazz="java.util.List<java.lang.String>", type=SerializerType.SERVER)
 })
 public interface TestManager extends Manager {
 
