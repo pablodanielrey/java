@@ -16,7 +16,6 @@
   <name>proyectos de persona de GWT</name>
 
   <modules>
-    <module>personSerializers</module>
     <module>personModelGWT</module>
     <module>personGWT</module>
   </modules>

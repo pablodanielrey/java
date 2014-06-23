@@ -10,17 +10,17 @@
   <modules>
     	<module>cdiUtils</module>
 <!--	<module>workarrounds</module> -->
-	<module>pr</module>
 	<module>dcsysUtils</module>
 	<module>data</module>
 	<module>config</module>
+	<module>auth</module>
+	<module>person</module>
 	<module>mail</module>
 	<module>document</module>
-	<module>person</module>
-	<module>auth</module>
-<!--	<module>mapau</module> -->
+	<module>pr</module>
 	<module>tutoria</module>
 	<module>assistance</module>
+<!--	<module>mapau</module> -->
 	<module>gwt</module>
 	<module>ear</module>
   </modules>
