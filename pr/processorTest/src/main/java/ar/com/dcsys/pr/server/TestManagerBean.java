@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.person.Person;
+import ar.com.dcsys.data.person.PersonBean;
 import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.messages.shared.Transport;
@@ -85,25 +86,12 @@ public class TestManagerBean implements TestManager {
 		rec.onSuccess(pepe.get(pepe.size() - 1));
 	}	
 	
-	/*
-
-
-
-
 	@Override
 	public void test5(List<Person> pepe, Receiver<String> rec) {
 		logger.log(Level.SEVERE, "mensaje : " + pepe.size());
 		
 		rec.onSuccess((pepe.get(pepe.size() - 1)).getDni());
 	}
-
-*/
-
-
-	
-	/*
-	
-
 
 	@Override
 	public void test6(Receiver<List<Person>> rec) {
@@ -139,7 +127,7 @@ public class TestManagerBean implements TestManager {
 
 
 
-
+/*
 
 	@Override
 	public void test9(Date d, Receiver<List<Date>> rec) {

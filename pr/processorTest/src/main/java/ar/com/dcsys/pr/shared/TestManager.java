@@ -12,11 +12,13 @@ import ar.com.dcsys.pr.SerializerType;
 
 @ClientManager(serializers = {
 		@Serializer(serializer="ar.com.dcsys.pr.serializers.shared.StringSerializer", clazz="java.lang.String", type=SerializerType.COMBINED),
-		@Serializer(serializer="ar.com.dcsys.pr.serializers.client.ListSerializer", clazz="java.util.List<java.lang.String>", type=SerializerType.CLIENT),
-		@Serializer(serializer="ar.com.dcsys.pr.serializers.server.ListSerializer", clazz="java.util.List<java.lang.String>", type=SerializerType.SERVER),
+		@Serializer(serializer="ar.com.dcsys.pr.serializers.client.StringListSerializer", clazz="java.util.List<java.lang.String>", type=SerializerType.CLIENT),
+		@Serializer(serializer="ar.com.dcsys.pr.serializers.server.StringListSerializer", clazz="java.util.List<java.lang.String>", type=SerializerType.SERVER),
 		@Serializer(serializer="ar.com.dcsys.gwt.person.client.PersonTypeSerializer", clazz="ar.com.dcsys.data.person.PersonType", type=SerializerType.CLIENT),
 		@Serializer(serializer="ar.com.dcsys.gwt.person.client.PersonSerializer", clazz="ar.com.dcsys.data.person.Person", type=SerializerType.CLIENT),
-		@Serializer(serializer="ar.com.dcsys.gwt.person.server.PersonSerializer", clazz="ar.com.dcsys.data.person.Person", type=SerializerType.SERVER)
+		@Serializer(serializer="ar.com.dcsys.gwt.person.server.PersonSerializer", clazz="ar.com.dcsys.data.person.Person", type=SerializerType.SERVER),
+		@Serializer(serializer="ar.com.dcsys.gwt.person.client.PersonListSerializer", clazz="java.util.List<ar.com.dcsys.data.person.Person>", type=SerializerType.CLIENT),
+		@Serializer(serializer="ar.com.dcsys.gwt.person.server.PersonListSerializer", clazz="java.util.List<ar.com.dcsys.data.person.Person>", type=SerializerType.SERVER)
 		
 })
 public interface TestManager extends Manager {
@@ -32,16 +34,13 @@ public interface TestManager extends Manager {
 	public void test2(Receiver<List<String>> rec);
 	public void test3(String pepe, Receiver<String> rec);
 	public void test4(List<String> pepe, Receiver<String> rec);
-	
-	/*
-
-	
-	
-	
 	public void test5(List<Person> pepe, Receiver<String> rec);
 	public void test6(Receiver<List<Person>> rec);
 	public void test7(String id, Receiver<Person> rec);
 	public void test8(String id, Receiver<List<Person>> rec);
+	
+	/*
+
 	public void test9(Date d, Receiver<List<Date>> rec);
 	*/
 
