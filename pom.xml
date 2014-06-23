@@ -9,7 +9,7 @@
 
   <modules>
     	<module>cdiUtils</module>
-	<module>workarrounds</module>
+<!--	<module>workarrounds</module> -->
 	<module>pr</module>
 	<module>dcsysUtils</module>
 	<module>data</module>
