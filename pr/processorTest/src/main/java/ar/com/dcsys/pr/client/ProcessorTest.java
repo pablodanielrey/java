@@ -1,6 +1,7 @@
 package ar.com.dcsys.pr.client;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -105,6 +106,7 @@ public class ProcessorTest implements EntryPoint {
 			test6();
 			test7();
 			test8();
+			test9();
 			
 			testEnum();
 			testEnum2();
@@ -526,6 +528,38 @@ public class ProcessorTest implements EntryPoint {
 		
 		vp.add(b);
 	}
+
 	
+	
+	private void test9() {
+		
+		Button b = new Button("test9()");
+		
+		b.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+					tm.test9(new Date(),new Receiver<List<Date>>() {
+						@Override
+						public void onSuccess(List<Date> t) {
+							for (Date ts : t) {
+								logger.log(Level.INFO,ts.toString());
+							}
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+						}
+					});
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		vp.add(b);
+	}
+		
 	
 }

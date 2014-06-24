@@ -1,6 +1,8 @@
 package ar.com.dcsys.pr.server;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -123,18 +125,10 @@ public class TestManagerBean implements TestManager {
 	}
 
 
-
-
-
-
-/*
-
 	@Override
 	public void test9(Date d, Receiver<List<Date>> rec) {
 		logger.log(Level.INFO, d.toString());
 		rec.onSuccess(Arrays.asList(new Date(), new Date(), new Date()));
 	}
 	
-	*/
-
 }
