@@ -107,6 +107,7 @@ public class ProcessorTest implements EntryPoint {
 			test7();
 			test8();
 			test9();
+			test10();
 			
 			testEnum();
 			testEnum2();
@@ -561,5 +562,34 @@ public class ProcessorTest implements EntryPoint {
 		vp.add(b);
 	}
 		
+	
+	
+	private void test10() {
+		
+		Button b = new Button("test10()");
+		
+		b.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+					tm.test10(true,new Receiver<Boolean>() {
+						@Override
+						public void onSuccess(Boolean b) {
+							logger.log(Level.INFO,b.toString());
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+						}
+					});
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		vp.add(b);
+	}	
 	
 }

@@ -131,4 +131,10 @@ public class TestManagerBean implements TestManager {
 		rec.onSuccess(Arrays.asList(new Date(), new Date(), new Date()));
 	}
 	
+	@Override
+	public void test10(Boolean d, Receiver<Boolean> rec) {
+		logger.log(Level.INFO, d.toString());
+		rec.onSuccess(d);
+	}
+	
 }
