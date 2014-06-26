@@ -9,6 +9,8 @@ import java.util.logging.Logger;
 
 import ar.com.dcsys.data.document.Document;
 import ar.com.dcsys.data.document.DocumentBean;
+import ar.com.dcsys.data.person.Mail;
+import ar.com.dcsys.data.person.MailBean;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonBean;
 import ar.com.dcsys.data.person.PersonType;
@@ -111,6 +113,10 @@ public class ProcessorTest implements EntryPoint {
 			test8();
 			test9();
 			test10();
+			
+			test20();
+			test21();
+			test22();
 
 			test30();
 			test31();
@@ -599,6 +605,106 @@ public class ProcessorTest implements EntryPoint {
 		
 		vp.add(b);
 	}	
+	
+	
+	
+	private void test20() {
+		
+		Button b = new Button("test20()");
+		
+		b.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+					MailBean m = new MailBean();
+					m.setMail("mail@mail.com");
+					
+					tm.test20(m,new Receiver<Mail>() {
+						@Override
+						public void onSuccess(Mail t) {
+							logger.log(Level.INFO,t.toString());
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+						}
+					});
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		vp.add(b);
+	}
+	
+	private void test21() {
+		
+		Button b = new Button("test21()");
+		
+		b.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+					MailBean m = new MailBean();
+					m.setMail("mail@mail.com");
+					m.setPrimary(true);
+					
+					tm.test21(m,new Receiver<List<Mail>>() {
+						@Override
+						public void onSuccess(List<Mail> t) {
+							logger.log(Level.INFO,t.toString());
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+						}
+					});
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		vp.add(b);
+	}
+	
+	private void test22() {
+		
+		Button b = new Button("test22()");
+		
+		b.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+					MailBean m = new MailBean();
+					m.setMail("mail@mail.com");
+					m.setPrimary(true);
+					
+					List<Mail> l = new ArrayList<Mail>();
+					l.add(m);
+					
+					tm.test22(l,new Receiver<List<Mail>>() {
+						@Override
+						public void onSuccess(List<Mail> t) {
+							logger.log(Level.INFO,t.toString());
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+						}
+					});
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		vp.add(b);
+	}
 	
 	
 	

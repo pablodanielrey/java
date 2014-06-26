@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.document.Document;
+import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonBean;
 import ar.com.dcsys.data.person.PersonType;
@@ -136,6 +137,24 @@ public class TestManagerBean implements TestManager {
 	public void test10(Boolean d, Receiver<Boolean> rec) {
 		logger.log(Level.INFO, d.toString());
 		rec.onSuccess(d);
+	}
+	
+	@Override
+	public void test20(Mail m, Receiver<Mail> rec) {
+		logger.log(Level.INFO, m.toString());
+		rec.onSuccess(m);		
+	}
+	
+	@Override
+	public void test21(Mail m, Receiver<List<Mail>> rec) {
+		logger.log(Level.INFO, m.toString());
+		rec.onSuccess(Arrays.asList(m, m, m));
+	}
+	
+	@Override
+	public void test22(List<Mail> ms, Receiver<List<Mail>> rec) {
+		logger.log(Level.INFO, ms.toString());
+		rec.onSuccess(ms);
 	}
 	
 	

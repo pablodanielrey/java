@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import ar.com.dcsys.data.document.Document;
+import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.gwt.manager.shared.Manager;
@@ -27,6 +28,10 @@ import ar.com.dcsys.pr.SerializerType;
 		@Serializer(serializer="ar.com.dcsys.gwt.person.server.PersonSerializer", clazz="ar.com.dcsys.data.person.Person", type=SerializerType.SERVER),
 		@Serializer(serializer="ar.com.dcsys.gwt.person.client.PersonListSerializer", clazz="java.util.List<ar.com.dcsys.data.person.Person>", type=SerializerType.CLIENT),
 		@Serializer(serializer="ar.com.dcsys.gwt.person.server.PersonListSerializer", clazz="java.util.List<ar.com.dcsys.data.person.Person>", type=SerializerType.SERVER),
+		@Serializer(serializer="ar.com.dcsys.gwt.person.client.MailSerializer", clazz="ar.com.dcsys.data.person.Mail", type=SerializerType.CLIENT),
+		@Serializer(serializer="ar.com.dcsys.gwt.person.server.MailSerializer", clazz="ar.com.dcsys.data.person.Mail", type=SerializerType.SERVER),	
+		@Serializer(serializer="ar.com.dcsys.gwt.person.client.MailListSerializer", clazz="java.util.List<ar.com.dcsys.data.person.Mail>", type=SerializerType.CLIENT),
+		@Serializer(serializer="ar.com.dcsys.gwt.person.server.MailListSerializer", clazz="java.util.List<ar.com.dcsys.data.person.Mail>", type=SerializerType.SERVER),	
 		@Serializer(serializer="ar.com.dcsys.gwt.data.document.client.DocumentSerializer", clazz="ar.com.dcsys.data.document.Document", type=SerializerType.CLIENT),
 		@Serializer(serializer="ar.com.dcsys.gwt.data.document.server.DocumentSerializer", clazz="ar.com.dcsys.data.document.Document", type=SerializerType.SERVER),
 		@Serializer(serializer="ar.com.dcsys.gwt.data.document.client.DocumentListSerializer", clazz="java.util.List<ar.com.dcsys.data.document.Document>", type=SerializerType.CLIENT),
@@ -51,6 +56,10 @@ public interface TestManager extends Manager {
 	public void test8(String id, Receiver<List<Person>> rec);
 	public void test9(Date d, Receiver<List<Date>> rec);
 	public void test10(Boolean b, Receiver<Boolean> rec);
+	
+	public void test20(Mail m, Receiver<Mail> rec);
+	public void test21(Mail m, Receiver<List<Mail>> rec);
+	public void test22(List<Mail> ms, Receiver<List<Mail>> rec);
 	
 	public void test30(Document d, Receiver<Document> rec);
 	public void test31(Document d, Receiver<List<Document>> rec);
