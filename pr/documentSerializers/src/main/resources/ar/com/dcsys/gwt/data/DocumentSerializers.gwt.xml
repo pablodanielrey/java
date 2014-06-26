@@ -1,0 +1,8 @@
+<module>
+  <inherits name="com.google.gwt.user.User"/>
+
+  <inherits name="name.pehl.piriti.json.JSON" />
+
+  <source path="document/client"/>
+  <source path="document/shared"/>
+</module>

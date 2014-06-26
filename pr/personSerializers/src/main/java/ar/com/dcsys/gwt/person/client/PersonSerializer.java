@@ -26,8 +26,6 @@ public class PersonSerializer implements CSD<Person> {
 	public static final TelephoneWriter TWRITER = GWT.create(TelephoneWriter.class);
 	
 	public interface Writer extends JsonWriter<PersonBean> {}
-	
-
 	public static final Writer WRITER = GWT.create(Writer.class);
 	
 	

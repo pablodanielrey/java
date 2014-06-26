@@ -19,6 +19,7 @@
     <module>annotations</module>
     <module>serializers</module>
     <module>personSerializers</module>
+    <module>documentSerializers</module>
     <module>autoBeansNetProcessor</module>
     <module>processorTest</module>
   </modules>

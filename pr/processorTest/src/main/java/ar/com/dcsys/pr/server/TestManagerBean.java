@@ -8,6 +8,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import ar.com.dcsys.data.document.Document;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonBean;
 import ar.com.dcsys.data.person.PersonType;
@@ -136,5 +137,25 @@ public class TestManagerBean implements TestManager {
 		logger.log(Level.INFO, d.toString());
 		rec.onSuccess(d);
 	}
+	
+	
+	@Override
+	public void test30(Document d, Receiver<Document> rec) {
+		logger.log(Level.INFO, d.toString());
+		rec.onSuccess(d);
+	}
+	
+	@Override
+	public void test31(Document d, Receiver<List<Document>> rec) {
+		logger.log(Level.INFO, d.toString());
+		rec.onSuccess(Arrays.asList(d, d, d));
+	}
+	
+	@Override
+	public void test32(List<Document> ds, Receiver<List<Document>> rec) {
+		logger.log(Level.INFO, ds.toString());
+		rec.onSuccess(ds);
+	}
+	
 	
 }

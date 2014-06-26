@@ -1,11 +1,14 @@
 package ar.com.dcsys.pr.client;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import ar.com.dcsys.data.document.Document;
+import ar.com.dcsys.data.document.DocumentBean;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonBean;
 import ar.com.dcsys.data.person.PersonType;
@@ -108,6 +111,11 @@ public class ProcessorTest implements EntryPoint {
 			test8();
 			test9();
 			test10();
+
+			test30();
+			test31();
+			test32();
+			
 			
 			testEnum();
 			testEnum2();
@@ -591,5 +599,109 @@ public class ProcessorTest implements EntryPoint {
 		
 		vp.add(b);
 	}	
+	
+	
+	
+	private void test30() {
+		
+		Button b = new Button("test30()");
+		
+		b.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+					DocumentBean d = new DocumentBean();
+					d.setId("dfdfdsfdsfdsf");
+					d.setDescription("descripcion");
+					d.setMimeType("aalgo mime");
+					d.setName("petenombre");
+					
+					tm.test30(d,new Receiver<Document>() {
+						@Override
+						public void onSuccess(Document t) {
+							logger.log(Level.INFO,t.toString());
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+						}
+					});
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		vp.add(b);
+	}
+	
+	private void test31() {
+		
+		Button b = new Button("test31()");
+		
+		b.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+					DocumentBean d = new DocumentBean();
+					d.setId("dfdfdsfdsfdsf");
+					d.setDescription("descripcion");
+					d.setMimeType("aalgo mime");
+					d.setName("petenombre");
+					
+					tm.test31(d,new Receiver<List<Document>>() {
+						@Override
+						public void onSuccess(List<Document> t) {
+							logger.log(Level.INFO,t.toString());
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+						}
+					});
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		vp.add(b);
+	}
+	
+	private void test32() {
+		
+		Button b = new Button("test32()");
+		
+		b.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+					DocumentBean d = new DocumentBean();
+					d.setId("dfdfdsfdsfdsf");
+					d.setDescription("descripcion");
+					d.setMimeType("aalgo mime");
+					d.setName("petenombre");
+					
+					tm.test32(Arrays.asList((Document)d),new Receiver<List<Document>>() {
+						@Override
+						public void onSuccess(List<Document> t) {
+							logger.log(Level.INFO,t.toString());
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+						}
+					});
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		vp.add(b);
+	}
 	
 }

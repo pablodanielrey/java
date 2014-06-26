@@ -6,8 +6,10 @@ import ar.com.dcsys.data.document.Document;
 import ar.com.dcsys.gwt.manager.shared.Manager;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.pr.ClientManager;
+import ar.com.dcsys.pr.Serializer;
 
-@ClientManager
+@ClientManager({
+})
 public interface ReportsManager extends Manager {
 
 	public void generateAllPersonsReport(Receiver<Void> rec);
