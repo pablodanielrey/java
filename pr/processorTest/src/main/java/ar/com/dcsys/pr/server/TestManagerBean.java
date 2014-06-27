@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 
 import ar.com.dcsys.data.document.Document;
 import ar.com.dcsys.data.group.Group;
+import ar.com.dcsys.data.justification.GeneralJustificationDate;
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.period.PeriodAssignation;
@@ -335,6 +336,24 @@ public class TestManagerBean implements TestManager {
 	public void test55(List<JustificationDate> jds, Receiver<List<JustificationDate>> rec) {
 		logger.log(Level.INFO, jds.toString());
 		rec.onSuccess(jds);
+	}
+	
+	@Override
+	public void test56(GeneralJustificationDate gjd, Receiver<GeneralJustificationDate> rec) {
+		logger.log(Level.INFO, gjd.toString());
+		rec.onSuccess(gjd);
+	}
+	
+	@Override
+	public void test57(GeneralJustificationDate gjd, Receiver<List<GeneralJustificationDate>> rec) {
+		logger.log(Level.INFO, gjd.toString());
+		rec.onSuccess(Arrays.asList(gjd,gjd,gjd));
+	}
+	
+	@Override
+	public void test58(List<GeneralJustificationDate> gjds, Receiver<List<GeneralJustificationDate>> rec) {
+		logger.log(Level.INFO, gjds.toString());
+		rec.onSuccess(gjds);
 	}
 		
 }

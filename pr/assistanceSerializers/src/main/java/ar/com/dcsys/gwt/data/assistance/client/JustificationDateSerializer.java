@@ -1,15 +1,14 @@
 package ar.com.dcsys.gwt.data.assistance.client;
 
 import java.util.logging.Level;
-import name.pehl.piriti.commons.client.Mapping;
-import name.pehl.piriti.commons.client.Mappings;
 import java.util.logging.Logger;
 
+import name.pehl.piriti.commons.client.Mapping;
+import name.pehl.piriti.commons.client.Mappings;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
 import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.justification.JustificationDateBean;
-import ar.com.dcsys.data.person.PersonBean;
 import ar.com.dcsys.pr.CSD;
 
 import com.google.gwt.core.client.GWT;
@@ -17,11 +16,7 @@ import com.google.gwt.core.client.GWT;
 public class JustificationDateSerializer implements CSD<JustificationDate> {
 	
 	public static final Logger logger = Logger.getLogger(JustificationDateSerializer.class.getName());
-	
-
-	public interface PersonReader extends JsonReader<PersonBean> {};
-	public static final PersonReader PREADER = GWT.create(PersonReader.class);
-	
+		
 	public interface Reader extends JsonReader<JustificationDateBean> {}
 	public static final Reader READER = GWT.create(Reader.class);
 	@Mappings({
@@ -31,12 +26,6 @@ public class JustificationDateSerializer implements CSD<JustificationDate> {
 
 	public interface Writer extends JsonWriter<JustificationDateBean> {}
 	public static final Writer WRITER = GWT.create(Writer.class);
-	
-	
-	public interface PersonWriter extends JsonWriter<PersonBean> {}
-	public static final PersonWriter PWRITER = GWT.create(PersonWriter.class);	
-	
-	
 	
 	
 	@Override

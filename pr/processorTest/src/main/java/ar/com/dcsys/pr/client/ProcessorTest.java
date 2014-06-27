@@ -11,6 +11,8 @@ import ar.com.dcsys.data.document.Document;
 import ar.com.dcsys.data.document.DocumentBean;
 import ar.com.dcsys.data.group.GroupBean;
 import ar.com.dcsys.data.group.GroupType;
+import ar.com.dcsys.data.justification.GeneralJustificationDate;
+import ar.com.dcsys.data.justification.GeneralJustificationDateBean;
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationBean;
 import ar.com.dcsys.data.justification.JustificationDate;
@@ -152,6 +154,9 @@ public class ProcessorTest implements EntryPoint {
 			test53();
 			test54();
 			test55();
+			test56();
+			test57();
+			test58();
 			
 			testEnum();
 			testEnum2();
@@ -1439,6 +1444,132 @@ public class ProcessorTest implements EntryPoint {
 					tm.test55(jds,new Receiver<List<JustificationDate>>() {
 						@Override
 						public void onSuccess(List<JustificationDate> t) {
+							logger.log(Level.INFO,t.toString());
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+						}
+					});
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		vp.add(b);
+	}	private void test56() {
+		
+		Button b = new Button("test56()");
+		
+		b.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+					Justification j = new JustificationBean();
+					j.setId("id:3122331");
+					j.setCode("ab2code");
+					j.setDescription("Justificacion de prueba");
+										
+
+					GeneralJustificationDate gjd = new GeneralJustificationDateBean();
+					gjd.setEnd(new Date());
+					gjd.setStart(new Date());
+					gjd.setId("id-gjd-123141");
+					gjd.setJustification(j);
+					gjd.setNotes("notasssss");
+					
+					tm.test56(gjd,new Receiver<GeneralJustificationDate>() {
+						@Override
+						public void onSuccess(GeneralJustificationDate t) {
+							logger.log(Level.INFO,t.toString());
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+						}
+					});
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		vp.add(b);
+	}	
+	
+	private void test57() {
+		
+		Button b = new Button("test57()");
+		
+		b.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+					Justification j = new JustificationBean();
+					j.setId("id:3122331");
+					j.setCode("ab2code");
+					j.setDescription("Justificacion de prueba");
+										
+
+					GeneralJustificationDate gjd = new GeneralJustificationDateBean();
+					gjd.setEnd(new Date());
+					gjd.setStart(new Date());
+					gjd.setId("id-gjd-123141");
+					gjd.setJustification(j);
+					gjd.setNotes("notasssss");					
+					
+					tm.test57(gjd,new Receiver<List<GeneralJustificationDate>>() {
+						@Override
+						public void onSuccess(List<GeneralJustificationDate> t) {
+							logger.log(Level.INFO,t.toString());
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+						}
+					});
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		vp.add(b);
+	}
+	
+	private void test58() {
+		
+		Button b = new Button("test58()");
+		
+		b.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+					Justification j = new JustificationBean();
+					j.setId("id:3122331");
+					j.setCode("ab2code");
+					j.setDescription("Justificacion de prueba");
+										
+
+					GeneralJustificationDate gjd = new GeneralJustificationDateBean();
+					gjd.setEnd(new Date());
+					gjd.setStart(new Date());
+					gjd.setId("id-gjd-123141");
+					gjd.setJustification(j);
+					gjd.setNotes("notasssss");
+					
+					List<GeneralJustificationDate> gjds = new ArrayList<GeneralJustificationDate>();
+					gjds.add(gjd);
+					gjds.add(gjd);
+					gjds.add(gjd);							
+					
+					tm.test58(gjds,new Receiver<List<GeneralJustificationDate>>() {
+						@Override
+						public void onSuccess(List<GeneralJustificationDate> t) {
 							logger.log(Level.INFO,t.toString());
 						}
 						
