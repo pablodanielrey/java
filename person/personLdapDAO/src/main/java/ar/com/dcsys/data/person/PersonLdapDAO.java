@@ -666,7 +666,7 @@ public class PersonLdapDAO extends AbstractLdapPersonDAO {
 					}
 					
 					if (p.getGender() != null) {
-						Attribute gender = new BasicAttribute("x-dcsys-gender",p.getGender());
+						Attribute gender = new BasicAttribute("x-dcsys-gender",p.getGender().toString());
 						attrs.put(gender);
 					}
 					
@@ -723,7 +723,7 @@ public class PersonLdapDAO extends AbstractLdapPersonDAO {
 					}
 							
 					if (p.getGender() != null) {
-						Attribute gender = new BasicAttribute("x-dcsys-gender",p.getGender());
+						Attribute gender = new BasicAttribute("x-dcsys-gender",p.getGender().toString());
 						lMods.add(new ModificationItem(DirContext.REPLACE_ATTRIBUTE,gender));
 					}
 
