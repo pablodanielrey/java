@@ -24,6 +24,9 @@ public class GroupSerializer implements CSD<Group> {
 	@Override
 	public String toJson(Group o) {
 		String d = WRITER.toJson((GroupBean)o);
+		
+		d = d.replaceAll("\\\"\\{", ":{").replaceAll("\\}\"", "}").replace("\\","");
+		
 		logger.log(Level.WARNING,d);
 		return d;	
 	}
