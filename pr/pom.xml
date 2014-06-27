@@ -20,6 +20,7 @@
     <module>serializers</module>
     <module>personSerializers</module>
     <module>documentSerializers</module>
+    <module>assistanceSerializers</module>
     <module>autoBeansNetProcessor</module>
     <module>processorTest</module>
   </modules>
