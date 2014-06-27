@@ -5,6 +5,7 @@ import java.util.List;
 
 import ar.com.dcsys.data.document.Document;
 import ar.com.dcsys.data.justification.Justification;
+import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.MailChange;
 import ar.com.dcsys.data.person.Person;
@@ -44,7 +45,11 @@ import ar.com.dcsys.pr.SerializerType;
 		@Serializer(serializer="ar.com.dcsys.gwt.data.document.client.DocumentListSerializer", clazz="java.util.List<ar.com.dcsys.data.document.Document>", type=SerializerType.CLIENT),
 		@Serializer(serializer="ar.com.dcsys.gwt.data.document.server.DocumentListSerializer", clazz="java.util.List<ar.com.dcsys.data.document.Document>", type=SerializerType.SERVER),	
 		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.client.JustificationSerializer", clazz="ar.com.dcsys.data.justification.Justification", type=SerializerType.CLIENT),
-		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.server.JustificationSerializer", clazz="ar.com.dcsys.data.justification.Justification", type=SerializerType.SERVER)
+		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.server.JustificationSerializer", clazz="ar.com.dcsys.data.justification.Justification", type=SerializerType.SERVER),
+		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.client.JustificationListSerializer", clazz="java.util.List<ar.com.dcsys.data.justification.Justification>", type=SerializerType.CLIENT),
+		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.server.JustificationListSerializer", clazz="java.util.List<ar.com.dcsys.data.justification.Justification>", type=SerializerType.SERVER),
+		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.client.JustificationDateSerializer", clazz="ar.com.dcsys.data.justification.JustificationDate", type=SerializerType.CLIENT),
+		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.server.JustificationDateSerializer", clazz="ar.com.dcsys.data.justification.JustificationDate", type=SerializerType.SERVER)
 })
 public interface TestManager extends Manager {
 
@@ -83,7 +88,9 @@ public interface TestManager extends Manager {
 	public void test38(List<MailChange> mc, Receiver<List<MailChange>> rec);
 	
 	public void test50(Justification j, Receiver<Justification> rec);
-/*	public void test51(Justification j, Receiver<List<Justification>> rec);
-	public void test52(List<Justification> js, Receiver<List<Justification>> rec);*/
+	public void test51(Justification j, Receiver<List<Justification>> rec);
+	public void test52(List<Justification> js, Receiver<List<Justification>> rec);
+	
+	public void test53(JustificationDate jd, Receiver<JustificationDate> rec);
 	
 }

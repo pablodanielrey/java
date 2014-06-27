@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 
 import ar.com.dcsys.data.document.Document;
 import ar.com.dcsys.data.justification.Justification;
+import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.MailBean;
 import ar.com.dcsys.data.person.MailChange;
@@ -262,7 +263,7 @@ public class TestManagerBean implements TestManager {
 		rec.onSuccess(j);
 	}
 	
-	/*@Override
+	@Override
 	public void test51(Justification j, Receiver<List<Justification>> rec) {
 		logger.log(Level.INFO, j.toString());
 		rec.onSuccess(Arrays.asList(j,j,j));
@@ -272,6 +273,12 @@ public class TestManagerBean implements TestManager {
 	public void test52(List<Justification> js, Receiver<List<Justification>> rec) {
 		logger.log(Level.INFO, js.toString());
 		rec.onSuccess(js);
-	}*/
+	}
+	
+	@Override
+	public void test53(JustificationDate jd, Receiver<JustificationDate> rec) {
+		logger.log(Level.INFO, jd.toString());
+		rec.onSuccess(jd);
+	}
 		
 }

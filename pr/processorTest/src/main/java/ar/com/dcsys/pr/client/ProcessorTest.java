@@ -11,6 +11,8 @@ import ar.com.dcsys.data.document.Document;
 import ar.com.dcsys.data.document.DocumentBean;
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationBean;
+import ar.com.dcsys.data.justification.JustificationDate;
+import ar.com.dcsys.data.justification.JustificationDateBean;
 import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.MailBean;
 import ar.com.dcsys.data.person.MailChange;
@@ -136,6 +138,7 @@ public class ProcessorTest implements EntryPoint {
 			test50();
 			test51();
 			test52();
+			test53();
 			
 			testEnum();
 			testEnum2();
@@ -1044,10 +1047,12 @@ public class ProcessorTest implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				try {
-					Justification d = new JustificationBean();
+					Justification j = new JustificationBean();
+					j.setId("id:3122331");
+					j.setCode("ab2code");
+					j.setDescription("Justificacion de prueba");
 					
-					
-					tm.test50(d,new Receiver<Justification>() {
+					tm.test50(j,new Receiver<Justification>() {
 						@Override
 						public void onSuccess(Justification t) {
 							logger.log(Level.INFO,t.toString());
@@ -1069,21 +1074,20 @@ public class ProcessorTest implements EntryPoint {
 	
 	private void test51() {
 		
-		Button b = new Button("test31()");
+		Button b = new Button("test51()");
 		
 		b.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				try {
-					DocumentBean d = new DocumentBean();
-					d.setId("dfdfdsfdsfdsf");
-					d.setDescription("descripcion");
-					d.setMimeType("aalgo mime");
-					d.setName("petenombre");
+					JustificationBean j = new JustificationBean();
+					j.setId("id:3122331");
+					j.setCode("ab2code");
+					j.setDescription("Justificacion de prueba");					
 					
-					tm.test31(d,new Receiver<List<Document>>() {
+					tm.test51(j,new Receiver<List<Justification>>() {
 						@Override
-						public void onSuccess(List<Document> t) {
+						public void onSuccess(List<Justification> t) {
 							logger.log(Level.INFO,t.toString());
 						}
 						
@@ -1103,21 +1107,74 @@ public class ProcessorTest implements EntryPoint {
 	
 	private void test52() {
 		
-		Button b = new Button("test32()");
+		Button b = new Button("test52()");
 		
 		b.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				try {
-					DocumentBean d = new DocumentBean();
-					d.setId("dfdfdsfdsfdsf");
-					d.setDescription("descripcion");
-					d.setMimeType("aalgo mime");
-					d.setName("petenombre");
+					JustificationBean j = new JustificationBean();
+					j.setId("id:3122331");
+					j.setCode("ab2code");
+					j.setDescription("Justificacion de prueba");
 					
-					tm.test32(Arrays.asList((Document)d),new Receiver<List<Document>>() {
+					List<Justification> js = new ArrayList<Justification>();
+					js.add(j);
+					js.add(j);
+					js.add(j);							
+					
+					tm.test52(js,new Receiver<List<Justification>>() {
 						@Override
-						public void onSuccess(List<Document> t) {
+						public void onSuccess(List<Justification> t) {
+							logger.log(Level.INFO,t.toString());
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+						}
+					});
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		vp.add(b);
+	}
+	
+	
+	
+	private void test53() {
+		
+		Button b = new Button("test53()");
+		
+		b.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+					Justification j = new JustificationBean();
+					j.setId("id:3122331");
+					j.setCode("ab2code");
+					j.setDescription("Justificacion de prueba");
+					
+					Person person = new PersonBean();
+					person.setDni("1");
+					person.setName("emanuel");
+					person.setLastName("pais");
+					
+
+					JustificationDate jd = new JustificationDateBean();
+					jd.setEnd(new Date());
+					jd.setStart(new Date());
+					jd.setId("id-jd-123141");
+					jd.setJustification(j);
+					jd.setNotes("notasssss");
+					jd.setPerson(person);
+					
+					tm.test53(jd,new Receiver<JustificationDate>() {
+						@Override
+						public void onSuccess(JustificationDate t) {
 							logger.log(Level.INFO,t.toString());
 						}
 						
