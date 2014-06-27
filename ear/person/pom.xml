@@ -99,6 +99,46 @@
 
     <dependency>
       <groupId>ar.com.dcsys.pr</groupId>
+      <artifactId>serializers</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+
+
+   <!-- para los convertidores de codigo a json y la inversa -->
+
+<dependency>
+    <groupId>com.google.code.gson</groupId>
+    <artifactId>gson</artifactId>
+    <version>2.2.4</version>
+      <scope>compile</scope>
+</dependency>
+
+<dependency>
+    <groupId>name.pehl</groupId>
+    <artifactId>piriti-user</artifactId>
+    <version>0.10</version>
+      <scope>compile</scope>
+</dependency>
+
+<dependency>
+    <groupId>name.pehl</groupId>
+    <artifactId>piriti-dev</artifactId>
+    <version>0.10</version>
+      <scope>compile</scope>
+</dependency>
+
+<dependency>
+    <groupId>name.pehl</groupId>
+    <artifactId>totoe</artifactId>
+    <version>0.7</version>
+      <scope>compile</scope>
+</dependency>
+
+
+    <dependency>
+      <groupId>ar.com.dcsys.pr</groupId>
       <artifactId>annotations</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
@@ -173,12 +213,20 @@
             <type>war</type>
         </dependency>
 
+    <dependency>
+      <groupId>ar.com.dcsys.pr</groupId>
+      <artifactId>personSerializers</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+
         <dependency>
             <groupId>ar.com.dcsys.data</groupId>
             <artifactId>personEntities</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-                
+
         <dependency>
             <groupId>ar.com.dcsys.model</groupId>
             <artifactId>personModel</artifactId>
