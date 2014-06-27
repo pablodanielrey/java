@@ -19,8 +19,8 @@ public class GroupSerializer implements CSD<Group> {
 
 	private static final Logger logger = Logger.getLogger(GroupSerializer.class.getName());
 	
-	private final Gson gson = (new GsonBuilder()).registerTypeAdapter(Mail.class, MailInstanceCreator.class)
-												 .registerTypeAdapter(Person.class, PersonInstanceCreator.class)
+	private final Gson gson = (new GsonBuilder()).registerTypeAdapter(Mail.class, new MailInstanceCreator())
+												 .registerTypeAdapter(Person.class, new PersonInstanceCreator())
 												 .create();
 	
 	private class MailInstanceCreator implements InstanceCreator<Mail> {
