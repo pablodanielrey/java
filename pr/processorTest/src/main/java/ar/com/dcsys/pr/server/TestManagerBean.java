@@ -10,6 +10,9 @@ import java.util.logging.Logger;
 
 import ar.com.dcsys.data.document.Document;
 import ar.com.dcsys.data.person.Mail;
+import ar.com.dcsys.data.person.MailBean;
+import ar.com.dcsys.data.person.MailChange;
+import ar.com.dcsys.data.person.MailChangeBean;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonBean;
 import ar.com.dcsys.data.person.PersonType;
@@ -185,5 +188,46 @@ public class TestManagerBean implements TestManager {
 		}
 		rec.onSuccess(v);
 	}
+	
+	@Override
+	public void test34(MailChange v, Receiver<Void> rec) {
+		if (v == null) {
+			logger.log(Level.INFO, "null");
+		} else {
+			logger.log(Level.INFO, v.toString());
+		}
+		rec.onSuccess(null);
+	}
+
+	@Override
+	public void test35(Void v, Receiver<MailChange> rec) {
+		if (v == null) {
+			logger.log(Level.INFO, "null");
+		} else {
+			logger.log(Level.INFO, v.toString());
+		}
+		
+		MailBean mb = new MailBean();
+		mb.setMail("pablo@econo");
+		
+		MailChangeBean mc = new MailChangeBean();
+		mc.setConfirmed(false);
+		mc.setMail(mb);
+		mc.setPersonId("dsfdfdfdf");
+		mc.setToken("sdfdf3434fgwc423f4fewf");
+		
+		rec.onSuccess(mc);
+	}
+	
+	@Override
+	public void test36(MailChange v, Receiver<MailChange> rec) {
+		if (v == null) {
+			logger.log(Level.INFO, "null");
+		} else {
+			logger.log(Level.INFO, v.toString());
+		}
+		rec.onSuccess(v);
+	}
+	
 	
 }

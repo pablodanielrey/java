@@ -11,6 +11,8 @@ import ar.com.dcsys.data.document.Document;
 import ar.com.dcsys.data.document.DocumentBean;
 import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.MailBean;
+import ar.com.dcsys.data.person.MailChange;
+import ar.com.dcsys.data.person.MailChangeBean;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonBean;
 import ar.com.dcsys.data.person.PersonType;
@@ -122,6 +124,10 @@ public class ProcessorTest implements EntryPoint {
 			test31();
 			test32();
 			test33();
+
+			test34();
+			test35();
+			test36();
 			
 			
 			testEnum();
@@ -843,4 +849,111 @@ public class ProcessorTest implements EntryPoint {
 		
 		vp.add(b);
 	}	
+	
+	
+	private void test34() {
+		
+		Button b = new Button("test34()");
+		
+		b.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+					MailBean mb = new MailBean();
+					mb.setMail("pablo@econo");
+					
+					MailChangeBean mc = new MailChangeBean();
+					mc.setConfirmed(false);
+					mc.setMail(mb);
+					mc.setPersonId("dsfdfdfdf");
+					mc.setToken("sdfdf3434fgwc423f4fewf");
+					
+					tm.test34(mc,new Receiver<Void>() {
+						@Override
+						public void onSuccess(Void t) {
+							if (t == null) {
+								logger.log(Level.INFO,"null");
+							} else {
+								logger.log(Level.INFO,t.toString());
+							}
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+						}
+					});
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		vp.add(b);
+	}	
+	
+	private void test35() {
+		
+		Button b = new Button("test35()");
+		
+		b.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+					tm.test35(null,new Receiver<MailChange>() {
+						@Override
+						public void onSuccess(MailChange t) {
+							logger.log(Level.INFO,t.toString());
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+						}
+					});
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		vp.add(b);
+	}	
+	
+	private void test36() {
+		
+		Button b = new Button("test36()");
+		
+		b.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+					MailBean mb = new MailBean();
+					mb.setMail("pablo@econo");
+					
+					MailChangeBean mc = new MailChangeBean();
+					mc.setConfirmed(false);
+					mc.setMail(mb);
+					mc.setPersonId("dsfdfdfdf");
+					mc.setToken("sdfdf3434fgwc423f4fewf");					
+					
+					tm.test36(mc,new Receiver<MailChange>() {
+						@Override
+						public void onSuccess(MailChange t) {
+							logger.log(Level.INFO,t.toString());
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+						}
+					});
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		vp.add(b);
+	}		
 }
