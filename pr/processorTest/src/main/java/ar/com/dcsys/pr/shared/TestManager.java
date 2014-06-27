@@ -62,6 +62,8 @@ import ar.com.dcsys.pr.SerializerType;
 		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.server.JustificationListSerializer", clazz="java.util.List<ar.com.dcsys.data.justification.Justification>", type=SerializerType.SERVER),
 		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.client.JustificationDateSerializer", clazz="ar.com.dcsys.data.justification.JustificationDate", type=SerializerType.CLIENT),
 		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.server.JustificationDateSerializer", clazz="ar.com.dcsys.data.justification.JustificationDate", type=SerializerType.SERVER),
+		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.client.JustificationDateListSerializer", clazz="java.util.List<ar.com.dcsys.data.justification.JustificationDate>", type=SerializerType.CLIENT),
+		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.server.JustificationDateListSerializer", clazz="java.util.List<ar.com.dcsys.data.justification.JustificationDate>", type=SerializerType.SERVER),
 		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.client.PeriodTypeSerializer", clazz="ar.com.dcsys.data.period.PeriodType", type=SerializerType.CLIENT),
 		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.client.PeriodTypeListSerializer", clazz="java.util.List<ar.com.dcsys.data.period.PeriodType>", type=SerializerType.CLIENT),
 		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.server.PeriodTypeListSerializer", clazz="java.util.List<ar.com.dcsys.data.period.PeriodType>", type=SerializerType.SERVER),	
@@ -119,5 +121,7 @@ public interface TestManager extends Manager {
 	public void test52(List<Justification> js, Receiver<List<Justification>> rec);
 	
 	public void test53(JustificationDate jd, Receiver<JustificationDate> rec);
+	public void test54(JustificationDate jd, Receiver<List<JustificationDate>> rec);
+	public void test55(List<JustificationDate> jds, Receiver<List<JustificationDate>> rec);
 	
 }

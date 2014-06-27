@@ -150,6 +150,8 @@ public class ProcessorTest implements EntryPoint {
 			test51();
 			test52();
 			test53();
+			test54();
+			test55();
 			
 			testEnum();
 			testEnum2();
@@ -1353,5 +1355,104 @@ public class ProcessorTest implements EntryPoint {
 		});
 		
 		vp.add(b);
-	}			
+	}	
+	
+	private void test54() {
+		
+		Button b = new Button("test54()");
+		
+		b.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+					Justification j = new JustificationBean();
+					j.setId("id:3122331");
+					j.setCode("ab2code");
+					j.setDescription("Justificacion de prueba");
+					
+					Person person = new PersonBean();
+					person.setDni("1");
+					person.setName("emanuel");
+					person.setLastName("pais");
+					
+
+					JustificationDate jd = new JustificationDateBean();
+					jd.setEnd(new Date());
+					jd.setStart(new Date());
+					jd.setId("id-jd-123141");
+					jd.setJustification(j);
+					jd.setNotes("notasssss");
+					jd.setPerson(person);					
+					
+					tm.test54(jd,new Receiver<List<JustificationDate>>() {
+						@Override
+						public void onSuccess(List<JustificationDate> t) {
+							logger.log(Level.INFO,t.toString());
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+						}
+					});
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		vp.add(b);
+	}
+	
+	private void test55() {
+		
+		Button b = new Button("test55()");
+		
+		b.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+					Justification j = new JustificationBean();
+					j.setId("id:3122331");
+					j.setCode("ab2code");
+					j.setDescription("Justificacion de prueba");
+					
+					Person person = new PersonBean();
+					person.setDni("1");
+					person.setName("emanuel");
+					person.setLastName("pais");
+					
+
+					JustificationDate jd = new JustificationDateBean();
+					jd.setEnd(new Date());
+					jd.setStart(new Date());
+					jd.setId("id-jd-123141");
+					jd.setJustification(j);
+					jd.setNotes("notasssss");
+					jd.setPerson(person);	
+					
+					List<JustificationDate> jds = new ArrayList<JustificationDate>();
+					jds.add(jd);
+					jds.add(jd);
+					jds.add(jd);							
+					
+					tm.test55(jds,new Receiver<List<JustificationDate>>() {
+						@Override
+						public void onSuccess(List<JustificationDate> t) {
+							logger.log(Level.INFO,t.toString());
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+						}
+					});
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		vp.add(b);
+	}	
 }

@@ -324,5 +324,17 @@ public class TestManagerBean implements TestManager {
 		logger.log(Level.INFO, jd.toString());
 		rec.onSuccess(jd);
 	}
+	
+	@Override
+	public void test54(JustificationDate jd, Receiver<List<JustificationDate>> rec) {
+		logger.log(Level.INFO, jd.toString());
+		rec.onSuccess(Arrays.asList(jd,jd,jd));
+	}
+	
+	@Override
+	public void test55(List<JustificationDate> jds, Receiver<List<JustificationDate>> rec) {
+		logger.log(Level.INFO, jds.toString());
+		rec.onSuccess(jds);
+	}
 		
 }
