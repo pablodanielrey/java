@@ -2,7 +2,7 @@ package ar.com.dcsys.pr.serializers.shared;
 
 import ar.com.dcsys.pr.CSD;
 
-public class ViodSerializer implements CSD<Void> {
+public class VoidSerializer implements CSD<Void> {
 
 	@Override
 	public String toJson(Void o) {

@@ -176,5 +176,14 @@ public class TestManagerBean implements TestManager {
 		rec.onSuccess(ds);
 	}
 	
+	@Override
+	public void test33(Void v, Receiver<Void> rec) {
+		if (v == null) {
+			logger.log(Level.INFO, "null");
+		} else {
+			logger.log(Level.INFO, v.toString());
+		}
+		rec.onSuccess(v);
+	}
 	
 }

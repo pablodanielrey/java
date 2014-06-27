@@ -121,6 +121,7 @@ public class ProcessorTest implements EntryPoint {
 			test30();
 			test31();
 			test32();
+			test33();
 			
 			
 			testEnum();
@@ -810,4 +811,36 @@ public class ProcessorTest implements EntryPoint {
 		vp.add(b);
 	}
 	
+	
+	private void test33() {
+		
+		Button b = new Button("test33()");
+		
+		b.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+					tm.test33(null,new Receiver<Void>() {
+						@Override
+						public void onSuccess(Void t) {
+							if (t == null) {
+								logger.log(Level.INFO,"null");
+							} else {
+								logger.log(Level.INFO,t.toString());
+							}
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+						}
+					});
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		vp.add(b);
+	}	
 }

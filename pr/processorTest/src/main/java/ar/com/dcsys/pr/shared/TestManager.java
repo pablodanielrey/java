@@ -15,6 +15,7 @@ import ar.com.dcsys.pr.SerializerType;
 
 @ClientManager(serializers = {
 		@Serializer(serializer="ar.com.dcsys.pr.serializers.shared.StringSerializer", clazz="java.lang.String", type=SerializerType.COMBINED),
+		@Serializer(serializer="ar.com.dcsys.pr.serializers.shared.VoidSerializer", clazz="java.lang.Void", type=SerializerType.COMBINED),
 		@Serializer(serializer="ar.com.dcsys.pr.serializers.client.StringListSerializer", clazz="java.util.List<java.lang.String>", type=SerializerType.CLIENT),
 		@Serializer(serializer="ar.com.dcsys.pr.serializers.server.StringListSerializer", clazz="java.util.List<java.lang.String>", type=SerializerType.SERVER),
 		@Serializer(serializer="ar.com.dcsys.pr.serializers.client.DateListSerializer", clazz="java.util.List<java.util.Date>", type=SerializerType.CLIENT),
@@ -64,5 +65,7 @@ public interface TestManager extends Manager {
 	public void test30(Document d, Receiver<Document> rec);
 	public void test31(Document d, Receiver<List<Document>> rec);
 	public void test32(List<Document> ds, Receiver<List<Document>> rec);
+
+	public void test33(Void v, Receiver<Void> rec);
 
 }
