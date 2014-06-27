@@ -9,7 +9,6 @@ import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.gwt.manager.shared.Manager;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
-import ar.com.dcsys.gwt.person.shared.PersonValueProxy;
 import ar.com.dcsys.pr.ClientManager;
 
 @ClientManager
@@ -24,8 +23,6 @@ public interface JustificationsManagerTransfer extends Manager {
 	public void justify(Person person, Date start, Date end, Justification justification, String notes, Receiver<Void> receiver);
 	
 	public void findBy(List<Person> persons, Date start, Date end, Receiver<List<JustificationDate>> receiver);
-	
-	public void findByPersonValue(List<PersonValueProxy> persons, Date start, Date end, Receiver<List<JustificationDate>> receiver);
 	
 	public void remove(List<JustificationDate> justifications, Receiver<Void> receiver);
 	

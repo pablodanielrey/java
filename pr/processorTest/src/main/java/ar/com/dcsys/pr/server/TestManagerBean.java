@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.document.Document;
+import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.MailBean;
 import ar.com.dcsys.data.person.MailChange;
@@ -254,4 +255,23 @@ public class TestManagerBean implements TestManager {
 		logger.log(Level.INFO, mc.toString());
 		rec.onSuccess(mc);
 	}
+	
+	@Override
+	public void test50(Justification j, Receiver<Justification> rec) {
+		logger.log(Level.INFO, j.toString());
+		rec.onSuccess(j);
+	}
+	
+	/*@Override
+	public void test51(Justification j, Receiver<List<Justification>> rec) {
+		logger.log(Level.INFO, j.toString());
+		rec.onSuccess(Arrays.asList(j,j,j));
+	}
+	
+	@Override
+	public void test52(List<Justification> js, Receiver<List<Justification>> rec) {
+		logger.log(Level.INFO, js.toString());
+		rec.onSuccess(js);
+	}*/
+		
 }

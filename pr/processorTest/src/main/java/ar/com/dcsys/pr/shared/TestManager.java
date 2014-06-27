@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import ar.com.dcsys.data.document.Document;
+import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.MailChange;
 import ar.com.dcsys.data.person.Person;
@@ -41,7 +42,9 @@ import ar.com.dcsys.pr.SerializerType;
 		@Serializer(serializer="ar.com.dcsys.gwt.data.document.client.DocumentSerializer", clazz="ar.com.dcsys.data.document.Document", type=SerializerType.CLIENT),
 		@Serializer(serializer="ar.com.dcsys.gwt.data.document.server.DocumentSerializer", clazz="ar.com.dcsys.data.document.Document", type=SerializerType.SERVER),
 		@Serializer(serializer="ar.com.dcsys.gwt.data.document.client.DocumentListSerializer", clazz="java.util.List<ar.com.dcsys.data.document.Document>", type=SerializerType.CLIENT),
-		@Serializer(serializer="ar.com.dcsys.gwt.data.document.server.DocumentListSerializer", clazz="java.util.List<ar.com.dcsys.data.document.Document>", type=SerializerType.SERVER)
+		@Serializer(serializer="ar.com.dcsys.gwt.data.document.server.DocumentListSerializer", clazz="java.util.List<ar.com.dcsys.data.document.Document>", type=SerializerType.SERVER),	
+		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.client.JustificationSerializer", clazz="ar.com.dcsys.data.assistance.Justification", type=SerializerType.CLIENT),
+		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.server.JustificationSerializer", clazz="ar.com.dcsys.data.assistance.Justification", type=SerializerType.SERVER)
 })
 public interface TestManager extends Manager {
 
@@ -78,5 +81,9 @@ public interface TestManager extends Manager {
 	public void test36(MailChange mc, Receiver<MailChange> rec);
 	public void test37(Receiver<List<MailChange>> rec);
 	public void test38(List<MailChange> mc, Receiver<List<MailChange>> rec);
+	
+	public void test50(Justification j, Receiver<Justification> rec);
+/*	public void test51(Justification j, Receiver<List<Justification>> rec);
+	public void test52(List<Justification> js, Receiver<List<Justification>> rec);*/
 	
 }

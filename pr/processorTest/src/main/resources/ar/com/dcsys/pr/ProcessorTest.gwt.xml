@@ -22,6 +22,7 @@
   <!-- Other module inherits                                     -->
 
   <inherits name="ar.com.dcsys.PersonEntities"/>
+  <inherits name="ar.com.dcsys.AssistanceEntities"/>
 
 
 <!--  <inherits name="com.google.web.bindery.autobean.AutoBean"/> -->
@@ -35,6 +36,7 @@
   <inherits name="ar.com.dcsys.pr.Serializers"/>
   <inherits name="ar.com.dcsys.gwt.person.PersonSerializers"/>
   <inherits name="ar.com.dcsys.gwt.data.DocumentSerializers"/>
+  <inherits name="ar.com.dcsys.gwt.data.AssistanceSerializers"/>
   <inherits name="name.pehl.piriti.json.JSON" />
   <!-- <inherits name="name.pehl.piriti.xml.XML" /> -->
 
