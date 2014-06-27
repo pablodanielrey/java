@@ -17,7 +17,8 @@ public class PeriodAssignationListSerializer implements CSD<List<PeriodAssignati
 
 	private static final Logger logger = Logger.getLogger(PeriodAssignationListSerializer.class.getName());
 	
-	private final Gson gson = (new GsonBuilder()).create();
+	private final Gson gson = (new GsonBuilder()).setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+												 .create();
 	
 	private class Container {
 		List<PeriodAssignationBean> list;

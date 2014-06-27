@@ -13,7 +13,8 @@ public class PeriodAssignationSerializer implements CSD<PeriodAssignation> {
 
 	private static final Logger logger = Logger.getLogger(PeriodAssignationSerializer.class.getName());
 	
-	private final Gson gson = (new GsonBuilder()).create();
+	private final Gson gson = (new GsonBuilder()).setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+												 .create();
 	
 	@Override
 	public PeriodAssignation read(String json) {

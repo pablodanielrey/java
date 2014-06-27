@@ -32,10 +32,14 @@ public class JustificationDateSerializer implements CSD<JustificationDate> {
 	public String toJson(JustificationDate o) {
 		String jd = WRITER.toJson((JustificationDateBean)o);
 		
+		jd = jd.replaceAll("\\\"\\{", "{").replaceAll("\\}\"", "}").replace("\\","");
+
+		/*
 		// el justification lo convierte a un string, asi que tengo que sacarle el ""
 		jd = jd.replaceAll("justification\\\":\\\"\\{", "justification\":{").replaceAll("\\}\"", "}").replace("\\","");
 		// el person lo convierte a un string, asi que tengo que sacarle el ""
 		jd = jd.replaceAll("person\\\":\\\"\\{", "person\":{").replaceAll("\\}\"", "}").replace("\\","");
+		*/
 		
 		logger.log(Level.WARNING,"toJson:" + jd);
 		

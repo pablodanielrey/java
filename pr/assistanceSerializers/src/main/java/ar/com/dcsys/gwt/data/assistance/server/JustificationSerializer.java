@@ -13,7 +13,8 @@ public class JustificationSerializer implements CSD<Justification> {
 
 	private static final Logger logger = Logger.getLogger(JustificationSerializer.class.getName());
 	
-	private final Gson gson = (new GsonBuilder()).create();
+	private final Gson gson = (new GsonBuilder()).setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+												 .create();
 	
 	@Override
 	public Justification read(String json) {

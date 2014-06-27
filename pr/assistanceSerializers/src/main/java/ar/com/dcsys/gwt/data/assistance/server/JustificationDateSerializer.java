@@ -19,7 +19,9 @@ public class JustificationDateSerializer implements CSD<JustificationDate> {
 
 	private static final Logger logger = Logger.getLogger(JustificationDateSerializer.class.getName());
 
-	private final Gson gson = (new GsonBuilder()).setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").registerTypeAdapter(Justification.class, JustificationInstanceCreator.class).registerTypeAdapter(Person.class, PersonInstanceCreator.class).create();	
+	private final Gson gson = (new GsonBuilder()).setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+												 .registerTypeAdapter(Justification.class, new JustificationInstanceCreator())
+												 .registerTypeAdapter(Person.class, new PersonInstanceCreator()).create();	
 	
 	private class JustificationInstanceCreator implements InstanceCreator<Justification> {
 		@Override

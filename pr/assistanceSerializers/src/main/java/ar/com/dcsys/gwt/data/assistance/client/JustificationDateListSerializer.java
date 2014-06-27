@@ -24,6 +24,9 @@ public class JustificationDateListSerializer implements CSD<List<JustificationDa
 		JustificationDateListContainer sc = new JustificationDateListContainer();
 		sc.list = o;
 		String d = WRITER.toJson(sc);
+		
+		d = d.replaceAll("\\\"\\{", "{").replaceAll("\\}\"", "}").replace("\\","");
+		
 		logger.log(Level.WARNING,"piriti : " + d);
 		return d;
 	}

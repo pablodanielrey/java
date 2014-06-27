@@ -7,6 +7,8 @@ import java.util.logging.Logger;
 
 import ar.com.dcsys.data.justification.GeneralJustificationDate;
 import ar.com.dcsys.data.justification.GeneralJustificationDateBean;
+import ar.com.dcsys.data.justification.JustificationDate;
+import ar.com.dcsys.data.justification.JustificationDateBean;
 import ar.com.dcsys.pr.CSD;
 
 import com.google.gson.Gson;
@@ -18,7 +20,10 @@ public class GeneralJustificationDateListSerializer implements CSD<List<GeneralJ
 
 	private static final Logger logger = Logger.getLogger(GeneralJustificationDateListSerializer.class.getName());
 	
-	private final Gson gson = (new GsonBuilder()).registerTypeAdapter(GeneralJustificationDate.class, new GeneralJustificationInstanceCreator()).create();
+	private final Gson gson = (new GsonBuilder()).setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+												 .registerTypeAdapter(GeneralJustificationDate.class, new GeneralJustificationInstanceCreator())
+												 .registerTypeAdapter(JustificationDate.class, new JustificationInstanceCreator())
+												 .create();
 	
 	private class GeneralJustificationInstanceCreator implements InstanceCreator<GeneralJustificationDate> {
 		@Override
@@ -26,6 +31,13 @@ public class GeneralJustificationDateListSerializer implements CSD<List<GeneralJ
 			return new GeneralJustificationDateBean();
 		}
 	}
+	
+	private class JustificationInstanceCreator implements InstanceCreator<JustificationDate> {
+		@Override
+		public JustificationDate createInstance(Type arg0) {
+			return new JustificationDateBean();
+		}
+	}	
 	
 	
 	private class Container {

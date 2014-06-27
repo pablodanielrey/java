@@ -24,6 +24,9 @@ public class GeneralJustificationDateListSerializer implements CSD<List<GeneralJ
 		GeneralJustificationDateListContainer sc = new GeneralJustificationDateListContainer();
 		sc.list = o;
 		String d = WRITER.toJson(sc);
+		
+		d = d.replaceAll("\\\"\\{", "{").replaceAll("\\}\"", "}").replace("\\","");
+		
 		logger.log(Level.WARNING,"piriti : " + d);
 		return d;
 	}
