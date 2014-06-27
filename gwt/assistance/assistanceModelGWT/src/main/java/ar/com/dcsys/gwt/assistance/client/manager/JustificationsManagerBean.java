@@ -11,7 +11,6 @@ import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.gwt.assistance.shared.JustificationsManagerTransfer;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
-import ar.com.dcsys.gwt.person.shared.PersonValueProxy;
 import ar.com.dcsys.gwt.ws.client.WebSocket;
 
 import com.google.gwt.core.client.GWT;
@@ -75,15 +74,6 @@ public class JustificationsManagerBean implements JustificationsManager {
 			justificationsManagerTransfer.findBy(persons, start, end, receiver);
 		} catch (Exception e) {
 			logger.log(Level.SEVERE,e.getMessage());
-		}
-	}
-
-	@Override
-	public void findByPersonValue(List<PersonValueProxy> persons, Date start,Date end, Receiver<List<JustificationDate>> receiver) {
-		try {
-			justificationsManagerTransfer.findByPersonValue(persons, start, end, receiver);
-		} catch (Exception e) {
-			logger.log(Level.SEVERE,e.getMessage());	
 		}
 	}
 
