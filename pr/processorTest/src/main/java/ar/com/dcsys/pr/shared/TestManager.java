@@ -76,5 +76,7 @@ public interface TestManager extends Manager {
 	public void test34(MailChange mc, Receiver<Void> rec);
 	public void test35(Void v, Receiver<MailChange> rec);
 	public void test36(MailChange mc, Receiver<MailChange> rec);
+	public void test37(Receiver<List<MailChange>> rec);
+	public void test38(List<MailChange> mc, Receiver<List<MailChange>> rec);
 	
 }

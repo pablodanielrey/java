@@ -24,6 +24,9 @@ public class MailChangeListSerializer implements CSD<List<MailChange>> {
 		MailChangeListContainer sc = new MailChangeListContainer();
 		sc.list = o;
 		String d = WRITER.toJson(sc);
+		
+		d = d.replaceAll("mail\\\":\\\"\\{", "mail\":{").replaceAll("\\}\"", "}").replace("\\","");
+		
 		logger.log(Level.WARNING,"piriti : " + d);
 		return d;
 	}

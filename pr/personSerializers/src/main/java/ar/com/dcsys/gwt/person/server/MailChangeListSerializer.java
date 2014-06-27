@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.person.Mail;
+import ar.com.dcsys.data.person.MailBean;
 import ar.com.dcsys.data.person.MailChange;
 import ar.com.dcsys.data.person.MailChangeBean;
 import ar.com.dcsys.pr.CSD;
@@ -19,15 +20,22 @@ public class MailChangeListSerializer implements CSD<List<MailChange>> {
 
 	private static final Logger logger = Logger.getLogger(MailChangeListSerializer.class.getName());
 	
-	private final Gson gson = (new GsonBuilder()).registerTypeAdapter(Mail.class, new MailInstanceCreator()).create();
+	private final Gson gson = (new GsonBuilder()).registerTypeAdapter(MailChange.class, new MailChangeInstanceCreator())
+												 .registerTypeAdapter(Mail.class, new MailInstanceCreator()).create();
 	
-	private class MailInstanceCreator implements InstanceCreator<MailChange> {
+	private class MailChangeInstanceCreator implements InstanceCreator<MailChange> {
 		@Override
 		public MailChange createInstance(Type arg0) {
 			return new MailChangeBean();
 		}
 	}
 	
+	private class MailInstanceCreator implements InstanceCreator<Mail> {
+		@Override
+		public Mail createInstance(Type arg0) {
+			return new MailBean();
+		}
+	}
 	
 	private class Container {
 		List<MailChange> list;

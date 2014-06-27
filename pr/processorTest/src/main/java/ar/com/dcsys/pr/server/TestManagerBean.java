@@ -230,4 +230,28 @@ public class TestManagerBean implements TestManager {
 	}
 	
 	
+	@Override
+	public void test37(Receiver<List<MailChange>> rec) {
+		
+		MailBean m = new MailBean();
+		m.setMail("algo@econo");
+		
+		List<MailChange> l = new ArrayList<>();
+		for (int i = 0; i < 10; i++) {
+			MailChangeBean mc = new MailChangeBean();
+			mc.setMail(m);
+			mc.setConfirmed(false);
+			mc.setPersonId("pepe1s");
+			mc.setToken("fdsfsdfsfdsfdsd");
+			l.add(mc);
+		}
+		rec.onSuccess(l);
+	}	
+	
+	
+	@Override
+	public void test38(List<MailChange> mc, Receiver<List<MailChange>> rec) {
+		logger.log(Level.INFO, mc.toString());
+		rec.onSuccess(mc);
+	}
 }
