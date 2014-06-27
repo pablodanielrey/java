@@ -16,14 +16,13 @@ public class PiritiMailConverter implements Converter<Mail> {
 	public interface MWriter extends JsonWriter<MailBean> {}
 	public static final MWriter MWRITER = GWT.create(MWriter.class);
 	
-	
-	
 	@Override
 	public Mail convert(String value) {
 		return MREADER.read(value);
 	}
 	@Override
 	public String serialize(Mail value) {
-		return MWRITER.toJson((MailBean)value);
+		String d = MWRITER.toJson((MailBean)value);
+		return d;
 	}
 }
