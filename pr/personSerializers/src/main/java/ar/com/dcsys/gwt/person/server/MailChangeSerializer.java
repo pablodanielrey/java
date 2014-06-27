@@ -31,10 +31,9 @@ public class MailChangeSerializer implements CSD<MailChange> {
 		
 		logger.warning("MailChangeSerializer : " + json);
 		
-		json = json.replaceAll("mail\\\":\\\"\\{", "mail\":{").replaceAll("\\}\"", "}");
-		json = json.replaceAll("\\\"", "\"");
-
-		logger.warning("MailChangeSerializer : " + json);
+//		String json1 = json.replaceAll("mail\\\":\\\"\\{", "mail\":{").replaceAll("\\}\"", "}");
+//		String json2 = json1.replace("\\", "");
+//		logger.warning("MailChangeSerializer : " + json2);
 		
 		MailChangeBean mail = gson.fromJson(json, MailChangeBean.class);
 		

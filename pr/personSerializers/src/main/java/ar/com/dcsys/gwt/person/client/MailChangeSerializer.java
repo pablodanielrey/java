@@ -34,9 +34,7 @@ public class MailChangeSerializer implements CSD<MailChange> {
 		String d = WRITER.toJson((MailChangeBean) o);
 		
 		// el mail lo convierte a un string, asi que tengo que sacarle el ""
-		d = d.replaceAll("mail\\\":\\\"\\{", "mail\":{").replaceAll("\\}\"", "}");
-		d = d.replaceAll("\\\"", "\"");
-		
+		d = d.replaceAll("mail\\\":\\\"\\{", "mail\":{").replaceAll("\\}\"", "}").replace("\\","");
 		
 		logger.log(Level.WARNING,"MailSerializer : " + d);
 		
