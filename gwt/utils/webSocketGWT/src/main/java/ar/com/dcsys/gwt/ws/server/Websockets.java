@@ -58,6 +58,8 @@ public class Websockets implements Transport {
 			
 		} catch (NamingException e) {
 			logger.log(Level.SEVERE,"No se configura ningun handler ya que no se pudo obtener el BeanManager",e);
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, "Exception", e);
 		}
 		
 	}
