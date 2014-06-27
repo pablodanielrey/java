@@ -43,8 +43,8 @@ import ar.com.dcsys.pr.SerializerType;
 		@Serializer(serializer="ar.com.dcsys.gwt.data.document.server.DocumentSerializer", clazz="ar.com.dcsys.data.document.Document", type=SerializerType.SERVER),
 		@Serializer(serializer="ar.com.dcsys.gwt.data.document.client.DocumentListSerializer", clazz="java.util.List<ar.com.dcsys.data.document.Document>", type=SerializerType.CLIENT),
 		@Serializer(serializer="ar.com.dcsys.gwt.data.document.server.DocumentListSerializer", clazz="java.util.List<ar.com.dcsys.data.document.Document>", type=SerializerType.SERVER),	
-		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.client.JustificationSerializer", clazz="ar.com.dcsys.data.assistance.Justification", type=SerializerType.CLIENT),
-		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.server.JustificationSerializer", clazz="ar.com.dcsys.data.assistance.Justification", type=SerializerType.SERVER)
+		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.client.JustificationSerializer", clazz="ar.com.dcsys.data.justification.Justification", type=SerializerType.CLIENT),
+		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.server.JustificationSerializer", clazz="ar.com.dcsys.data.justification.Justification", type=SerializerType.SERVER)
 })
 public interface TestManager extends Manager {
 

@@ -1,14 +1,15 @@
 package ar.com.dcsys.data.justification;
 
-import java.io.Serializable;
 
-public class JustificationBean implements Serializable, Justification {
+public class JustificationBean implements Justification {
 
-	private static final long serialVersionUID = 1L;
-	
 	private String code;
 	private String description;
 	private String id;
+
+	public JustificationBean() {
+		
+	}
 	
 	public String getDescription() {
 		return description;
