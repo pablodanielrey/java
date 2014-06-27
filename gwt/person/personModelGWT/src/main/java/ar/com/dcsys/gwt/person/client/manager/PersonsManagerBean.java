@@ -8,7 +8,6 @@ import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
-import ar.com.dcsys.gwt.person.shared.PersonValueProxy;
 import ar.com.dcsys.gwt.ws.client.WebSocket;
 
 import com.google.gwt.core.shared.GWT;
@@ -139,13 +138,8 @@ public class PersonsManagerBean implements PersonsManager {
 	}
 
 	@Override
-	public void findAllPersonValue(final Receiver<List<PersonValueProxy>> rec) {
-		pm.findAllPersonValue(rec);
-	}
-	
-	@Override
-	public void findAllPersonValue(List<PersonType> types, final Receiver<List<PersonValueProxy>> rec) {
-		pm.findAllPersonValue(types,rec);
+	public void findAll(List<PersonType> types, final Receiver<List<Person>> rec) {
+		pm.findAll(types,rec);
 	}
 	
 }

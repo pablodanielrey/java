@@ -133,6 +133,12 @@
 
               <artifact>ar.com.dcsys.gwt.person:personModelGWT</artifact>
               <artifact>ar.com.dcsys.gwt.auth:authModelGWT</artifact>
+
+              <artifact>ar.com.dcsys.pr:annotations</artifact>
+              <artifact>ar.com.dcsys.pr:personSerializers</artifact>
+              <artifact>ar.com.dcsys.pr:documentSerializers</artifact>
+              <artifact>ar.com.dcsys.pr:serializers</artifact>
+
           </compileSourcesArtifacts>
 
           <logLevel>INFO</logLevel>

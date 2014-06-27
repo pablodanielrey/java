@@ -24,11 +24,22 @@ public class EnumPersonTypesSort {
 					return 1;
 				}
 				
-				String description0 = arg0.getDescription().trim().toLowerCase();
-				String description1 = arg1.getDescription().trim().toLowerCase();
+				String description0 = getDescription(arg0).trim().toLowerCase();
+				String description1 = getDescription(arg1).trim().toLowerCase();
 				
 				return description0.compareTo(description1);
 			}
 		});
-	}	
+	}
+	
+	private static String getDescription(PersonType type) {
+		switch (type) {
+			case EXTERNAL: return "Visitante";
+			case PERSONAL: return "No Docente";
+			case POSTGRADUATE: return "Posgrado";
+			case STUDENT: return "Estudiante";
+			case TEACHER: return "Docente";
+		}
+		return "";
+	}
 }

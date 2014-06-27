@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonType;
-import ar.com.dcsys.gwt.person.client.common.PersonValueSort;
-import ar.com.dcsys.gwt.person.client.common.filter.FilterPersonValue;
-import ar.com.dcsys.gwt.person.client.common.filter.FilterPersonValueDni;
-import ar.com.dcsys.gwt.person.client.common.filter.FilterPersonValueName;
-import ar.com.dcsys.gwt.person.client.ui.cell.PersonValueCell;
+import ar.com.dcsys.gwt.person.client.common.filter.FilterPerson;
+import ar.com.dcsys.gwt.person.client.common.filter.FilterPersonDni;
+import ar.com.dcsys.gwt.person.client.common.filter.FilterPersonName;
+import ar.com.dcsys.gwt.person.client.ui.cell.PersonCell;
 import ar.com.dcsys.gwt.person.client.ui.common.PersonResources;
-import ar.com.dcsys.gwt.person.shared.PersonValueProxy;
+import ar.com.dcsys.utils.PersonSort;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -42,12 +42,12 @@ public class ManagePersons extends Composite implements ManagePersonsView {
 	
 
 	// filtros de dni y nombre
-	private final FilterPersonValue[] filters = new FilterPersonValue[] { new FilterPersonValueDni() , new FilterPersonValueName() };
+	private final FilterPerson[] filters = new FilterPerson[] { new FilterPersonDni() , new FilterPersonName() };
 	
 	
 	private Presenter p;
-	private final List<PersonValueProxy> personsData;
-	private final List<PersonValueProxy> personsFilteredData;
+	private final List<Person> personsData;
+	private final List<Person> personsFilteredData;
 	private final PersonResources resources = GWT.create(PersonResources.class);
 
 	private final List<PersonType> typesCache = new ArrayList<PersonType>();
@@ -57,7 +57,7 @@ public class ManagePersons extends Composite implements ManagePersonsView {
 	@UiField(provided=true) TextBox filter;
 	@UiField(provided=true) Label usersCount;
 	@UiField FlowPanel types;
-	@UiField(provided=true) DataGrid<PersonValueProxy> persons;
+	@UiField(provided=true) DataGrid<Person> persons;
 	
 	@UiField FlowPanel personData;
 	@UiField FlowPanel personGroups;
@@ -99,7 +99,7 @@ public class ManagePersons extends Composite implements ManagePersonsView {
 		
 		this.types.clear();
 		for (PersonType pt : types) {
-			CheckBox c = new CheckBox(pt.getDescription());
+			CheckBox c = new CheckBox(getDescription(pt));
 			c.setValue(false);
 			c.addClickHandler(handler);
 			this.types.add(c);
@@ -111,6 +111,17 @@ public class ManagePersons extends Composite implements ManagePersonsView {
 		this.types.add(c);
 	}	
 	
+	private String getDescription(PersonType type) {
+		switch (type) {
+			case EXTERNAL: return "Visitante";
+			case PERSONAL: return "No Docente";
+			case POSTGRADUATE: return "Posgrado";
+			case STUDENT: return "Estudiante";
+			case TEACHER: return "Docente";
+		}
+		return "";
+	}
+	
 	@Override
 	public List<PersonType> getSelectedTypes() {
 		List<PersonType> selected = new ArrayList<PersonType>();
@@ -118,7 +129,7 @@ public class ManagePersons extends Composite implements ManagePersonsView {
 			CheckBox c = (CheckBox)this.types.getWidget(i);
 			if (c.getValue()) {
 				for (PersonType pt : typesCache) {
-					if (pt.getDescription().equalsIgnoreCase(c.getText())) {
+					if (getDescription(pt).equalsIgnoreCase(c.getText())) {
 						selected.add(pt);
 					}
 				}
@@ -162,11 +173,11 @@ public class ManagePersons extends Composite implements ManagePersonsView {
 	
 	private void createPersons() {
 		String imageHtml = AbstractImagePrototype.create(resources.user()).getHTML();
-		PersonValueCell pc = new PersonValueCell(imageHtml);
+		PersonCell pc = new PersonCell(imageHtml);
 		
-		IdentityColumn<PersonValueProxy> person = new IdentityColumn<PersonValueProxy>(pc);
+		IdentityColumn<Person> person = new IdentityColumn<Person>(pc);
 			
-		persons = new DataGrid<PersonValueProxy>();
+		persons = new DataGrid<Person>();
 		persons.addColumn(person);
 	}
 	
@@ -176,8 +187,8 @@ public class ManagePersons extends Composite implements ManagePersonsView {
 		
 		initWidget(uiBinder.createAndBindUi(this));
 		
-		personsData = new ArrayList<PersonValueProxy>();
-		personsFilteredData = new ArrayList<PersonValueProxy>();
+		personsData = new ArrayList<Person>();
+		personsFilteredData = new ArrayList<Person>();
 	}
 
 	@Override
@@ -201,17 +212,17 @@ public class ManagePersons extends Composite implements ManagePersonsView {
 	}
 
 	@Override
-	public void setSelectionModel(SingleSelectionModel<PersonValueProxy> selection) {
+	public void setSelectionModel(SingleSelectionModel<Person> selection) {
 		this.persons.setSelectionModel(selection);
 	}
 
 	@Override
-	public void setPersons(List<PersonValueProxy> persons) {
+	public void setPersons(List<Person> persons) {
 		personsData.clear();
 		if (persons == null) {
 			return;
 		}
-		PersonValueSort.sort(persons);
+		PersonSort.sort(persons);
 		personsData.addAll(persons);
 		filterPersons();
 	}
@@ -228,8 +239,8 @@ public class ManagePersons extends Composite implements ManagePersonsView {
 		// ahora solo es el dni y si no el nombre.
 		ft = ft.toLowerCase();
 		personsFilteredData.clear();
-		for (PersonValueProxy p : personsData) {
-			for (FilterPersonValue f : filters) {
+		for (Person p : personsData) {
+			for (FilterPerson f : filters) {
 				if (f.checkFilter(p, ft)) {
 					personsFilteredData.add(p);
 					break;

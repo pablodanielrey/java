@@ -26,13 +26,6 @@
 <!-- utilidaes varias -->
 
     <dependency>
-      <groupId>ar.com.dcsys.config</groupId>
-      <artifactId>cdiConfig</artifactId>
-      <version>1.0-SNAPSHOT</version>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
       <groupId>com.google.gwt.inject</groupId>
       <artifactId>gin</artifactId>
       <version>${gin.version}</version>
@@ -47,33 +40,14 @@
     </dependency>
 
 
-<!-- de autentificacion -->
+<!-- shiro -->
 
-    <dependency>
-      <groupId>ar.com.dcsys.gwt.auth</groupId>
-      <artifactId>authModelGWT</artifactId>
-      <version>1.0-SNAPSHOT</version>
+   <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-core</artifactId>
+      <version>${shiro.version}</version>
       <scope>provided</scope>
-    </dependency>
-
-<!-- documentos -->
-
-    <dependency>
-      <groupId>ar.com.dcsys.data</groupId>
-      <artifactId>documentEntities</artifactId>
-      <version>1.0-SNAPSHOT</version>
-      <scope>provided</scope>
-    </dependency>
-
-<!-- persona -->
-
-    <dependency>
-      <groupId>ar.com.dcsys.data</groupId>
-      <artifactId>personEntities</artifactId>
-      <version>1.0-SNAPSHOT</version>
-      <scope>provided</scope>
-    </dependency>
-
+   </dependency>
 
 
 
@@ -121,7 +95,40 @@
       <scope>provided</scope>
     </dependency>
 
+
 <!-- -->
+
+
+<!-- de autentificacion -->
+
+    <dependency>
+      <groupId>ar.com.dcsys.gwt.auth</groupId>
+      <artifactId>authModelGWT</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+
+<!-- documentos -->
+
+    <dependency>
+      <groupId>ar.com.dcsys.data</groupId>
+      <artifactId>documentEntities</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+
+<!-- persona -->
+
+    <dependency>
+      <groupId>ar.com.dcsys.data</groupId>
+      <artifactId>personEntities</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+
+
+
+
 
 
 </dependencies>

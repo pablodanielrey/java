@@ -102,13 +102,24 @@ public class PersonTypes extends Composite implements PersonTypesView {
 				CheckBox c = (CheckBox)this.types.getWidget(i);
 				c.setValue(false);
 				for (PersonType pt : types) {
-					if (c.getText().equalsIgnoreCase(pt.getDescription())) {
+					if (c.getText().equalsIgnoreCase(getDescription(pt))) {
 						c.setValue(true);
 					}
 				}
 			}
 		}		
 	}
+	
+	private String getDescription(PersonType type) {
+		switch (type) {
+			case EXTERNAL: return "Visitante";
+			case PERSONAL: return "No Docente";
+			case POSTGRADUATE: return "Posgrado";
+			case STUDENT: return "Estudiante";
+			case TEACHER: return "Docente";
+		}
+		return "";
+	}	
 	
 
 	
@@ -119,7 +130,7 @@ public class PersonTypes extends Composite implements PersonTypesView {
 		
 		this.types.clear();
 		for (PersonType pt : types) {
-			CheckBox c = new CheckBox(pt.getDescription());
+			CheckBox c = new CheckBox(getDescription(pt));
 			c.setValue(false);
 			c.setEnabled(true);
 			c.addClickHandler(new ClickHandler() {
@@ -143,7 +154,7 @@ public class PersonTypes extends Composite implements PersonTypesView {
 		for (PersonType pt : typesCache) {
 			for (int i = 0; i < this.types.getWidgetCount(); i++) {
 				CheckBox c = (CheckBox)this.types.getWidget(i);
-				if (pt.getDescription().equalsIgnoreCase(c.getText())) {
+				if (getDescription(pt).equalsIgnoreCase(c.getText())) {
 					typesSelection.setSelected(pt, c.getValue());
 					break;
 				}

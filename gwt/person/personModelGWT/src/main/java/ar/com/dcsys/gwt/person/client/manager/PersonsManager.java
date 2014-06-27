@@ -7,7 +7,6 @@ import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
-import ar.com.dcsys.gwt.person.shared.PersonValueProxy;
 
 public interface PersonsManager {
 
@@ -25,9 +24,7 @@ public interface PersonsManager {
 	 * @param receiver
 	 */
 	public void findAll(Receiver<List<Person>> receiver);
-	
-	public void findAllPersonValue(Receiver<List<PersonValueProxy>> rec);
-	public void findAllPersonValue(List<PersonType> types, Receiver<List<PersonValueProxy>> rec);
+	public void findAll(List<PersonType> types, Receiver<List<Person>> rec);
 	
 	
 	public void findMails(Person p, Receiver<List<Mail>> rec);

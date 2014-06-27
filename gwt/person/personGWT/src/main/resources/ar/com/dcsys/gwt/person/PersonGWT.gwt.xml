@@ -34,6 +34,11 @@
  <inherits name="ar.com.dcsys.gwt.messages.MessagesGWT"/>
  <inherits name="ar.com.dcsys.gwt.ws.WsGWT"/>
  
+  <inherits name="ar.com.dcsys.pr.Serializers"/>
+  <inherits name="ar.com.dcsys.gwt.person.PersonSerializers"/>
+  <inherits name="ar.com.dcsys.gwt.data.DocumentSerializers"/>
+  <inherits name="name.pehl.piriti.json.JSON" />
+ 
 
   <!-- Specify the app entry point class.                         -->
   <entry-point class='ar.com.dcsys.gwt.person.client.PersonGWT' />

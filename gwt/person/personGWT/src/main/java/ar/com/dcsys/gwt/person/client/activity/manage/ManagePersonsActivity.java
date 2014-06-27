@@ -20,7 +20,6 @@ import ar.com.dcsys.gwt.person.client.ui.UpdatePersonDataView;
 import ar.com.dcsys.gwt.person.client.ui.assistance.PersonAssistanceDataView;
 import ar.com.dcsys.gwt.person.client.ui.basicData.PersonDataView;
 import ar.com.dcsys.gwt.person.client.ui.manage.ManagePersonsView;
-import ar.com.dcsys.gwt.person.shared.PersonValueProxy;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
@@ -42,7 +41,7 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 	private final PersonDataView personDataView;
 	private final UpdatePersonDataView updatePersonDataView;
 	
-	private final SingleSelectionModel<PersonValueProxy> selection;
+	private final SingleSelectionModel<Person> selection;
 	private final SingleSelectionModel<Person> personSelection;
 	
 	private final UpdatePersonDataActivity updatePersonDataActivity;
@@ -55,14 +54,15 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 	private Handler selectionChange = new Handler() {
 		@Override
 		public void onSelectionChange(SelectionChangeEvent event) {
-			PersonValueProxy person = selection.getSelectedObject();
+			Person person = selection.getSelectedObject();
 
 			if (person == null) {
 				personSelection.clear();
 				return;
 			}
 
-			personsManager.findById(person.getId(), new Receiver<Person>() {
+			personSelection.setSelected(person, true);
+			/*personsManager.findById(person.getId(), new Receiver<Person>() {
 				public void onSuccess(Person person) {
 					personSelection.setSelected(person, true);
 				};
@@ -70,7 +70,7 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 				public void onError(String error) {
 					logger.log(Level.SEVERE,error);
 				}
-			});
+			});*/
 		}
 	};
 	
@@ -83,7 +83,7 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 	};
 	
 	
-	private void setPersons(List<PersonValueProxy> persons) {
+	private void setPersons(List<Person> persons) {
 		view.setPersons(persons);
 	}
  
@@ -107,7 +107,7 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 		
 		personSelection = new SingleSelectionModel<Person>();
 
-		selection = new SingleSelectionModel<PersonValueProxy>();
+		selection = new SingleSelectionModel<Person>();
 		selection.addSelectionChangeHandler(selectionChange);
 		
 		
@@ -207,14 +207,14 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 		
 		
 		if (types == null || types.size() <= 0 && (!view.isNoTypeSelected())) {
-			view.setPersons(new ArrayList<PersonValueProxy>());
+			view.setPersons(new ArrayList<Person>());
 			return;
 		}
 		
 		if (types == null || types.size() <= 0) {
 			// busco las personas que no tienen tipo.
-			personsManager.findAllPersonValue(types,new Receiver<List<PersonValueProxy>>() {
-				public void onSuccess(List<PersonValueProxy> persons) {
+			personsManager.findAll(types,new Receiver<List<Person>>() {
+				public void onSuccess(List<Person> persons) {
 					setPersons(persons);
 				};
 				@Override
@@ -227,12 +227,12 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 		
 		if (types != null && types.size() > 0) {
 			// busco las personas que si tienen algun tipo.
-			personsManager.findAllPersonValue(types,new Receiver<List<PersonValueProxy>>() {
-				public void onSuccess(final List<PersonValueProxy> persons) {
+			personsManager.findAll(types,new Receiver<List<Person>>() {
+				public void onSuccess(final List<Person> persons) {
 					if (view.isNoTypeSelected()) {
 						// busco las personas que no tienen ningun tipo.
-						personsManager.findAllPersonValue(new ArrayList<PersonType>(),new Receiver<List<PersonValueProxy>>() {
-							public void onSuccess(List<PersonValueProxy> persons2) {
+						personsManager.findAll(new ArrayList<PersonType>(),new Receiver<List<Person>>() {
+							public void onSuccess(List<Person> persons2) {
 								
 								if (persons == null) {
 									setPersons(persons2);

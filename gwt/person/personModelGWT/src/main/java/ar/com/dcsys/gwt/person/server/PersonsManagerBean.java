@@ -14,8 +14,6 @@ import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.messages.shared.Transport;
-import ar.com.dcsys.gwt.person.shared.PersonValueProxy;
-import ar.com.dcsys.gwt.person.shared.PersonValueProxyImpl;
 import ar.com.dcsys.gwt.person.shared.PersonsManager;
 
 public class PersonsManagerBean implements PersonsManager {
@@ -62,35 +60,11 @@ public class PersonsManagerBean implements PersonsManager {
 		}
 	}
 
-	
-	private List<PersonValueProxy> toPersonValue(List<Person> persons) {
-		List<PersonValueProxy> pvs = new ArrayList<>();
-		for (Person p : persons) {
-			PersonValueProxy pv = new PersonValueProxyImpl();
-			pv.setId(p.getId());
-			pv.setDni(p.getDni());
-			pv.setName(p.getName());
-			pv.setLastName(p.getLastName());
-			pvs.add(pv);
-		}			
-		return pvs;
-	}
-	
 	@Override
-	public void findAllPersonValue(Receiver<List<PersonValueProxy>> rec) {
-		try {
-			List<Person> persons = personsManager.findAll();
-			rec.onSuccess(toPersonValue(persons));
-		} catch (PersonException e) {
-			rec.onError(e.getMessage());
-		}
-	}
-
-	@Override
-	public void findAllPersonValue(List<PersonType> types, Receiver<List<PersonValueProxy>> rec) {
+	public void findAll(List<PersonType> types, Receiver<List<Person>> rec) {
 		try {
 			List<Person> persons = personsManager.findAllBy(types);
-			rec.onSuccess(toPersonValue(persons));
+			rec.onSuccess(persons);
 		} catch (PersonException e) {
 			rec.onError(e.getMessage());
 		}

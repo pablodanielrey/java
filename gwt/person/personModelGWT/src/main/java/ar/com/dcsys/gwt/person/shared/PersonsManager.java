@@ -13,6 +13,7 @@ import ar.com.dcsys.pr.Serializer;
 import ar.com.dcsys.pr.SerializerType;
 
 @ClientManager(serializers = {
+		@Serializer(serializer="ar.com.dcsys.pr.serializers.shared.VoidSerializer", clazz="java.lang.Void", type=SerializerType.COMBINED),
 		@Serializer(serializer="ar.com.dcsys.pr.serializers.shared.StringSerializer", clazz="java.lang.String", type=SerializerType.COMBINED),
 		@Serializer(serializer="ar.com.dcsys.pr.serializers.client.StringListSerializer", clazz="java.util.List<java.lang.String>", type=SerializerType.CLIENT),
 		@Serializer(serializer="ar.com.dcsys.pr.serializers.server.StringListSerializer", clazz="java.util.List<java.lang.String>", type=SerializerType.SERVER),
@@ -48,9 +49,7 @@ public interface PersonsManager extends Manager {
 	 * @param receiver
 	 */
 	public void findAll(Receiver<List<Person>> receiver);
-	
-	public void findAllPersonValue(Receiver<List<PersonValueProxy>> rec);
-	public void findAllPersonValue(List<PersonType> types, Receiver<List<PersonValueProxy>> rec);
+	public void findAll(List<PersonType> types, Receiver<List<Person>> rec);
 	
 	
 	public void findMails(Person p, Receiver<List<Mail>> rec);
