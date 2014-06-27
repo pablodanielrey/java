@@ -1,10 +1,12 @@
 package ar.com.dcsys.gwt.person.server;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.person.Person;
+import ar.com.dcsys.data.person.PersonBean;
 import ar.com.dcsys.pr.CSD;
 
 import com.google.gson.Gson;
@@ -18,13 +20,31 @@ public class PersonListSerializer implements CSD<List<Person>> {
 	private final Gson gson = (new GsonBuilder()).create();
 	
 	private class Container {
-		List<Person> list;
+		List<PersonBean> list;
 	}	
+	
+	
+	private List<PersonBean> toPersonBeanList(List<Person> l) {
+		List<PersonBean> ps = new ArrayList<PersonBean>();
+		for (Person p : l) {
+			ps.add((PersonBean)p);
+		}
+		return ps;
+	}
+
+	private List<Person> toPersonList(List<PersonBean> l) {
+		List<Person> ps = new ArrayList<Person>();
+		for (Person p : l) {
+			ps.add(p);
+		}
+		return ps;
+	}
+		
 	
 	@Override
 	public String toJson(List<Person> o) {
 		Container sc = new Container();
-		sc.list = o;
+		sc.list = toPersonBeanList(o);
 		String d = gson.toJson(sc);
 		logger.log(Level.WARNING, "gson : " + d);
 		return d;
@@ -36,7 +56,7 @@ public class PersonListSerializer implements CSD<List<Person>> {
 
 		TypeToken<Container> type = new TypeToken<Container>() {};
 		Container sc = gson.fromJson(json, type.getType());
-		return sc.list;
+		return toPersonList(sc.list);
 	}	
 	
 }

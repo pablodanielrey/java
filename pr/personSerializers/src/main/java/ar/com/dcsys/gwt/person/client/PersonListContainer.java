@@ -2,10 +2,10 @@ package ar.com.dcsys.gwt.person.client;
 
 import java.util.List;
 
-import ar.com.dcsys.data.person.Person;
+import ar.com.dcsys.data.person.PersonBean;
 
 public class PersonListContainer {
 
-	List<Person> list;
+	List<PersonBean> list;
 	
 }
