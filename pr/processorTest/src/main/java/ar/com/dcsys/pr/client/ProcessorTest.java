@@ -9,10 +9,15 @@ import java.util.logging.Logger;
 
 import ar.com.dcsys.data.document.Document;
 import ar.com.dcsys.data.document.DocumentBean;
+import ar.com.dcsys.data.group.GroupBean;
+import ar.com.dcsys.data.group.GroupType;
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationBean;
 import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.justification.JustificationDateBean;
+import ar.com.dcsys.data.period.PeriodAssignation;
+import ar.com.dcsys.data.period.PeriodAssignationBean;
+import ar.com.dcsys.data.period.PeriodType;
 import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.MailBean;
 import ar.com.dcsys.data.person.MailChange;
@@ -134,6 +139,12 @@ public class ProcessorTest implements EntryPoint {
 			test36();
 			test37();
 			test38();
+
+			test40();
+			test41();
+			test42();
+			test43();
+			
 			
 			test50();
 			test51();
@@ -1036,6 +1047,158 @@ public class ProcessorTest implements EntryPoint {
 		
 		vp.add(b);
 	}
+	
+	private void test40() {
+		
+		Button b = new Button("test40()");
+		
+		b.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+					GroupBean g = new GroupBean();
+					g.setId("sdfdsfsd");
+					g.setName("nombreeeeee");
+					
+					List<Person> ps = new ArrayList<Person>();
+					PersonBean p = new PersonBean();
+					p.setDni("fsdfd");
+					p.setName("pablo");
+					ps.add(p);
+					g.setPersons(ps);
+
+					List<Mail> mails = new ArrayList<Mail>();
+					MailBean mb = new MailBean();
+					mb.setMail("sdfds@econo");
+					mails.add(mb);
+					g.setMails(mails);
+					
+					g.setTypes(Arrays.asList(GroupType.ALIAS));
+					
+					tm.test40(g,new Receiver<List<Person>>() {
+						@Override
+						public void onSuccess(List<Person> t) {
+							logger.log(Level.INFO,t.toString());
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+						}
+					});
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		vp.add(b);
+	}
+	
+	private void test41() {
+		
+		Button b = new Button("test41()");
+		
+		b.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+					PersonBean p = new PersonBean();
+					p.setDni("fsdfd");
+					p.setName("pablo");
+
+					tm.test41(p,new Receiver<List<PeriodAssignation>>() {
+						@Override
+						public void onSuccess(List<PeriodAssignation> t) {
+							logger.log(Level.INFO,t.toString());
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+						}
+					});
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		vp.add(b);
+	}
+	
+	private void test42() {
+		
+		Button b = new Button("test42()");
+		
+		b.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+
+					tm.test42(new Receiver<List<PeriodType>>() {
+						@Override
+						public void onSuccess(List<PeriodType> t) {
+							logger.log(Level.INFO,t.toString());
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+						}
+					});
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		vp.add(b);
+	}
+	
+	private void test43() {
+		
+		Button b = new Button("test43()");
+		
+		b.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+					PersonBean p = new PersonBean();
+					p.setDni("fsdfd");
+					p.setName("pablo");
+					
+					PeriodAssignationBean pa = new PeriodAssignationBean();
+					pa.setId("sfdsdfds");
+					pa.setPerson(p);
+					pa.setStart(new Date());
+					pa.setType(PeriodType.DAILY);
+					
+					tm.test43(p, pa, new Receiver<Void>() {
+						@Override
+						public void onSuccess(Void t) {
+							logger.log(Level.INFO,"void");
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+						}
+					});
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		vp.add(b);
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 	

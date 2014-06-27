@@ -9,8 +9,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.document.Document;
+import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
+import ar.com.dcsys.data.period.PeriodAssignation;
+import ar.com.dcsys.data.period.PeriodAssignationBean;
+import ar.com.dcsys.data.period.PeriodType;
 import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.MailBean;
 import ar.com.dcsys.data.person.MailChange;
@@ -256,6 +260,46 @@ public class TestManagerBean implements TestManager {
 		logger.log(Level.INFO, mc.toString());
 		rec.onSuccess(mc);
 	}
+	
+	
+	@Override
+	public void test40(Group group, Receiver<List<Person>> rec) {
+		logger.log(Level.INFO, group.toString());
+		List<Person> l = new ArrayList<>();
+		for (int i = 0; i < 10; i++) {
+			PersonBean p = new PersonBean();
+			p.setDni(UUID.randomUUID().toString());
+			l.add(p);
+		}
+		rec.onSuccess(l);
+	}
+	
+	@Override
+	public void test41(Person person, Receiver<List<PeriodAssignation>> receiver) {
+		logger.log(Level.INFO, person.toString());
+		List<PeriodAssignation> pa = new ArrayList<>();
+		PeriodAssignationBean p = new PeriodAssignationBean();
+		p.setId("sdfdsfsdf");
+		p.setPerson(null);
+		p.setStart(new Date());
+		p.setType(PeriodType.DAILY);
+		pa.add(p);
+		receiver.onSuccess(pa);
+	}
+	
+	@Override
+	public void test42(Receiver<List<PeriodType>> receiver) {
+		receiver.onSuccess(Arrays.asList(PeriodType.DAILY,PeriodType.NULL, PeriodType.SYSTEMS, PeriodType.WATCHMAN));
+	}
+	
+	@Override
+	public void test43(Person person, PeriodAssignation periodAssignation, Receiver<Void> receiver) {
+		logger.log(Level.INFO, person.toString());
+		logger.log(Level.INFO, periodAssignation.toString());
+		receiver.onSuccess(null);
+	}
+	
+	
 	
 	@Override
 	public void test50(Justification j, Receiver<Justification> rec) {

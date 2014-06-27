@@ -17,20 +17,15 @@ public class PersonSerializer implements CSD<Person> {
 	
 	@Override
 	public Person read(String json) {
-		
 		logger.warning("PersonSerializer : " + json);
-		
 		PersonBean person = gson.fromJson(json, PersonBean.class);
-		
 		return person;
 	}
 	
 	@Override
 	public String toJson(Person o) {
-		
 		String d = gson.toJson(o);
 		logger.warning("PersonSerializer : " + d);
-		
 		return d;
 	}
 	

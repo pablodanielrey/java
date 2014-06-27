@@ -31,19 +31,15 @@ public class PersonSerializer implements CSD<Person> {
 	
 	@Override
 	public String toJson(Person o) {
-		
 		String d = WRITER.toJson((PersonBean)o);
 		logger.log(Level.WARNING,"PersonSerializer : " + d);
-		
 		return d;
 	}
 
 	@Override
 	public Person read(String json) {
-		
 		logger.log(Level.WARNING,"PersonSerializer : " + json);
 		Person person = READER.read(json);
-		
 		return person;
 	}
 
