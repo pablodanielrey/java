@@ -5,8 +5,12 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import ar.com.dcsys.data.justification.Justification;
+import ar.com.dcsys.data.justification.JustificationBean;
 import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.justification.JustificationDateBean;
+import ar.com.dcsys.data.person.Person;
+import ar.com.dcsys.data.person.PersonBean;
 import ar.com.dcsys.pr.CSD;
 
 import com.google.gson.Gson;
@@ -19,12 +23,29 @@ public class JustificationDateListSerializer implements CSD<List<JustificationDa
 	private static final Logger logger = Logger.getLogger(JustificationDateListSerializer.class.getName());
 	
 	private final Gson gson = (new GsonBuilder()).setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
-												 .registerTypeAdapter(JustificationDate.class, new JustificationDateInstanceCreator()).create();
+												 .registerTypeAdapter(JustificationDate.class, new JustificationDateInstanceCreator())
+												 .registerTypeAdapter(Person.class, new PersonInstanceCreator())
+												 .registerTypeAdapter(Justification.class, new JustificationInstanceCreator())
+												 .create();
 	
 	private class JustificationDateInstanceCreator implements InstanceCreator<JustificationDate> {
 		@Override
 		public JustificationDate createInstance(Type arg0) {
 			return new JustificationDateBean();
+		}
+	}
+	
+	private class PersonInstanceCreator implements InstanceCreator<Person> {
+		@Override
+		public Person createInstance(Type arg0) {
+			return new PersonBean();
+		}
+	}
+
+	private class JustificationInstanceCreator implements InstanceCreator<Justification> {
+		@Override
+		public Justification createInstance(Type arg0) {
+			return new JustificationBean();
 		}
 	}
 	
