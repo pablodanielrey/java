@@ -14,6 +14,9 @@ import ar.com.dcsys.pr.CSD;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.InstanceCreator;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 
 public class JustificationDateSerializer implements CSD<JustificationDate> {
 
@@ -21,7 +24,23 @@ public class JustificationDateSerializer implements CSD<JustificationDate> {
 
 	private final Gson gson = (new GsonBuilder()).setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
 												 .registerTypeAdapter(Justification.class, new JustificationInstanceCreator())
-												 .registerTypeAdapter(Person.class, new PersonInstanceCreator()).create();	
+												 .registerTypeAdapter(Justification.class, new JustificationSerializer())
+												 .registerTypeAdapter(Person.class, new PersonInstanceCreator())
+												 .create();	
+	
+	
+	public static class InterfaceSerializer<T> implements JsonSerializer<T> {
+		@Override
+		public JsonElement serialize(T src, Type typeOfSrc,	JsonSerializationContext context) {
+			return context.serialize(src, src.getClass());
+		}
+		
+	}
+	
+	private class JustificationSerializer extends InterfaceSerializer<Justification> {
+		
+	}
+	
 	
 	private class JustificationInstanceCreator implements InstanceCreator<Justification> {
 		@Override

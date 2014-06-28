@@ -1,6 +1,7 @@
 package ar.com.dcsys.gwt.data.assistance.server;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,6 +17,9 @@ import ar.com.dcsys.pr.CSD;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.InstanceCreator;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 
 public class JustificationDateListSerializer implements CSD<List<JustificationDate>> {
@@ -26,7 +30,23 @@ public class JustificationDateListSerializer implements CSD<List<JustificationDa
 												 .registerTypeAdapter(JustificationDate.class, new JustificationDateInstanceCreator())
 												 .registerTypeAdapter(Person.class, new PersonInstanceCreator())
 												 .registerTypeAdapter(Justification.class, new JustificationInstanceCreator())
+												 .registerTypeAdapter(Justification.class, new JustificationSerializer())
 												 .create();
+	
+	
+	public static class InterfaceSerializer<T> implements JsonSerializer<T> {
+		@Override
+		public JsonElement serialize(T src, Type typeOfSrc,	JsonSerializationContext context) {
+			return context.serialize(src, src.getClass());
+		}
+		
+	}
+	
+	private class JustificationSerializer extends InterfaceSerializer<Justification> {
+		
+	}	
+	
+	
 	
 	private class JustificationDateInstanceCreator implements InstanceCreator<JustificationDate> {
 		@Override
@@ -51,13 +71,17 @@ public class JustificationDateListSerializer implements CSD<List<JustificationDa
 	
 	
 	private class Container {
-		List<JustificationDate> list;
+		List<JustificationDateBean> list = new ArrayList<>();
 	}	
+	
+	
 	
 	@Override
 	public String toJson(List<JustificationDate> o) {
 		Container sc = new Container();
-		sc.list = o;
+		for (JustificationDate d : o) {
+			sc.list.add((JustificationDateBean)d);
+		}
 		String d = gson.toJson(sc);
 		logger.log(Level.WARNING, "gson : " + d);
 		return d;
@@ -68,7 +92,11 @@ public class JustificationDateListSerializer implements CSD<List<JustificationDa
 		logger.log(Level.WARNING,"gson : " + json);
 		TypeToken<Container> type = new TypeToken<Container>() {};
 		Container sc = gson.fromJson(json, type.getType());
-		return sc.list;
+		List<JustificationDate> jd = new ArrayList<>();
+		for (JustificationDate d : sc.list) {
+			jd.add(d);
+		}
+		return jd;
 	}	
 
 }
