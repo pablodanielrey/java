@@ -9,10 +9,6 @@ public class JustificationBean implements Justification,Serializable {
 	private String code;
 	private String description;
 	private String id;
-
-	public JustificationBean() {
-		
-	}
 	
 	public String getDescription() {
 		return description;
