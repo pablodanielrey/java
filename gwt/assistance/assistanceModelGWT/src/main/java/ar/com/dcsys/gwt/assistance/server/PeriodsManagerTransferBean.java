@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.period.PeriodAssignation;
 import ar.com.dcsys.data.period.PeriodType;
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.exceptions.PeriodException;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.gwt.assistance.shared.PeriodsManagerTransfer;
@@ -16,8 +17,6 @@ import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.messages.shared.Transport;
 import ar.com.dcsys.model.GroupsManager;
 import ar.com.dcsys.model.period.PeriodsManager;
-
-import javax.inject.Inject;
 
 public class PeriodsManagerTransferBean implements PeriodsManagerTransfer {
 	

@@ -5,24 +5,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import ar.com.dcsys.gwt.assistance.client.activity.justification.JustificationStatistic;
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.person.Person;
+import ar.com.dcsys.gwt.assistance.client.activity.justification.JustificationStatistic;
 import ar.com.dcsys.gwt.assistance.client.common.JustificationDatesSort;
 import ar.com.dcsys.gwt.assistance.client.common.JustificationsSort;
-import ar.com.dcsys.gwt.assistance.client.common.PersonValueSort;
 import ar.com.dcsys.gwt.assistance.client.ui.cell.PersonCell;
-import ar.com.dcsys.gwt.assistance.client.ui.cell.PersonValueCell;
 import ar.com.dcsys.gwt.assistance.client.ui.common.AssistanceResources;
 import ar.com.dcsys.gwt.assistance.client.ui.justification.widget.SelectionJustificationDateListWidget;
 import ar.com.dcsys.gwt.assistance.client.ui.justification.widget.selectionJustificationDateList.SelectionJustificationDateList;
 import ar.com.dcsys.gwt.person.client.common.filter.FilterPerson;
 import ar.com.dcsys.gwt.person.client.common.filter.FilterPersonDni;
 import ar.com.dcsys.gwt.person.client.common.filter.FilterPersonName;
-import ar.com.dcsys.gwt.person.client.common.filter.FilterPersonValue;
-import ar.com.dcsys.gwt.person.client.common.filter.FilterPersonValueDni;
-import ar.com.dcsys.gwt.person.client.common.filter.FilterPersonValueName;
 import ar.com.dcsys.utils.PersonSort;
 
 import com.google.gwt.core.client.GWT;

@@ -31,6 +31,12 @@
   <inherits name="ar.com.dcsys.gwt.auth.AuthModelGWT"/>
   <inherits name="ar.com.dcsys.gwt.assistance.AssistanceModelGWT"/>
 
+  <inherits name="ar.com.dcsys.pr.Serializers"/>
+  <inherits name="ar.com.dcsys.gwt.person.PersonSerializers"/>
+  <inherits name="ar.com.dcsys.gwt.data.DocumentSerializers"/>
+  <inherits name="ar.com.dcsys.gwt.data.AssistanceSerializers"/>
+  <inherits name="name.pehl.piriti.json.JSON" />
+
  <inherits name="ar.com.dcsys.AnnotationsProcessor"/>
   
  <inherits name="ar.com.dcsys.gwt.manager.ManagerGWT"/>

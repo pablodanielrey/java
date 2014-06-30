@@ -171,13 +171,29 @@ public class PeriodsAssignationPerson extends Composite implements PeriodsAssign
 		});
 	}
 	
+	
+	private String periodTypeToString(PeriodType pt) {
+		switch (pt) {
+			case NULL:
+				return "nulo";
+			case DAILY:
+				return "diario";
+			case SYSTEMS:
+				return "sistemas";
+			case WATCHMAN:
+				return "sereno";
+			default:
+				return "indefinido";
+		}
+	}
+	
 	private void createType() {
 		types = new ValueListBox<PeriodType>(new Renderer<PeriodType>() {
 			private String getValue(PeriodType type) {
 				if (type == null) {
 					return "Nulo";
 				}
-				return type.getDescription();
+				return periodTypeToString(type);
 			}
 			@Override
 			public String render(PeriodType object) {

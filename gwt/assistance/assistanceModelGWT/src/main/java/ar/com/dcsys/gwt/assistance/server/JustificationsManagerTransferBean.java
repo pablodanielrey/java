@@ -3,6 +3,8 @@ package ar.com.dcsys.gwt.assistance.server;
 import java.util.Date;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import ar.com.dcsys.data.justification.GeneralJustificationDate;
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
@@ -12,10 +14,7 @@ import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.gwt.assistance.shared.JustificationsManagerTransfer;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.messages.shared.Transport;
-import ar.com.dcsys.gwt.person.shared.PersonValueProxy;
 import ar.com.dcsys.model.justification.JustificationsManager;
-
-import javax.inject.Inject;
 
 public class JustificationsManagerTransferBean implements JustificationsManagerTransfer {
 	
@@ -80,12 +79,6 @@ public class JustificationsManagerTransferBean implements JustificationsManagerT
 		} catch (JustificationException | PersonException e) {
 			receiver.onError(e.getMessage());
 		}
-	}
-
-	@Override
-	public void findByPersonValue(List<PersonValueProxy> persons, Date start,Date end, Receiver<List<JustificationDate>> receiver) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

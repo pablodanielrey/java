@@ -134,6 +134,13 @@
               <artifact>ar.com.dcsys.gwt.utils:utilsGWT</artifact>
               <artifact>ar.com.dcsys.gwt.utils:managerGWT</artifact>
               <artifact>ar.com.dcsys.gwt.utils:webSocketGWT</artifact>          
+
+              <artifact>ar.com.dcsys.pr:annotations</artifact>
+              <artifact>ar.com.dcsys.pr:personSerializers</artifact>
+              <artifact>ar.com.dcsys.pr:documentSerializers</artifact>
+              <artifact>ar.com.dcsys.pr:assistanceSerializers</artifact>
+              <artifact>ar.com.dcsys.pr:serializers</artifact>
+
           
               <artifact>ar.com.dcsys.data:personEntities</artifact>
               <artifact>ar.com.dcsys.assistance:personEntities</artifact>

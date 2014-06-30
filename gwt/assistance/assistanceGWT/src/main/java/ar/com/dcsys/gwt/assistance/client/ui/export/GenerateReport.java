@@ -66,13 +66,33 @@ public class GenerateReport extends Composite implements GenerateReportView {
 		end = new DateBox(new DatePicker(), new Date(), new DefaultFormat(dateF));			
 	}
 	
+	
+	private String groupTypeToString(GroupType gt) {
+		switch (gt) {
+		case ALIAS:
+			return "alias";
+		case OFFICE:
+			return "oficina";
+		case OU:
+			return "unidad organizacional";
+		case POSITION:
+			return "cargo";
+		case PROFILE:
+			return "perfil";
+		case TIMETABLE:
+			return "horario";
+		default:
+			return "indefinido";
+		}
+	}
+	
 	private void createGroupTypes() {		
 		groupTypes = new ValueListBox<GroupType>(new Renderer<GroupType>() {
 			private String getValue(GroupType gt) {
 				if (gt == null) {
 					return "Mostrar Todos";
 				}
-				return gt.getDescription();
+				return groupTypeToString(gt);
 			}
 			
 			@Override
