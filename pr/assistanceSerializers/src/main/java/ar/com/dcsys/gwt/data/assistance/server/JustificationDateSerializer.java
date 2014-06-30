@@ -23,22 +23,25 @@ public class JustificationDateSerializer implements CSD<JustificationDate> {
 	private static final Logger logger = Logger.getLogger(JustificationDateSerializer.class.getName());
 
 	private final Gson gson = (new GsonBuilder()).setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
-												 .registerTypeAdapter(Justification.class, new JustificationInstanceCreator())
-												 .registerTypeAdapter(Justification.class, new JustificationSerializer())
+			 									 .registerTypeAdapter(Justification.class, new JustificationSerializer())
+			 									 .registerTypeAdapter(Justification.class, new JustificationInstanceCreator())
 												 .registerTypeAdapter(Person.class, new PersonInstanceCreator())
 												 .create();	
 	
-	
+	/*
 	public static class InterfaceSerializer<T> implements JsonSerializer<T> {
 		@Override
 		public JsonElement serialize(T src, Type typeOfSrc,	JsonSerializationContext context) {
 			return context.serialize(src, src.getClass());
 		}
-		
 	}
+	*/
 	
-	private class JustificationSerializer extends InterfaceSerializer<Justification> {
-		
+	private class JustificationSerializer implements JsonSerializer<Justification> {
+		@Override
+		public JsonElement serialize(Justification src, Type typeOfSrc,	JsonSerializationContext context) {
+			return context.serialize(src,JustificationBean.class);
+		}
 	}
 	
 	
