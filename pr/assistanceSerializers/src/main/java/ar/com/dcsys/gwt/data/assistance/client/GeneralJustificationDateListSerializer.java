@@ -27,13 +27,13 @@ public class GeneralJustificationDateListSerializer implements CSD<List<GeneralJ
 		
 		d = d.replaceAll("\\\"\\{", "{").replaceAll("\\}\"", "}").replace("\\","");
 		
-		logger.log(Level.WARNING,"piriti : " + d);
+		logger.log(Level.WARNING,"piriti toJson: " + d);
 		return d;
 	}
 	
 	@Override
 	public List<GeneralJustificationDate> read(String json) {
-		logger.log(Level.WARNING,"piriti : " + json);
+		logger.log(Level.WARNING,"piriti read: " + json);
 		GeneralJustificationDateListContainer sc = READER.read(json);
 		return sc.list;
 	}
