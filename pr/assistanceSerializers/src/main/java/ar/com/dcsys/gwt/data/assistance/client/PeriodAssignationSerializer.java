@@ -7,7 +7,7 @@ import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
 import ar.com.dcsys.data.period.PeriodAssignation;
 import ar.com.dcsys.data.period.PeriodAssignationBean;
-import ar.com.dcsys.data.person.PersonBean;
+import ar.com.dcsys.gwt.person.client.PersonSerializer;
 import ar.com.dcsys.pr.CSD;
 
 import com.google.gwt.core.client.GWT;
@@ -16,13 +16,7 @@ public class PeriodAssignationSerializer implements CSD<PeriodAssignation> {
 
 	private static final Logger logger = Logger.getLogger(PeriodAssignationSerializer.class.getName());
 	
-	
-	public interface PReader extends JsonReader<PersonBean> {}
-	public static final PReader PREADER = GWT.create(PReader.class);
-	
-	public interface PWriter extends JsonWriter<PersonBean> {}
-	public static final PWriter PWRITER = GWT.create(PWriter.class);
-	
+	public static final PersonSerializer ps = GWT.create(PersonSerializer.class);
 	
 	public interface Reader extends JsonReader<PeriodAssignationBean> {}
 	public static final Reader READER = GWT.create(Reader.class);

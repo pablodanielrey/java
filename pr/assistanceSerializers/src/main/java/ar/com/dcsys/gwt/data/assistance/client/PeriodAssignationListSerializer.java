@@ -14,12 +14,14 @@ import com.google.gwt.core.shared.GWT;
 public class PeriodAssignationListSerializer implements CSD<List<PeriodAssignation>> {
 
 	private static final Logger logger = Logger.getLogger(PeriodAssignationListSerializer.class.getName());
-	
+
+	public static final PeriodAssignationSerializer pas = GWT.create(PeriodAssignationSerializer.class);
+
 	interface Reader extends name.pehl.piriti.json.client.JsonReader<PeriodAssignationListContainer> { }
-	private static final Reader READER = GWT.create(Reader.class);
+	public static final Reader READER = GWT.create(Reader.class);
 	
 	interface Writer extends name.pehl.piriti.json.client.JsonWriter<PeriodAssignationListContainer> { }
-	private static final Writer WRITER = GWT.create(Writer.class);
+	public static final Writer WRITER = GWT.create(Writer.class);
 
 	
 	private List<PeriodAssignationBean> toPeriodAssignationBeanList(List<PeriodAssignation> l) {

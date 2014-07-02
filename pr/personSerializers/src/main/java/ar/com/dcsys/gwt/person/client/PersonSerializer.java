@@ -3,6 +3,7 @@ package ar.com.dcsys.gwt.person.client;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import name.pehl.piriti.json.client.AbstractJsonReader;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
 import ar.com.dcsys.data.person.Person;
@@ -11,6 +12,7 @@ import ar.com.dcsys.data.person.TelephoneBean;
 import ar.com.dcsys.pr.CSD;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.json.client.JSONObject;
 
 public class PersonSerializer implements CSD<Person> {
 
@@ -19,16 +21,16 @@ public class PersonSerializer implements CSD<Person> {
 	public interface TelephoneReader extends JsonReader<TelephoneBean> {};
 	public static final TelephoneReader TREADER = GWT.create(TelephoneReader.class);
 	
+	public interface TelephoneWriter extends JsonWriter<TelephoneBean> {};
+	public static final TelephoneWriter TWRITER = GWT.create(TelephoneWriter.class);	
+	
 	public interface Reader extends JsonReader<PersonBean> {}
 	public static final Reader READER = GWT.create(Reader.class);
-	
-	public interface TelephoneWriter extends JsonWriter<TelephoneBean> {};
-	public static final TelephoneWriter TWRITER = GWT.create(TelephoneWriter.class);
 	
 	public interface Writer extends JsonWriter<PersonBean> {}
 	public static final Writer WRITER = GWT.create(Writer.class);
 	
-	
+
 	@Override
 	public String toJson(Person o) {
 		String d = WRITER.toJson((PersonBean)o);
