@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
 import ar.com.dcsys.data.period.PeriodAssignation;
-import ar.com.dcsys.data.period.PeriodAssignation;
 import ar.com.dcsys.gwt.person.client.PersonSerializer;
 import ar.com.dcsys.pr.CSD;
 

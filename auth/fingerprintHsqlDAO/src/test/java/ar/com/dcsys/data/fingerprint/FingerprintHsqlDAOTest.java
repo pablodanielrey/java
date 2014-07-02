@@ -7,12 +7,7 @@ import java.util.UUID;
 
 import javax.inject.Inject;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import ar.com.dcsys.data.fingerprint.FingerprintDAO.Params;
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.data.person.PersonBean;
 import ar.com.dcsys.exceptions.FingerprintException;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.security.Finger;
@@ -70,9 +65,8 @@ public class FingerprintHsqlDAOTest {
 	}
 	
 	
-	
 	private static Person createPerson() {
-		Person person = new PersonBean();
+		Person person = new Person();
 		person.setId(UUID.randomUUID().toString());
 		person.setName("Pablo Daniel");
 		person.setLastName("Rey");

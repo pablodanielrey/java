@@ -1,14 +1,14 @@
 package ar.com.dcsys.assistance.entities;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 import ar.com.dcsys.data.person.Person;
 
 public class AssistancePersonData implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
 
-	private UUID id;	
+	private String id;	
 	private String notes;
 	private Person person;
 	
@@ -21,14 +21,11 @@ public class AssistancePersonData implements Serializable {
 	}
 
 	public String getId() {
-		if (id == null) {
-			return null;
-		}
 		return id.toString();
 	}
 
 	public void setId(String id) {
-		this.id = UUID.fromString(id);
+		this.id = id;
 	}	
 	
 	public String getNotes() {

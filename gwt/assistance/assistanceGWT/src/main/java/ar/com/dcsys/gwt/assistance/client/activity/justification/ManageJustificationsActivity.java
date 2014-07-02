@@ -4,24 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ar.com.dcsys.data.justification.Justification;
-import ar.com.dcsys.data.justification.JustificationBean;
 import ar.com.dcsys.gwt.assistance.client.manager.JustificationsManager;
 import ar.com.dcsys.gwt.assistance.client.manager.events.JustificationModifiedEvent;
 import ar.com.dcsys.gwt.assistance.client.manager.events.JustificationModifiedEventHandler;
 import ar.com.dcsys.gwt.assistance.client.ui.justification.manage.ManageJustificationsView;
+import ar.com.dcsys.gwt.clientMessages.client.MessageDialogEvent;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 
-import com.google.inject.Inject;
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent.Handler;
 import com.google.gwt.view.client.SingleSelectionModel;
-
-import ar.com.dcsys.gwt.clientMessages.client.MessageDialogEvent;
+import com.google.inject.Inject;
 
 public class ManageJustificationsActivity extends AbstractActivity implements ManageJustificationsView.Presenter{
 
@@ -180,7 +177,7 @@ public class ManageJustificationsActivity extends AbstractActivity implements Ma
 		final String msg;
 		
 		if (justification == null) {
-			justification = new JustificationBean();
+			justification = new Justification();
 			msg = "Se insertado correctamente la justificación";
 		} else {			
 			justificationsAux.remove(justification);

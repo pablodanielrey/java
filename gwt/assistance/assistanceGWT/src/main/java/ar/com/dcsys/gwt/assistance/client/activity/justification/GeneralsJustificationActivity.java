@@ -1,24 +1,18 @@
 package ar.com.dcsys.gwt.assistance.client.activity.justification;
 
 import java.util.ArrayList;
-
-import ar.com.dcsys.gwt.clientMessages.client.MessageDialogEvent;
-
 import java.util.Date;
 import java.util.List;
 
-import com.google.inject.Inject;
-
 import ar.com.dcsys.data.justification.GeneralJustificationDate;
-import ar.com.dcsys.data.justification.GeneralJustificationDateBean;
 import ar.com.dcsys.data.justification.GeneralJustificationDateProvider;
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.gwt.assistance.client.manager.JustificationsManager;
 import ar.com.dcsys.gwt.assistance.client.manager.events.JustificationModifiedEvent;
 import ar.com.dcsys.gwt.assistance.client.manager.events.JustificationModifiedEventHandler;
 import ar.com.dcsys.gwt.assistance.client.ui.justification.general.GeneralsJustificationView;
+import ar.com.dcsys.gwt.clientMessages.client.MessageDialogEvent;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
-import ar.com.dcsys.gwt.person.client.manager.events.MailChangeModifiedEvent;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
@@ -28,6 +22,7 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent.Handler;
 import com.google.gwt.view.client.SingleSelectionModel;
+import com.google.inject.Inject;
 
 public class GeneralsJustificationActivity extends AbstractActivity implements GeneralsJustificationView.Presenter{
 
@@ -58,7 +53,7 @@ public class GeneralsJustificationActivity extends AbstractActivity implements G
 
 		@Override
 		public GeneralJustificationDate getNew() {
-			return new GeneralJustificationDateBean();
+			return new GeneralJustificationDate();
 		}
 		
 	};

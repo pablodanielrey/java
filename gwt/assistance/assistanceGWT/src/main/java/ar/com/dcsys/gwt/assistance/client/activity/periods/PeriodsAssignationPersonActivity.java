@@ -5,7 +5,6 @@ import java.util.List;
 
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.period.PeriodAssignation;
-import ar.com.dcsys.data.period.PeriodAssignationBean;
 import ar.com.dcsys.data.period.PeriodType;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.gwt.assistance.client.manager.PeriodsManager;
@@ -16,7 +15,6 @@ import ar.com.dcsys.gwt.clientMessages.client.MessageDialogEvent;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.person.client.manager.PersonsManager;
 
-import com.google.inject.Inject;
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -24,6 +22,7 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent.Handler;
 import com.google.gwt.view.client.SingleSelectionModel;
+import com.google.inject.Inject;
 
 public class PeriodsAssignationPersonActivity extends AbstractActivity implements PeriodsAssignationPersonView.Presenter {
 
@@ -242,7 +241,7 @@ public class PeriodsAssignationPersonActivity extends AbstractActivity implement
 		date.setSeconds(0);
 		PeriodType type = selectionType.getSelectedObject();
 		
-		PeriodAssignation periodAssignation = new PeriodAssignationBean();
+		PeriodAssignation periodAssignation = new PeriodAssignation();
 		periodAssignation.setStart(date);
 		periodAssignation.setType(type);
 		
