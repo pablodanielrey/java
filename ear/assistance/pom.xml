@@ -93,6 +93,40 @@
 
        <!-- para la capa de transporte -->
 
+
+   <!-- para los convertidores de codigo a json y la inversa -->
+
+<dependency>
+    <groupId>com.google.code.gson</groupId>
+    <artifactId>gson</artifactId>
+    <version>2.2.4</version>
+      <scope>compile</scope>
+</dependency>
+
+<dependency>
+    <groupId>name.pehl</groupId>
+    <artifactId>piriti-user</artifactId>
+    <version>0.10</version>
+      <scope>compile</scope>
+</dependency>
+
+<dependency>
+    <groupId>name.pehl</groupId>
+    <artifactId>piriti-dev</artifactId>
+    <version>0.10</version>
+      <scope>compile</scope>
+</dependency>
+
+<dependency>
+    <groupId>name.pehl</groupId>
+    <artifactId>totoe</artifactId>
+    <version>0.7</version>
+      <scope>compile</scope>
+</dependency>
+
+
+
+
     <dependency>
       <groupId>javax.enterprise</groupId>
       <artifactId>cdi-api</artifactId>
@@ -103,6 +137,13 @@
       <groupId>ar.com.dcsys.pr</groupId>
       <artifactId>annotations</artifactId>
       <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.pr</groupId>
+      <artifactId>serializers</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
     </dependency>
 
     <dependency>
@@ -167,6 +208,14 @@
       <type>war</type>
     </dependency>
 
+    <dependency>
+      <groupId>ar.com.dcsys.pr</groupId>
+      <artifactId>assistanceSerializers</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+
 <!--    <dependency>
       <groupId>ar.com.dcsys.gwt.assistance</groupId>
       <artifactId>assistanceModelGWT</artifactId>
@@ -191,7 +240,6 @@
       <version>1.0-SNAPSHOT</version>
     </dependency>
 
-
     <dependency>
       <groupId>ar.com.dcsys.assistance</groupId>
       <artifactId>assistanceParams</artifactId>
@@ -206,6 +254,14 @@
             <version>1.0-SNAPSHOT</version>
             <type>war</type>
         </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.pr</groupId>
+      <artifactId>personSerializers</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
 
         <dependency>
             <groupId>ar.com.dcsys.data</groupId>
@@ -254,6 +310,12 @@
       <type>war</type>
     </dependency>
 
+    <dependency>
+      <groupId>ar.com.dcsys.pr</groupId>
+      <artifactId>documentSerializers</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
 
     <dependency>
       <groupId>ar.com.dcsys.model</groupId>

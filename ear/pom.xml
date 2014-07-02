@@ -22,7 +22,7 @@
   <modules>
     <module>person</module>
 <!--    <module>dcsys</module> -->
-<!--    <module>assistance</module> -->
+    <module>assistance</module>
   </modules>
 
 </project>
