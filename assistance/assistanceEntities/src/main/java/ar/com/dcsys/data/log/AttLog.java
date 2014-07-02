@@ -1,25 +1,61 @@
 package ar.com.dcsys.data.log;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import ar.com.dcsys.data.device.Device;
 import ar.com.dcsys.data.person.Person;
 
-public interface AttLog {
+public class AttLog implements Serializable {
 
-	public String getId();
-	public void setId(String id);
+	private static final long serialVersionUID = 1L;
+
+	private String id;
 	
-	public Device getDevice();
-	public void setDevice(Device device);
-
-	public Person getPerson();
-	public void setPerson(Person person);
+	private Device device;
+	private Person person;
 	
-	public Date getDate();
-	public void setDate(Date date);
+	private Date date;
+	private Long verifyMode;	
 
-	public Long getVerifyMode();
-	public void setVerifyMode(Long verifyMode);
+	public String getId() {
+		return id;
+	}
 
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public Device getDevice() {
+		return device;
+	}
+
+	public void setDevice(Device device) {
+		this.device = device;
+	}
+
+	public Person getPerson() {
+		return person;
+	}
+
+	public void setPerson(Person person) {
+		this.person = person;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public Long getVerifyMode() {
+		return verifyMode;
+	}
+
+	public void setVerifyMode(Long verifyMode) {
+		this.verifyMode = verifyMode;
+	}
+	
 }

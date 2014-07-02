@@ -7,11 +7,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.justification.Justification;
-import ar.com.dcsys.data.justification.JustificationBean;
+import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
-import ar.com.dcsys.data.justification.JustificationDateBean;
+import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.data.person.PersonBean;
+import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.pr.CSD;
 
 import com.google.gson.Gson;
@@ -37,27 +37,27 @@ public class JustificationDateListSerializer implements CSD<List<JustificationDa
 	private class JustificationDateInstanceCreator implements InstanceCreator<JustificationDate> {
 		@Override
 		public JustificationDate createInstance(Type arg0) {
-			return new JustificationDateBean();
+			return new JustificationDate();
 		}
 	}
 	
 	private class PersonInstanceCreator implements InstanceCreator<Person> {
 		@Override
 		public Person createInstance(Type arg0) {
-			return new PersonBean();
+			return new Person();
 		}
 	}
 
 	private class JustificationInstanceCreator implements InstanceCreator<Justification> {
 		@Override
 		public Justification createInstance(Type arg0) {
-			return new JustificationBean();
+			return new Justification();
 		}
 	}
 	
 	
 	private class Container {
-		List<JustificationDateBean> list = new ArrayList<>();
+		List<JustificationDate> list = new ArrayList<>();
 	}	
 	
 	
@@ -66,7 +66,7 @@ public class JustificationDateListSerializer implements CSD<List<JustificationDa
 	public String toJson(List<JustificationDate> o) {
 		Container sc = new Container();
 		for (JustificationDate d : o) {
-			sc.list.add((JustificationDateBean)d);
+			sc.list.add((JustificationDate)d);
 		}
 		String d = gson.toJson(sc);
 		logger.log(Level.WARNING, "gson : " + d);

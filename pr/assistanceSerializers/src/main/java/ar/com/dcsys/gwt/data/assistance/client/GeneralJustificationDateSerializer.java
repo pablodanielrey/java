@@ -8,7 +8,7 @@ import name.pehl.piriti.commons.client.Mappings;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
 import ar.com.dcsys.data.justification.GeneralJustificationDate;
-import ar.com.dcsys.data.justification.GeneralJustificationDateBean;
+import ar.com.dcsys.data.justification.GeneralJustificationDate;
 import ar.com.dcsys.pr.CSD;
 
 import com.google.gwt.core.client.GWT;
@@ -17,19 +17,19 @@ public class GeneralJustificationDateSerializer implements CSD<GeneralJustificat
 	
 	public static final Logger logger = Logger.getLogger(GeneralJustificationDateSerializer.class.getName());
 		
-	public interface Reader extends JsonReader<GeneralJustificationDateBean> {}
+	public interface Reader extends JsonReader<GeneralJustificationDate> {}
 	public static final Reader READER = GWT.create(Reader.class);
 	@Mappings({
 		@Mapping(value="justification",convert = PiritiJustificationConverter.class)
 	})
 
-	public interface Writer extends JsonWriter<GeneralJustificationDateBean> {}
+	public interface Writer extends JsonWriter<GeneralJustificationDate> {}
 	public static final Writer WRITER = GWT.create(Writer.class);
 	
 	
 	@Override
 	public String toJson(GeneralJustificationDate o) {
-		String jd = WRITER.toJson((GeneralJustificationDateBean)o);
+		String jd = WRITER.toJson((GeneralJustificationDate)o);
 		
 		// el justification lo convierte a un string, asi que tengo que sacarle el ""
 		jd = jd.replaceAll("justification\\\":\\\"\\{", "justification\":{").replaceAll("\\}\"", "}").replace("\\","");
@@ -42,7 +42,7 @@ public class GeneralJustificationDateSerializer implements CSD<GeneralJustificat
 	@Override
 	public GeneralJustificationDate read(String json) {
 		logger.log(Level.WARNING,json);
-		GeneralJustificationDateBean gjd = READER.read(json);
+		GeneralJustificationDate gjd = READER.read(json);
 		return gjd;
 	}
 }

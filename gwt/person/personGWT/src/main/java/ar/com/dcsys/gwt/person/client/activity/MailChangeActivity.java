@@ -3,8 +3,8 @@ package ar.com.dcsys.gwt.person.client.activity;
 import java.util.List;
 
 import ar.com.dcsys.data.person.Mail;
-import ar.com.dcsys.data.person.MailBean;
-import ar.com.dcsys.data.person.MailChangeBean;
+import ar.com.dcsys.data.person.Mail;
+import ar.com.dcsys.data.person.MailChange;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.gwt.clientMessages.client.MessageDialogEvent;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
@@ -132,9 +132,9 @@ public class MailChangeActivity extends AbstractActivity implements MailChangeVi
 	    }
 	    
 	    
-	    Mail mail = new MailBean();
+	    Mail mail = new Mail();
 	    mail.setMail(mailChangeText);
-	    ar.com.dcsys.data.person.MailChange mailChange = new MailChangeBean();
+	    ar.com.dcsys.data.person.MailChange mailChange = new MailChange();
 	    mailChange.setMail(mail);
 	    mailChange.setConfirmed(false);
 	    mailChange.setToken(null);

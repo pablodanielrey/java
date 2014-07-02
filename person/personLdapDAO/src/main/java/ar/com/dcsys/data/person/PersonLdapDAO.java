@@ -164,7 +164,7 @@ public class PersonLdapDAO extends AbstractLdapPersonDAO {
 						//Person person = getCachedObject(Person.class,uuid);
 						Person person = null;
 						if (person == null) {
-							person = new PersonBean();
+							person = new Person();
 							person.setId(uuid);
 							person.setName(name);
 							person.setLastName(lastName);
@@ -196,7 +196,7 @@ public class PersonLdapDAO extends AbstractLdapPersonDAO {
 								while (ntels.hasMore()) {
 									String sTel = (String)ntels.next();
 									if (!(sTel.trim().equals(""))) {
-										Telephone tel = new TelephoneBean();
+										Telephone tel = new Telephone();
 										tel.setNumber(sTel);
 										person.getTelephones().add(tel);
 									}

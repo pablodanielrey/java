@@ -9,7 +9,7 @@ import name.pehl.piriti.commons.client.Mappings;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
 import ar.com.dcsys.data.person.MailChange;
-import ar.com.dcsys.data.person.MailChangeBean;
+import ar.com.dcsys.data.person.MailChange;
 import ar.com.dcsys.pr.CSD;
 
 import com.google.gwt.core.shared.GWT;
@@ -19,19 +19,19 @@ public class MailChangeSerializer implements CSD<MailChange> {
 	private static final Logger logger = Logger.getLogger(MailChangeSerializer.class.getName());
 	
 
-	public interface Reader extends JsonReader<MailChangeBean> {}
+	public interface Reader extends JsonReader<MailChange> {}
 	public static final Reader READER = GWT.create(Reader.class);
 	
 	@Mappings({
 		@Mapping(value="mail",convert = PiritiMailConverter.class)
 	})
-	public interface Writer extends JsonWriter<MailChangeBean> {}
+	public interface Writer extends JsonWriter<MailChange> {}
 	public static final Writer WRITER = GWT.create(Writer.class);
 	
 	@Override
 	public String toJson(MailChange o) {
 		
-		String d = WRITER.toJson((MailChangeBean) o);
+		String d = WRITER.toJson((MailChange) o);
 		
 		// el mail lo convierte a un string, asi que tengo que sacarle el ""
 		d = d.replaceAll("mail\\\":\\\"\\{", "mail\":{").replaceAll("\\}\"", "}").replace("\\","");

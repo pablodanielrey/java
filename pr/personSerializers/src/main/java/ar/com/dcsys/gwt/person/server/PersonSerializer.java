@@ -3,7 +3,6 @@ package ar.com.dcsys.gwt.person.server;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.data.person.PersonBean;
 import ar.com.dcsys.pr.CSD;
 
 import com.google.gson.Gson;
@@ -18,7 +17,7 @@ public class PersonSerializer implements CSD<Person> {
 	@Override
 	public Person read(String json) {
 		logger.warning("PersonSerializer : " + json);
-		PersonBean person = gson.fromJson(json, PersonBean.class);
+		Person person = gson.fromJson(json, Person.class);
 		return person;
 	}
 	

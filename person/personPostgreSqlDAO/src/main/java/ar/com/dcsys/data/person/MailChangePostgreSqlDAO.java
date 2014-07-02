@@ -30,10 +30,10 @@ public class MailChangePostgreSqlDAO implements MailChangeDAO {
 	
 	private MailChange getMailChange(ResultSet rs) throws SQLException {
 		
-		MailChange mc = new MailChangeBean();
+		MailChange mc = new MailChange();
 		
 		String mail = rs.getString("mail");
-		Mail email = new MailBean();
+		Mail email = new Mail();
 		email.setMail(mail);
 		mc.setMail(email);
 		

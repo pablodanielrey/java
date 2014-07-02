@@ -7,7 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.justification.Justification;
-import ar.com.dcsys.data.justification.JustificationBean;
+import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.pr.CSD;
 
 import com.google.gson.Gson;
@@ -24,20 +24,20 @@ public class JustificationListSerializer implements CSD<List<Justification>> {
 	private class JustificationInstanceCreator implements InstanceCreator<Justification> {
 		@Override
 		public Justification createInstance(Type arg0) {
-			return new JustificationBean();
+			return new Justification();
 		}
 	}
 	
 	
 	private class Container {
-		List<JustificationBean> list = new ArrayList<>();
+		List<Justification> list = new ArrayList<>();
 	}	
 	
 	@Override
 	public String toJson(List<Justification> o) {
 		Container sc = new Container();
 		for (Justification d : o) {
-			sc.list.add((JustificationBean)d);
+			sc.list.add((Justification)d);
 		}
 		String d = gson.toJson(sc);
 		logger.log(Level.WARNING, "gson : " + d);

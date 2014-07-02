@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Set;
 
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.data.person.PersonBean;
+import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.data.person.Telephone;
-import ar.com.dcsys.data.person.TelephoneBean;
+import ar.com.dcsys.data.person.Telephone;
 import ar.com.dcsys.gwt.auth.client.manager.AuthManager;
 import ar.com.dcsys.gwt.clientMessages.client.MessageDialogEvent;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
@@ -329,7 +329,7 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 	 * @param view
 	 */
 	private void addNewUser() {
-		Person eP = new PersonBean();
+		Person eP = new Person();
 		updateUser(eP,view);
 	}
 	
@@ -401,7 +401,7 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 		
 		String tel = view.getTelephone();
 		if (tel != null && (!tel.trim().equals(""))) {
-			Telephone telP = new TelephoneBean();
+			Telephone telP = new Telephone();
 			telP.setNumber(tel);
 			eP.setTelephones(Arrays.asList(telP));
 		}

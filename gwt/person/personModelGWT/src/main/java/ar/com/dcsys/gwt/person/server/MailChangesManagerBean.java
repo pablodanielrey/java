@@ -6,7 +6,7 @@ import javax.inject.Inject;
 
 import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.MailChange;
-import ar.com.dcsys.data.person.MailChangeBean;
+import ar.com.dcsys.data.person.MailChange;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
@@ -69,7 +69,7 @@ public class MailChangesManagerBean implements MailChangesManager {
 			String personId = person.getId();
 			List<Mail> mails = personsManager.findAllMails(personId);
 			for (Mail m : mails) {
-				MailChange mc = new MailChangeBean();
+				MailChange mc = new MailChange();
 				mc.setMail(m);
 				mc.setPersonId(personId);
 				mc.setConfirmed(true);

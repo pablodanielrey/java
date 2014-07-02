@@ -3,7 +3,7 @@ package ar.com.dcsys.gwt.data.assistance.server;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.justification.Justification;
-import ar.com.dcsys.data.justification.JustificationBean;
+import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.pr.CSD;
 
 import com.google.gson.Gson;
@@ -18,7 +18,7 @@ public class JustificationSerializer implements CSD<Justification> {
 	@Override
 	public Justification read(String json) {
 		logger.warning(json);
-		JustificationBean justification = gson.fromJson(json, JustificationBean.class);
+		Justification justification = gson.fromJson(json, Justification.class);
 		return justification;
 	}
 	

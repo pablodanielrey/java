@@ -238,7 +238,7 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 		String country = rs.getString("country");
 		String gender = rs.getString("gender");
 		
-		Person person = new PersonBean();
+		Person person = new Person();
 		person.setId(id);
 		person.setDni(dni);
 		person.setName(name);

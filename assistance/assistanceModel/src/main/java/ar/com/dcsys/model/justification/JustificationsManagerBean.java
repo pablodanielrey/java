@@ -10,7 +10,7 @@ import ar.com.dcsys.data.justification.GeneralJustificationDate;
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDAO;
 import ar.com.dcsys.data.justification.JustificationDate;
-import ar.com.dcsys.data.justification.JustificationDateBean;
+import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.exceptions.JustificationException;
 import ar.com.dcsys.exceptions.PeriodException;
@@ -144,7 +144,7 @@ public class JustificationsManagerBean implements JustificationsManager {
 			Date s = p.getStart();
 			Date e = p.getEnd();
 			
-			JustificationDate jd = new JustificationDateBean();
+			JustificationDate jd = new JustificationDate();
 			jd.setStart(s);
 			jd.setEnd(e);
 			jd.setJustification(justification);

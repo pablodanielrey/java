@@ -1,7 +1,15 @@
 package ar.com.dcsys.data.module;
 
-public interface Module {
+public class Module {
 
-	public String getId();
+	private final String id;
+	
+	public Module(String id) {
+		this.id = id;
+	}
+	
+	public String getId() {
+		return id;
+	}
 	
 }

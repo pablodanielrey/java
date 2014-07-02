@@ -160,7 +160,7 @@ public class StudentDataLdapDAO implements StudentDataDAO {
 				Attribute legajo = attrs.get("x-dcsys-legajo");
 				String studentNumber = (String)legajo.get();
 				
-				StudentDataBean sd = new StudentDataBean();
+				StudentData sd = new StudentData();
 				sd.setId(id);
 				sd.setStudentNumber(studentNumber);
 				
@@ -211,7 +211,7 @@ public class StudentDataLdapDAO implements StudentDataDAO {
 						Attribute uuid = attrs.get("x-dcsys-uuid");
 						String id = (String)uuid.get();
 						
-						StudentDataBean sd = new StudentDataBean();
+						StudentData sd = new StudentData();
 						sd.setId(id);
 						sd.setStudentNumber(studentNumber);
 						

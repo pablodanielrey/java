@@ -86,7 +86,7 @@ public class DeviceHsqlDAO implements DeviceDAO {
 					ResultSet rs = st.executeQuery();
 					try {
 						if (rs.next()) {
-							Device d = new DeviceBean();
+							Device d = new Device();
 							getDevice(d,rs);
 							return d;
 						} else {
@@ -123,7 +123,7 @@ public class DeviceHsqlDAO implements DeviceDAO {
 					try {
 						List<Device> devices = new ArrayList<Device>();
 						while (rs.next()) {
-							Device d = new DeviceBean();
+							Device d = new Device();
 							getDevice(d,rs);
 							devices.add(d);
 						}

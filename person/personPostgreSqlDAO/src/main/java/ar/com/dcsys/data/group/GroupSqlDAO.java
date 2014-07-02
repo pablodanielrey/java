@@ -86,7 +86,7 @@ public class GroupSqlDAO implements GroupDAO {
 		String id = rs.getString("id");
 		String name = rs.getString("name");
 		
-		Group g = new GroupBean();
+		Group g = new Group();
 		g.setId(id);
 		g.setName(name);
 		g.setTypes(new ArrayList<GroupType>());

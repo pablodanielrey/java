@@ -3,7 +3,7 @@ package ar.com.dcsys.gwt.data.assistance.server;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.period.PeriodAssignation;
-import ar.com.dcsys.data.period.PeriodAssignationBean;
+import ar.com.dcsys.data.period.PeriodAssignation;
 import ar.com.dcsys.pr.CSD;
 
 import com.google.gson.Gson;
@@ -19,7 +19,7 @@ public class PeriodAssignationSerializer implements CSD<PeriodAssignation> {
 	@Override
 	public PeriodAssignation read(String json) {
 		logger.warning("PeriodAssignationSerializer : " + json);
-		PeriodAssignationBean person = gson.fromJson(json, PeriodAssignationBean.class);
+		PeriodAssignation person = gson.fromJson(json, PeriodAssignation.class);
 		return person;
 	}
 	

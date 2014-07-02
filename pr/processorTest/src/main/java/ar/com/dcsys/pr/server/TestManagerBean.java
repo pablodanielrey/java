@@ -14,14 +14,13 @@ import ar.com.dcsys.data.justification.GeneralJustificationDate;
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.period.PeriodAssignation;
-import ar.com.dcsys.data.period.PeriodAssignationBean;
+import ar.com.dcsys.data.period.PeriodAssignation;
 import ar.com.dcsys.data.period.PeriodType;
 import ar.com.dcsys.data.person.Mail;
-import ar.com.dcsys.data.person.MailBean;
+import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.MailChange;
-import ar.com.dcsys.data.person.MailChangeBean;
+import ar.com.dcsys.data.person.MailChange;
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.data.person.PersonBean;
 import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.messages.shared.Transport;
@@ -111,7 +110,7 @@ public class TestManagerBean implements TestManager {
 	public void test6(Receiver<List<Person>> rec) {
 		List<Person> l = new ArrayList<>();
 		for (int i = 0; i < 10; i++) {
-			PersonBean p = new PersonBean();
+			Person p = new Person();
 			p.setDni(UUID.randomUUID().toString());
 			l.add(p);
 		}
@@ -120,7 +119,7 @@ public class TestManagerBean implements TestManager {
 
 	@Override
 	public void test7(String id, Receiver<Person> rec) {
-		PersonBean p = new PersonBean();
+		Person p = new Person();
 		p.setDni(id);
 		rec.onSuccess(p);
 	}
@@ -129,7 +128,7 @@ public class TestManagerBean implements TestManager {
 	public void test8(String id, Receiver<List<Person>> rec) {
 		List<Person> l = new ArrayList<>();
 		for (int i = 0; i < 10; i++) {
-			PersonBean p = new PersonBean();
+			Person p = new Person();
 			p.setDni(id + " " + UUID.randomUUID().toString());
 			l.add(p);
 		}
@@ -214,10 +213,10 @@ public class TestManagerBean implements TestManager {
 			logger.log(Level.INFO, v.toString());
 		}
 		
-		MailBean mb = new MailBean();
+		Mail mb = new Mail();
 		mb.setMail("pablo@econo");
 		
-		MailChangeBean mc = new MailChangeBean();
+		MailChange mc = new MailChange();
 		mc.setConfirmed(false);
 		mc.setMail(mb);
 		mc.setPersonId("dsfdfdfdf");
@@ -240,12 +239,12 @@ public class TestManagerBean implements TestManager {
 	@Override
 	public void test37(Receiver<List<MailChange>> rec) {
 		
-		MailBean m = new MailBean();
+		Mail m = new Mail();
 		m.setMail("algo@econo");
 		
 		List<MailChange> l = new ArrayList<>();
 		for (int i = 0; i < 10; i++) {
-			MailChangeBean mc = new MailChangeBean();
+			MailChange mc = new MailChange();
 			mc.setMail(m);
 			mc.setConfirmed(false);
 			mc.setPersonId("pepe1s");
@@ -268,7 +267,7 @@ public class TestManagerBean implements TestManager {
 		logger.log(Level.INFO, group.toString());
 		List<Person> l = new ArrayList<>();
 		for (int i = 0; i < 10; i++) {
-			PersonBean p = new PersonBean();
+			Person p = new Person();
 			p.setDni(UUID.randomUUID().toString());
 			l.add(p);
 		}
@@ -279,7 +278,7 @@ public class TestManagerBean implements TestManager {
 	public void test41(Person person, Receiver<List<PeriodAssignation>> receiver) {
 		logger.log(Level.INFO, person.toString());
 		List<PeriodAssignation> pa = new ArrayList<>();
-		PeriodAssignationBean p = new PeriodAssignationBean();
+		PeriodAssignation p = new PeriodAssignation();
 		p.setId("sdfdsfsdf");
 		p.setPerson(null);
 		p.setStart(new Date());
@@ -362,7 +361,7 @@ public class TestManagerBean implements TestManager {
 		
 		List<PeriodAssignation> pal = new ArrayList<>();
 		for (int i = 0; i < 10; i++) {
-			PeriodAssignationBean pa = new PeriodAssignationBean();
+			PeriodAssignation pa = new PeriodAssignation();
 			pa.setId(String.valueOf(i));
 			pa.setPerson(person);
 			pa.setStart(new Date());

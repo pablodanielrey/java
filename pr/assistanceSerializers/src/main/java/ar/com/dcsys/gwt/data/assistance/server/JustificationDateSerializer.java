@@ -4,11 +4,11 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.justification.Justification;
-import ar.com.dcsys.data.justification.JustificationBean;
+import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
-import ar.com.dcsys.data.justification.JustificationDateBean;
+import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.data.person.PersonBean;
+import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.pr.CSD;
 
 import com.google.gson.Gson;
@@ -48,14 +48,14 @@ public class JustificationDateSerializer implements CSD<JustificationDate> {
 	private class JustificationInstanceCreator implements InstanceCreator<Justification> {
 		@Override
 		public Justification createInstance(Type arg0) {
-			return new JustificationBean();
+			return new Justification();
 		}
 	}
 	
 	private class PersonInstanceCreator implements InstanceCreator<Person> {
 		@Override
 		public Person createInstance(Type arg0) {
-			return new PersonBean();
+			return new Person();
 		}
 	}	
 	
@@ -64,7 +64,7 @@ public class JustificationDateSerializer implements CSD<JustificationDate> {
 		
 		logger.warning("JustificationDateSerializer : " + json);
 		
-		JustificationDateBean jd = gson.fromJson(json, JustificationDateBean.class);
+		JustificationDate jd = gson.fromJson(json, JustificationDate.class);
 		
 		return jd;
 	}

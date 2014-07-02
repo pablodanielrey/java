@@ -1,21 +1,49 @@
 package ar.com.dcsys.data.period;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import ar.com.dcsys.data.person.Person;
 
-public interface PeriodAssignation {
+public class PeriodAssignation  implements Serializable {
 
-	public String getId();
-	public void setId(String id);
+	private static final long serialVersionUID = 1L;
+
+	private String id;
+	private Date start;
+	private Person person;
+	private PeriodType type;
 	
-	public Date getStart();
-	public void setStart(Date pstart);
+	public String getId() {		
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public Date getStart() {
+		return start;
+	}
 	
-	public Person getPerson();
-	public void setPerson(Person person);
+	public void setStart(Date pstart) {
+		this.start = pstart;
+	}
 	
-	public PeriodType getType();
-	public void setType(PeriodType type);
+	public Person getPerson() {
+		return person;
+	}
 	
+	public void setPerson(Person person) {
+		this.person = person;
+	}
+	
+	public PeriodType getType() {
+		return type;
+	}
+	
+	public void setType(PeriodType type) {
+		this.type = type;
+	}
+
 }

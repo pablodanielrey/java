@@ -4,11 +4,11 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.group.Group;
-import ar.com.dcsys.data.group.GroupBean;
+import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.person.Mail;
-import ar.com.dcsys.data.person.MailBean;
+import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.data.person.PersonBean;
+import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.pr.CSD;
 
 import com.google.gson.Gson;
@@ -26,14 +26,14 @@ public class GroupSerializer implements CSD<Group> {
 	private class MailInstanceCreator implements InstanceCreator<Mail> {
 		@Override
 		public Mail createInstance(Type arg0) {
-			return new MailBean();
+			return new Mail();
 		}
 	}	
 
 	private class PersonInstanceCreator implements InstanceCreator<Person> {
 		@Override
 		public Person createInstance(Type arg0) {
-			return new PersonBean();
+			return new Person();
 		}
 	}	
 
@@ -41,7 +41,7 @@ public class GroupSerializer implements CSD<Group> {
 	@Override
 	public Group read(String json) {
 		logger.warning("GroupSerializer : " + json);
-		GroupBean person = gson.fromJson(json, GroupBean.class);
+		Group person = gson.fromJson(json, Group.class);
 		return person;
 	}
 	

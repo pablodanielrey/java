@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ar.com.dcsys.data.group.Group;
-import ar.com.dcsys.data.group.GroupBean;
+import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.model.GroupsManager;
 import ar.com.dcsys.model.PersonsManager;
@@ -49,7 +49,7 @@ public class IndexServlet extends HttpServlet {
 
 				// se esta tratando de mostrar el index.
 				
-				GroupBean g = new GroupBean();
+				Group g = new Group();
 				g.setId(UUID.fromString(NULLGROUP).toString());
 				g.setName("Todos");
 				

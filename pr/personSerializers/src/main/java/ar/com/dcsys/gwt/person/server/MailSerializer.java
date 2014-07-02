@@ -3,7 +3,7 @@ package ar.com.dcsys.gwt.person.server;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.person.Mail;
-import ar.com.dcsys.data.person.MailBean;
+import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.pr.CSD;
 
 import com.google.gson.Gson;
@@ -20,7 +20,7 @@ public class MailSerializer implements CSD<Mail> {
 		
 		logger.warning("MailSerializer : " + json);
 		
-		MailBean mail = gson.fromJson(json, MailBean.class);
+		Mail mail = gson.fromJson(json, Mail.class);
 		
 		return mail;
 	}

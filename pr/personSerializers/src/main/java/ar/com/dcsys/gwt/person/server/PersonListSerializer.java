@@ -6,7 +6,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.data.person.PersonBean;
 import ar.com.dcsys.pr.CSD;
 
 import com.google.gson.Gson;
@@ -20,19 +19,19 @@ public class PersonListSerializer implements CSD<List<Person>> {
 	private final Gson gson = (new GsonBuilder()).create();
 	
 	private class Container {
-		List<PersonBean> list;
+		List<Person> list;
 	}	
 	
 	
-	private List<PersonBean> toPersonBeanList(List<Person> l) {
-		List<PersonBean> ps = new ArrayList<PersonBean>();
+	private List<Person> toPersonBeanList(List<Person> l) {
+		List<Person> ps = new ArrayList<Person>();
 		for (Person p : l) {
-			ps.add((PersonBean)p);
+			ps.add((Person)p);
 		}
 		return ps;
 	}
 
-	private List<Person> toPersonList(List<PersonBean> l) {
+	private List<Person> toPersonList(List<Person> l) {
 		List<Person> ps = new ArrayList<Person>();
 		for (Person p : l) {
 			ps.add(p);

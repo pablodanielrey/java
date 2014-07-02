@@ -9,23 +9,22 @@ import java.util.logging.Logger;
 
 import ar.com.dcsys.data.document.Document;
 import ar.com.dcsys.data.document.DocumentBean;
-import ar.com.dcsys.data.group.GroupBean;
+import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.group.GroupType;
 import ar.com.dcsys.data.justification.GeneralJustificationDate;
-import ar.com.dcsys.data.justification.GeneralJustificationDateBean;
+import ar.com.dcsys.data.justification.GeneralJustificationDate;
 import ar.com.dcsys.data.justification.Justification;
-import ar.com.dcsys.data.justification.JustificationBean;
+import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
-import ar.com.dcsys.data.justification.JustificationDateBean;
+import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.period.PeriodAssignation;
-import ar.com.dcsys.data.period.PeriodAssignationBean;
+import ar.com.dcsys.data.period.PeriodAssignation;
 import ar.com.dcsys.data.period.PeriodType;
 import ar.com.dcsys.data.person.Mail;
-import ar.com.dcsys.data.person.MailBean;
+import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.MailChange;
-import ar.com.dcsys.data.person.MailChangeBean;
+import ar.com.dcsys.data.person.MailChange;
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.data.person.PersonBean;
 import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.ws.client.WebSocket;
@@ -240,7 +239,7 @@ public class ProcessorTest implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				try {
-					Person p = new PersonBean();
+					Person p = new Person();
 					p.setDni("1");
 					PersonType pt = PersonType.POSTGRADUATE;
 					
@@ -273,7 +272,7 @@ public class ProcessorTest implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				try {
-					Person p = new PersonBean();
+					Person p = new Person();
 					
 					tm.testEnum4("algo",PersonType.STUDENT,new Receiver<PersonType>() {
 						@Override
@@ -332,7 +331,7 @@ public class ProcessorTest implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				try {
-					Person p = new PersonBean();
+					Person p = new Person();
 					p.setDni("1");
 					p.setName("pablo");
 					p.setLastName("rey");
@@ -458,15 +457,15 @@ public class ProcessorTest implements EntryPoint {
 				try {
 					List<Person> s = new ArrayList<Person>();
 					
-					Person p = new PersonBean();
+					Person p = new Person();
 					p.setDni("1");
 					s.add(p);
 
-					p = new PersonBean();
+					p = new Person();
 					p.setDni("2");
 					s.add(p);
 
-					p = new PersonBean();
+					p = new Person();
 					p.setDni("3");
 					s.add(p);
 					
@@ -655,7 +654,7 @@ public class ProcessorTest implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				try {
-					MailBean m = new MailBean();
+					Mail m = new Mail();
 					m.setMail("mail@mail.com");
 					
 					tm.test20(m,new Receiver<Mail>() {
@@ -686,7 +685,7 @@ public class ProcessorTest implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				try {
-					MailBean m = new MailBean();
+					Mail m = new Mail();
 					m.setMail("mail@mail.com");
 					m.setPrimary(true);
 					
@@ -718,7 +717,7 @@ public class ProcessorTest implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				try {
-					MailBean m = new MailBean();
+					Mail m = new Mail();
 					m.setMail("mail@mail.com");
 					m.setPrimary(true);
 					
@@ -891,10 +890,10 @@ public class ProcessorTest implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				try {
-					MailBean mb = new MailBean();
+					Mail mb = new Mail();
 					mb.setMail("pablo@econo");
 					
-					MailChangeBean mc = new MailChangeBean();
+					MailChange mc = new MailChange();
 					mc.setConfirmed(false);
 					mc.setMail(mb);
 					mc.setPersonId("dsfdfdfdf");
@@ -960,10 +959,10 @@ public class ProcessorTest implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				try {
-					MailBean mb = new MailBean();
+					Mail mb = new Mail();
 					mb.setMail("pablo@econo");
 					
-					MailChangeBean mc = new MailChangeBean();
+					MailChange mc = new MailChange();
 					mc.setConfirmed(false);
 					mc.setMail(mb);
 					mc.setPersonId("dsfdfdfdf");
@@ -1026,10 +1025,10 @@ public class ProcessorTest implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				try {
-					MailBean mb = new MailBean();
+					Mail mb = new Mail();
 					mb.setMail("pablo@econo");
 					
-					MailChangeBean mc = new MailChangeBean();
+					MailChange mc = new MailChange();
 					mc.setConfirmed(false);
 					mc.setMail(mb);
 					mc.setPersonId("dsfdfdfdf");
@@ -1067,19 +1066,19 @@ public class ProcessorTest implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				try {
-					GroupBean g = new GroupBean();
+					Group g = new Group();
 					g.setId("sdfdsfsd");
 					g.setName("nombreeeeee");
 					
 					List<Person> ps = new ArrayList<Person>();
-					PersonBean p = new PersonBean();
+					Person p = new Person();
 					p.setDni("fsdfd");
 					p.setName("pablo");
 					ps.add(p);
 					g.setPersons(ps);
 
 					List<Mail> mails = new ArrayList<Mail>();
-					MailBean mb = new MailBean();
+					Mail mb = new Mail();
 					mb.setMail("sdfds@econo");
 					mails.add(mb);
 					g.setMails(mails);
@@ -1114,7 +1113,7 @@ public class ProcessorTest implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				try {
-					PersonBean p = new PersonBean();
+					Person p = new Person();
 					p.setDni("fsdfd");
 					p.setName("pablo");
 
@@ -1175,11 +1174,11 @@ public class ProcessorTest implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				try {
-					PersonBean p = new PersonBean();
+					Person p = new Person();
 					p.setDni("fsdfd");
 					p.setName("pablo");
 					
-					PeriodAssignationBean pa = new PeriodAssignationBean();
+					PeriodAssignation pa = new PeriodAssignation();
 					pa.setId("sfdsdfds");
 					pa.setPerson(p);
 					pa.setStart(new Date());
@@ -1221,7 +1220,7 @@ public class ProcessorTest implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				try {
-					Justification j = new JustificationBean();
+					Justification j = new Justification();
 					j.setId("id:3122331");
 					j.setCode("ab2code");
 					j.setDescription("Justificacion de prueba");
@@ -1254,7 +1253,7 @@ public class ProcessorTest implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				try {
-					JustificationBean j = new JustificationBean();
+					Justification j = new Justification();
 					j.setId("id:3122331");
 					j.setCode("ab2code");
 					j.setDescription("Justificacion de prueba");					
@@ -1287,7 +1286,7 @@ public class ProcessorTest implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				try {
-					JustificationBean j = new JustificationBean();
+					Justification j = new Justification();
 					j.setId("id:3122331");
 					j.setCode("ab2code");
 					j.setDescription("Justificacion de prueba");
@@ -1327,18 +1326,18 @@ public class ProcessorTest implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				try {
-					Justification j = new JustificationBean();
+					Justification j = new Justification();
 					j.setId("id:3122331");
 					j.setCode("ab2code");
 					j.setDescription("Justificacion de prueba");
 					
-					Person person = new PersonBean();
+					Person person = new Person();
 					person.setDni("1");
 					person.setName("emanuel");
 					person.setLastName("pais");
 					
 
-					JustificationDate jd = new JustificationDateBean();
+					JustificationDate jd = new JustificationDate();
 					jd.setEnd(new Date());
 					jd.setStart(new Date());
 					jd.setId("id-jd-123141");
@@ -1374,18 +1373,18 @@ public class ProcessorTest implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				try {
-					Justification j = new JustificationBean();
+					Justification j = new Justification();
 					j.setId("id:3122331");
 					j.setCode("ab2code");
 					j.setDescription("Justificacion de prueba");
 					
-					Person person = new PersonBean();
+					Person person = new Person();
 					person.setDni("1");
 					person.setName("emanuel");
 					person.setLastName("pais");
 					
 
-					JustificationDate jd = new JustificationDateBean();
+					JustificationDate jd = new JustificationDate();
 					jd.setEnd(new Date());
 					jd.setStart(new Date());
 					jd.setId("id-jd-123141");
@@ -1421,18 +1420,18 @@ public class ProcessorTest implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				try {
-					Justification j = new JustificationBean();
+					Justification j = new Justification();
 					j.setId("id:3122331");
 					j.setCode("ab2code");
 					j.setDescription("Justificacion de prueba");
 					
-					Person person = new PersonBean();
+					Person person = new Person();
 					person.setDni("1");
 					person.setName("emanuel");
 					person.setLastName("pais");
 					
 
-					JustificationDate jd = new JustificationDateBean();
+					JustificationDate jd = new JustificationDate();
 					jd.setEnd(new Date());
 					jd.setStart(new Date());
 					jd.setId("id-jd-123141");
@@ -1471,13 +1470,13 @@ public class ProcessorTest implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				try {
-					Justification j = new JustificationBean();
+					Justification j = new Justification();
 					j.setId("id:3122331");
 					j.setCode("ab2code");
 					j.setDescription("Justificacion de prueba");
 										
 
-					GeneralJustificationDate gjd = new GeneralJustificationDateBean();
+					GeneralJustificationDate gjd = new GeneralJustificationDate();
 					gjd.setEnd(new Date());
 					gjd.setStart(new Date());
 					gjd.setId("id-gjd-123141");
@@ -1512,13 +1511,13 @@ public class ProcessorTest implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				try {
-					Justification j = new JustificationBean();
+					Justification j = new Justification();
 					j.setId("id:3122331");
 					j.setCode("ab2code");
 					j.setDescription("Justificacion de prueba");
 										
 
-					GeneralJustificationDate gjd = new GeneralJustificationDateBean();
+					GeneralJustificationDate gjd = new GeneralJustificationDate();
 					gjd.setEnd(new Date());
 					gjd.setStart(new Date());
 					gjd.setId("id-gjd-123141");
@@ -1553,13 +1552,13 @@ public class ProcessorTest implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				try {
-					Justification j = new JustificationBean();
+					Justification j = new Justification();
 					j.setId("id:3122331");
 					j.setCode("ab2code");
 					j.setDescription("Justificacion de prueba");
 										
 
-					GeneralJustificationDate gjd = new GeneralJustificationDateBean();
+					GeneralJustificationDate gjd = new GeneralJustificationDate();
 					gjd.setEnd(new Date());
 					gjd.setStart(new Date());
 					gjd.setId("id-gjd-123141");
@@ -1600,7 +1599,7 @@ public class ProcessorTest implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				try {
-					PersonBean p = new PersonBean();
+					Person p = new Person();
 					p.setId("sdfdsfsddfs");
 					
 					tm.test60(p, new Receiver<List<PeriodAssignation>>() {
@@ -1632,13 +1631,13 @@ public class ProcessorTest implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				try {
-					Justification j = new JustificationBean();
+					Justification j = new Justification();
 					j.setId("id:3122331");
 					j.setCode("ab2code");
 					j.setDescription("Justificacion de prueba");
 										
 
-					GeneralJustificationDate gjd = new GeneralJustificationDateBean();
+					GeneralJustificationDate gjd = new GeneralJustificationDate();
 					gjd.setEnd(new Date());
 					gjd.setStart(new Date());
 					gjd.setId("id-gjd-123141");
@@ -1679,13 +1678,13 @@ public class ProcessorTest implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				try {
-					Justification j = new JustificationBean();
+					Justification j = new Justification();
 					j.setId("id:3122331");
 					j.setCode("ab2code");
 					j.setDescription("Justificacion de prueba");
 										
 
-					GeneralJustificationDate gjd = new GeneralJustificationDateBean();
+					GeneralJustificationDate gjd = new GeneralJustificationDate();
 					gjd.setEnd(new Date());
 					gjd.setStart(new Date());
 					gjd.setId("id-gjd-123141");
@@ -1697,11 +1696,11 @@ public class ProcessorTest implements EntryPoint {
 					gjds.add(gjd);
 					gjds.add(gjd);							
 					
-					PersonBean p = new PersonBean();
+					Person p = new Person();
 					p.setId("sdsadasddsa");
 					p.setDni("27294557");
 					
-					PeriodAssignationBean pa = new PeriodAssignationBean();
+					PeriodAssignation pa = new PeriodAssignation();
 					pa.setId("id-pa");
 					pa.setPerson(p);
 					pa.setStart(new Date());

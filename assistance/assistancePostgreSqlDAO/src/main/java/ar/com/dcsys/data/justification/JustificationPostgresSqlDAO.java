@@ -91,7 +91,7 @@ public class JustificationPostgresSqlDAO implements JustificationDAO {
 	}
 	
 	private Justification getJustification(ResultSet rs) throws SQLException {		
-		Justification j = new JustificationBean();
+		Justification j = new Justification();
 		
 		j.setCode(rs.getString("code"));
 		j.setDescription(rs.getString("description"));
@@ -101,7 +101,7 @@ public class JustificationPostgresSqlDAO implements JustificationDAO {
 	}
 	
 	private JustificationDate getJustificationDate(Connection con, ResultSet rs) throws SQLException, JustificationException, PersonException {
-		JustificationDate j = new JustificationDateBean();
+		JustificationDate j = new JustificationDate();
 		
 		j.setId(rs.getString("id"));
 		j.setStart(new Date(rs.getTimestamp("jstart").getTime()));
@@ -118,7 +118,7 @@ public class JustificationPostgresSqlDAO implements JustificationDAO {
 	}
 	
 	private final GeneralJustificationDate getGeneralJustificationDate (Connection con, ResultSet rs) throws SQLException, JustificationException {
-		GeneralJustificationDate j = new GeneralJustificationDateBean();
+		GeneralJustificationDate j = new GeneralJustificationDate();
 		
 		j.setId(rs.getString("id"));
 		j.setStart(new Date(rs.getTimestamp("jstart").getTime()));

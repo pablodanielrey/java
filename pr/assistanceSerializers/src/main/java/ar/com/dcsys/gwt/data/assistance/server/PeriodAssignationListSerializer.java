@@ -6,7 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.period.PeriodAssignation;
-import ar.com.dcsys.data.period.PeriodAssignationBean;
+import ar.com.dcsys.data.period.PeriodAssignation;
 import ar.com.dcsys.pr.CSD;
 
 import com.google.gson.Gson;
@@ -21,19 +21,19 @@ public class PeriodAssignationListSerializer implements CSD<List<PeriodAssignati
 												 .create();
 	
 	private class Container {
-		List<PeriodAssignationBean> list;
+		List<PeriodAssignation> list;
 	}	
 	
 	
-	private List<PeriodAssignationBean> toPeriodAssignationBeanList(List<PeriodAssignation> l) {
-		List<PeriodAssignationBean> ps = new ArrayList<PeriodAssignationBean>();
+	private List<PeriodAssignation> toPeriodAssignationBeanList(List<PeriodAssignation> l) {
+		List<PeriodAssignation> ps = new ArrayList<PeriodAssignation>();
 		for (PeriodAssignation p : l) {
-			ps.add((PeriodAssignationBean)p);
+			ps.add((PeriodAssignation)p);
 		}
 		return ps;
 	}
 
-	private List<PeriodAssignation> toPeriodAssignationList(List<PeriodAssignationBean> l) {
+	private List<PeriodAssignation> toPeriodAssignationList(List<PeriodAssignation> l) {
 		List<PeriodAssignation> ps = new ArrayList<PeriodAssignation>();
 		for (PeriodAssignation p : l) {
 			ps.add(p);

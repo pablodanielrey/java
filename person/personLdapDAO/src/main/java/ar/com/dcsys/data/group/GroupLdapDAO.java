@@ -22,7 +22,7 @@ import javax.naming.directory.SearchResult;
 
 import ar.com.dcsys.data.OpenLdapContextProvider;
 import ar.com.dcsys.data.person.Mail;
-import ar.com.dcsys.data.person.MailBean;
+import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.persistence.DirContextProvider;
@@ -463,7 +463,7 @@ public class GroupLdapDAO implements GroupDAO {
 						// aca sacaría el grupo de la cache en caso de encontrarse por el x-dcsys-uuid
 						Group group = null;
 						if (group == null) {
-							group = new GroupBean();
+							group = new Group();
 						}
 						
 						String uuid = getStringAtt("x-dcsys-uuid", attrs);
@@ -481,7 +481,7 @@ public class GroupLdapDAO implements GroupDAO {
 						
 						String mail = getStringAtt("mail",attrs);
 						if (mail != null && (!"".equals(mail))) {
-							Mail m = new MailBean();
+							Mail m = new Mail();
 							m.setMail(mail);
 							m.setPrimary(true);
 							group.getMails().add(m);

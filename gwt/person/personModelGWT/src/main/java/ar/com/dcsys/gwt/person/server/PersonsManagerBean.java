@@ -8,7 +8,7 @@ import javax.inject.Inject;
 
 import ar.com.dcsys.data.document.Document;
 import ar.com.dcsys.data.person.Mail;
-import ar.com.dcsys.data.person.MailBean;
+import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.exceptions.PersonException;
@@ -72,7 +72,7 @@ public class PersonsManagerBean implements PersonsManager {
 
 	@Override
 	public void findMails(Person p, Receiver<List<Mail>> rec) {
-		Mail m = new MailBean();
+		Mail m = new Mail();
 		m.setMail("prueba@generar-codigo-en-el-dominio.com");
 		
 		List<Mail> mails = new ArrayList<>();							// todavía no esta en el modelo asi que lo dejo por ahora para implementarlo despues.

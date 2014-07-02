@@ -1,22 +1,59 @@
 package ar.com.dcsys.data.justification;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public interface GeneralJustificationDate {
+public class GeneralJustificationDate  implements Serializable {
 
-	public String getId();
-	public void setId(String id);
+	private static final long serialVersionUID = 1L;
 	
-	public Justification getJustification();
-	public void setJustification(Justification justification);
+	private String id;
+	private Justification justification;
+	private Date start;
+	private Date end;
+	private String notes;
+	
 
-	public Date getStart();
-	public void setStart(Date start);
+	public String getId() {
+		return id;
+	}
 
-	public Date getEnd();
-	public void setEnd(Date end);	
+	public void setId(String id) {
+		this.id = id;
+	}	
 	
-	public String getNotes();
-	public void setNotes(String notes);
+	public Justification getJustification() {
+		return justification;
+	}
+
+	public void setJustification(Justification justification) {
+		this.justification = justification;
+	}
+
+	public Date getStart() {
+		return start;
+	}
+
+	public void setStart(Date start) {
+		this.start = start;
+	}
+
+	public Date getEnd() {
+		return end;
+	}
+
+	public void setEnd(Date end) {
+		this.end = end;
+	}
 	
+	
+	public String getNotes() {
+		return notes;
+	}
+
+	public void setNotes(String notes) {
+		this.notes = notes;
+	}
+		
+
 }

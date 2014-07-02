@@ -134,7 +134,7 @@ public class PersonPostgreSqlDAO extends  AbstractPersonDAO {
 	
 	
 	private Mail getMail(ResultSet rs) throws SQLException {
-		Mail mail = new MailBean();
+		Mail mail = new Mail();
 		mail.setMail(rs.getString("mail"));
 		mail.setPrimary(true);
 		return mail;
@@ -321,7 +321,7 @@ public class PersonPostgreSqlDAO extends  AbstractPersonDAO {
 		String country = rs.getString("country");
 		String gender = rs.getString("gender");
 		
-		Person person = new PersonBean();
+		Person person = new Person();
 		person.setId(id);
 		person.setDni(dni);
 		person.setName(name);

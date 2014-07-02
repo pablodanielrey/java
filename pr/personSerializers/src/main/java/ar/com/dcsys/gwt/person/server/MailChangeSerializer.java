@@ -4,9 +4,9 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.person.Mail;
-import ar.com.dcsys.data.person.MailBean;
+import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.MailChange;
-import ar.com.dcsys.data.person.MailChangeBean;
+import ar.com.dcsys.data.person.MailChange;
 import ar.com.dcsys.pr.CSD;
 
 import com.google.gson.Gson;
@@ -22,7 +22,7 @@ public class MailChangeSerializer implements CSD<MailChange> {
 	private class MailInstanceCreator implements InstanceCreator<Mail> {
 		@Override
 		public Mail createInstance(Type arg0) {
-			return new MailBean();
+			return new Mail();
 		}
 	}
 	
@@ -35,7 +35,7 @@ public class MailChangeSerializer implements CSD<MailChange> {
 //		String json2 = json1.replace("\\", "");
 //		logger.warning("MailChangeSerializer : " + json2);
 		
-		MailChangeBean mail = gson.fromJson(json, MailChangeBean.class);
+		MailChange mail = gson.fromJson(json, MailChange.class);
 		
 		return mail;
 	}

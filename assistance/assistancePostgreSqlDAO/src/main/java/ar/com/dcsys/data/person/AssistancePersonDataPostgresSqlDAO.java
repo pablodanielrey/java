@@ -15,7 +15,7 @@ import javax.inject.Inject;
 
 import ar.com.dcsys.assistance.AssistancePersonDataException;
 import ar.com.dcsys.assistance.entities.AssistancePersonData;
-import ar.com.dcsys.assistance.entities.AssistancePersonDataBean;
+import ar.com.dcsys.assistance.entities.AssistancePersonData;
 import ar.com.dcsys.data.PostgresSqlConnectionProvider;
 import ar.com.dcsys.exceptions.PersonException;
 
@@ -62,7 +62,7 @@ public class AssistancePersonDataPostgresSqlDAO implements AssistancePersonDataD
 	
 	private AssistancePersonData loadAssitancePersonData(ResultSet rs) throws SQLException, PersonException {
 
-		AssistancePersonData data = new AssistancePersonDataBean();
+		AssistancePersonData data = new AssistancePersonData();
 		
 		String person_id = rs.getString("person_id");
 		Person person = params.findPersonById(person_id);

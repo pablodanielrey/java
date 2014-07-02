@@ -64,7 +64,7 @@ public class PeriodPostgresSqlDAO implements PeriodDAO {
 	}
 	
 	private PeriodAssignation getPeriodAssignation(ResultSet rs) throws SQLException {
-		PeriodAssignation pa = new PeriodAssignationBean();
+		PeriodAssignation pa = new PeriodAssignation();
 		pa.setId(rs.getString("id"));
 		pa.setStart(new Date(rs.getTimestamp("pstart").getTime()));
 		pa.setType(PeriodType.valueOf(rs.getString("type")));

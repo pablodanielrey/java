@@ -4,9 +4,8 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.justification.GeneralJustificationDate;
-import ar.com.dcsys.data.justification.GeneralJustificationDateBean;
+import ar.com.dcsys.data.justification.GeneralJustificationDate;
 import ar.com.dcsys.data.justification.Justification;
-import ar.com.dcsys.data.justification.JustificationBean;
 import ar.com.dcsys.pr.CSD;
 
 import com.google.gson.Gson;
@@ -24,7 +23,7 @@ public class GeneralJustificationDateSerializer implements CSD<GeneralJustificat
 	private class JustificationInstanceCreator implements InstanceCreator<Justification> {
 		@Override
 		public Justification createInstance(Type arg0) {
-			return new JustificationBean();
+			return new Justification();
 		}
 	}
 	
@@ -33,7 +32,7 @@ public class GeneralJustificationDateSerializer implements CSD<GeneralJustificat
 		
 		logger.warning("GeneralJustificationDateSerializer : " + json);
 		
-		GeneralJustificationDateBean gjd = gson.fromJson(json, GeneralJustificationDateBean.class);
+		GeneralJustificationDate gjd = gson.fromJson(json, GeneralJustificationDate.class);
 		
 		return gjd;
 	}

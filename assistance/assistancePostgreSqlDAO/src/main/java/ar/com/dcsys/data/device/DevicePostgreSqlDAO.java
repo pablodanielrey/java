@@ -62,7 +62,7 @@ public class DevicePostgreSqlDAO implements DeviceDAO {
 	
 
 	private Device getDevice(ResultSet rs) throws SQLException {
-		Device device = new DeviceBean();
+		Device device = new Device();
 		
 		device.setId(rs.getString("id"));
 		device.setName(rs.getString("name"));
