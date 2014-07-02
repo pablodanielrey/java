@@ -355,5 +355,34 @@ public class TestManagerBean implements TestManager {
 		logger.log(Level.INFO, gjds.toString());
 		rec.onSuccess(gjds);
 	}
+	
+	@Override
+	public void test60(Person person, Receiver<List<PeriodAssignation>> rec) {
+		logger.log(Level.INFO, person.toString());
+		
+		List<PeriodAssignation> pal = new ArrayList<>();
+		for (int i = 0; i < 10; i++) {
+			PeriodAssignationBean pa = new PeriodAssignationBean();
+			pa.setId(String.valueOf(i));
+			pa.setPerson(person);
+			pa.setStart(new Date());
+			pa.setType(PeriodType.SYSTEMS);
+			pal.add(pa);
+		}
+		rec.onSuccess(pal);
+	}
+	
+	@Override
+	public void test61(Receiver<List<PeriodType>> rec) {
+		logger.log(Level.INFO, "test61");
+		rec.onSuccess(Arrays.asList(PeriodType.values()));
+	}
+	
+	@Override
+	public void test62(Person person, PeriodAssignation periodAssignation, Receiver<Void> receiver) {
+		logger.log(Level.INFO, person.toString());
+		logger.log(Level.INFO,periodAssignation.toString());
+		receiver.onSuccess(null);
+	}
 		
 }

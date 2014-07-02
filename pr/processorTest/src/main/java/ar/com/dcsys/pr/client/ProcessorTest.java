@@ -158,6 +158,10 @@ public class ProcessorTest implements EntryPoint {
 			test57();
 			test58();
 			
+			test60();
+			test61();
+			test62();			
+			
 			testEnum();
 			testEnum2();
 			testEnum3();
@@ -1586,4 +1590,141 @@ public class ProcessorTest implements EntryPoint {
 		
 		vp.add(b);
 	}	
+	
+	
+	private void test60() {
+		
+		Button b = new Button("test60()");
+		
+		b.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+					PersonBean p = new PersonBean();
+					p.setId("sdfdsfsddfs");
+					
+					tm.test60(p, new Receiver<List<PeriodAssignation>>() {
+						@Override
+						public void onSuccess(List<PeriodAssignation> t) {
+							logger.log(Level.INFO,t.toString());
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+						}
+					});
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		vp.add(b);
+	}	
+	
+	
+	private void test61() {
+		
+		Button b = new Button("test61()");
+		
+		b.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+					Justification j = new JustificationBean();
+					j.setId("id:3122331");
+					j.setCode("ab2code");
+					j.setDescription("Justificacion de prueba");
+										
+
+					GeneralJustificationDate gjd = new GeneralJustificationDateBean();
+					gjd.setEnd(new Date());
+					gjd.setStart(new Date());
+					gjd.setId("id-gjd-123141");
+					gjd.setJustification(j);
+					gjd.setNotes("notasssss");
+					
+					List<GeneralJustificationDate> gjds = new ArrayList<GeneralJustificationDate>();
+					gjds.add(gjd);
+					gjds.add(gjd);
+					gjds.add(gjd);							
+					
+					tm.test61(new Receiver<List<PeriodType>>() {
+						@Override
+						public void onSuccess(List<PeriodType> t) {
+							logger.log(Level.INFO,t.toString());
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+						}
+					});
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		vp.add(b);
+	}	
+	
+	
+	private void test62() {
+		
+		Button b = new Button("test62()");
+		
+		b.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+					Justification j = new JustificationBean();
+					j.setId("id:3122331");
+					j.setCode("ab2code");
+					j.setDescription("Justificacion de prueba");
+										
+
+					GeneralJustificationDate gjd = new GeneralJustificationDateBean();
+					gjd.setEnd(new Date());
+					gjd.setStart(new Date());
+					gjd.setId("id-gjd-123141");
+					gjd.setJustification(j);
+					gjd.setNotes("notasssss");
+					
+					List<GeneralJustificationDate> gjds = new ArrayList<GeneralJustificationDate>();
+					gjds.add(gjd);
+					gjds.add(gjd);
+					gjds.add(gjd);							
+					
+					PersonBean p = new PersonBean();
+					p.setId("sdsadasddsa");
+					p.setDni("27294557");
+					
+					PeriodAssignationBean pa = new PeriodAssignationBean();
+					pa.setId("id-pa");
+					pa.setPerson(p);
+					pa.setStart(new Date());
+					pa.setType(PeriodType.DAILY);
+					
+					tm.test62(p, pa, new Receiver<Void>() {
+						@Override
+						public void onSuccess(Void t) {
+							logger.log(Level.INFO,"ok");
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+						}
+					});
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		vp.add(b);
+	}		
+	
 }

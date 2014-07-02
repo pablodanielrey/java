@@ -138,4 +138,10 @@ public interface TestManager extends Manager {
 	public void test57(GeneralJustificationDate gjd, Receiver<List<GeneralJustificationDate>> rec);
 	public void test58(List<GeneralJustificationDate> gjds, Receiver<List<GeneralJustificationDate>> rec);
 	
+	
+	public void test60(Person person, Receiver<List<PeriodAssignation>> receiver);
+	public void test61(Receiver<List<PeriodType>> receiver);
+	public void test62(Person person, PeriodAssignation periodAssignation, Receiver<Void> receiver);
+	
+	
 }
