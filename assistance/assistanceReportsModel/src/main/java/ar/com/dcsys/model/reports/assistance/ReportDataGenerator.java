@@ -18,6 +18,8 @@ import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.period.Period;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.report.Report;
+import ar.com.dcsys.data.report.ReportSummary;
+import ar.com.dcsys.data.report.Report;
 import ar.com.dcsys.exceptions.JustificationException;
 import ar.com.dcsys.exceptions.PeriodException;
 import ar.com.dcsys.exceptions.PersonException;
@@ -38,7 +40,7 @@ public class ReportDataGenerator {
 	@Inject GroupsManager groupsManager;
 	
 
-	public DefaultReportSummaryImpl getReport(Date start, Date end, List<Person> personsToReport) throws IOException {
+	public ReportSummary getReport(Date start, Date end, List<Person> personsToReport) throws IOException {
 	
 		try {
 		
@@ -51,7 +53,7 @@ public class ReportDataGenerator {
 			PersonSort.sort(personsToReport);
 			
 			// genero el reporte.
-			DefaultReportSummaryImpl as = new DefaultReportSummaryImpl();
+			ReportSummary as = new ReportSummary();
 			as.setStart(start);
 			as.setEnd(end);
 			
@@ -81,7 +83,7 @@ public class ReportDataGenerator {
 
 		            for (Period period : periodsAux) {
 
-		            	DefaultReportImpl r = new DefaultReportImpl();
+		            	Report r = new Report();
 		            	r.setPerson(p);
 		            	r.setPeriod(period);
 		            	r.setGroup(groupToSet);

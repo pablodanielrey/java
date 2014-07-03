@@ -1,4 +1,4 @@
-package ar.com.dcsys.model.reports.assistance;
+package ar.com.dcsys.data.report;
 
 public enum ReportType {
 

@@ -15,8 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ar.com.dcsys.data.group.Group;
+import ar.com.dcsys.data.report.ReportExportType;
 import ar.com.dcsys.model.GroupsManager;
-import ar.com.dcsys.model.reports.ReportExportType;
 import ar.com.dcsys.model.reports.assistance.ReportGenerator;
 
 

@@ -1,4 +1,4 @@
-package ar.com.dcsys.model.reports;
+package ar.com.dcsys.data.report;
 
 public enum ReportExportType {
 
