@@ -458,5 +458,18 @@ public class TestManagerBean implements TestManager {
 		
 		rec.onSuccess(rs);
 	}
+	
+
+	@Override
+	public void test64(List<WorkedHours> whs, Receiver<List<WorkedHours>> rec) {	
+		logger.log(Level.INFO, whs.toString());
+		rec.onSuccess(whs);
+	}
+	
+	@Override
+	public void test65(List<Report> reports, Receiver<List<Report>> rec) {
+		logger.log(Level.INFO, reports.toString());
+		rec.onSuccess(reports);
+	}
 		
 }

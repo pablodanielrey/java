@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import ar.com.dcsys.data.device.Device;
 import ar.com.dcsys.data.document.Document;
 import ar.com.dcsys.data.document.DocumentBean;
 import ar.com.dcsys.data.group.Group;
@@ -14,12 +15,16 @@ import ar.com.dcsys.data.group.GroupType;
 import ar.com.dcsys.data.justification.GeneralJustificationDate;
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
+import ar.com.dcsys.data.log.AttLog;
+import ar.com.dcsys.data.period.Period;
 import ar.com.dcsys.data.period.PeriodAssignation;
 import ar.com.dcsys.data.period.PeriodType;
+import ar.com.dcsys.data.period.WorkedHours;
 import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.MailChange;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonType;
+import ar.com.dcsys.data.report.Report;
 import ar.com.dcsys.data.report.ReportSummary;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.ws.client.WebSocket;
@@ -156,6 +161,9 @@ public class ProcessorTest implements EntryPoint {
 			test61();
 			test62();		
 			test63();
+			
+			test64();
+			test65();
 			
 			testEnum();
 			testEnum2();
@@ -1752,6 +1760,158 @@ public class ProcessorTest implements EntryPoint {
 		});
 		
 		vp.add(b);
-	}			
+	}
+	
+	private void test64() {
+		
+		Button b = new Button("test64()");
+		
+		b.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+					Person p = new Person();
+					p.setId("sdsadasddsa");
+					p.setDni("27294557");		
+					
+					Device d = new Device();
+					d.setDescription("reloj1");
+					d.setEnabled(true);
+					d.setGateway("163.10.17.1");
+					d.setId("id-reloj1");
+					d.setMac("sd:sd:sd:34:s:34:22");
+					d.setName("reloj");
+					d.setNetmask("255.255.255.255");
+					
+					AttLog l = new AttLog();
+					l.setDate(new Date());
+					l.setDevice(d);
+					l.setId("log1sdsadsadadsdsa");
+					l.setPerson(p);
+					l.setVerifyMode(1l);
+					
+					WorkedHours wh = new WorkedHours();
+					wh.setInLog(l);
+					wh.setOutLog(l);
+					wh.setLogs(Arrays.asList(l,l,l,l));
+					
+					tm.test64(Arrays.asList(wh,wh,wh,wh), new Receiver<List<WorkedHours>>() {
+						@Override
+						public void onSuccess(List<WorkedHours> t) {
+							logger.log(Level.INFO,t.toString());
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+						}
+					});
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		vp.add(b);
+	}
+	
+	private void test65() {
+		
+		Button b = new Button("test65()");
+		
+		b.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+					Person person = new Person();
+					person.setId("sdsadasddsa");
+					person.setDni("27294557");
+					
+					Group g = new Group();
+					g.setName("groupName");
+					g.setPersons(Arrays.asList(person,person));
+					
+					Group g2 = new Group();
+					g2.setName("groupName2");
+					g2.setPersons(Arrays.asList(person,person));
+					
+					List<Group> groups = Arrays.asList(g,g2);
+					
+					Device d = new Device();
+					d.setDescription("reloj1");
+					d.setEnabled(true);
+					d.setGateway("163.10.17.1");
+					d.setId("id-reloj1");
+					d.setMac("sd:sd:sd:34:s:34:22");
+					d.setName("reloj");
+					d.setNetmask("255.255.255.255");
+					
+					AttLog l = new AttLog();
+					l.setDate(new Date());
+					l.setDevice(d);
+					l.setId("log1sdsadsadadsdsa");
+					l.setPerson(person);
+					l.setVerifyMode(1l);
+					
+					WorkedHours wh = new WorkedHours();
+					wh.setInLog(l);
+					wh.setOutLog(l);
+					wh.setLogs(Arrays.asList(l,l,l,l));
+					
+					
+					Period p = new Period();
+					p.setEnd(new Date());
+					p.setStart(new Date());
+					p.setPerson(person);
+					p.setWorkedHours(Arrays.asList(wh,wh,wh));
+					
+					Justification j = new Justification();
+					j.setCode("dsdsd");
+					j.setDescription("descripcion j");
+					j.setId("id-j");
+					
+					GeneralJustificationDate gjd = new GeneralJustificationDate();
+					gjd.setEnd(new Date());
+					gjd.setStart(new Date());
+					gjd.setNotes("notas");
+					gjd.setJustification(j);
+					
+					JustificationDate jd = new JustificationDate();
+					jd.setStart(new Date());
+					jd.setEnd(new Date());
+					jd.setJustification(j);
+					jd.setId("id-jd");
+					jd.setPerson(person);
+					jd.setNotes("algo de notas");
+					
+					Report r = new Report();
+					r.setPerson(person);
+					r.setPeriod(p);
+					r.setGjustifications(Arrays.asList(gjd,gjd,gjd));
+					r.setJustifications(Arrays.asList(jd,jd,jd));					
+					r.setGroup(g);
+					r.setGroups(groups);
+					
+					tm.test65(Arrays.asList(r,r,r,r), new Receiver<List<Report>>() {
+						@Override
+						public void onSuccess(List<Report> t) {
+							logger.log(Level.INFO,t.toString());
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+						}
+					});
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		vp.add(b);
+	}		
+	
+	
 	
 }
