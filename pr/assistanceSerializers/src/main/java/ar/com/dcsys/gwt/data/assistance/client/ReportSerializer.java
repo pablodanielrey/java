@@ -14,7 +14,7 @@ public class ReportSerializer implements CSD<Report> {
 	
 	public static final Logger logger = Logger.getLogger(ReportSerializer.class.getName());
 	
-	public static final PeriodSerializer ps = GWT.create(PeriodSerializer.class);
+	//public static final PeriodSerializer ps = GWT.create(PeriodSerializer.class);
 	
 	public interface Reader extends JsonReader<Report> {}
 	public static final Reader READER = GWT.create(Reader.class);

@@ -22,7 +22,7 @@ public class Report {
 	private List<GeneralJustificationDate> gjustifications = new ArrayList<>();
 	
 	private Long minutes = 0l;
-	private Boolean isAbscence;
+	private Boolean abscence;
 		
 	
 	/// para el reporte /////////
@@ -159,10 +159,10 @@ public class Report {
 		List<? extends WorkedHours> whs = period.getWorkedHours();
 		
 		if (whs == null || whs.size() == 0) {
-			isAbscence = true;
+			abscence = true;
 			minutes = 0l;
 		} else {
-			isAbscence = false;
+			abscence = false;
 			
 			// calculo los minutos totales trabajados.
 			minutes = 0l;
@@ -180,7 +180,7 @@ public class Report {
 
 	
 	public Boolean isAbscence() {
-		return isAbscence;
+		return abscence;
 	}
 	
 	

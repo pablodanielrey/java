@@ -12,7 +12,7 @@ public class Period {
 	private Person person;
 	private Date start;
 	private Date end;
-	private List<WorkedHours> whs = new ArrayList<>();
+	private List<WorkedHours> workedHours = new ArrayList<>();
 	
 	public Person getPerson() {
 		return person;
@@ -41,11 +41,11 @@ public class Period {
 	}
 
 	public List<WorkedHours> getWorkedHours() {
-		return whs;
+		return workedHours;
 	}
 	
 	public void setWorkedHours(List<WorkedHours> whs) {
-		this.whs = Collections.unmodifiableList(whs);
+		this.workedHours = Collections.unmodifiableList(whs);
 	}
 
 	/*

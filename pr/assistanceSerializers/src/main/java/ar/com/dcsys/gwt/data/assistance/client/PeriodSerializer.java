@@ -14,7 +14,7 @@ public class PeriodSerializer implements CSD<Period> {
 
 	public static final Logger logger = Logger.getLogger(PeriodSerializer.class.getName());
 	
-	public static final WorkedHoursSerializer whs = GWT.create(WorkedHoursSerializer.class);
+	public static final WorkedHoursSerializer workedHours = GWT.create(WorkedHoursSerializer.class);
 	
 	public interface Reader extends JsonReader<Period> {}
 	public static final Reader READER = GWT.create(Reader.class);

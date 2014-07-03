@@ -10,7 +10,7 @@ public class WorkedHours {
 	private AttLog inLog;
 	private AttLog outLog;
 	private List<AttLog> logs;
-	private long milis;
+	private long workedMilis;
 	
 	// constructor para los proxys y request factory. no porque lo use en el cógio.
 	public WorkedHours() {
@@ -21,7 +21,7 @@ public class WorkedHours {
 		this.inLog = inLog;
 		this.outLog = outLog;
 		this.logs = Collections.unmodifiableList(logs);
-		this.milis = calcMilis();
+		this.workedMilis = calcMilis();
 	}
 	
 	private final long calcMilis() {
@@ -61,14 +61,16 @@ public class WorkedHours {
 
 	public List<AttLog> getLogs() {
 		return logs;
+	}
+
+	public long getWorkedMilis() {
+		return workedMilis;
+	}
+
+	public void setWorkedMilis(long workedMilis) {
+		this.workedMilis = workedMilis;
 	}	
 	
-	public Long getWorkedMilis() {
-		return milis;
-	}
 	
-	public void setWorkedMilis(Long m) {
-		milis = m;
-	}
 	
 }
