@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.List;
 
 import ar.com.dcsys.data.log.AttLog;
+import ar.com.dcsys.data.period.Period;
+import ar.com.dcsys.data.period.WorkedHours;
 import ar.com.dcsys.data.period.PeriodType;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.exceptions.PeriodException;
@@ -22,7 +24,7 @@ public class DailyPeriodProvider implements PeriodProvider {
 	}
 
 	@Override
-	public List<DefaultPeriodImpl> findPeriods(Date pstart, Date pend, Date start,	Date end, Person person, AttLogsManager logManager, boolean onlyWorkDays) throws PeriodException {
+	public List<Period> findPeriods(Date pstart, Date pend, Date start,	Date end, Person person, AttLogsManager logManager, boolean onlyWorkDays) throws PeriodException {
 
 		
 		calendar = Calendar.getInstance();
@@ -54,14 +56,14 @@ public class DailyPeriodProvider implements PeriodProvider {
 
 			List<List<AttLog>> logsPerDay = organize(logs);
 			
-			List<DefaultPeriodImpl> periods = new ArrayList<DefaultPeriodImpl>();
+			List<Period> periods = new ArrayList<Period>();
 
 			long TOLERANCIA = 1000l * 60l * 15l;
 			
 			for (List<AttLog> ls : logsPerDay) {
 				
-				DefaultPeriodImpl p = new DefaultPeriodImpl();
-				List<DefaultWorkedHoursImpl> whs = new ArrayList<>();
+				Period p = new Period();
+				List<WorkedHours> whs = new ArrayList<>();
 
 				List<AttLog> whLogs = new ArrayList<>();
 				AttLog first = null;
@@ -73,13 +75,13 @@ public class DailyPeriodProvider implements PeriodProvider {
 					whLogs.add(l);
 					
 					if (l.getDate().getTime() > (first.getDate().getTime() + TOLERANCIA)) {
-						whs.add(new DefaultWorkedHoursImpl(first, l, whLogs));
+						whs.add(new WorkedHours(first, l, whLogs));
 						whLogs = new ArrayList<>();
 						first = null;
 					}
 				}
 				if (first != null) {
-					whs.add(new DefaultWorkedHoursImpl(first,null,whLogs));
+					whs.add(new WorkedHours(first,null,whLogs));
 				}
 				
 				// ya seteo los parámetros de la fecha y las marcaciones.
@@ -100,7 +102,7 @@ public class DailyPeriodProvider implements PeriodProvider {
 			
 			
 			// agrego las faltas.
-			List<DefaultPeriodImpl> absent = new ArrayList<>();
+			List<Period> absent = new ArrayList<>();
 			
 			if (periods.size() <= 0) {
 				
@@ -112,7 +114,7 @@ public class DailyPeriodProvider implements PeriodProvider {
 				long aDay = 1000l * 60l * 60l * 24l;
 				
 				// genero las faltas iniciales hasta el primer período
-				DefaultPeriodImpl firstPeriod = periods.get(0);
+				Period firstPeriod = periods.get(0);
 				if (estart.before(firstPeriod.getStart())) {
 					
 					Date endAbsent = new Date(firstPeriod.getStart().getTime() - aDay);
@@ -122,7 +124,7 @@ public class DailyPeriodProvider implements PeriodProvider {
 				
 				// geneero las faltas intermedias entre los perídos
 				long previousPeriod = firstPeriod.getStart().getTime();
-				for (DefaultPeriodImpl p : periods) {
+				for (Period p : periods) {
 					long actualPeriod = p.getStart().getTime();
 					
 					if (previousPeriod == actualPeriod) {
@@ -171,11 +173,11 @@ public class DailyPeriodProvider implements PeriodProvider {
 	 * @param end
 	 * @return
 	 */
-	private List<DefaultPeriodImpl> getAbsent(Person person, Date start, Date end, boolean onlyWorkDays) {
+	private List<Period> getAbsent(Person person, Date start, Date end, boolean onlyWorkDays) {
 		long aDay = 1000l * 60l * 60l * 24l;
 		long actualDayStart = initialInDay(start).getTime();
 		long queryEnd = initialInDay(end).getTime();
-		List<DefaultPeriodImpl> absent = new ArrayList<DefaultPeriodImpl>();
+		List<Period> absent = new ArrayList<Period>();
 		while (actualDayStart <= queryEnd) {
 
 			// hay que chequear que sean días laborables?
@@ -190,7 +192,7 @@ public class DailyPeriodProvider implements PeriodProvider {
 			}
 			
 			// genero una falta
-			DefaultPeriodImpl a = new DefaultPeriodImpl();
+			Period a = new Period();
 			a.setPerson(person);
 			a.setStart(new Date(actualDayStart));
 			a.setEnd(new Date(actualDayStart + aDay - 1l));

@@ -15,6 +15,7 @@ import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.group.GroupType;
 import ar.com.dcsys.data.justification.GeneralJustificationDate;
 import ar.com.dcsys.data.justification.JustificationDate;
+import ar.com.dcsys.data.period.Period;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.report.Report;
 import ar.com.dcsys.exceptions.JustificationException;
@@ -23,7 +24,6 @@ import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.model.GroupsManager;
 import ar.com.dcsys.model.PersonsManager;
 import ar.com.dcsys.model.justification.JustificationsManager;
-import ar.com.dcsys.model.period.DefaultPeriodImpl;
 import ar.com.dcsys.model.period.PeriodComparator;
 import ar.com.dcsys.model.period.PeriodsManager;
 import ar.com.dcsys.utils.PersonSort;
@@ -59,7 +59,7 @@ public class ReportDataGenerator {
 				try {
 					
 					List<JustificationDate> justifications = justificationManager.findBy(Arrays.asList(p), start, end);			
-		            List<DefaultPeriodImpl> periodsAux = periodsManager.findAll(p, start, end, true);
+		            List<Period> periodsAux = periodsManager.findAll(p, start, end, true);
 		            if (periodsAux == null) {
 		            	continue;
 		            }
@@ -79,7 +79,7 @@ public class ReportDataGenerator {
 					}
 					
 
-		            for (DefaultPeriodImpl period : periodsAux) {
+		            for (Period period : periodsAux) {
 
 		            	DefaultReportImpl r = new DefaultReportImpl();
 		            	r.setPerson(p);
@@ -118,7 +118,7 @@ public class ReportDataGenerator {
 		}
 	}
 	
-	private List<GeneralJustificationDate> checkGeneralJustification(List<GeneralJustificationDate> justifications, DefaultPeriodImpl p) {
+	private List<GeneralJustificationDate> checkGeneralJustification(List<GeneralJustificationDate> justifications, Period p) {
 		Date startP = p.getStart();
 		Date endP = p.getEnd();
 		
@@ -138,7 +138,7 @@ public class ReportDataGenerator {
 		return jds;
 	}
 	
-	private List<JustificationDate> checkJustification(List<JustificationDate> justifications, DefaultPeriodImpl p) {
+	private List<JustificationDate> checkJustification(List<JustificationDate> justifications, Period p) {
 		Date startP = p.getStart();
 		Date endP = p.getEnd();
 		

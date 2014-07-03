@@ -8,17 +8,17 @@ import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.justification.GeneralJustificationDate;
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
+import ar.com.dcsys.data.period.Period;
 import ar.com.dcsys.data.period.WorkedHours;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.report.Report;
-import ar.com.dcsys.model.period.DefaultPeriodImpl;
 
 public class DefaultReportImpl implements Report {
 	
 	private Person person;
 	private Group group;
 	private List<Group> groups;
-	private DefaultPeriodImpl period;
+	private Period period;
 	private List<JustificationDate> justifications = new ArrayList<>();
 	private List<GeneralJustificationDate> gjustifications = new ArrayList<>();
 	
@@ -129,11 +129,11 @@ public class DefaultReportImpl implements Report {
 	}
 
 	@Override
-	public DefaultPeriodImpl getPeriod() {
+	public Period getPeriod() {
 		return period;
 	}
 	
-	public void setPeriod(DefaultPeriodImpl period) {
+	public void setPeriod(Period period) {
 		this.period = period;
 	}
 

@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import ar.com.dcsys.data.period.Period;
 import ar.com.dcsys.data.period.PeriodAssignation;
 import ar.com.dcsys.data.period.PeriodDAO;
 import ar.com.dcsys.data.period.PeriodType;
@@ -43,16 +44,16 @@ public class PeriodsManagerBean implements PeriodsManager {
 	
 	
 	@Override
-	public List<DefaultPeriodImpl> findAll(Person person, Date start, Date end) throws PeriodException {
+	public List<Period> findAll(Person person, Date start, Date end) throws PeriodException {
 		return findAll(person, start, end, false);
 	}
 	
 	@Override
-	public List<DefaultPeriodImpl> findAll(Person person, Date start, Date end, boolean onlyWorkDays) throws PeriodException {
+	public List<Period> findAll(Person person, Date start, Date end, boolean onlyWorkDays) throws PeriodException {
 		
 		try {
 			
-			List<DefaultPeriodImpl> periodsR = new ArrayList<DefaultPeriodImpl>();
+			List<Period> periodsR = new ArrayList<Period>();
 			
 			// encuentro los tipos de período para ese usuario.
 			List<PeriodAssignation> assignations = periodManager.findAll(person);
@@ -99,7 +100,7 @@ public class PeriodsManagerBean implements PeriodsManager {
 				if (pp == null) {
 					throw new PeriodException("No se puede encontrar el períod provider " + type.name() + " para la persona : " + person.getId());
 				}
-				List<DefaultPeriodImpl> periods = pp.findPeriods(pstart, pend, start, end, person, attLogsManager, onlyWorkDays);
+				List<Period> periods = pp.findPeriods(pstart, pend, start, end, person, attLogsManager, onlyWorkDays);
 				if (periods != null && periods.size() > 0) {
 					periodsR.addAll(periods);
 				}

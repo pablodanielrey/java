@@ -2,10 +2,12 @@ package ar.com.dcsys.model.period;
 
 import java.util.Comparator;
 
-public class PeriodComparator implements Comparator<DefaultPeriodImpl> {
+import ar.com.dcsys.data.period.Period;
+
+public class PeriodComparator implements Comparator<Period> {
 
 	@Override
-	public int compare(DefaultPeriodImpl p0, DefaultPeriodImpl p1) {
+	public int compare(Period p0, Period p1) {
 		if (p0 == null && p1 == null) {
 			return 0;
 		}
