@@ -2,6 +2,7 @@ package ar.com.dcsys.gwt.assistance.server;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -10,6 +11,7 @@ import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.period.PeriodAssignation;
 import ar.com.dcsys.data.period.PeriodType;
 import ar.com.dcsys.data.person.Person;
+import ar.com.dcsys.data.report.ReportSummary;
 import ar.com.dcsys.exceptions.PeriodException;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.gwt.assistance.shared.PeriodsManagerTransfer;
@@ -17,16 +19,19 @@ import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.messages.shared.Transport;
 import ar.com.dcsys.model.GroupsManager;
 import ar.com.dcsys.model.period.PeriodsManager;
+import ar.com.dcsys.model.reports.assistance.ReportsModel;
 
 public class PeriodsManagerTransferBean implements PeriodsManagerTransfer {
 	
 	private final PeriodsManager periodsManager;
 	private final GroupsManager groupsManager;
+	private final ReportsModel reportsModel;
 	
 	@Inject
-	public PeriodsManagerTransferBean(PeriodsManager periodsManager, GroupsManager groupsManager) {
+	public PeriodsManagerTransferBean(PeriodsManager periodsManager, GroupsManager groupsManager, ReportsModel reportsModel) {
 		this.periodsManager = periodsManager;
 		this.groupsManager = groupsManager;
+		this.reportsModel = reportsModel;
 	}
 
 	@Override
@@ -47,6 +52,17 @@ public class PeriodsManagerTransferBean implements PeriodsManagerTransfer {
 		}
 		return false;
 	}
+	
+	@Override
+	public void findAllPeriods(Date start, Date end, List<Person> persons, Receiver<ReportSummary> rec) {
+		try {
+			ReportSummary summary = reportsModel.reportPeriods(start,end,persons);
+			rec.onSuccess(summary);
+		} catch (Exception e) {
+			rec.onError(e.getMessage());
+		}
+	}
+	
 	
 	@Override
 	public void findPersonsWithPeriodAssignation(Receiver<List<Person>> receiver) {

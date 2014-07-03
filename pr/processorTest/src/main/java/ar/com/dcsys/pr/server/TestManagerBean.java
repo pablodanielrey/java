@@ -8,20 +8,23 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import ar.com.dcsys.data.device.Device;
 import ar.com.dcsys.data.document.Document;
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.justification.GeneralJustificationDate;
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
-import ar.com.dcsys.data.period.PeriodAssignation;
+import ar.com.dcsys.data.log.AttLog;
+import ar.com.dcsys.data.period.Period;
 import ar.com.dcsys.data.period.PeriodAssignation;
 import ar.com.dcsys.data.period.PeriodType;
+import ar.com.dcsys.data.period.WorkedHours;
 import ar.com.dcsys.data.person.Mail;
-import ar.com.dcsys.data.person.Mail;
-import ar.com.dcsys.data.person.MailChange;
 import ar.com.dcsys.data.person.MailChange;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonType;
+import ar.com.dcsys.data.report.Report;
+import ar.com.dcsys.data.report.ReportSummary;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.messages.shared.Transport;
 import ar.com.dcsys.pr.shared.TestManager;
@@ -382,6 +385,78 @@ public class TestManagerBean implements TestManager {
 		logger.log(Level.INFO, person.toString());
 		logger.log(Level.INFO,periodAssignation.toString());
 		receiver.onSuccess(null);
+	}
+	
+	
+	@Override
+	public void test63(Date start, Date end, List<Person> persons, Receiver<ReportSummary> rec) {
+		logger.log(Level.INFO, start.toString());
+		logger.log(Level.INFO, end.toString());
+		logger.log(Level.INFO, String.valueOf(persons.size()));
+		
+		
+		Device d = new Device();
+		d.setDescription("reloj1");
+		d.setEnabled(true);
+		d.setGateway("163.10.17.1");
+		d.setId("id-reloj1");
+		d.setMac("sd:sd:sd:34:s:34:22");
+		d.setName("reloj");
+		d.setNetmask("255.255.255.255");
+		
+		AttLog l = new AttLog();
+		l.setDate(new Date());
+		l.setDevice(d);
+		l.setId("log1sdsadsadadsdsa");
+		l.setPerson(persons.get(0));
+		l.setVerifyMode(1l);
+		
+		WorkedHours wh = new WorkedHours();
+		wh.setInLog(l);
+		wh.setOutLog(l);
+		wh.setLogs(Arrays.asList(l,l,l,l));
+		
+		
+		Period p = new Period();
+		p.setEnd(new Date());
+		p.setStart(new Date());
+		p.setPerson(persons.get(0));
+		p.setWorkedHours(Arrays.asList(wh,wh,wh));
+		
+		Justification j = new Justification();
+		j.setCode("dsdsd");
+		j.setDescription("descripcion j");
+		j.setId("id-j");
+		
+		GeneralJustificationDate gjd = new GeneralJustificationDate();
+		gjd.setEnd(new Date());
+		gjd.setStart(new Date());
+		gjd.setNotes("notas");
+		gjd.setJustification(j);
+		
+		JustificationDate jd = new JustificationDate();
+		jd.setStart(new Date());
+		jd.setEnd(new Date());
+		jd.setJustification(j);
+		jd.setId("id-jd");
+		jd.setPerson(persons.get(0));
+		jd.setNotes("algo de notas");
+		
+		Report r = new Report();
+		r.setPerson(persons.get(0));
+		r.setPeriod(p);
+		r.setGjustifications(Arrays.asList(gjd,gjd,gjd));
+		r.setJustifications(Arrays.asList(jd,jd,jd));
+	
+		ReportSummary rs = new ReportSummary();
+		rs.addReport(r);
+		rs.addReport(r);
+		rs.addReport(r);
+		rs.addReport(r);
+		rs.setStart(new Date());
+		rs.setEnd(new Date());
+		
+		rec.onSuccess(rs);
 	}
 		
 }

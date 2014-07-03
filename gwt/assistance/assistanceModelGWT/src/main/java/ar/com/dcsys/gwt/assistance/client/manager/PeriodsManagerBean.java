@@ -1,21 +1,21 @@
 package ar.com.dcsys.gwt.assistance.client.manager;
 
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.period.PeriodAssignation;
-import com.google.gwt.core.client.GWT;
 import ar.com.dcsys.data.period.PeriodType;
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.gwt.assistance.client.gin.PeriodsManagerProvider;
+import ar.com.dcsys.data.report.ReportSummary;
 import ar.com.dcsys.gwt.assistance.shared.PeriodsManagerTransfer;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
-
-import com.google.inject.Inject;
-
 import ar.com.dcsys.gwt.ws.client.WebSocket;
+
+import com.google.gwt.core.client.GWT;
+import com.google.inject.Inject;
 
 public class PeriodsManagerBean implements PeriodsManager {
 
@@ -29,6 +29,11 @@ public class PeriodsManagerBean implements PeriodsManager {
 	public PeriodsManagerBean(WebSocket ws) {
 		this.socket = ws;
 		this.periodsManagerTransfer.setTransport(ws);
+	}
+	
+	@Override
+	public void findAllPeriods(Date start, Date end, List<Person> persons, Receiver<ReportSummary> rec) {
+		periodsManagerTransfer.findAllPeriods(start, end, persons, rec);
 	}
 	
 	@Override

@@ -3,28 +3,32 @@ package ar.com.dcsys.gwt.assistance.client.activity.periods;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import ar.com.dcsys.assistance.entities.AssistancePersonData;
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.person.Person;
+import ar.com.dcsys.data.report.Report;
+import ar.com.dcsys.data.report.ReportSummary;
 import ar.com.dcsys.gwt.assistance.client.manager.PeriodsManager;
 import ar.com.dcsys.gwt.assistance.client.ui.period.PERIODFILTER;
 import ar.com.dcsys.gwt.assistance.client.ui.period.PeriodsView;
-
-import com.google.gwt.activity.shared.AbstractActivity;
-import com.google.inject.Inject;
-
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 
+import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent.Handler;
 import com.google.gwt.view.client.SingleSelectionModel;
+import com.google.inject.Inject;
 
 public class PeriodsActivity extends AbstractActivity implements PeriodsView.Presenter {
 
+	public static final Logger logger = Logger.getLogger(PeriodsActivity.class.getName());
+	
 	private final PeriodsManager periodsManager;
 	private final PeriodsView view;
 	
@@ -186,7 +190,21 @@ public class PeriodsActivity extends AbstractActivity implements PeriodsView.Pre
 	
 	
 	private void getPeriods(Person person) {
+		Date start = getStart();
+		Date end = getEnd();
+		List<Person> persons = Arrays.asList(person);
 		
+		periodsManager.findAllPeriods(start, end, persons, new Receiver<ReportSummary>() {
+			@Override
+			public void onError(String error) {
+				logger.log(Level.WARNING,error);
+			}
+			@Override
+			public void onSuccess(ReportSummary t) {
+				List<Report> reports = t.getReports();
+				view.setPeriods(reports);
+			}
+		});
 	}
 	
 	@Override

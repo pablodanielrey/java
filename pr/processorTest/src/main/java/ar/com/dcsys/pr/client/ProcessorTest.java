@@ -12,20 +12,15 @@ import ar.com.dcsys.data.document.DocumentBean;
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.group.GroupType;
 import ar.com.dcsys.data.justification.GeneralJustificationDate;
-import ar.com.dcsys.data.justification.GeneralJustificationDate;
-import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
-import ar.com.dcsys.data.justification.JustificationDate;
-import ar.com.dcsys.data.period.PeriodAssignation;
 import ar.com.dcsys.data.period.PeriodAssignation;
 import ar.com.dcsys.data.period.PeriodType;
 import ar.com.dcsys.data.person.Mail;
-import ar.com.dcsys.data.person.Mail;
-import ar.com.dcsys.data.person.MailChange;
 import ar.com.dcsys.data.person.MailChange;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonType;
+import ar.com.dcsys.data.report.ReportSummary;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.ws.client.WebSocket;
 import ar.com.dcsys.gwt.ws.shared.event.SocketMessageEvent;
@@ -159,7 +154,8 @@ public class ProcessorTest implements EntryPoint {
 			
 			test60();
 			test61();
-			test62();			
+			test62();		
+			test63();
 			
 			testEnum();
 			testEnum2();
@@ -1725,5 +1721,37 @@ public class ProcessorTest implements EntryPoint {
 		
 		vp.add(b);
 	}		
+	
+	private void test63() {
+		
+		Button b = new Button("test63()");
+		
+		b.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				try {
+					Person p = new Person();
+					p.setId("sdsadasddsa");
+					p.setDni("27294557");
+					
+					tm.test63(new Date(), new Date(), Arrays.asList(p,p,p,p), new Receiver<ReportSummary>() {
+						@Override
+						public void onSuccess(ReportSummary t) {
+							logger.log(Level.INFO,t.toString());
+						}
+						
+						@Override
+						public void onError(String error) {
+							Window.alert(error);
+						}
+					});
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		vp.add(b);
+	}			
 	
 }

@@ -34,9 +34,8 @@ public class ReportSummary {
 	public void setEnd(Date end) {
 		this.end = end;
 	}
-
 	
-	public List<? extends Report> getReports() {
+	public List<Report> getReports() {
 		return reports;
 	}
 

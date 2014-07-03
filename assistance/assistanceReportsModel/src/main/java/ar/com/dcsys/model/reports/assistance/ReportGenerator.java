@@ -177,11 +177,7 @@ public class ReportGenerator {
 	}	
 	
 	
-	
 
-	
-	
-	
 	public void reportAbsences(OutputStream out, Date start, Date end, Group group, ReportExportType type) throws IOException {
 		
 		String name = group.getName() == null ? "Sin nombre" : group.getName();
