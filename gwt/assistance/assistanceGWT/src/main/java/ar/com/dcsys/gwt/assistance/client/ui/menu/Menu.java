@@ -1,5 +1,6 @@
 package ar.com.dcsys.gwt.assistance.client.ui.menu;
 
+import ar.com.dcsys.gwt.assistance.client.place.DailyPeriodsPlace;
 import ar.com.dcsys.gwt.assistance.client.place.GeneralsJustificationPlace;
 import ar.com.dcsys.gwt.assistance.client.place.JustificationPersonPlace;
 import ar.com.dcsys.gwt.assistance.client.place.ManageJustificationPlace;
@@ -57,6 +58,13 @@ public class Menu {
 			@Override
 			public void execute() {
 				ctrl.goTo(new PeriodsPlace());
+			}
+		}));	
+		
+		menu.addItem(new MenuItem("Periodo Diario",false,new ScheduledCommand() {
+			@Override
+			public void execute() {
+				ctrl.goTo(new DailyPeriodsPlace());
 			}
 		}));
 

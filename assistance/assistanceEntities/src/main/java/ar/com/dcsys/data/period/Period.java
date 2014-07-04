@@ -45,7 +45,8 @@ public class Period {
 	}
 	
 	public void setWorkedHours(List<WorkedHours> whs) {
-		this.workedHours = Collections.unmodifiableList(whs);
+		//this.workedHours = Collections.unmodifiableList(whs);
+		this.workedHours = whs;
 	}
 
 	/*

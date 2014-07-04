@@ -205,42 +205,7 @@
 		<g:FlowPanel styleName="{style.periods-list}">
 			<d:DataGrid ui:field="periods" styleName="{style.periods}"/>
 		</g:FlowPanel>
-			
-		<g:FlowPanel styleName="{style.panel-justify-statics}">
-			<g:TabLayoutPanel ui:field="tabLayoutPanel" barUnit='EM' barHeight='2' height='90%' width='100%'>
-				<g:tab>
-					<g:header>Estadísticas</g:header>
-					<cell:DataGrid ui:field="statistics" styleName="{style.statics}"/>
-				</g:tab>
-				<g:tab>
-					<g:header>Justificar</g:header>
-					<g:FlowPanel styleName="{style.block-justify}">
-					    <g:Label text="Justificar Periodos" styleName="{style.subtitle-center}"/>
-					    <g:FlowPanel styleName="{style.panel}">
-					        <g:Label text="Tipo : " styleName="{style.label-inline}"/>
-							<g:ValueListBox ui:field="types"/>
-						</g:FlowPanel>
-						<g:FlowPanel styleName="{style.panel}">	
-						    <g:Label text="Notas : " styleName="{style.label-block}"/>
-							<g:TextArea ui:field="justifyNotes" styleName="{style.text-area}"/>
-						</g:FlowPanel>
-						<g:FlowPanel styleName="{style.panel-button}">
-							<g:Button ui:field="justify" text="Justificar Seleccionados" styleName="{style.button}"/>
-						</g:FlowPanel>
-					</g:FlowPanel>
-				</g:tab>
-				<g:tab>
-					<g:header>Reportes</g:header>
-					<g:FlowPanel styleName="{style.panel-button}">
-						<g:Button ui:field="export" text="Generar Reporte" styleName="{style.button}"/>
-						<g:Anchor ui:field="exportedData" text=""/>
-					</g:FlowPanel>					
-				</g:tab>
-			</g:TabLayoutPanel>
-		</g:FlowPanel>
 
-		<!--  esto es para generar el reporte -->		
-		<g:FlowPanel ui:field="dataToPost" visible="false"/>
 		
 	</g:FlowPanel>
 

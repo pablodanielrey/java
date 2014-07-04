@@ -4,42 +4,41 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.justification.GeneralJustificationDate;
-import ar.com.dcsys.data.justification.Justification;
+import ar.com.dcsys.data.justification.JustificationDate;
+import ar.com.dcsys.data.period.Period;
+import ar.com.dcsys.data.period.WorkedHours;
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.gwt.assistance.client.activity.justification.JustificationStatistic;
-import ar.com.dcsys.gwt.assistance.client.common.JustificationsSort;
+import ar.com.dcsys.data.report.Report;
+import ar.com.dcsys.gwt.assistance.client.common.GroupsSort;
 import ar.com.dcsys.gwt.assistance.client.ui.period.PERIODFILTER;
+import ar.com.dcsys.gwt.assistance.client.ui.period.WorkedHoursUtil;
+import ar.com.dcsys.gwt.assistance.client.ui.period.cells.JustificationActionCell;
+import ar.com.dcsys.gwt.assistance.client.ui.period.cells.JustificationActionCellPresenter;
 import ar.com.dcsys.utils.PersonSort;
 
+import com.google.gwt.cell.client.Cell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
-import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.text.shared.Renderer;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.TabLayoutPanel;
-import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.ValueListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
@@ -55,28 +54,18 @@ public class DailyPeriods extends Composite implements DailyPeriodsView {
 	interface DailyPeriodsUiBinder extends UiBinder<Widget, DailyPeriods> {
 	}
 
-	@UiField TabLayoutPanel tabLayoutPanel;
 
 	private Presenter p;
 	
 	
 	public DailyPeriods() {
+		createDates();
 		createPeriodFilter();
 		createGroupFilter();
-		createStatistic();
-		createDates();
 		createPeriods();
-		createType();
 		
 		initWidget(uiBinder.createAndBindUi(this));
 		
-		// para cubrir el bug del tablayoutpanel
-		tabLayoutPanel.addSelectionHandler(new SelectionHandler<Integer>() {
-			@Override
-			public void onSelection(SelectionEvent<Integer> event) {
-				statistics.redraw();
-			}
-		});		
 	}
 
 	@Override
@@ -88,16 +77,128 @@ public class DailyPeriods extends Composite implements DailyPeriodsView {
 	public void clear() {
 		clearPeriodFilter();
 		clearPeriodData();
-		clearJustificationData();
 	}
 	
 	
+	/* *****************************************************************************
+	 * *********************************** DATES ***********************************
+	 * *************************************************************************** */	
+	
+	@UiField(provided=true) DateBox date;
 	
 	
+	private void createDates() {
+		DateTimeFormat defaultF = DateTimeFormat.getFormat(PredefinedFormat.DATE_SHORT);
+
+		date = new DateBox();
+		date.setFormat(new DateBox.DefaultFormat(defaultF));
+		date.addValueChangeHandler(new ValueChangeHandler<Date>() {
+			@Override
+			public void onValueChange(ValueChangeEvent<Date> event) {
+				Date datev = event.getValue();
+				datev.setHours(0);
+				datev.setMinutes(0);
+				datev.setSeconds(0);
+				date.setValue(datev);
+			}
+		});
+		
+	}	
 	
 	
+	@Override
+	public Date getDate() {
+		return date.getValue();
+	}
+
+
+
+	@Override
+	public void setDate(Date date) {
+		this.date.setValue(date);
+	}
+
+
+	/* *****************************************************************************
+	 * *********************************** FIND ***********************************
+	 * *************************************************************************** */
 	
-	/////////////////////// GROUP FILTER ///////////////////////////////////////////////
+	@UiHandler("find")
+	public void onFind(ClickEvent event) {
+		p.findPeriods();
+	}	
+	
+
+	/* *****************************************************************************
+	 * ******************************* PERIODFILTER ********************************
+	 * *************************************************************************** */
+
+	
+	
+	private SingleSelectionModel<PERIODFILTER> periodFilterSelectionModel;
+	
+	@UiField(provided=true) ValueListBox<PERIODFILTER> periodFilter;
+
+	
+	/**
+	 * Mantiene en sincronía el selectionModel y el Value de la ValueListBox
+	 */
+	private final ValueChangeHandler<PERIODFILTER> periodChangeHandler = new ValueChangeHandler<PERIODFILTER>() {
+		@Override
+		public void onValueChange(ValueChangeEvent<PERIODFILTER> event) {
+			if (periodFilterSelectionModel == null) {
+				return;
+			}
+			PERIODFILTER item = periodFilter.getValue();
+			if (item == null) {
+				periodFilterSelectionModel.clear();
+			} else {
+				periodFilterSelectionModel.setSelected(item, true);
+			}
+		}
+	};		
+
+	
+	private void createPeriodFilter() {
+		periodFilter = new ValueListBox<PERIODFILTER>(new Renderer<PERIODFILTER>() {
+			@Override
+			public String render(PERIODFILTER object) {
+				if (object == null) {
+					return "";
+				}
+				return object.getDescription();
+			}
+			@Override
+			public void render(PERIODFILTER object, Appendable appendable) throws IOException {
+				if (object == null) {
+					return;
+				}
+				appendable.append(object.getDescription());
+			}
+		});
+		periodFilter.addValueChangeHandler(periodChangeHandler);
+	}	
+	
+	private void clearPeriodFilter() {
+		periodFilter.setAcceptableValues(new ArrayList<PERIODFILTER>());
+	}
+	
+	
+	@Override
+	public void setPeriodFilterSelectionModel(SingleSelectionModel<PERIODFILTER> selection) {
+		periodFilterSelectionModel = selection;
+	}	
+	
+	@Override
+	public void setPeriodFilterValues(List<PERIODFILTER> values) {
+		periodFilter.setValue(values.get(0));
+		periodFilter.setAcceptableValues(values);
+	}
+	
+	
+	/* *****************************************************************************
+	 * **************************** GROUP FILTER ***********************************
+	 * *************************************************************************** */
 	
 	@UiField(provided=true) ValueListBox<Group> groupFilter;
 	
@@ -143,17 +244,24 @@ public class DailyPeriods extends Composite implements DailyPeriodsView {
 		groupFilter.addValueChangeHandler(groupChangeHandler);
 	}	
 	
+	/**
+	 * Setea los grupos.
+	 * por defecto setea null. o sea todos los grupos posibles.
+	 */	
 	@Override
 	public void setGroups(List<Group> groups) {
+		List<Group> groupsc = new ArrayList<Group>();
 		if (groups == null || groups.size() <= 0) {
-			groupFilter.setAcceptableValues(new ArrayList<Group>());
+			groupsc.add(null);
+			groupFilter.setAcceptableValues(groupsc);
 			groupFilter.setValue(null);
-			return;
-		}
-//		GroupsSort.sort(groups);
-		groupFilter.setValue(null);
-		groupFilter.setAcceptableValues(groups);
-	}	
+		} else {
+			groupsc.addAll(groups);
+			GroupsSort.sort(groupsc);
+			groupFilter.setAcceptableValues(groupsc);
+			groupFilter.setValue(null);
+		}	
+	}
 	
 	@Override
 	public void setGroupSelectionModel(SingleSelectionModel<Group> selection) {
@@ -162,87 +270,14 @@ public class DailyPeriods extends Composite implements DailyPeriodsView {
 	
 		
 	
+	/* *****************************************************************************
+	 * ********************************* PERIOD ************************************
+	 * *************************************************************************** */
 	
 	
+	@UiField(provided=true) DataGrid<Report> periods;
+	private ListDataProvider<Report> periodsDataProvider;
 	
-	
-	//////////////////////////////////////////// PERIOD FILTER /////////////////////////
-
-	
-	
-	private SingleSelectionModel<PERIODFILTER> periodFilterSelectionModel;
-	
-	@UiField(provided=true) ValueListBox<PERIODFILTER> periodFilter;
-
-	
-	/**
-	 * Mantiene en sincronía el selectionModel y el Value de la ValueListBox
-	 */
-	private final ValueChangeHandler<PERIODFILTER> periodChangeHandler = new ValueChangeHandler<PERIODFILTER>() {
-		@Override
-		public void onValueChange(ValueChangeEvent<PERIODFILTER> event) {
-			if (periodFilterSelectionModel == null) {
-				return;
-			}
-			PERIODFILTER item = periodFilter.getValue();
-			periodFilterSelectionModel.setSelected(item, true);
-		}
-	};		
-	
-	private void clearPeriodFilter() {
-		periodFilter.setAcceptableValues(new ArrayList<PERIODFILTER>());
-	}
-
-	
-	private void createPeriodFilter() {
-		periodFilter = new ValueListBox<PERIODFILTER>(new Renderer<PERIODFILTER>() {
-			@Override
-			public String render(PERIODFILTER object) {
-				if (object == null) {
-					return "";
-				}
-				return object.getDescription();
-			}
-			@Override
-			public void render(PERIODFILTER object, Appendable appendable) throws IOException {
-				if (object == null) {
-					return;
-				}
-				appendable.append(object.getDescription());
-			}
-		});
-		periodFilter.addValueChangeHandler(periodChangeHandler);
-	}	
-	
-	@Override
-	public void setPeriodFilterSelectionModel(SingleSelectionModel<PERIODFILTER> selection) {
-		periodFilterSelectionModel = selection;
-	}	
-	
-	@Override
-	public void setPeriodFilterValues(List<PERIODFILTER> values) {
-		periodFilter.setValue(values.get(0));
-		periodFilter.setAcceptableValues(values);
-	}
-	
-	
-	
-	
-	
-	
-	
-	////////////////////// PERIODS //////////////////////////////////////
-	
-	
-	@UiField(provided=true) DataGrid<PersonPeriodContainer> periods;
-	private ListDataProvider<PersonPeriodContainer> periodsDataProvider;
-	
-
-	@Override
-	public void redrawPeriods() {
-		periods.redraw();
-	}	
-
 
 	private String getFullName(Person person) {
 		String name = person.getName();
@@ -255,64 +290,50 @@ public class DailyPeriods extends Composite implements DailyPeriodsView {
 		final DateTimeFormat dateF = DateTimeFormat.getFormat(PredefinedFormat.DATE_SHORT);
 		final DateTimeFormat timeF = DateTimeFormat.getFormat(PredefinedFormat.TIME_SHORT);
 		
-		final TextColumn<PersonPeriodContainer> name = new TextColumn<PersonPeriodContainer>() {
+		final TextColumn<Report> name = new TextColumn<Report>() {
 			@Override
-			public String getValue(PersonPeriodContainer pp) {
-				if (pp == null) {
+			public String getValue(Report report) {
+				if (report == null) {
 					return "no existe";
 				}
 				
-				if (pp.person == null || pp.person.getName() == null || pp.person.getLastName() == null) {
+				Person p = report.getPerson();
+				
+				if (p == null || p.getName() == null || p.getLastName() == null) {
 					return "no tiene";
 				}
 
-				return getFullName(pp.person);
+				return getFullName(p);
 			}
 		};
 
 		
 		
-		final TextColumn<PersonPeriodContainer> dni = new TextColumn<PersonPeriodContainer>() {
+		final TextColumn<Report> dni = new TextColumn<Report>() {
 			@Override
-			public String getValue(PersonPeriodContainer pp) {
-				if (pp == null) {
+			public String getValue(Report report) {
+				if (report == null) {
 					return "no existe";
 				}
 				
-				if (pp.person == null || pp.person.getDni() == null) {
+				Person p = report.getPerson();
+				
+				if (p == null || p.getDni() == null) {
 					return "no tiene";
 				}
 
-				return pp.person.getDni();
+				return p.getDni();
 			}
 		};
 		
-		/*
-		TextColumn<PersonPeriodContainer> notes = new TextColumn<PersonPeriodContainer>() {
+		final TextColumn<Report> date = new TextColumn<Report>() {
 			@Override
-			public String getValue(PersonPeriodContainer object) {
-				if (object == null) {
+			public String getValue(Report report) {
+				if (report == null) {
 					return "";
 				}
-				if (object.person == null) {
-					return "";
-				}
-				AssistancePersonData data = p.assistanceData(object.person);
-				if (data == null) {
-					return "";
-				}
-				return data.getNotes();
-			}
-		};
-		*/
-		
-		final TextColumn<PersonPeriodContainer> date = new TextColumn<PersonPeriodContainer>() {
-			@Override
-			public String getValue(PersonPeriodContainer object) {
-				if (object == null) {
-					return "";
-				}
-				Date start = object.period.getDate();
+				Period period = report.getPeriod();
+				Date start = period.getStart();
 				if (start == null) {
 					return "no tiene";
 				}
@@ -320,70 +341,70 @@ public class DailyPeriods extends Composite implements DailyPeriodsView {
 			}
 		};
 		
-		final TextColumn<PersonPeriodContainer> hourS = new TextColumn<PersonPeriodContainer>() {
+		final TextColumn<Report> hourS = new TextColumn<Report>() {
 			@Override
-			public String getValue(PersonPeriodContainer object) {
-				if (object == null) {
+			public String getValue(Report object) {
+				if (object == null || object.getPeriod() == null) {
 					return "";
 				}
-				
-				Date start = object.period.getStart();
-				if (start == null) {
-					return "No tiene";
+				Period period = object.getPeriod();
+				List<WorkedHours> whs = period.getWorkedHours();
+				if (whs == null || whs.size() <= 0) {
+					return "no tiene";
 				}
 				
-				return timeF.format(start);
+				WorkedHours wh = whs.get(0);
+				if (wh.getLogs() != null && wh.getInLog().getDate() != null) {
+					return timeF.format(wh.getInLog().getDate());
+				}
+				
+				return "no tiene";
 			}
 		};
 		
-		final TextColumn<PersonPeriodContainer> hourE = new TextColumn<PersonPeriodContainer>() {
+		final TextColumn<Report> hourE = new TextColumn<Report>() {
 			@Override
-			public String getValue(PersonPeriodContainer object) {
-				if (object == null) {
-					return "";
-				}
-
-				Date end = object.period.getEnd();
-				if (end == null) {
-					return "No tiene";
-				}
-				
-				return timeF.format(end);
-			}
-		};
-		
-		final TextColumn<PersonPeriodContainer> hours = new TextColumn<PersonPeriodContainer>() {
-			@Override
-			public String getValue(PersonPeriodContainer object) {
-				if (object == null) {
+			public String getValue(Report object) {
+				if (object == null || object.getPeriod() == null) {
 					return "";
 				}
 				
-				Integer minutes = object.period.getMinutes();
-				if (minutes == null) {
-					return "No tiene";
+				Period period = object.getPeriod();
+				List<WorkedHours> whs = period.getWorkedHours();
+				if (whs == null || whs.size() <= 0) {
+					return"no tiene";
 				}
 				
-				int hour = minutes / 60;
-				int min = minutes % 60;
+				Date last = WorkedHoursUtil.getLastDate(whs);
+				if (last == null) {
+					return "no tiene";
+				}
 				
-				NumberFormat nf = NumberFormat.getFormat("00");
-				String hoursS = nf.format(hour) + ":" + nf.format(min);
-				
-				return hoursS;
+				return timeF.format(last);
 			}
 		};
 		
-/*
-		Cell<PersonPeriodContainer> justificationActionCellPersonPeriodContainer = JustificationActionCellPersonPeriodContainer.createCell(new JustificationActionCellPresenter<PersonPeriodContainer>() {
+		final TextColumn<Report> hours = new TextColumn<Report>() {
 			@Override
-			public void justify() {
-				p.justify();
+			public String getValue(Report object) {
+				if (object == null) {
+					return "";
+				}
+				Long min = object.getMinutes();
+				if (min == null) {
+					return "";
+				}
+				String hS = WorkedHoursUtil.fhm((int)(min / 60));
+				String mS = WorkedHoursUtil.fhm((int)(min % 60));
+				return hS + ":" + mS;
 			}
+		};
+		
+		Cell<Report> justificationActionCell = JustificationActionCell.createCell(new JustificationActionCellPresenter<Report>() {
 			
 			@Override
-			public JustificationDate getJustifications(PersonPeriodContainer p) {
-				return DailyPeriods.this.p.justified(p);
+			public void justify() {
+				DailyPeriods.this.p.justify();
 			}
 			
 			@Override
@@ -392,25 +413,22 @@ public class DailyPeriods extends Composite implements DailyPeriodsView {
 			}
 		});
 		
-		Column<PersonPeriodContainer,PersonPeriodContainer> justified = new Column<PersonPeriodContainer,PersonPeriodContainer>(justificationActionCellPersonPeriodContainer) {
+		Column<Report,Report> justified = new Column<Report,Report>(justificationActionCell) {
 			@Override
-			public PersonPeriodContainer getValue(PersonPeriodContainer object) {
+			public Report getValue(Report object) {
 				return object;
 			}
 		};
 		
-		
-		*/
-		
-		TextColumn<PersonPeriodContainer> generallyJustified = new TextColumn<PersonPeriodContainer>() {
+		TextColumn<Report> generallyJustified = new TextColumn<Report>() {
 			@Override
-			public String getValue(PersonPeriodContainer object) {
-				if (p == null) {
+			public String getValue(Report object) {
+				if (object == null || object.getGjustifications() == null || object.getGjustifications().size() == 0) {
 					return "";
 				}
 				
-				//GeneralJustificationDate gjd = p.generalJustified(object);
-				GeneralJustificationDate gjd = null;
+				List<GeneralJustificationDate> gjds = object.getGjustifications();
+				GeneralJustificationDate gjd = gjds.get(0);
 				if (gjd != null) {
 					if (gjd.getJustification() == null) {
 						return "error obteniendo justificación";
@@ -422,7 +440,7 @@ public class DailyPeriods extends Composite implements DailyPeriodsView {
 			}
 		};
 		
-		periods = new DataGrid<PersonPeriodContainer>();
+		periods = new DataGrid<Report>();
 		periods.addColumn(name, "Nombre");
 		periods.addColumn(dni, "Dni");
 //		periods.addColumn(notes, "Notas");
@@ -431,16 +449,16 @@ public class DailyPeriods extends Composite implements DailyPeriodsView {
 		//periods.addColumn(dateE, "Fecha Salida");
 		periods.addColumn(hourE, "Hora Salida");
 		periods.addColumn(hours, "Cantidad de Horas");
-		//periods.addColumn(justified,"Justificado");
+		periods.addColumn(justified,"Justificado");
 		periods.addColumn(generallyJustified,"Justificado General");
 		
 		
-		//// hacer sortable a las columnas requeridas ////
+		//seteo la parte de ordenación
 		
-		periodsDataProvider = new ListDataProvider<PersonPeriodContainer>();
+		periodsDataProvider = new ListDataProvider<Report>();
 		periodsDataProvider.addDataDisplay(periods);
 
-		ListHandler<PersonPeriodContainer> sortHandler = new ListHandler<PersonPeriodContainer>(periodsDataProvider.getList());
+		ListHandler<Report> sortHandler = new ListHandler<Report>(periodsDataProvider.getList());
 		periods.addColumnSortHandler(sortHandler);
 		
 		name.setSortable(true);
@@ -451,10 +469,10 @@ public class DailyPeriods extends Composite implements DailyPeriodsView {
 		
 		periods.getColumnSortList().push(name);
 		
-		final Comparator<DailyPeriodsView.PersonPeriodContainer> nameComparator = new Comparator<DailyPeriodsView.PersonPeriodContainer>() {
+		final Comparator<Report> nameComparator = new Comparator<Report>() {
 			private final Comparator<Person> personComparator = PersonSort.getComparator();
 			@Override
-			public int compare(PersonPeriodContainer p1, PersonPeriodContainer p2) {
+			public int compare(Report p1, Report p2) {
 				if (p1 == null && p2 == null) {
 					return 0;
 				}
@@ -464,15 +482,15 @@ public class DailyPeriods extends Composite implements DailyPeriodsView {
 				if (p2 == null) {
 					return 1;
 				}
-				return personComparator.compare(p1.person, p2.person);
+				return personComparator.compare(p1.getPerson(), p2.getPerson());
 			}
 		};
 		
 		sortHandler.setComparator(name, nameComparator);
 		
-		sortHandler.setComparator(dni, new Comparator<DailyPeriodsView.PersonPeriodContainer>() {
+		sortHandler.setComparator(dni, new Comparator<Report>() {
 			@Override
-			public int compare(PersonPeriodContainer p1, PersonPeriodContainer p2) {
+			public int compare(Report p1, Report p2) {
 				if (p1 == null && p2 == null) {
 					return 0;
 				}
@@ -483,32 +501,32 @@ public class DailyPeriods extends Composite implements DailyPeriodsView {
 					return 1;
 				}
 
-				if (p1.person == null && p2.person == null) {
+				if (p1.getPerson() == null && p2.getPerson() == null) {
 					return 0;
 				}
-				if (p1.person == null) {
+				if (p1.getPerson() == null) {
 					return -1;
 				}
-				if (p2.person == null) {
+				if (p2.getPerson() == null) {
 					return 1;
 				}
 				
-				if (p1.person.getDni() == null && p2.person.getDni() == null) {
+				if (p1.getPerson().getDni() == null && p2.getPerson().getDni() == null) {
 					return 0;
 				}
-				if (p1.person.getDni() == null) {
+				if (p1.getPerson().getDni() == null) {
 					return -1;
 				}
-				if (p2.person.getDni() == null) {
+				if (p2.getPerson().getDni() == null) {
 					return 1;
 				}
-				return p1.person.getDni().compareTo(p2.person.getDni());
+				return p1.getPerson().getDni().compareTo(p2.getPerson().getDni());
 			}
 		});
 		
-		sortHandler.setComparator(hourS, new Comparator<DailyPeriodsView.PersonPeriodContainer>() {
+		sortHandler.setComparator(hourS, new Comparator<Report>() {
 			@Override
-			public int compare(PersonPeriodContainer p1, PersonPeriodContainer p2) {
+			public int compare(Report p1, Report p2) {
 				String s1 = hourS.getValue(p1);
 				String s2 = hourS.getValue(p2);
 				int data = s1.compareTo(s2);
@@ -521,9 +539,9 @@ public class DailyPeriods extends Composite implements DailyPeriodsView {
 
 		});
 		
-		sortHandler.setComparator(hourE, new Comparator<DailyPeriodsView.PersonPeriodContainer>() {
+		sortHandler.setComparator(hourE, new Comparator<Report>() {
 			@Override
-			public int compare(PersonPeriodContainer p1, PersonPeriodContainer p2) {
+			public int compare(Report p1, Report p2) {
 				String s1 = hourE.getValue(p1);
 				String s2 = hourE.getValue(p2);
 				int data = s1.compareTo(s2);
@@ -535,9 +553,9 @@ public class DailyPeriods extends Composite implements DailyPeriodsView {
 			}
 		});
 		
-		sortHandler.setComparator(hours, new Comparator<DailyPeriodsView.PersonPeriodContainer>() {
+		sortHandler.setComparator(hours, new Comparator<Report>() {
 			@Override
-			public int compare(PersonPeriodContainer p1, PersonPeriodContainer p2) {
+			public int compare(Report p1, Report p2) {
 				String s1 = hours.getValue(p1);
 				String s2 = hours.getValue(p2);
 				int data = s1.compareTo(s2);
@@ -557,17 +575,21 @@ public class DailyPeriods extends Composite implements DailyPeriodsView {
 	public void clearPeriodData() {
 		periodsDataProvider.getList().clear();
 		periodsDataProvider.refresh();
-		
-		clearStatistics();
 	}
 	
+
 	@Override
-	public void setPeriods(List<PersonPeriodContainer> periods) {
+	public void redrawPeriods() {
+		periods.redraw();
+	}	
+	
+	@Override
+	public void setPeriods(List<Report> periods) {
 		if (periods == null) {
 			return;
 		}
 
-		DailyPeriods.this.periods.setVisibleRange(new Range(0, periods.size()));
+		this.periods.setVisibleRange(new Range(0, periods.size()));
 		periodsDataProvider.getList().clear();
 		periodsDataProvider.getList().addAll(periods);
 		periodsDataProvider.refresh();
@@ -578,268 +600,16 @@ public class DailyPeriods extends Composite implements DailyPeriodsView {
 				ColumnSortEvent.fire( DailyPeriods.this.periods, DailyPeriods.this.periods.getColumnSortList());
 			}
 		});		
-		
-		setStatistics(periods);
+
+		/*
+		 * TODO: falta implementar la parte de estadistica
+		 */
+		//setStatistics(periods);
 	}
 	
 	@Override
-	public void setPeriodSelectionModel(MultiSelectionModel<PersonPeriodContainer> selection) {
+	public void setPeriodSelectionModel(MultiSelectionModel<Report> selection) {
 		periods.setSelectionModel(selection);
-	}
-	
-		
-	
-	
-	
-	
-	/////////// STATISTICS //////////////////////
-
-	
-	
-	
-	@UiField(provided=true) DataGrid<JustificationStatistic> statistics;
-	
-
-	private void createStatistic() {
-		statistics = new DataGrid<JustificationStatistic>();
-		TextColumn<JustificationStatistic> name = new TextColumn<JustificationStatistic>() {
-			@Override
-			public String getValue(JustificationStatistic object) {
-				String name = object.getName();
-				if (name == null) {
-					return "no tiene";
-				}
-				return name;
-			}
-		};	
-		TextColumn<JustificationStatistic> description = new TextColumn<JustificationStatistic>() {
-			@Override
-			public String getValue(JustificationStatistic object) {
-				String description = object.getDescription();
-				if (description == null) {
-					return "no tiene";
-				}
-				return description;
-			}
-		};	
-		TextColumn<JustificationStatistic> count = new TextColumn<JustificationStatistic>() {
-			@Override
-			public String getValue(JustificationStatistic object) {
-				String count = String.valueOf(object.getCount());				
-				return count;
-			}
-		};			
-		statistics.addColumn(name,"Tipo");
-		statistics.addColumn(count,"Cantidad");
-		statistics.addColumn(description,"Descripción");
-	}	
-	
-	
-	/**
-	 * Calcula la estadisticas para mostrarlas.
-	 * es ineficiente porque esto ya se consulta en los cells del dataGrid.
-	 * @param periods
-	 */
-	private void setStatistics(List<PersonPeriodContainer> periods) {
-		if (periods == null) {
-			return;
-		}
-		
-		// calculo la cantidad de justificaciones para cada tipo
-		JustificationStatistic absence = new JustificationStatistic("Ausencias","Períodos sin ninguna marcación");
-		JustificationStatistic justifiedAbsences = new JustificationStatistic("Ausencias justificadas","Períodos sin marcaciones pero justificados");
-		JustificationStatistic unjustifiedAbsences = new JustificationStatistic("Ausencias injustificadas","Períodos sin marcaciones y sin justificación");
-		JustificationStatistic periodsCount = new JustificationStatistic("Períodos", "Cantidad de perídos");
-		periodsCount.setCount(periods.size());
-		
-		Map<String,JustificationStatistic> counters = new HashMap<String,JustificationStatistic>();
-		for (PersonPeriodContainer period : periods) {
-
-			/*
-			// chequeo datos de justificaciones.
-			JustificationDate jd = p.justified(period);
-			if (jd != null) {
-				String code = jd.getJustification().getCode();
-				JustificationStatistic js = counters.get(code);
-				if (js == null) {
-					js = new JustificationStatistic(code,jd.getJustification().getDescription());
-					counters.put(code, js);
-				}
-				js.incrementCount();
-			}
-			
-			// agrego datos de faltas.
-			if (period.period.getWorkedHours() == null || period.period.getWorkedHours().size() <= 0) {
-				absence.incrementCount();
-				if (jd == null) {
-					unjustifiedAbsences.incrementCount();
-				} else {
-					justifiedAbsences.incrementCount();
-				}
-			}
-			*/
-		}
-		
-		List<JustificationStatistic> lcounters = new ArrayList<JustificationStatistic>();
-		lcounters.add(periodsCount);
-		lcounters.add(absence);
-		lcounters.add(unjustifiedAbsences);
-		lcounters.add(justifiedAbsences);
-		lcounters.addAll(counters.values());
-		
-		statistics.setRowData(lcounters);
-	}		
-	
-	private void clearStatistics() {
-		statistics.setRowCount(0);
-		statistics.setRowData(new ArrayList<JustificationStatistic>());
-	}	
-	
-
-	
-
-	
-	////////////////////// 	JUSTIFICATIONS /////////////
-	
-	@UiField(provided=true) ValueListBox<Justification> types;
-	@UiField Button justify;
-	@UiField TextArea justifyNotes;
-	
-	private SingleSelectionModel<Justification> typeSelection;
-	
-	@Override
-	public void setJustificationSelectionModel(SingleSelectionModel<Justification> selection) {
-		typeSelection = selection;
-	}	
-	
-	private void createType() {
-		types = new ValueListBox<Justification>(new Renderer<Justification>() {
-			private String getValue(Justification type) {
-				String code = type.getCode();
-				String description = type.getDescription();
-				return code + ((description != null) ? "  " + description : "");
-			}
-			@Override
-			public String render(Justification object) {
-				if (object == null) {
-					return "";
-				}
-				return getValue(object);
-			}
-			@Override
-			public void render(Justification object, Appendable appendable) throws IOException {
-				if (object == null) {
-					return;
-				}
-				appendable.append(getValue(object));
-			}
-		});
-		
-		types.addValueChangeHandler(new ValueChangeHandler<Justification>() {
-			@Override
-			public void onValueChange(ValueChangeEvent<Justification> event) {
-				justifyNotes.setText("");
-				
-				if (typeSelection != null) {
-					Justification t = types.getValue();
-					if (t != null) {
-						typeSelection.setSelected(t, true);
-					}
-				}
-			}
-		});		
-	}		
-	
-	@Override
-	public void clearJustificationData() {
-		justifyNotes.setText("");
-	}
-
-	@Override
-	public void enableJustify(boolean t) {
-		justify.setEnabled(t);
-	}
-	
-	@Override
-	public void setJustifications(List<Justification> types) {
-		JustificationsSort.sort(types);
-		if (types.size() > 0) {
-			Justification t = types.get(0);
-			this.types.setValue(t);
-			if (typeSelection != null) {
-				typeSelection.setSelected(t,true);
-			}
-		}
-		this.types.setAcceptableValues(types);
-	}
-	
-	@Override
-	public String getNotes() {
-		return justifyNotes.getText();
-	}
-	
-	@UiHandler("justify")
-	public void onJustify(ClickEvent event) {
-		if (p == null) {
-			return;
-		}
-		p.justify();
-	}
-	
-
-	////////////////////// EXPORT ///////////////////////////////
-	
-	
-	
-	@UiHandler("export")
-	public void onExport(ClickEvent event) {
-		p.export();
-	}
-
-
-	////////////////// DATES ////////////////////////////////////////
-	
-	
-	@UiField(provided=true) DateBox date;
-	
-	
-	private void createDates() {
-		DateTimeFormat defaultF = DateTimeFormat.getFormat(PredefinedFormat.DATE_SHORT);
-
-		date = new DateBox();
-		date.setFormat(new DateBox.DefaultFormat(defaultF));
-		date.addValueChangeHandler(new ValueChangeHandler<Date>() {
-			@Override
-			public void onValueChange(ValueChangeEvent<Date> event) {
-				Date datev = event.getValue();
-				datev.setHours(0);
-				datev.setMinutes(0);
-				datev.setSeconds(0);
-				date.setValue(datev);
-			}
-		});
-		
-	}	
-	
-	
-	@Override
-	public Date getDate() {
-		return date.getValue();
-	}
-
-
-
-	@Override
-	public void setDate(Date date) {
-		this.date.setValue(date);
-	}
-
-
-	//////////////// Find //////////////////////
-	
-	@UiHandler("find")
-	public void onFind(ClickEvent event) {
-		p.find();
 	}
 	
 	

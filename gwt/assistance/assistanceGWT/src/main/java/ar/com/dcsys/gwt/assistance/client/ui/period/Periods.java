@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import ar.com.dcsys.assistance.entities.AssistancePersonData;
 import ar.com.dcsys.data.group.Group;
@@ -38,8 +40,8 @@ import com.google.gwt.text.shared.Renderer;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
+import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.IdentityColumn;
 import com.google.gwt.user.cellview.client.TextColumn;
@@ -59,6 +61,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 public class Periods extends Composite implements PeriodsView {
 
 	private static PeriodsUiBinder uiBinder = GWT.create(PeriodsUiBinder.class);
+	private final Logger logger = Logger.getLogger(Periods.class.getName());
 
 	interface PeriodsUiBinder extends UiBinder<Widget, Periods> {
 	}
@@ -404,103 +407,133 @@ public class Periods extends Composite implements PeriodsView {
 		TextColumn<Report> notes = new TextColumn<Report>() {
 			@Override
 			public String getValue(Report object) {
-				if (object == null) {
+				try {
+					if (object == null) {
+						return "";
+					}
+					AssistancePersonData data = presenter.assistanceData();
+					if (data == null) {
+						return "";
+					}
+					return data.getNotes();
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage());
 					return "";
-				}
-				AssistancePersonData data = presenter.assistanceData();
-				if (data == null) {
-					return "";
-				}
-				return data.getNotes();
+				} 
 			}
 		};
 		
 		final TextColumn<Report> dateS = new TextColumn<Report>() {
 			@Override
 			public String getValue(Report object) {
-				if (object == null || object.getPeriod() == null) {
+				try {
+					if (object == null || object.getPeriod() == null) {
+						return "";
+					}
+					Period period = object.getPeriod();
+					Date start = period.getStart();
+					if (start == null) {
+						return "no tiene";
+					}
+					return dateF.format(start);
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage());
 					return "";
-				}
-				Period period = object.getPeriod();
-				Date start = period.getStart();
-				if (start == null) {
-					return "no tiene";
-				}
-				return dateF.format(start);
+				} 
 			}
 		};
 		
 		final TextColumn<Report> hourS = new TextColumn<Report>() {
 			@Override
 			public String getValue(Report object) {
-				if (object == null || object.getPeriod() == null) {
-					return "";
-				}
-				Period period = object.getPeriod();
-				List<? extends WorkedHours> whs = period.getWorkedHours();
-				if (whs == null || whs.size() <= 0) {
+				try {
+					if (object == null || object.getPeriod() == null) {
+						return "";
+					}
+					Period period = object.getPeriod();
+					List<WorkedHours> whs = period.getWorkedHours();
+					if (whs == null || whs.size() <= 0) {
+						return "no tiene";
+					}
+					
+					WorkedHours wh = whs.get(0);
+					if (wh.getLogs() != null && wh.getInLog().getDate() != null) {
+						return timeF.format(wh.getInLog().getDate());
+					}
+					
 					return "no tiene";
-				}
-				
-				WorkedHours wh = whs.get(0);
-				if (wh.getLogs() != null && wh.getInLog().getDate() != null) {
-					return timeF.format(wh.getInLog().getDate());
-				}
-				
-				return "no tiene";
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage());
+					return "";
+				} 
 			}
 		};
 		
 		final TextColumn<Report> dateE = new TextColumn<Report>() {
 			@Override
 			public String getValue(Report object) {
-				if (object == null || object.getPeriod() == null) {
+				try {
+					if (object == null || object.getPeriod() == null) {
+						return "";
+					}
+					Period period = object.getPeriod();
+					Date end = period.getEnd();
+					if (end == null) {
+						return "no tiene";
+					}
+					return dateF.format(end);
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage());
 					return "";
-				}
-				Period period = object.getPeriod();
-				Date end = period.getEnd();
-				if (end == null) {
-					return "no tiene";
-				}
-				return dateF.format(end);
+				} 
 			}
 		};
 		
 		final TextColumn<Report> hourE = new TextColumn<Report>() {
 			@Override
 			public String getValue(Report object) {
-				if (object == null || object.getPeriod() == null) {
+				try {
+					if (object == null || object.getPeriod() == null) {
+						return "";
+					}
+					
+					Period period = object.getPeriod();
+					List<WorkedHours> whs = period.getWorkedHours();
+					if (whs == null || whs.size() <= 0) {
+						return"no tiene";
+					}
+					
+					Date last = WorkedHoursUtil.getLastDate(whs);
+					if (last == null) {
+						return "no tiene";
+					}
+					
+					return timeF.format(last);
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage());
 					return "";
-				}
-				
-				Period period = object.getPeriod();
-				List<WorkedHours> whs = period.getWorkedHours();
-				if (whs == null || whs.size() <= 0) {
-					return"no tiene";
-				}
-				
-				Date last = WorkedHoursUtil.getLastDate(whs);
-				if (last == null) {
-					return "no tiene";
-				}
-				
-				return timeF.format(last);
+				} 
 			}
 		};
 			
 		final TextColumn<Report> hours = new TextColumn<Report>() {
 			@Override
 			public String getValue(Report object) {
-				if (object == null) {
+				try {
+					if (object == null) {
+						return "";
+					}
+					Long min = object.getMinutes();
+					if (min == null) {
+						return "";
+					}
+					String hS = WorkedHoursUtil.fhm((int)(min / 60));
+					String mS = WorkedHoursUtil.fhm((int)(min % 60));
+					return hS + ":" + mS;
+				} catch (Exception e) {
+					logger.log(Level.SEVERE,e.getMessage());
 					return "";
-				}
-				Long min = object.getMinutes();
-				if (min == null) {
-					return "";
-				}
-				String hS = WorkedHoursUtil.fhm((int)(min / 60));
-				String mS = WorkedHoursUtil.fhm((int)(min % 60));
-				return hS + ":" + mS;
+				} 
 			}
 		};
 			
@@ -527,7 +560,7 @@ public class Periods extends Composite implements PeriodsView {
 		TextColumn<Report> generallyJustified = new TextColumn<Report>() {
 			@Override
 			public String getValue(Report object) {
-				if (object == null || object.getGjustifications() == null) {
+				if (object == null || object.getGjustifications() == null || object.getGjustifications().size() == 0) {
 					return "";
 				}
 				
