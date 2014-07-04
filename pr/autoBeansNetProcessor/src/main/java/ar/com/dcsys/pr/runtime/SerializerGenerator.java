@@ -20,7 +20,9 @@ public class SerializerGenerator {
 		
 		env.getMessager().printMessage(Kind.WARNING, "generando serializer servidor para el tipo : " + paramType);
 		
-		// genero usando gson
+		throw new RuntimeException("No existe serializador para el tipo : " + paramType);
+		
+/*		// genero usando gson
 		
 		String serName = "S" + paramType.replace(".", "_").replace("<","_").replace(">", "_") + "Bean";
 		String serType = packageName + "." + serName; 
@@ -69,7 +71,7 @@ public class SerializerGenerator {
 		} catch (Exception e) {
 			
 		}				
-		
+	*/	
 	}	
 	
 	
@@ -85,6 +87,9 @@ public class SerializerGenerator {
 
 		env.getMessager().printMessage(Kind.WARNING, "generando serializer cliente para el tipo : " + paramType);
 
+		throw new RuntimeException("No existe serializador para el tipo : " + paramType);
+		
+		/*
 		
 		// genero usando piriti
 		
@@ -132,7 +137,7 @@ public class SerializerGenerator {
 		} catch (Exception e) {
 			
 		}		
-		
+		*/
 	}	
 	
 }
