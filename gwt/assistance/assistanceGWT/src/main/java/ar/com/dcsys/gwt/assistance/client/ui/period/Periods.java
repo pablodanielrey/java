@@ -474,7 +474,7 @@ public class Periods extends Composite implements PeriodsView {
 				}
 				
 				Period period = object.getPeriod();
-				List<? extends WorkedHours> whs = period.getWorkedHours();
+				List<WorkedHours> whs = period.getWorkedHours();
 				if (whs == null || whs.size() <= 0) {
 					return"no tiene";
 				}

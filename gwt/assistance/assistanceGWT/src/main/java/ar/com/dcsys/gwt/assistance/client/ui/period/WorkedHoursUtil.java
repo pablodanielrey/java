@@ -9,7 +9,7 @@ import ar.com.dcsys.data.period.WorkedHours;
 
 public class WorkedHoursUtil {
 	
-	public static Date getLastDate(List<? extends WorkedHours> hours) {
+	public static Date getLastDate(List<WorkedHours> hours) {
 		Date last = null;
 		
 		//para que funcione bien deben estar ordenados correctamente
@@ -41,11 +41,11 @@ public class WorkedHoursUtil {
 		return last;
 	}
 	
-	public static int getWorkedHours(List<? extends WorkedHours> hours) {
+	public static int getWorkedHours(List<WorkedHours> hours) {
 		return getWorkedHours(getWorkedMilis(hours));
 	}
 	
-	public static int getWorkedMinutes(List<? extends WorkedHours> hours) {
+	public static int getWorkedMinutes(List<WorkedHours> hours) {
 		return getWorkedMinutes(getWorkedMilis(hours));
 	}
 	
@@ -59,7 +59,7 @@ public class WorkedHoursUtil {
 		return (workedTotalMinutes / 60);
 	}
 	
-	private static long getWorkedMilis(List<? extends WorkedHours> hours) {
+	private static long getWorkedMilis(List<WorkedHours> hours) {
 		if (hours == null) {
 			return 0;
 		}

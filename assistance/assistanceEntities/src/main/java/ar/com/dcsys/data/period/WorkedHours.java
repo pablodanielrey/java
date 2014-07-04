@@ -1,6 +1,6 @@
 package ar.com.dcsys.data.period;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 import ar.com.dcsys.data.log.AttLog;
@@ -20,7 +20,7 @@ public class WorkedHours {
 	public WorkedHours(AttLog inLog, AttLog outLog, List<AttLog> logs) {
 		this.inLog = inLog;
 		this.outLog = outLog;
-		this.logs = Collections.unmodifiableList(logs);
+		this.logs = (logs == null) ? null : new ArrayList<AttLog>(logs);
 		this.workedMilis = calcMilis();
 	}
 	
