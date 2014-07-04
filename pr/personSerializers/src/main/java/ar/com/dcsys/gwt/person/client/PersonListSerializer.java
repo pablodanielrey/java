@@ -1,11 +1,9 @@
 package ar.com.dcsys.gwt.person.client;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.pr.CSD;
 
@@ -22,27 +20,10 @@ public class PersonListSerializer implements CSD<List<Person>> {
 	private static final Writer WRITER = GWT.create(Writer.class);
 
 	
-	private List<Person> toPersonBeanList(List<Person> l) {
-		List<Person> ps = new ArrayList<Person>();
-		for (Person p : l) {
-			ps.add((Person)p);
-		}
-		return ps;
-	}
-
-	private List<Person> toPersonList(List<Person> l) {
-		List<Person> ps = new ArrayList<Person>();
-		for (Person p : l) {
-			ps.add(p);
-		}
-		return ps;
-	}
-	
-	
 	@Override
 	public String toJson(List<Person> o) {
 		PersonListContainer sc = new PersonListContainer();
-		sc.list = toPersonBeanList(o);
+		sc.list = o;
 		String d = WRITER.toJson(sc);
 		logger.log(Level.WARNING,"piriti : " + d);
 		return d;
@@ -52,6 +33,6 @@ public class PersonListSerializer implements CSD<List<Person>> {
 	public List<Person> read(String json) {
 		logger.log(Level.WARNING,"piriti : " + json);
 		PersonListContainer sc = READER.read(json);
-		return toPersonList(sc.list);
+		return sc.list;
 	}
 }
