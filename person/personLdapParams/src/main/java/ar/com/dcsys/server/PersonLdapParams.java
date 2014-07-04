@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import ar.com.dcsys.data.auth.principals.DniPrincipal;
 import ar.com.dcsys.data.auth.principals.UserNamePrincipal;
 import ar.com.dcsys.data.group.GroupLdapDAOParams;
 import ar.com.dcsys.data.person.Person;
@@ -32,11 +33,11 @@ public class PersonLdapParams implements GroupLdapDAOParams {
 	public String getMemberFieldContent(Person p) throws PersonException {
 		List<Principal> principals = personsManager.getPrincipals(p);
 		for (Principal pi : principals) {
-			if (pi instanceof UserNamePrincipal) {
+			if (pi instanceof DniPrincipal) {
 				return pi.getName();
 			}
 		}
-		throw new PersonException("UserNamePrincipal for person not found");
+		throw new PersonException("DniPrincipal for person not found");
 	}
 
 
