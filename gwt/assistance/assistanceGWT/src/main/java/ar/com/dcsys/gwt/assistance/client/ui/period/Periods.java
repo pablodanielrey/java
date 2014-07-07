@@ -141,7 +141,7 @@ public class Periods extends Composite implements PeriodsView {
 	
 	@Override
 	public Date getStart() {
-		return end.getValue();
+		return start.getValue();
 	}
 	
 	@Override
