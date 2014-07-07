@@ -13,10 +13,8 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import ar.com.dcsys.assistance.AssistancePersonDataException;
-import ar.com.dcsys.assistance.entities.AssistancePersonData;
-import ar.com.dcsys.assistance.entities.AssistancePersonData;
 import ar.com.dcsys.data.PostgresSqlConnectionProvider;
+import ar.com.dcsys.exceptions.PersonDataException;
 import ar.com.dcsys.exceptions.PersonException;
 
 
@@ -27,11 +25,8 @@ public class AssistancePersonDataPostgresSqlDAO implements AssistancePersonDataD
 	private static final Logger logger = Logger.getLogger(AssistancePersonDataPostgresSqlDAO.class.getName());
 	private final PostgresSqlConnectionProvider cp;
 	
-	private final AssistancePersonDataDAOParams params;
-	
 	@Inject
-	public AssistancePersonDataPostgresSqlDAO(PostgresSqlConnectionProvider cp, AssistancePersonDataDAOParams params) {
-		this.params = params;
+	public AssistancePersonDataPostgresSqlDAO(PostgresSqlConnectionProvider cp) {
 		this.cp = cp;
 	}
 	
@@ -44,8 +39,8 @@ public class AssistancePersonDataPostgresSqlDAO implements AssistancePersonDataD
 		try {
 			Connection con = cp.getConnection();
 			try {
-				PreparedStatement st = con.prepareStatement("create table if not exists assistancepersondata ( id varchar not null primary key, " +
-																			"person_id varchar not null, " +
+				PreparedStatement st = con.prepareStatement("create table if not exists assistance_persondata ( id varchar not null primary key, " +
+																			"pin varchar not null," + 
 																			"notes varchar )");
 				try {
 					st.execute();
@@ -64,23 +59,19 @@ public class AssistancePersonDataPostgresSqlDAO implements AssistancePersonDataD
 
 		AssistancePersonData data = new AssistancePersonData();
 		
-		String person_id = rs.getString("person_id");
-		Person person = params.findPersonById(person_id);
-		
-		
 		data.setId(rs.getString("id"));
+		data.setPin(rs.getString("pin"));
 		data.setNotes(rs.getString("notes"));
-		data.setPerson(person);
 		
 		return data;
 	}
 
 	@Override
-	public List<AssistancePersonData> findAll()	throws AssistancePersonDataException, PersonException {
+	public List<AssistancePersonData> findAll()	throws PersonDataException, PersonException {
 		try {
 			Connection con = cp.getConnection();
 			try {
-				String query = "select id, person_id, notes from assistancepersondata";
+				String query = "select * from assistance_persondata";
 				PreparedStatement st = con.prepareStatement(query);
 				try {
 					ResultSet rs = st.executeQuery();
@@ -101,16 +92,16 @@ public class AssistancePersonDataPostgresSqlDAO implements AssistancePersonDataD
 				cp.closeConnection(con);
 			}
 		} catch (SQLException e) {
-			throw new AssistancePersonDataException(e);
+			throw new PersonDataException(e);
 		}
 	}
 
 	@Override
-	public AssistancePersonData findById(String id) throws AssistancePersonDataException, PersonException {
+	public AssistancePersonData findById(String id) throws PersonDataException, PersonException {
 		try {
 			Connection con = cp.getConnection();
 			try {
-				String query = "select id, person_id, notes from assistancepersondata where id = ?";
+				String query = "select * from assistance_persondata where id = ?";
 				PreparedStatement st = con.prepareStatement(query);
 				try {
 					st.setString(1, id);
@@ -132,80 +123,42 @@ public class AssistancePersonDataPostgresSqlDAO implements AssistancePersonDataD
 				cp.closeConnection(con);
 			}
 		} catch (SQLException e) {
-			throw new AssistancePersonDataException(e);
+			throw new PersonDataException(e);
 		}
 	}
 
 	@Override
-	public AssistancePersonData findBy(Person person) throws AssistancePersonDataException, PersonException {		
-		if (person.getId() == null) {
-			throw new AssistancePersonDataException("person.id == null");
-		}
-		
-		try {
-			Connection con = cp.getConnection();
-			try {
-				String query = "select id, person_id, notes from assistancepersondata where person_id = ?";
-				PreparedStatement st = con.prepareStatement(query);
-				try {
-					st.setString(1,person.getId());
-					ResultSet rs = st.executeQuery();
-					try {
-						if (rs.next()) {
-							AssistancePersonData data = loadAssitancePersonData(rs);
-							return data;
-						} else {
-							return null;
-						}
-					} finally {
-						rs.close();
-					}
-				} finally {
-					st.close();
-				}
-			} finally {
-				cp.closeConnection(con);
-			}
-		} catch (SQLException e) {
-			throw new AssistancePersonDataException(e);
-		}
-	}
-	
-
-	@Override
-	public String persist(AssistancePersonData data) throws AssistancePersonDataException {
+	public String persist(AssistancePersonData data) throws PersonDataException {
 		if (data == null) {
 			logger.log(Level.SEVERE, "data == null");
-			throw new AssistancePersonDataException("data == null");
+			throw new PersonDataException("data == null");
 		}
-		if (data.getPerson() == null) {
-			logger.log(Level.SEVERE, "person == null");
-			throw new AssistancePersonDataException("person == null");			
-		}
-		String personId = data.getPerson().getId();
+		
+		String personId = data.getId();
 		if (personId == null) {
-			logger.log(Level.SEVERE, "personId == null");
-			throw new AssistancePersonDataException("personId == null");			
-		}		
+			logger.log(Level.SEVERE, "person == null");
+			throw new PersonDataException("person == null");			
+		}
 		
 		try {
 			Connection con = cp.getConnection();
 			try {
-				String query;
-				if (data.getId() == null) {
-					String id = UUID.randomUUID().toString();
-					data.setId(id);
-					query = "insert into assistancepersondata (person_id, notes, id) values (?,?,?)";			
-				} else {
-					query = "update assistancepersondata set person_id = ?, notes = ? where id = ?";
-				}
+				String query = "update assistance_persondata set pin = ?, notes = ? where id = ?";
 				PreparedStatement st = con.prepareStatement(query);
 				try {
-					st.setString(1, personId);
+					st.setString(1, data.getPin());
 					st.setString(2, data.getNotes());
 					st.setString(3, data.getId());
 					
-					st.executeUpdate();
+					if (st.executeUpdate() <= 0) {
+						query = "insert into assistance_persondata (pin, notes, id) values (?,?,?)";	
+						st = con.prepareStatement(query);
+						st.setString(1, data.getPin());
+						st.setString(2, data.getNotes());
+						st.setString(3, data.getId());
+						st.executeUpdate();
+					}
+					
 					return data.getId();
 				} finally {
 					st.close();
@@ -214,7 +167,7 @@ public class AssistancePersonDataPostgresSqlDAO implements AssistancePersonDataD
 				cp.closeConnection(con);
 			}
 		} catch (SQLException e) {
-			throw new AssistancePersonDataException(e);
+			throw new PersonDataException(e);
 		}
 	}	
 }

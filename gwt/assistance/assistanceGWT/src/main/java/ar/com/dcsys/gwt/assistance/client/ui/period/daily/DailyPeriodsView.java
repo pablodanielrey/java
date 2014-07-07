@@ -3,7 +3,6 @@ package ar.com.dcsys.gwt.assistance.client.ui.period.daily;
 import java.util.Date;
 import java.util.List;
 
-import ar.com.dcsys.assistance.entities.AssistancePersonData;
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.report.Report;
@@ -37,7 +36,6 @@ public interface DailyPeriodsView extends IsWidget {
 		
 	public interface Presenter {
 		public void findPeriods();
-		public AssistancePersonData assistanceData();
 		public void justify();
 		public void removeJustification(JustificationDate j);
 	}

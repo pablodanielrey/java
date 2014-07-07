@@ -8,7 +8,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import ar.com.dcsys.assistance.entities.AssistancePersonData;
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.period.Period;
@@ -212,12 +211,6 @@ public class DailyPeriodsActivity extends AbstractActivity implements DailyPerio
 		
 	}
 	
-	@Override
-	public AssistancePersonData assistanceData() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@Override
 	public void removeJustification(JustificationDate j) {
 		// TODO Auto-generated method stub

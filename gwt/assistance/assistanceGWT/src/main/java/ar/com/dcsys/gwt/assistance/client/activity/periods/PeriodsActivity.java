@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import ar.com.dcsys.assistance.entities.AssistancePersonData;
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.person.Person;
@@ -36,7 +35,7 @@ public class PeriodsActivity extends AbstractActivity implements PeriodsView.Pre
 	
 	//person
 	private final SingleSelectionModel<Person> personSelection;
-	private AssistancePersonData personDataCache;
+	//private AssistancePersonData personDataCache;
 	
 	
 	//PERIODFILTER
@@ -85,7 +84,7 @@ public class PeriodsActivity extends AbstractActivity implements PeriodsView.Pre
 				//periodSelection.clear();
 				//PeriodsActivity.this.viewClearPeriodData();
 				//PeriodsActivity.this.view.clearJustificationData();
-				personDataCache = null;
+				//personDataCache = null;
 				if (p == null) {
 					return;
 				}
@@ -205,12 +204,6 @@ public class PeriodsActivity extends AbstractActivity implements PeriodsView.Pre
 				view.setPeriods(reports);
 			}
 		});
-	}
-	
-	@Override
-	public AssistancePersonData assistanceData() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 	@Override

@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import ar.com.dcsys.assistance.entities.AssistancePersonData;
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.justification.GeneralJustificationDate;
 import ar.com.dcsys.data.justification.JustificationDate;
@@ -404,6 +403,7 @@ public class Periods extends Composite implements PeriodsView {
 		final DateTimeFormat dateF = DateTimeFormat.getFormat(PredefinedFormat.DATE_SHORT);
 		final DateTimeFormat timeF = DateTimeFormat.getFormat(PredefinedFormat.TIME_SHORT);
 		
+		/*
 		TextColumn<Report> notes = new TextColumn<Report>() {
 			@Override
 			public String getValue(Report object) {
@@ -422,6 +422,7 @@ public class Periods extends Composite implements PeriodsView {
 				} 
 			}
 		};
+		*/
 		
 		final TextColumn<Report> dateS = new TextColumn<Report>() {
 			@Override
@@ -579,7 +580,7 @@ public class Periods extends Composite implements PeriodsView {
 			
 
 		periods = new DataGrid<Report>();
-		periods.addColumn(notes,"Notas");
+		//periods.addColumn(notes,"Notas");
 		periods.addColumn(dateS, "Fecha Entrada");
 		periods.addColumn(hourS, "Hora Entrada");
 		periods.addColumn(dateE, "Fecha Salida");

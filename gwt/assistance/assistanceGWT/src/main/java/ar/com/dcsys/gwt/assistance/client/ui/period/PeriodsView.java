@@ -3,7 +3,6 @@ package ar.com.dcsys.gwt.assistance.client.ui.period;
 import java.util.Date;
 import java.util.List;
 
-import ar.com.dcsys.assistance.entities.AssistancePersonData;
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.person.Person;
@@ -41,7 +40,6 @@ public interface PeriodsView extends IsWidget {
 	/*	
 		public GeneralJustificationDate generalJustified(Period p);*/
 		public void dateChanged();
-		public AssistancePersonData assistanceData();
 		public void justify();
 		public void removeJustification(JustificationDate j);
 	}
