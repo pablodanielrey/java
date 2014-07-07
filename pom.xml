@@ -45,6 +45,9 @@
     <java.version>1.7</java.version>
     <jackson.version>2.3.0</jackson.version>
     <dynamic-reports.version>3.2.0</dynamic-reports.version>
+    <gson.version>2.2.4</gson.version>
+    <piriti.version>0.10</piriti.version>
+    <totoe.version>0.7</totoe.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>  
    
