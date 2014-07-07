@@ -4,18 +4,23 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.assistance.entities.AssistancePersonData;
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.justification.JustificationDate;
+import ar.com.dcsys.data.period.Period;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.report.Report;
 import ar.com.dcsys.data.report.ReportSummary;
+import ar.com.dcsys.gwt.assistance.client.manager.JustificationsManager;
 import ar.com.dcsys.gwt.assistance.client.manager.PeriodsManager;
 import ar.com.dcsys.gwt.assistance.client.ui.period.PERIODFILTER;
 import ar.com.dcsys.gwt.assistance.client.ui.period.daily.DailyPeriodsView;
+import ar.com.dcsys.gwt.assistance.client.ui.period.daily.DailyPeriodsViewCss;
+import ar.com.dcsys.gwt.assistance.client.ui.period.daily.DailyPeriodsViewResources;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 
 import com.google.gwt.activity.shared.AbstractActivity;
@@ -31,6 +36,7 @@ public class DailyPeriodsActivity extends AbstractActivity implements DailyPerio
 	public static final Logger logger = Logger.getLogger(DailyPeriodsActivity.class.getName());
 	
 	private final PeriodsManager periodsManager;
+	private final JustificationsManager justificationsManager;
 	private final DailyPeriodsView view;
 	
 	//PERIODFILTER
@@ -57,9 +63,10 @@ public class DailyPeriodsActivity extends AbstractActivity implements DailyPerio
 	private EventBus eventBus;
 	
 	@Inject
-	public DailyPeriodsActivity(DailyPeriodsView view, PeriodsManager periodsManager) {
+	public DailyPeriodsActivity(DailyPeriodsView view, JustificationsManager justificationsManager, PeriodsManager periodsManager) {
 		this.view = view;
 		this.periodsManager = periodsManager;
+		this.justificationsManager = justificationsManager;
 		
 		periodFilterSelectionModel = new SingleSelectionModel<PERIODFILTER>();
 		periodFilterSelectionModel.addSelectionChangeHandler(periodFilterHandler);
@@ -99,6 +106,9 @@ public class DailyPeriodsActivity extends AbstractActivity implements DailyPerio
 		view.setGroupSelectionModel(groupSelection);
 		
 		panel.setWidget(view);
+		
+		DailyPeriodsViewCss style = DailyPeriodsViewResources.INSTANCE.style();
+		style.ensureInjected();
 		
 		update();
 	}
@@ -144,12 +154,6 @@ public class DailyPeriodsActivity extends AbstractActivity implements DailyPerio
 		super.onStop();
 	}
 	
-	
-	@Override
-	public void justify() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	private Date getStart() {
 		Date start = view.getDate();
@@ -192,6 +196,22 @@ public class DailyPeriodsActivity extends AbstractActivity implements DailyPerio
 		});
 	}
 
+	
+	@Override
+	public void justify() {
+		Set<Report> reports = periodSelection.getSelectedSet();
+		if (reports == null || reports.size() <= 0) {
+			return;
+		}
+		List<Period> periods = new ArrayList<Period>();
+		for (Report r : reports) {
+			if (r.getPeriod() != null) {
+				periods.add(r.getPeriod());
+			}
+		}
+		
+	}
+	
 	@Override
 	public AssistancePersonData assistanceData() {
 		// TODO Auto-generated method stub

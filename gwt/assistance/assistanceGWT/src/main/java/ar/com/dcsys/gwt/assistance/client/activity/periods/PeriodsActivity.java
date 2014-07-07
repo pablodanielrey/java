@@ -215,7 +215,6 @@ public class PeriodsActivity extends AbstractActivity implements PeriodsView.Pre
 	
 	@Override
 	public void justify() {
-		// TODO Auto-generated method stub
 		
 	}
 	

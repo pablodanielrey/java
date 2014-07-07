@@ -1,0 +1,77 @@
+@CHARSET "UTF-8";
+
+.title {
+	text-align:center;
+	font-weight:bold;
+	font-size:large;
+	margin-bottom: 1em;
+	margin-top: 1em;
+	color: #2952a3;
+	text-transform:capitalize;	
+}
+
+.blockDates {
+	margin-left:1em;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	border: 1px solid #C1C1C1;
+	background-color: #E8EEF7;		
+	margin-top:1em;	
+	width:128em;
+	padding:1em;	
+	margin-right: 1em;		
+}
+
+.labelInline {
+	display:inline;
+	color: #47698A;
+	font-weight:bold;
+	margin-left:1em;	
+	margin-right: 1em;
+}
+
+.subtitle {
+	text-align:center;
+	font-weight:bold;
+	margin-bottom: 1em;
+	color: #2952a3;	
+	display:inline;			
+}
+
+.dateBox {
+	width:6em;
+	text-align:center;
+	margin-left:0.5em;
+}
+
+.periodsList {
+	margin-left:1em;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	border: 1px solid #C1C1C1;
+	background-color: #E8EEF7;		
+	margin-top:1em;	
+	float:left;
+	width: 130em;
+	height: 30em;			
+}
+
+.periods {
+	width: 130em;
+	height: 25em;	
+}
+
+.filterPanel {
+	margin-top:1em;
+	margin-left:1em;	
+}
+
+.inputInline {
+	display:inline;
+	margin-left:1em;
+}
+
+.panelFilterCount {
+	display:inline;
+	margin-left:1em;	
+}

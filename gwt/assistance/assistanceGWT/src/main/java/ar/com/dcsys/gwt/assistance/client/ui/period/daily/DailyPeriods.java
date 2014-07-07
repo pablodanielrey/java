@@ -18,6 +18,9 @@ import ar.com.dcsys.gwt.assistance.client.ui.period.PERIODFILTER;
 import ar.com.dcsys.gwt.assistance.client.ui.period.WorkedHoursUtil;
 import ar.com.dcsys.gwt.assistance.client.ui.period.cells.JustificationActionCell;
 import ar.com.dcsys.gwt.assistance.client.ui.period.cells.JustificationActionCellPresenter;
+import ar.com.dcsys.gwt.person.client.common.filter.FilterPerson;
+import ar.com.dcsys.gwt.person.client.common.filter.FilterPersonDni;
+import ar.com.dcsys.gwt.person.client.common.filter.FilterPersonName;
 import ar.com.dcsys.utils.PersonSort;
 
 import com.google.gwt.cell.client.Cell;
@@ -25,6 +28,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -38,7 +43,10 @@ import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ValueListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
@@ -54,6 +62,7 @@ public class DailyPeriods extends Composite implements DailyPeriodsView {
 	interface DailyPeriodsUiBinder extends UiBinder<Widget, DailyPeriods> {
 	}
 
+	@UiField DailyPeriodsViewResources res;
 
 	private Presenter p;
 	
@@ -62,9 +71,13 @@ public class DailyPeriods extends Composite implements DailyPeriodsView {
 		createDates();
 		createPeriodFilter();
 		createGroupFilter();
+		createFilter();
 		createPeriods();
 		
 		initWidget(uiBinder.createAndBindUi(this));
+		
+		periodsData = new ArrayList<Report>();
+		periodsFilteredData = new ArrayList<Report>();
 		
 	}
 
@@ -278,6 +291,66 @@ public class DailyPeriods extends Composite implements DailyPeriodsView {
 	@UiField(provided=true) DataGrid<Report> periods;
 	private ListDataProvider<Report> periodsDataProvider;
 	
+	//filtros de dni y nombre
+	private final FilterPerson[] filters = new FilterPerson[] {new FilterPersonDni(),new FilterPersonName()};
+	private Timer filterTimer = null;	
+	
+	@UiField(provided=true) TextBox filter;
+	@UiField(provided=true) Label usersCount;
+	
+	
+	private void createFilter() {
+		usersCount = new Label("");
+		
+		filter = new TextBox();
+		filter.addKeyUpHandler(new KeyUpHandler() {
+			@Override
+			public void onKeyUp(KeyUpEvent event) {
+				if (filterTimer != null) {
+					filterTimer.cancel();
+				}
+				filterTimer = new Timer() {
+					@Override
+					public void run() {
+						filterTimer = null;
+						filterPeriods();
+					}
+				};
+				filterTimer.schedule(2000);
+			}
+		});
+	}	
+	
+	private final List<Report> periodsData;
+	private final List<Report> periodsFilteredData;
+	
+	private void filterPeriods() {
+		String ft = filter.getText();
+		if (ft == null || ft.trim().equals("")) {
+			usersCount.setText(String.valueOf(periodsData.size()));
+			periodsDataProvider.getList().clear();
+			periodsDataProvider.getList().addAll(periodsData);
+			periodsDataProvider.refresh();
+			return;
+		}
+		//aplico el filtro de acuerdo a los Filter que tenga definidos
+		//ahora solo es el dni y si no el nombre
+		ft = ft.toLowerCase();
+		periodsFilteredData.clear();
+		for (Report r : periodsData) {
+			Person p = r.getPerson();
+			for (FilterPerson f : filters) {
+				if (f.checkFilter(p, ft)) {
+					periodsFilteredData.add(r);
+					break;
+				}
+			}
+		}
+		usersCount.setText(String.valueOf(periodsFilteredData.size()));
+		periodsDataProvider.getList().clear();
+		periodsDataProvider.getList().addAll(periodsFilteredData);
+		periodsDataProvider.refresh();
+	}	
 
 	private String getFullName(Person person) {
 		String name = person.getName();
@@ -575,6 +648,11 @@ public class DailyPeriods extends Composite implements DailyPeriodsView {
 	public void clearPeriodData() {
 		periodsDataProvider.getList().clear();
 		periodsDataProvider.refresh();
+		
+		periodsData.clear();
+		periodsFilteredData.clear();
+		
+		usersCount.setText("0");
 	}
 	
 
@@ -585,14 +663,17 @@ public class DailyPeriods extends Composite implements DailyPeriodsView {
 	
 	@Override
 	public void setPeriods(List<Report> periods) {
+		periodsData.clear();
 		if (periods == null) {
+			filterPeriods();
 			return;
 		}
 
+		
 		this.periods.setVisibleRange(new Range(0, periods.size()));
-		periodsDataProvider.getList().clear();
-		periodsDataProvider.getList().addAll(periods);
-		periodsDataProvider.refresh();
+		periodsData.addAll(periods);
+		
+		filterPeriods();
 		
 		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 			@Override

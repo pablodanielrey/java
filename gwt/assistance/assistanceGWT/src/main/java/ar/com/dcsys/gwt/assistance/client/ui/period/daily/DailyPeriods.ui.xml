@@ -5,205 +5,46 @@
 	xmlns:c="urn:import:com.google.gwt.user.datepicker.client"
 	xmlns:cell="urn:import:com.google.gwt.user.cellview.client">
 
-	<ui:style>
-		.persons {
-			width: 32em;
-			height: 30em;
-			margin-top:1em;
-			margin-bottom:0.5em;
-		}
-		
-		.personData {
-			float: left; 
-		}
-
-		.filter-panel,.panel{
-			margin-top:1em;
-			margin-left:1em;
-		}
-		.label-inline,.input-inline{
-			display:inline;
-		}
-
-		.label-inline,.label-block{
-			color: #47698A;
-			font-weight:bold;
-		}		
-
-		.input-inline{
-			margin-left:1em;
-		}	
-
-		.panel-inline{
-			display:inline;
-			margin-left:1em;
-		}
-
-		.date-box{
-			width:6em;
-			text-align:center;
-			margin-left:0.5em;
-		}
-
-		.title{
-			text-align:center;
-			font-weight:bold;
-			font-size:large;
-			margin-bottom: 1em;
-			margin-top: 1em;
-			color: #2952a3;
-			text-transform:capitalize;
-		}
-
-
-		.subtitle,.subtitle-center{
-			text-align:center;
-			font-weight:bold;
-			margin-bottom: 1em;
-			color: #2952a3;
-		}
-		.subtitle{
-			display:inline;
-		}
-
-		.subtitle-center{
-			text-align:center;
-			margin-top:0.5em;
-		}
-
-		.block-dates,.person-list,.periods-list {
-			margin-left:1em;
-			-moz-border-radius: 5px;
-			border-radius: 5px;
-			border: 1px solid #C1C1C1;
-			background-color: #E8EEF7;		
-			margin-top:1em;
-		}
-		.block-dates {
-			width:128em;
-			padding:1em;
-		}
-		.block-dates .label-inline {
-			margin-right: 1em;
-		}
-		
-		.person-list,.periods-list {
-			float:left;
-		}
-
-		.button{
-			margin-top:0.5em;
-			margin-bottom:0.5em;
-			margin-right:0.5em;
-			text-align:center;
-			color: #47698A;
-		}
-
-		.panel-button{
-			text-align:center;
-			float:left;
-			width:100%;
-			margin-top:1em;
-		}
-
-	/*-----------------------------------------------*/
-	/*---------- LISTADO DE PERSONAS ----------------*/
-	/*-----------------------------------------------*/
-	
-		.content-person-list{
-			float:left;
-		}		
-		
-		.panel-filter-count {
-			display:inline;
-			margin-left:1em;
-		}
-	
-	
-	/*-----------------------------------------------*/
-	/*------------------ PERIODOS -------------------*/
-	/*-----------------------------------------------*/
-		
-		.block-periods{
-			float:left;
-		}
-	
-		.periods {
-			width: 130em;
-			height: 25em;
-		}
-	
-		.period-list{
-			width: 130em;
-			height: 30em;
-		}
-	
-		.text-area{
-			resize:none;
-			width:56em;
-			height:4em;
-		}
-		
-		
-		.period-filter-panel {
-			margin-left: 1em;
-		}
-		
-		.group-filter-panel {
-			margin-left: 1em;
-		}	
-	
-		.panel-justify-statics {
-			width:130em;
-			height:20em;
-			float:left;
-			margin-left:1em;
-			-moz-border-radius: 5px;
-			border-radius: 5px;
-			border: 1px solid #C1C1C1;
-			background-color: #E8EEF7;		
-			margin-top:1em;
-		}
-	
-		.block-justify{	
-			width:100%;
-			height:100%;
-		}
-	
-		.statics {
-			width:100%;
-			height:100%;
-		}
-	</ui:style>
+	<ui:with field="res" type="ar.com.dcsys.gwt.assistance.client.ui.period.daily.DailyPeriodsViewResources" />
 
 
 	<g:FlowPanel>
-		<g:Label styleName="{style.title}" text="Reporte de periodos"/>
+		<g:Label styleName="{res.style.title}" text="Reporte de periodos"/>
 		
 		
-		<g:FlowPanel styleName="{style.block-dates}">
-			<g:FlowPanel styleName="{style.label-inline}">
-			    <g:Label styleName="{style.subtitle}" text="Fecha" />
-				<c:DateBox ui:field="date" styleName="{style.date-box}"/>
+		<g:FlowPanel styleName="{res.style.blockDates}">
+			<g:FlowPanel styleName="{res.style.labelInline}">
+			    <g:Label styleName="{res.style.subtitle}" text="Fecha" />
+				<c:DateBox ui:field="date" styleName="{res.style.dateBox}"/>
 			</g:FlowPanel>
 
-			<g:FlowPanel styleName="{style.label-inline}">
-				<g:Label text="Tipo de reporte" styleName="{style.label-inline}"/>
+			<g:FlowPanel styleName="{res.style.labelInline}">
+				<g:Label text="Tipo de reporte" styleName="{res.style.labelInline}"/>
 				<g:ValueListBox ui:field="periodFilter"/>
 			</g:FlowPanel>
 			
-			<g:FlowPanel styleName="{style.label-inline}">
-				<g:Label text="Grupo" styleName="{style.label-inline}"/>
+			<g:FlowPanel styleName="{res.style.labelInline}">
+				<g:Label text="Grupo" styleName="{res.style.labelInline}"/>
 				<g:ValueListBox ui:field="groupFilter"/>
 			</g:FlowPanel>
 
-			<g:FlowPanel styleName="{style.label-inline}">
+			<g:FlowPanel styleName="{res.style.labelInline}">
 				<g:Button ui:field="find" text="Buscar"/>
 			</g:FlowPanel>
 		</g:FlowPanel>
 	
-		<g:FlowPanel styleName="{style.periods-list}">
-			<d:DataGrid ui:field="periods" styleName="{style.periods}"/>
+		<g:FlowPanel styleName="{res.style.periodsList}">
+			<g:FlowPanel>
+				<g:FlowPanel styleName="{res.style.filterPanel}">
+					<g:Label text="Buscar" styleName="{res.style.inputInline}"/>
+					<g:TextBox ui:field="filter" styleName="{res.style.inputInline}"/>
+					<g:FlowPanel styleName="{res.style.panelFilterCount}">
+					    <g:Label text="Total:" styleName="{res.style.labelInline}"/> 
+						<g:Label ui:field="usersCount" styleName="{res.style.labelInline}"/>
+					</g:FlowPanel>					
+				</g:FlowPanel>
+				<d:DataGrid ui:field="periods" styleName="{res.style.periods}"/>
+			</g:FlowPanel>
 		</g:FlowPanel>
 
 		
