@@ -12,12 +12,16 @@ import javax.enterprise.inject.spi.InjectionPoint;
 public class CdiConfigFactory {
 
 	private static final Logger logger = Logger.getLogger(CdiConfigFactory.class.getName());
-	private final String configValues = "/etc/glassfish/dcsys.properties";
 	private Properties properties;
 	
 	private synchronized Properties getProperties() {
 		if (properties == null) {
 			properties = new Properties();
+			
+			String home = System.getProperty("user.home");
+			String separator = System.getProperty("file.separator");
+			String configValues = home + separator + "dcsys.properties";
+			
 			try {
 				properties.load(new FileInputStream(configValues));
 			} catch (IOException e) {
