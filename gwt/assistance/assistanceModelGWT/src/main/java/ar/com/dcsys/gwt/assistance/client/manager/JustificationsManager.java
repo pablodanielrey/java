@@ -6,6 +6,7 @@ import java.util.List;
 import ar.com.dcsys.data.justification.GeneralJustificationDate;
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
+import ar.com.dcsys.data.period.Period;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 
@@ -18,6 +19,7 @@ public interface JustificationsManager {
 	public void remove(Justification justification, Receiver<Void> receiver);
 	
 	public void justify(Person person, Date start, Date end, Justification justification, String notes, Receiver<Void> receiver);
+	public void justify(Person person, List<Period> periods, Justification justification, String notes, Receiver<Void> receiver);
 	
 	public void findBy(List<Person> persons, Date start, Date end, Receiver<List<JustificationDate>> receiver);
 	

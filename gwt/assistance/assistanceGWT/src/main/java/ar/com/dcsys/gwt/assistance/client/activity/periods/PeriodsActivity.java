@@ -1,16 +1,22 @@
 package ar.com.dcsys.gwt.assistance.client.activity.periods;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import ar.com.dcsys.assistance.entities.AssistancePersonData;
 import ar.com.dcsys.data.group.Group;
+import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
+import ar.com.dcsys.data.period.Period;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.report.Report;
 import ar.com.dcsys.data.report.ReportSummary;
+import ar.com.dcsys.gwt.assistance.client.manager.JustificationsManager;
 import ar.com.dcsys.gwt.assistance.client.manager.PeriodsManager;
 import ar.com.dcsys.gwt.assistance.client.ui.period.PERIODFILTER;
 import ar.com.dcsys.gwt.assistance.client.ui.period.PeriodsView;
@@ -18,7 +24,9 @@ import ar.com.dcsys.gwt.manager.shared.Receiver;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent.Handler;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -29,13 +37,13 @@ public class PeriodsActivity extends AbstractActivity implements PeriodsView.Pre
 	public static final Logger logger = Logger.getLogger(PeriodsActivity.class.getName());
 	
 	private final PeriodsManager periodsManager;
+	private final JustificationsManager justificationsManager;
 	private final PeriodsView view;
 	
 	private EventBus eventBus;
 	
 	//person
 	private final SingleSelectionModel<Person> personSelection;
-	//private AssistancePersonData personDataCache;
 	
 	
 	//PERIODFILTER
@@ -58,14 +66,23 @@ public class PeriodsActivity extends AbstractActivity implements PeriodsView.Pre
 	//GRUPO
 	private final SingleSelectionModel<Group> groupSelection;
 	
+	//PERIOD
+	private final MultiSelectionModel<Report> periodSelection;
+	
+	//Justification
+	private final SingleSelectionModel<Justification> justificationSelection;
+	
 	@Inject
-	public PeriodsActivity(PeriodsView view, PeriodsManager periodsManager) {
+	public PeriodsActivity(PeriodsView view, PeriodsManager periodsManager, JustificationsManager justificationsManager) {
 		this.periodsManager = periodsManager;
 		this.view = view;
+		this.justificationsManager = justificationsManager;
 		
 		periodFilterSelectionModel = new SingleSelectionModel<PERIODFILTER>();
 		periodFilterSelectionModel.addSelectionChangeHandler(periodFilterHandler);
 		periodFilterSelectionModel.setSelected(periodFilters.get(0), true);
+		
+		justificationSelection = new SingleSelectionModel<Justification>();
 		
 		groupSelection = new SingleSelectionModel<Group>();
 		groupSelection.addSelectionChangeHandler(new Handler() {
@@ -76,19 +93,37 @@ public class PeriodsActivity extends AbstractActivity implements PeriodsView.Pre
 			}
 		});
 		
+		periodSelection = new MultiSelectionModel<Report>();
+		periodSelection.addSelectionChangeHandler(new Handler() {
+			@Override
+			public void onSelectionChange(SelectionChangeEvent event) {
+				Set<Report> periods = periodSelection.getSelectedSet();
+				if (periods != null) {
+					deselectJustified(periods);
+				}
+				
+				periods = periodSelection.getSelectedSet();
+				if (periods == null || periods.size() <= 0) {
+					PeriodsActivity.this.view.enableJustify(false);
+				} else {
+					PeriodsActivity.this.view.enableJustify(true);					
+				}
+			}
+		});
+		
 		personSelection = new SingleSelectionModel<Person>();
 		personSelection.addSelectionChangeHandler(new Handler() {
 			@Override
 			public void onSelectionChange(SelectionChangeEvent event) {
-				Person p = personSelection.getSelectedObject();
-				//periodSelection.clear();
-				//PeriodsActivity.this.viewClearPeriodData();
-				//PeriodsActivity.this.view.clearJustificationData();
-				//personDataCache = null;
+				Person p = personSelection.getSelectedObject();		
 				if (p == null) {
-					return;
+					PeriodsActivity.this.view.setEnabledFind(false);
+					PeriodsActivity.this.view.enableJustify(false);
+					
+				} else {
+					PeriodsActivity.this.view.setEnabledFind(true);
+					PeriodsActivity.this.view.enableJustify(true);
 				}
-				getPeriods(p);
 			}
 		});
 	}
@@ -106,6 +141,10 @@ public class PeriodsActivity extends AbstractActivity implements PeriodsView.Pre
 		view.setPeriodFilterValues(periodFilters);
 		view.setPeriodFilterSelectionModel(periodFilterSelectionModel);
 		
+		view.setJustificationSelectionModel(justificationSelection);
+		
+		view.setPeriodSelectionModel(periodSelection);
+		
 		view.setGroupSelectionModel(groupSelection);
 		
 		view.setPersonSelectionModel(personSelection);
@@ -121,12 +160,17 @@ public class PeriodsActivity extends AbstractActivity implements PeriodsView.Pre
 		view.setPeriodFilterSelectionModel(null);
 		view.setGroupSelectionModel(null);
 		view.setPersonSelectionModel(null);
+		view.setJustificationSelectionModel(null);
+		
+		view.setPeriodSelectionModel(null);
 		
 		view.setPresenter(null);
 		
 		periodFilterSelectionModel.clear();
 		groupSelection.clear();
 		personSelection.clear();
+		periodSelection.clear();
+		justificationSelection.clear();
 		
 		super.onStop();
 	}
@@ -140,6 +184,15 @@ public class PeriodsActivity extends AbstractActivity implements PeriodsView.Pre
 		 * TODO: falta implementar en GroupsManager
 		 */
 		updatePersons();
+		updateJustifications();
+	}
+	
+	private void deselectJustified(Set<Report> periods) {
+		for (Report r : periods) {
+			if (r.getJustifications() != null && r.getJustifications().size() > 0) {
+				periodSelection.setSelected(r, false);
+			} 
+		}
 	}
 	
 	private void updatePersons() {
@@ -159,10 +212,29 @@ public class PeriodsActivity extends AbstractActivity implements PeriodsView.Pre
 		});
 	}
 	
+	private void updateJustifications() {
+		justificationsManager.getJustifications(new Receiver<List<Justification>>() {
+			@Override
+			public void onSuccess(List<Justification> justifications) {
+				if (view == null || justifications == null || justifications.size() <= 0) {
+					return;
+				}
+				view.setJustifications(justifications);
+			}
+			@Override
+			public void onError(String error) {
+				logger.log(Level.SEVERE,error);
+			}
+		});
+	}
+	
 	@Override
-	public void dateChanged() {
-		// TODO Auto-generated method stub
-		
+	public void findPeriods() {
+		Person p = personSelection.getSelectedObject();
+		if (p == null) {
+			return;
+		}
+		getPeriods(p);
 	}
 	
 	private Date getStart() {
@@ -193,6 +265,9 @@ public class PeriodsActivity extends AbstractActivity implements PeriodsView.Pre
 		Date end = getEnd();
 		List<Person> persons = Arrays.asList(person);
 		
+		view.clearJustificationData();
+		view.clearPeriodData();
+		
 		periodsManager.findAllPeriods(start, end, persons, new Receiver<ReportSummary>() {
 			@Override
 			public void onError(String error) {
@@ -206,15 +281,61 @@ public class PeriodsActivity extends AbstractActivity implements PeriodsView.Pre
 		});
 	}
 	
+	
 	@Override
 	public void justify() {
+		
+		Set<Report> reports = periodSelection.getSelectedSet();
+		if (reports == null || reports.size() <= 0) {
+			return;
+		}
+		
+		List<Period> periods = new ArrayList<Period>();
+		for (Report r : reports) {
+			if (r.getPeriod() != null) {
+				periods.add(r.getPeriod());
+			}
+		}
+		
+		final Person person = personSelection.getSelectedObject();
+		if (person == null) {
+			return;
+		}
+		
+		Justification justification = justificationSelection.getSelectedObject();
+		if (justification == null) {
+			return;
+		}
+		
+		String notes = view.getNotes();
+		
+		justificationsManager.justify(person, periods, justification, notes, new Receiver<Void>() {
+			@Override
+			public void onSuccess(Void t) {					
+				 getPeriods(person);
+			}
+			
+			@Override
+			public void onError(String error) {
+				logger.log(Level.SEVERE,error);
+			}
+		});
 		
 	}
 	
 	@Override
 	public void removeJustification(JustificationDate j) {
-		// TODO Auto-generated method stub
-		
+		justificationsManager.remove(Arrays.asList(j), new Receiver<Void>() {
+			@Override
+			public void onSuccess(Void t) {
+				findPeriods();
+			}
+			
+			@Override
+			public void onError(String error) {
+				logger.log(Level.SEVERE,error);
+			}
+		});
 	}
 	
 	

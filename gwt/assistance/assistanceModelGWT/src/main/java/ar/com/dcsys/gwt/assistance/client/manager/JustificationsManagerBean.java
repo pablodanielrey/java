@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import ar.com.dcsys.data.justification.GeneralJustificationDate;
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
+import ar.com.dcsys.data.period.Period;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.gwt.assistance.shared.JustificationsManagerTransfer;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
@@ -40,6 +41,7 @@ public class JustificationsManagerBean implements JustificationsManager {
 			logger.log(Level.SEVERE,e.getMessage());
 		}
 	}
+	
 
 	@Override
 	public void persist(Justification justification, final Receiver<Void> receiver) {
@@ -68,6 +70,15 @@ public class JustificationsManagerBean implements JustificationsManager {
 		}
 	}
 
+	@Override
+	public void justify(Person person, List<Period> periods,Justification justification, String notes, Receiver<Void> receiver) {
+		try {
+			justificationsManagerTransfer.justify(person, periods, justification, notes, receiver);
+		} catch (Exception e) {
+			logger.log(Level.SEVERE,e.getMessage());
+		}
+	}
+	
 	@Override
 	public void findBy(List<Person> persons, Date start, Date end, final Receiver<List<JustificationDate>> receiver) {
 		try {

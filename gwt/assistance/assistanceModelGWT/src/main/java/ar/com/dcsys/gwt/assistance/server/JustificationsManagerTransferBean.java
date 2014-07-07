@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import ar.com.dcsys.data.justification.GeneralJustificationDate;
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
+import ar.com.dcsys.data.period.Period;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.exceptions.JustificationException;
 import ar.com.dcsys.exceptions.PersonException;
@@ -65,6 +66,16 @@ public class JustificationsManagerTransferBean implements JustificationsManagerT
 	public void justify(Person person, Date start, Date end,Justification justification, String notes, Receiver<Void> receiver) {
 		try {
 			justificationsManager.justify(person,start,end,justification,false,notes);
+			receiver.onSuccess(null);
+		} catch (JustificationException | PersonException e) {
+			receiver.onError(e.getMessage());
+		}
+	}
+	
+	@Override
+	public void justify(Person person, List<Period> periods, Justification justification, String notes, Receiver<Void> receiver) {
+		try {
+			justificationsManager.justify(person, periods, justification, notes);
 			receiver.onSuccess(null);
 		} catch (JustificationException | PersonException e) {
 			receiver.onError(e.getMessage());

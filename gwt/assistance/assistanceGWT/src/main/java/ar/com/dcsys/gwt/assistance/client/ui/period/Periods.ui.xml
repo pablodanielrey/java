@@ -171,6 +171,10 @@
 		height:100%;
 	}
 	
+	.panelFind {
+		text-align:center;
+	}
+	
 	</ui:style>
 	
 	<g:FlowPanel>
@@ -199,6 +203,10 @@
 					<g:Label text="Grupo" styleName="{style.label-inline}"/>
 					<g:ValueListBox ui:field="groupFilter"/>
 				</g:FlowPanel>
+
+				<g:FlowPanel styleName="{style.panelFind}">
+					<g:Button ui:field="find" text="Buscar"/>
+				</g:FlowPanel>
 			</g:FlowPanel>				
 	
 			<g:FlowPanel styleName="{style.person-list}">
@@ -220,7 +228,7 @@
 			<d:DataGrid ui:field="periods" styleName="{style.periods}"/>
 		</g:FlowPanel>
 			
-<!-- 		<g:FlowPanel styleName="{style.panel-justify-statics}">
+ 		<g:FlowPanel styleName="{style.panel-justify-statics}">
 			<g:TabLayoutPanel ui:field="tabLayoutPanel" barUnit='EM' barHeight='2' height='90%' width='100%'>
 				<g:tab>
 					<g:header>Estadísticas</g:header>
@@ -245,7 +253,7 @@
 				</g:tab>
 			</g:TabLayoutPanel>
 		</g:FlowPanel>
--->
+
 		
 	</g:FlowPanel>
 	

@@ -6,6 +6,7 @@ import java.util.List;
 import ar.com.dcsys.data.justification.GeneralJustificationDate;
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
+import ar.com.dcsys.data.period.Period;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.gwt.manager.shared.Manager;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
@@ -23,6 +24,11 @@ import ar.com.dcsys.pr.SerializerType;
 		@Serializer(serializer="ar.com.dcsys.pr.serializers.client.DateSerializer", clazz="java.util.Date", type=SerializerType.CLIENT),
 		@Serializer(serializer="ar.com.dcsys.pr.serializers.server.DateSerializer", clazz="java.util.Date", type=SerializerType.SERVER),
 
+
+		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.client.PeriodSerializer", clazz="ar.com.dcsys.data.period.Period", type=SerializerType.CLIENT),
+		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.server.PeriodSerializer", clazz="ar.com.dcsys.data.period.Period", type=SerializerType.SERVER),	
+		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.client.PeriodListSerializer", clazz="java.util.List<ar.com.dcsys.data.period.Period>", type=SerializerType.CLIENT),
+		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.server.PeriodListSerializer", clazz="java.util.List<ar.com.dcsys.data.period.Period>", type=SerializerType.SERVER),
 		
 		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.client.JustificationSerializer", clazz="ar.com.dcsys.data.justification.Justification", type=SerializerType.CLIENT),
 		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.server.JustificationSerializer", clazz="ar.com.dcsys.data.justification.Justification", type=SerializerType.SERVER),
@@ -57,6 +63,7 @@ public interface JustificationsManagerTransfer extends Manager {
 	public void remove(Justification justification, Receiver<Void> receiver);
 	
 	public void justify(Person person, Date start, Date end, Justification justification, String notes, Receiver<Void> receiver);
+	public void justify(Person person, List<Period> periods, Justification justification, String notes, Receiver<Void> receiver);
 	
 	public void findBy(List<Person> persons, Date start, Date end, Receiver<List<JustificationDate>> receiver);
 	
