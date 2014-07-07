@@ -55,4 +55,12 @@ public class ReportSummary {
 		}
 	}
 	
+	public void setMinutes(Long m) {
+		minutes = m;
+	}
+
+	public Long getMinutes() {
+		return minutes;
+	}
+	
 }

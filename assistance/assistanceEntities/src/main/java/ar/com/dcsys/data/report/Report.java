@@ -167,7 +167,7 @@ public class Report {
 			// calculo los minutos totales trabajados.
 			minutes = 0l;
 			for (WorkedHours wh : whs) {
-				minutes = minutes + (wh.getWorkedMilis() / 1000l);
+				minutes = minutes + ((wh.getWorkedMilis() / 1000l) / 60l);
 			}
 		}
 		
@@ -177,10 +177,18 @@ public class Report {
 	public Long getMinutes() {
 		return minutes;
 	}
+	
+	public void setMinutes(Long l) {
+		this.minutes = l;
+	}
 
 	
 	public Boolean isAbscence() {
 		return abscence;
+	}
+	
+	public void setAbscence(Boolean b) {
+		this.abscence = b;
 	}
 	
 	
