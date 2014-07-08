@@ -22,6 +22,7 @@ import ar.com.dcsys.utils.PersonSort;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -162,8 +163,6 @@ public class JustificationPerson extends Composite implements JustificationPerso
 		start.addValueChangeHandler(new ValueChangeHandler<Date>(){
 			@Override
 			public void onValueChange(ValueChangeEvent<Date> event) {
-				clearJustificationDateList();				
-				selectionJustificationDates.search(start.getValue(), end.getValue());
 			}
 			
 		});
@@ -172,8 +171,6 @@ public class JustificationPerson extends Composite implements JustificationPerso
 		end.addValueChangeHandler(new ValueChangeHandler<Date>(){
 			@Override
 			public void onValueChange(ValueChangeEvent<Date> event) {
-				clearJustificationDateList();
-				selectionJustificationDates.search(start.getValue(), end.getValue());
 			}
 			
 		});
@@ -219,6 +216,7 @@ public class JustificationPerson extends Composite implements JustificationPerso
 		createDates();
 		createType();
 		createStatistic();
+		createFind();
 		remove = new Button();
 		remove.setEnabled(false);	
 		openJustify = new Button();
@@ -394,6 +392,7 @@ public class JustificationPerson extends Composite implements JustificationPerso
 		end.setEnabled(b);
 		commit.setEnabled(b);
 		openJustify.setEnabled(b);
+		setEnabledFind(b);
 	}
 	 
 	@Override
@@ -423,4 +422,29 @@ public class JustificationPerson extends Composite implements JustificationPerso
 		dialogJustify.hide();
 	}
 
+	
+	/* *****************************************************************************
+	 * *********************************** FIND ***********************************
+	 * *************************************************************************** */	
+	@UiField(provided=true) Button find;
+	
+	private void createFind() {
+		find = new Button();
+		find.addClickHandler(new ClickHandler() {			
+			@Override
+			public void onClick(ClickEvent event) {
+				if (p != null && selectionJustificationDates != null) {
+					clearJustificationDateList();
+					selectionJustificationDates.search(start.getValue(), end.getValue());					
+				}
+			}
+		});
+		setEnabledFind(false);
+	}
+	
+	@Override
+	public void setEnabledFind(boolean b) {
+		find.setEnabled(b);
+	}
+	
 }
