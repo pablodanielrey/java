@@ -12,6 +12,7 @@ import ar.com.dcsys.gwt.person.client.common.filter.FilterPersonName;
 import ar.com.dcsys.gwt.person.client.ui.cell.PersonCell;
 import ar.com.dcsys.gwt.person.client.ui.common.PersonResources;
 import ar.com.dcsys.utils.PersonSort;
+import ar.com.dcsys.utils.PersonTypeUtils;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -99,7 +100,7 @@ public class ManagePersons extends Composite implements ManagePersonsView {
 		
 		this.types.clear();
 		for (PersonType pt : types) {
-			CheckBox c = new CheckBox(getDescription(pt));
+			CheckBox c = new CheckBox(PersonTypeUtils.getDescription(pt));
 			c.setValue(false);
 			c.addClickHandler(handler);
 			this.types.add(c);
@@ -111,17 +112,6 @@ public class ManagePersons extends Composite implements ManagePersonsView {
 		this.types.add(c);
 	}	
 	
-	private String getDescription(PersonType type) {
-		switch (type) {
-			case EXTERNAL: return "Visitante";
-			case PERSONAL: return "No Docente";
-			case POSTGRADUATE: return "Posgrado";
-			case STUDENT: return "Estudiante";
-			case TEACHER: return "Docente";
-		}
-		return "";
-	}
-	
 	@Override
 	public List<PersonType> getSelectedTypes() {
 		List<PersonType> selected = new ArrayList<PersonType>();
@@ -129,7 +119,7 @@ public class ManagePersons extends Composite implements ManagePersonsView {
 			CheckBox c = (CheckBox)this.types.getWidget(i);
 			if (c.getValue()) {
 				for (PersonType pt : typesCache) {
-					if (getDescription(pt).equalsIgnoreCase(c.getText())) {
+					if (PersonTypeUtils.getDescription(pt).equalsIgnoreCase(c.getText())) {
 						selected.add(pt);
 					}
 				}

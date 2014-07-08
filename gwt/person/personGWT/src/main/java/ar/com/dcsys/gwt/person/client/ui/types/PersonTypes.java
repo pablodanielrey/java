@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import ar.com.dcsys.data.person.PersonType;
+import ar.com.dcsys.utils.PersonTypeUtils;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -102,25 +103,13 @@ public class PersonTypes extends Composite implements PersonTypesView {
 				CheckBox c = (CheckBox)this.types.getWidget(i);
 				c.setValue(false);
 				for (PersonType pt : types) {
-					if (c.getText().equalsIgnoreCase(getDescription(pt))) {
+					if (c.getText().equalsIgnoreCase(PersonTypeUtils.getDescription(pt))) {
 						c.setValue(true);
 					}
 				}
 			}
 		}		
 	}
-	
-	private String getDescription(PersonType type) {
-		switch (type) {
-			case EXTERNAL: return "Visitante";
-			case PERSONAL: return "No Docente";
-			case POSTGRADUATE: return "Posgrado";
-			case STUDENT: return "Estudiante";
-			case TEACHER: return "Docente";
-		}
-		return "";
-	}	
-	
 
 	
 	@Override
@@ -130,7 +119,21 @@ public class PersonTypes extends Composite implements PersonTypesView {
 		
 		this.types.clear();
 		for (PersonType pt : types) {
-			CheckBox c = new CheckBox(getDescription(pt));
+			
+			
+			////////////////////////////////////////////
+			// TODO: eliminar!!! hay que buscar una mejor forma de implmentar esto en el caso de múltiples aplicaciones.
+			
+			// solo los tipos habilitados son : EXTERNAL y PERSONAL
+			if (!((PersonType.EXTERNAL.equals(pt)) || (PersonType.PERSONAL.equals(pt)))) {
+				continue;
+			}
+			
+			////////////////////////////////////////////
+			
+			
+			
+			CheckBox c = new CheckBox(PersonTypeUtils.getDescription(pt));
 			c.setValue(false);
 			c.setEnabled(true);
 			c.addClickHandler(new ClickHandler() {
@@ -154,7 +157,7 @@ public class PersonTypes extends Composite implements PersonTypesView {
 		for (PersonType pt : typesCache) {
 			for (int i = 0; i < this.types.getWidgetCount(); i++) {
 				CheckBox c = (CheckBox)this.types.getWidget(i);
-				if (getDescription(pt).equalsIgnoreCase(c.getText())) {
+				if (PersonTypeUtils.getDescription(pt).equalsIgnoreCase(c.getText())) {
 					typesSelection.setSelected(pt, c.getValue());
 					break;
 				}
