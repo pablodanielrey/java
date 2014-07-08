@@ -50,14 +50,7 @@ public class PeriodsActivity extends AbstractActivity implements PeriodsView.Pre
 	private final SelectionChangeEvent.Handler periodFilterHandler = new SelectionChangeEvent.Handler() {
 		@Override
 		public void onSelectionChange(SelectionChangeEvent event) {
-			if (personSelection == null) {
-				return;
-			}
-			Person person = personSelection.getSelectedObject();
-			if (person == null) {
-				return;
-			}
-			getPeriods(person);
+
 		}
 	};
 	
