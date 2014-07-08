@@ -24,4 +24,10 @@ public class ReportsModelBean implements ReportsModel {
 		return rs;
 	}	
 	
+	@Override
+	public ReportSummary reportPeriods(Date start, Date end, List<Person> persons, Boolean onlyWorkDays) throws IOException {
+		ReportSummary rs = rdg.getReport(start, end, persons,onlyWorkDays);
+		return rs;
+	}
+	
 }

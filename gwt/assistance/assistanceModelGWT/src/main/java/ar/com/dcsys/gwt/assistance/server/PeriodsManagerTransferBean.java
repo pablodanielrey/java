@@ -8,9 +8,11 @@ import java.util.List;
 import javax.inject.Inject;
 
 import ar.com.dcsys.data.group.Group;
+import ar.com.dcsys.data.period.Period;
 import ar.com.dcsys.data.period.PeriodAssignation;
 import ar.com.dcsys.data.period.PeriodType;
 import ar.com.dcsys.data.person.Person;
+import ar.com.dcsys.data.report.Report;
 import ar.com.dcsys.data.report.ReportSummary;
 import ar.com.dcsys.exceptions.PeriodException;
 import ar.com.dcsys.exceptions.PersonException;
@@ -59,6 +61,39 @@ public class PeriodsManagerTransferBean implements PeriodsManagerTransfer {
 			ReportSummary summary = reportsModel.reportPeriods(start,end,persons);
 			rec.onSuccess(summary);
 		} catch (Exception e) {
+			rec.onError(e.getMessage());
+		}
+	}
+	
+	@Override
+	public void findAllPeriods(Date start, Date end, List<Person> persons, Boolean onlyWorkDays, Receiver<ReportSummary> rec) {
+		try {
+			ReportSummary summary = reportsModel.reportPeriods(start, end, persons, onlyWorkDays);
+			rec.onSuccess(summary);
+		} catch (Exception e) {
+			rec.onError(e.getMessage());
+		}
+		
+	}
+	
+	@Override
+	public void findAllAbsences(Date start, Date end, List<Person> persons, Receiver<ReportSummary> rec) {
+		try {
+			ReportSummary summary = reportsModel.reportPeriods(start, end, persons, true);
+			List<Report> reports = summary.getReports();
+			List<Report> absences = new ArrayList<Report>();
+			
+			if (reports != null && reports.size() > 0) {
+				for (Report r : reports) {
+					Period p = r.getPeriod();
+					if (p == null || p.getWorkedHours() == null || p.getWorkedHours().size() <= 0) {
+						absences.add(r);
+					}
+				}
+			}
+			summary.setReports(absences);
+			rec.onSuccess(summary);
+ 		} catch (Exception e) {
 			rec.onError(e.getMessage());
 		}
 	}

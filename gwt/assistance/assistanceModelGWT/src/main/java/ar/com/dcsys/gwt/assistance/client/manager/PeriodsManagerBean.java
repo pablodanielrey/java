@@ -37,6 +37,16 @@ public class PeriodsManagerBean implements PeriodsManager {
 	}
 	
 	@Override
+	public void findAllPeriods(Date start, Date end, List<Person> persons, Boolean onlyWorkDays, Receiver<ReportSummary> rec) {
+		periodsManagerTransfer.findAllPeriods(start, end, persons, onlyWorkDays, rec);
+	}
+	
+	@Override
+	public void findAllAbsences(Date start, Date end, List<Person> persons,	Receiver<ReportSummary> rec) {
+		periodsManagerTransfer.findAllAbsences(start, end, persons, rec);
+	}
+	
+	@Override
 	public void findPersonsWithPeriodAssignation(Group group, Receiver<List<Person>> receiver) {
 		try {
 			if (group != null) {

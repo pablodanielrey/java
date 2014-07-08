@@ -17,6 +17,9 @@ import ar.com.dcsys.pr.SerializerType;
 @ClientManager(serializers={
 		@Serializer(serializer="ar.com.dcsys.pr.serializers.shared.VoidSerializer", clazz="java.lang.Void", type=SerializerType.COMBINED),
 		@Serializer(serializer="ar.com.dcsys.pr.serializers.shared.StringSerializer", clazz="java.lang.String", type=SerializerType.COMBINED),
+
+		@Serializer(serializer="ar.com.dcsys.pr.serializers.client.BooleanSerializer", clazz="java.lang.Boolean", type=SerializerType.CLIENT),
+		@Serializer(serializer="ar.com.dcsys.pr.serializers.server.BooleanSerializer", clazz="java.lang.Boolean", type=SerializerType.SERVER),
 		
 		@Serializer(serializer="ar.com.dcsys.pr.serializers.client.DateListSerializer", clazz="java.util.List<java.util.Date>", type=SerializerType.CLIENT),
 		@Serializer(serializer="ar.com.dcsys.pr.serializers.server.DateListSerializer", clazz="java.util.List<java.util.Date>", type=SerializerType.SERVER),
@@ -73,5 +76,7 @@ public interface PeriodsManagerTransfer extends Manager {
 	public void persist(Person person, PeriodAssignation periodAssignation, Receiver<Void> receiver);
 
 	public void findAllPeriods(Date start, Date end, List<Person> persons, Receiver<ReportSummary> rec);
+	public void findAllPeriods(Date start, Date end, List<Person> persons, Boolean onlyWorkDays, Receiver<ReportSummary> rec);
+	public void findAllAbsences(Date start, Date end, List<Person> persons,Receiver<ReportSummary> rec);
 	
 }

@@ -10,5 +10,6 @@ import ar.com.dcsys.data.report.ReportSummary;
 public interface ReportsModel {
 
 	public ReportSummary reportPeriods(Date start, Date end, List<Person> persons) throws IOException;
+	public ReportSummary reportPeriods(Date start, Date end, List<Person> persons, Boolean onlyWorkDays) throws IOException;
 	
 }

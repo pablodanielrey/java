@@ -168,6 +168,7 @@ public class PeriodsActivity extends AbstractActivity implements PeriodsView.Pre
 	
 	private void showMessage(String message) {
 		//eventBus.fireEvent(new MessageDialogEvent(message));
+		logger.log(Level.SEVERE,message);
 	}
 
 	private void update() {
@@ -259,7 +260,13 @@ public class PeriodsActivity extends AbstractActivity implements PeriodsView.Pre
 		view.clearJustificationData();
 		view.clearPeriodData();
 		
-		periodsManager.findAllPeriods(start, end, persons, new Receiver<ReportSummary>() {
+		PERIODFILTER periodFilter = periodFilterSelectionModel.getSelectedObject();
+		if (periodFilter == null) {
+			showMessage("Debe seleccionar un tipo de períodos a mostrar");
+			return;
+		}
+		
+		Receiver<ReportSummary> rec = new Receiver<ReportSummary>() {
 			@Override
 			public void onError(String error) {
 				logger.log(Level.WARNING,error);
@@ -269,7 +276,14 @@ public class PeriodsActivity extends AbstractActivity implements PeriodsView.Pre
 				List<Report> reports = t.getReports();
 				view.setPeriods(reports);
 			}
-		});
+		};
+		
+		switch (periodFilter) {
+			case ALL: periodsManager.findAllPeriods(start, end, persons, false, rec); break;
+			case WORKING: periodsManager.findAllPeriods(start, end, persons, true, rec); break;
+			case ABSENT: periodsManager.findAllAbsences(start, end, persons, rec);
+			default: showMessage("No se ha seleccionado el tipo de período a buscar");
+		}
 	}
 	
 	
