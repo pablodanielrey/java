@@ -3,7 +3,6 @@ package ar.com.dcsys.gwt.assistance.client.ui.period;
 import java.util.Date;
 import java.util.List;
 
-import ar.com.dcsys.assistance.entities.AssistancePersonData;
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;

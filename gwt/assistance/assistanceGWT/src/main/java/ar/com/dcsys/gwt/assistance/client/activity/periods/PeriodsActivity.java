@@ -8,7 +8,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import ar.com.dcsys.assistance.entities.AssistancePersonData;
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
@@ -24,7 +23,6 @@ import ar.com.dcsys.gwt.manager.shared.Receiver;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -320,7 +318,6 @@ public class PeriodsActivity extends AbstractActivity implements PeriodsView.Pre
 				logger.log(Level.SEVERE,error);
 			}
 		});
-		
 	}
 	
 	@Override

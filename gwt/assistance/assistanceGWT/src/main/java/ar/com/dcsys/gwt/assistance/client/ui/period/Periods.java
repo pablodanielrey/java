@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import ar.com.dcsys.assistance.entities.AssistancePersonData;
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.justification.GeneralJustificationDate;
 import ar.com.dcsys.data.justification.Justification;
@@ -20,7 +19,6 @@ import ar.com.dcsys.data.period.WorkedHours;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.report.Report;
 import ar.com.dcsys.gwt.assistance.client.activity.justification.JustificationStatistic;
-import ar.com.dcsys.gwt.assistance.client.activity.periods.PeriodsActivity;
 import ar.com.dcsys.gwt.assistance.client.common.GroupsSort;
 import ar.com.dcsys.gwt.assistance.client.common.JustificationsSort;
 import ar.com.dcsys.gwt.assistance.client.ui.cell.PersonCell;
