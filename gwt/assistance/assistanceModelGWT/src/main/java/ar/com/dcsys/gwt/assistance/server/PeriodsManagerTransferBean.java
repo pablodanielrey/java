@@ -192,7 +192,7 @@ public class PeriodsManagerTransferBean implements PeriodsManagerTransfer {
 		try {
 			//verifico que  exista
 	        PeriodAssignation pa = periodsManager.findBy(person, periodAssignation.getStart(), periodAssignation.getType());
-	        if (pa == null) {
+	        if (pa != null) {
 	        	receiver.onSuccess(null);
 	            return;
 	        }
