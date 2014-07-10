@@ -64,6 +64,7 @@ public interface JustificationsManagerTransfer extends Manager {
 	
 	public void justify(Person person, Date start, Date end, Justification justification, String notes, Receiver<Void> receiver);
 	public void justify(Person person, List<Period> periods, Justification justification, String notes, Receiver<Void> receiver);
+	public void justify(List<Period> periods, Justification justification, String notes, Receiver<Void> receiver);
 	
 	public void findBy(List<Person> persons, Date start, Date end, Receiver<List<JustificationDate>> receiver);
 	

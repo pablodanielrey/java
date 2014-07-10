@@ -43,7 +43,6 @@ import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.text.shared.Renderer;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
@@ -83,6 +82,7 @@ public class DailyPeriods extends Composite implements DailyPeriodsView {
 		createFilter();
 		createPeriods();
 		createStatistic();
+		createFind();
 		createType();
 		createJustify();
 		
@@ -149,10 +149,21 @@ public class DailyPeriods extends Composite implements DailyPeriodsView {
 	 * *********************************** FIND ***********************************
 	 * *************************************************************************** */
 	
-	@UiHandler("find")
-	public void onFind(ClickEvent event) {
-		p.findPeriods();
-	}	
+	@UiField(provided=true) Button find;
+	
+	private void createFind() {
+		find = new Button();
+		find.addClickHandler(new ClickHandler() {			
+			@Override
+			public void onClick(ClickEvent event) {
+				if (p != null) {
+					p.findPeriods();
+				}
+			}
+		});
+	}
+		
+	
 	
 
 	/* *****************************************************************************
@@ -689,6 +700,15 @@ public class DailyPeriods extends Composite implements DailyPeriodsView {
 		periodsData.addAll(periods);
 		
 		filterPeriods();
+		
+		/*if (periods == null) {
+			return;
+		}
+		
+		this.periods.setVisibleRange(new Range(0, periods.size()));
+		periodsDataProvider.getList().clear();
+		periodsDataProvider.getList().addAll(periods);
+		periodsDataProvider.refresh();*/
 		
 		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 			@Override

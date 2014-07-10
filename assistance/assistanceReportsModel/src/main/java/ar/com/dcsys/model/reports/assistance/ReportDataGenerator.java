@@ -3,6 +3,7 @@ package ar.com.dcsys.model.reports.assistance;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -42,10 +43,18 @@ public class ReportDataGenerator {
 		return getReport(start, end, personsToReport,false);
 	}
 		
+	private void removeMilisDate(Date date) {
+		long milis = date.getTime();
+		date.setTime(date.getTime()-(milis % 1000));
+	}
+	
 	public ReportSummary getReport(Date start, Date end, List<Person> personsToReport,Boolean onlyWorkDays) throws IOException {
 	
 		try {
 		
+			//elimino los milis segundo de la fecha End
+			removeMilisDate(end);
+			
 			// busco las justificaciones generales.
 			
 			List<GeneralJustificationDate> generalJustifications = justificationManager.findGeneralJustificationDateBy(start, end);

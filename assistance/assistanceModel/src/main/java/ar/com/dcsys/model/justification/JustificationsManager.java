@@ -32,6 +32,7 @@ public interface JustificationsManager extends Serializable {
 	public void justify(String personId, Date start, Date end, Justification justification, boolean onlyWorkDays, String notes) throws JustificationException, PersonException;
 	public void justify(Person person, List<Period> periods, Justification justification, String notes) throws JustificationException, PersonException;
 	public void justify(String personId, List<Period> periods, Justification justification, String notes) throws JustificationException, PersonException;
+	public void justify(List<Period> periods, Justification justification, String notes) throws JustificationException, PersonException;
 	
 	// general justifications
 	

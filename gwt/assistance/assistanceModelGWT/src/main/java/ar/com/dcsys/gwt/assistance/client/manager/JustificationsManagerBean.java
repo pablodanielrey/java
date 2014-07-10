@@ -80,6 +80,15 @@ public class JustificationsManagerBean implements JustificationsManager {
 	}
 	
 	@Override
+	public void justify(List<Period> periods, Justification justification, String notes, Receiver<Void> receiver) {
+		try {
+			justificationsManagerTransfer.justify(periods, justification, notes, receiver);
+		} catch (Exception e) {
+			logger.log(Level.SEVERE,e.getMessage());
+		}		
+	}
+	
+	@Override
 	public void justify(List<Person> persons, List<Period> periods, Justification justification, String notes, Receiver<Void> receiver) {
 		try {
 			if (persons == null || persons.size() <= 0) {

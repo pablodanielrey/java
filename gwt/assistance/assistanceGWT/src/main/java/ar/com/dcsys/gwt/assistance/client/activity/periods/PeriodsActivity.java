@@ -24,6 +24,7 @@ import ar.com.dcsys.gwt.manager.shared.Receiver;
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent.Handler;
@@ -245,9 +246,8 @@ public class PeriodsActivity extends AbstractActivity implements PeriodsView.Pre
 		if (end == null) {
 			return null;
 		}
-		end.setHours(23);
-		end.setMinutes(59);
-		end.setSeconds(59);
+		CalendarUtil.addDaysToDate(end, 1);
+		end.setTime(end.getTime() - 1l);
 		return end;
 	}	
 	

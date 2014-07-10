@@ -26,6 +26,7 @@ import ar.com.dcsys.gwt.manager.shared.Receiver;
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -228,10 +229,8 @@ public class DailyPeriodsActivity extends AbstractActivity implements DailyPerio
 		if (end == null) {
 			return null;
 		}
-		end.setHours(23);
-		end.setMinutes(59);
-		end.setSeconds(59);
-		//CalendarUtil.addDaysToDate(end, 1);
+		CalendarUtil.addDaysToDate(end, 1);
+		end.setTime(end.getTime() - 1l);
 		return end;
 	}
 	
@@ -242,6 +241,7 @@ public class DailyPeriodsActivity extends AbstractActivity implements DailyPerio
 		
 		view.clearJustificationData();
 		view.clearPeriodData();
+		periodSelection.clear();
 		
 		PERIODFILTER periodFilter = periodFilterSelectionModel.getSelectedObject();
 		if (periodFilter == null) {
@@ -261,7 +261,6 @@ public class DailyPeriodsActivity extends AbstractActivity implements DailyPerio
 			}
 		};
 		
-		periodsManager.findAllPeriods(start, end, personsCache, rec);
 		switch (periodFilter) {
 		case ALL: periodsManager.findAllPeriods(start, end, personsCache, false, rec); break;
 		case WORKING: periodsManager.findAllPeriods(start, end, personsCache, true, rec); break;
@@ -291,7 +290,7 @@ public class DailyPeriodsActivity extends AbstractActivity implements DailyPerio
 		
 		String notes = view.getNotes();
 		
-		justificationsManager.justify(personsCache, periods, justification, notes, new Receiver<Void>() {
+		justificationsManager.justify(periods, justification, notes, new Receiver<Void>() {
 			@Override
 			public void onSuccess(Void t) {
 				findPeriods();
