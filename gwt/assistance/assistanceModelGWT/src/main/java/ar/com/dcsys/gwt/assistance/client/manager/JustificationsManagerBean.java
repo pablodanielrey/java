@@ -80,6 +80,20 @@ public class JustificationsManagerBean implements JustificationsManager {
 	}
 	
 	@Override
+	public void justify(List<Person> persons, List<Period> periods, Justification justification, String notes, Receiver<Void> receiver) {
+		try {
+			if (persons == null || persons.size() <= 0) {
+				return;
+			}
+			for (Person p : persons) {
+				justify(p, periods, justification, notes, receiver);
+			}
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, e.getMessage());
+		}
+	}
+	
+	@Override
 	public void findBy(List<Person> persons, Date start, Date end, final Receiver<List<JustificationDate>> receiver) {
 		try {
 			justificationsManagerTransfer.findBy(persons, start, end, receiver);

@@ -46,6 +46,32 @@
 				<d:DataGrid ui:field="periods" styleName="{res.style.periods}"/>
 			</g:FlowPanel>
 		</g:FlowPanel>
+		
+		 <g:FlowPanel styleName="{res.style.panelJustifyStatics}">
+			<g:TabLayoutPanel ui:field="tabLayoutPanel" barUnit='EM' barHeight='2' height='90%' width='100%'>
+				<g:tab>
+					<g:header>Estadísticas</g:header>
+					<cell:DataGrid ui:field="statistics" styleName="{res.style.statics}"/>
+				</g:tab>
+				<g:tab>
+					<g:header>Justificar</g:header>
+					<g:FlowPanel styleName="{res.style.blockJustify}">
+					    <g:Label text="Justificar Periodos" styleName="{res.style.subtitleCenter}"/>
+					    <g:FlowPanel styleName="{res.style.panel}">
+					        <g:Label text="Tipo : " styleName="{res.style.labelInline}"/>
+							<g:ValueListBox ui:field="types"/>
+						</g:FlowPanel>
+						<g:FlowPanel styleName="{res.style.panel}">	
+						    <g:Label text="Notas : " styleName="{res.style.labelBlock}"/>
+							<g:TextArea ui:field="justifyNotes" styleName="{res.style.textArea}"/>
+						</g:FlowPanel>
+						<g:FlowPanel styleName="{res.style.panelButton}">
+							<g:Button ui:field="justify" text="Justificar Seleccionados" styleName="{res.style.button}"/>
+						</g:FlowPanel>
+					</g:FlowPanel>
+				</g:tab>
+			</g:TabLayoutPanel>
+		</g:FlowPanel>
 
 		
 	</g:FlowPanel>

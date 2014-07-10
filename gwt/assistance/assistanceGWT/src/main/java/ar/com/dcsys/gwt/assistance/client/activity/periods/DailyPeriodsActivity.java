@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.group.Group;
+import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.period.Period;
 import ar.com.dcsys.data.person.Person;
@@ -57,6 +58,9 @@ public class DailyPeriodsActivity extends AbstractActivity implements DailyPerio
 	
 	//PERSONS
 	private final List<Person> personsCache = new ArrayList<Person>();
+
+	//Justification
+	private final SingleSelectionModel<Justification> justificationSelection;
 	
 	
 	private EventBus eventBus;
@@ -71,6 +75,8 @@ public class DailyPeriodsActivity extends AbstractActivity implements DailyPerio
 		periodFilterSelectionModel.addSelectionChangeHandler(periodFilterHandler);
 		periodFilterSelectionModel.setSelected(periodFilters.get(0), true);
 		
+		justificationSelection = new SingleSelectionModel<Justification>();
+		
 		groupSelection = new SingleSelectionModel<Group>();
 		groupSelection.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			@Override
@@ -84,7 +90,17 @@ public class DailyPeriodsActivity extends AbstractActivity implements DailyPerio
 		periodSelection.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			@Override
 			public void onSelectionChange(SelectionChangeEvent event) {
+				Set<Report> periods = periodSelection.getSelectedSet();
+				if (periods != null) {
+					deselectJustified(periods);
+				}
 				
+				periods = periodSelection.getSelectedSet();
+				if (periods == null || periods.size() <= 0) {
+					DailyPeriodsActivity.this.view.enableJustify(false);
+				} else {
+					DailyPeriodsActivity.this.view.enableJustify(true);					
+				}				
 			}
 			
 		});
@@ -102,6 +118,10 @@ public class DailyPeriodsActivity extends AbstractActivity implements DailyPerio
 		view.setPeriodFilterValues(periodFilters);
 		view.setPeriodFilterSelectionModel(periodFilterSelectionModel);
 		
+		view.setPeriodSelectionModel(periodSelection);
+		
+		view.setJustificationSelectionModel(justificationSelection);
+		
 		view.setGroupSelectionModel(groupSelection);
 		
 		panel.setWidget(view);
@@ -115,10 +135,36 @@ public class DailyPeriodsActivity extends AbstractActivity implements DailyPerio
 		
 	private void update() {
 		findGroups();
+		updateJustifications();
 	}
+	
+	private void updateJustifications() {
+		justificationsManager.getJustifications(new Receiver<List<Justification>>() {
+			@Override
+			public void onSuccess(List<Justification> justifications) {
+				if (view == null || justifications == null || justifications.size() <= 0) {
+					return;
+				}
+				view.setJustifications(justifications);
+			}
+			@Override
+			public void onError(String error) {
+				logger.log(Level.SEVERE,error);
+			}
+		});
+	}	
 	
 	private void showMessage(String message) {
 		//eventBus.fireEvent(new MessageDialogEvent(message));
+		logger.log(Level.SEVERE,message);
+	}
+	
+	private void deselectJustified(Set<Report> periods) {
+		for (Report r : periods) {
+			if (r.getJustifications() != null && r.getJustifications().size() > 0) {
+				periodSelection.setSelected(r, false);
+			} 
+		}
 	}
 	
 	private void findGroups() {
@@ -149,7 +195,19 @@ public class DailyPeriodsActivity extends AbstractActivity implements DailyPerio
 	@Override
 	public void onStop() {
 		view.setPresenter(null);
+		view.clear();
+		
 		personsCache.clear();
+		
+		view.setPeriodFilterSelectionModel(null);
+		view.setGroupSelectionModel(null);		
+		view.setJustificationSelectionModel(null);
+
+		periodFilterSelectionModel.clear();
+		groupSelection.clear();
+		periodSelection.clear();
+		justificationSelection.clear();
+		
 		super.onStop();
 	}
 	
@@ -182,7 +240,16 @@ public class DailyPeriodsActivity extends AbstractActivity implements DailyPerio
 		Date start = getStart();
 		Date end = getEnd();	
 		
-		periodsManager.findAllPeriods(start, end, personsCache, new Receiver<ReportSummary>() {
+		view.clearJustificationData();
+		view.clearPeriodData();
+		
+		PERIODFILTER periodFilter = periodFilterSelectionModel.getSelectedObject();
+		if (periodFilter == null) {
+			showMessage("Debe seleccionar un tipo de períodos a mostrar");
+			return;			
+		}
+		
+		Receiver<ReportSummary> rec = new Receiver<ReportSummary>() {
 			@Override
 			public void onSuccess(ReportSummary t) {
 				List<Report> reports = t.getReports();
@@ -192,7 +259,15 @@ public class DailyPeriodsActivity extends AbstractActivity implements DailyPerio
 			public void onError(String error) {
 				logger.log(Level.WARNING,error);
 			}
-		});
+		};
+		
+		periodsManager.findAllPeriods(start, end, personsCache, rec);
+		switch (periodFilter) {
+		case ALL: periodsManager.findAllPeriods(start, end, personsCache, false, rec); break;
+		case WORKING: periodsManager.findAllPeriods(start, end, personsCache, true, rec); break;
+		case ABSENT: periodsManager.findAllAbsences(start, end, personsCache, rec);
+		default: showMessage("No se ha seleccionado el tipo de período a buscar");
+	}		
 	}
 
 	
@@ -209,12 +284,38 @@ public class DailyPeriodsActivity extends AbstractActivity implements DailyPerio
 			}
 		}
 		
+		Justification justification = justificationSelection.getSelectedObject();
+		if (justification == null) {
+			return;
+		}
+		
+		String notes = view.getNotes();
+		
+		justificationsManager.justify(personsCache, periods, justification, notes, new Receiver<Void>() {
+			@Override
+			public void onSuccess(Void t) {
+				findPeriods();
+			}
+			@Override
+			public void onError(String error) {
+				showMessage(error);
+			}
+		});
+		
 	}
 	
 	@Override
 	public void removeJustification(JustificationDate j) {
-		// TODO Auto-generated method stub
-		
+		justificationsManager.remove(Arrays.asList(j), new Receiver<Void>() {
+			@Override
+			public void onSuccess(Void t) {
+				findPeriods();
+			}
+			@Override
+			public void onError(String error) {
+				showMessage(error);
+			}
+		});
 	}
 
 }

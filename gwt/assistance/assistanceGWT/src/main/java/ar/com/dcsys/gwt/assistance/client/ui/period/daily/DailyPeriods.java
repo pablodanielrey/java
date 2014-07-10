@@ -4,16 +4,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.justification.GeneralJustificationDate;
+import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.period.Period;
 import ar.com.dcsys.data.period.WorkedHours;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.report.Report;
+import ar.com.dcsys.gwt.assistance.client.activity.justification.JustificationStatistic;
 import ar.com.dcsys.gwt.assistance.client.common.GroupsSort;
+import ar.com.dcsys.gwt.assistance.client.common.JustificationsSort;
 import ar.com.dcsys.gwt.assistance.client.ui.period.PERIODFILTER;
 import ar.com.dcsys.gwt.assistance.client.ui.period.WorkedHoursUtil;
 import ar.com.dcsys.gwt.assistance.client.ui.period.cells.JustificationActionCell;
@@ -28,6 +33,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -44,8 +50,11 @@ import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TabLayoutPanel;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ValueListBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -73,6 +82,9 @@ public class DailyPeriods extends Composite implements DailyPeriodsView {
 		createGroupFilter();
 		createFilter();
 		createPeriods();
+		createStatistic();
+		createType();
+		createJustify();
 		
 		initWidget(uiBinder.createAndBindUi(this));
 		
@@ -90,6 +102,7 @@ public class DailyPeriods extends Composite implements DailyPeriodsView {
 	public void clear() {
 		clearPeriodFilter();
 		clearPeriodData();
+		clearJustificationData();
 	}
 	
 	
@@ -653,6 +666,8 @@ public class DailyPeriods extends Composite implements DailyPeriodsView {
 		periodsFilteredData.clear();
 		
 		usersCount.setText("0");
+		
+		clearStatistics();
 	}
 	
 
@@ -682,10 +697,7 @@ public class DailyPeriods extends Composite implements DailyPeriodsView {
 			}
 		});		
 
-		/*
-		 * TODO: falta implementar la parte de estadistica
-		 */
-		//setStatistics(periods);
+		setStatistics(periods);
 	}
 	
 	@Override
@@ -693,5 +705,217 @@ public class DailyPeriods extends Composite implements DailyPeriodsView {
 		periods.setSelectionModel(selection);
 	}
 	
+	
+	/* *****************************************************************************
+	 * *********************************** Statics *********************************
+	 * *************************************************************************** */
+	
+	@UiField TabLayoutPanel tabLayoutPanel;
+	@UiField(provided=true)DataGrid<JustificationStatistic> statistics;
+	
+	private void createStatistic() {
+		
+		statistics = new DataGrid<JustificationStatistic>();
+		
+		TextColumn<JustificationStatistic> name = new TextColumn<JustificationStatistic>() {
+			@Override
+			public String getValue(JustificationStatistic object) {
+				String name = object.getName();
+				if (name == null) {
+					return "no tiene";
+				}
+				return name;
+			}
+		};
+		
+		TextColumn<JustificationStatistic> description = new TextColumn<JustificationStatistic>() {
+			@Override
+			public String getValue(JustificationStatistic object) {
+				String description = object.getDescription();
+				if (description == null) {
+					return "no tiene";
+				}
+				return description;
+			}
+		}; 
+		
+		TextColumn<JustificationStatistic> count = new TextColumn<JustificationStatistic>() {
+			@Override
+			public String getValue(JustificationStatistic object) {
+				String count = String.valueOf(object.getCount());
+				return count;
+			}
+		};
+
+		statistics.addColumn(name,"Tipo");
+		statistics.addColumn(count,"Cantidad");
+		statistics.addColumn(description,"Descripción");		
+	}
+	
+	private void clearStatistics() {
+		statistics.setRowCount(0);
+		statistics.setRowData(new ArrayList<JustificationStatistic>());
+	}
+	
+	/**
+	 * Calcula la estadisticas para mostrarlas.
+	 * es ineficiente porque esto ya se consulta en los cells del dataGrid.
+	 * @param periods
+	 */
+	private void setStatistics(List<Report> periods) {
+		if (periods == null) {
+			return;
+		}
+		
+		//calculo la cantidad de justificaciones para cada tipo
+		JustificationStatistic absence = new JustificationStatistic("Ausencias","Períodos sin ninguna marcación");
+		JustificationStatistic justifiedAbsences = new JustificationStatistic("Ausencias justificadas","Períodos sin marcaciones pero justificados");
+		JustificationStatistic unjustifiedAbsences = new JustificationStatistic("Ausencias injustificadas","Períodos sin marcaciones y sin justificación");		
+		JustificationStatistic periodsCount = new JustificationStatistic("Períodos", "Cantidad de perídos");
+		periodsCount.setCount(periods.size());
+		
+		Map<String,JustificationStatistic> counters = new HashMap<String,JustificationStatistic>();
+		for (Report r : periods) {
+			
+			//chequeo dato de justificaciones
+			List<JustificationDate> jds = r.getJustifications();
+			if (jds != null && jds.size() > 0) {
+				for (JustificationDate jd : jds) {
+					if (jd != null) {
+						String code = jd.getJustification().getCode();
+						JustificationStatistic js = counters.get(code);
+						if (js == null) {
+							js = new JustificationStatistic(code, jd.getJustification().getDescription());
+							counters.put(code, js);
+						}
+						js.incrementCount();
+					}
+				}
+			}
+			
+			//agrego datos de faltas
+			Period period = r.getPeriod();
+			if (period != null) {
+				if (period.getWorkedHours() == null || period.getWorkedHours().size() <= 0) {
+					absence.incrementCount();
+					if (jds == null || jds.size() <= 0) {
+						unjustifiedAbsences.incrementCount();
+					} else {
+						justifiedAbsences.incrementCount();
+					}
+				}
+			}
+		}
+		
+		List<JustificationStatistic> lcounters = new ArrayList<JustificationStatistic>();
+		lcounters.add(periodsCount);
+		lcounters.add(absence);
+		lcounters.add(unjustifiedAbsences);
+		lcounters.add(justifiedAbsences);		
+		lcounters.addAll(counters.values());
+		
+		statistics.setRowData(lcounters);
+		
+	}	
+
+	/* *****************************************************************************
+	 * ********************************** Justificar *******************************
+	 * *************************************************************************** */
+	
+	@UiField(provided=true) ValueListBox<Justification> types;
+	@UiField TextArea justifyNotes;
+	@UiField(provided=true) Button justify;
+	private SingleSelectionModel<Justification> typeSelection;
+	
+	private void createType() {
+		types = new ValueListBox<Justification>(new Renderer<Justification>() {
+			private String getValue(Justification type) {
+				if (type == null) {
+					return "";
+				}
+				String code = type.getCode();
+				String description = type.getDescription();
+				return code + ((description != null) ? "  " + description : "");
+			}
+			
+			@Override
+			public String render(Justification object) {
+				if (object == null) {
+					return "";
+				}
+				return getValue(object);
+			}
+			@Override
+			public void render(Justification object, Appendable appendable)	throws IOException {
+				if (object == null) {
+					return;
+				}
+				appendable.append(getValue(object));
+			}
+		});
+		
+		types.addValueChangeHandler(new ValueChangeHandler<Justification>() {
+			@Override
+			public void onValueChange(ValueChangeEvent<Justification> event) {
+				justifyNotes.setText("");
+				
+				if (typeSelection != null) {
+					Justification t = types.getValue();
+					if (t == null) {
+						typeSelection.clear();
+					} else {
+						typeSelection.setSelected(t,true);
+					}
+				}
+			}
+		});
+	}
+	
+	@Override
+	public void setJustificationSelectionModel(SingleSelectionModel<Justification> selection) {
+		typeSelection = selection;
+	}	
+	
+	@Override
+	public void setJustifications(List<Justification> types) {
+		JustificationsSort.sort(types);
+		if (types.size() > 0) {
+			Justification t = types.get(0);
+			this.types.setValue(t);
+			if (typeSelection != null) {
+				typeSelection.setSelected(t,true);
+			}
+		}
+		this.types.setAcceptableValues(types);
+	}
+	
+	@Override
+	public void clearJustificationData() {
+		justifyNotes.setText("");
+		enableJustify(false);
+	}
+	
+	@Override
+	public String getNotes() {
+		return justifyNotes.getValue();
+	}
+	
+	private void createJustify() {
+		justify = new Button();
+		justify.addClickHandler(new ClickHandler() {			
+			@Override
+			public void onClick(ClickEvent event) {
+				if (p == null) {
+					return;
+				}
+				p.justify();
+			}
+		});
+	}
+	
+	@Override
+	public void enableJustify(boolean t) {
+		justify.setEnabled(t);
+	}	
 	
 }
