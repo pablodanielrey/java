@@ -5,10 +5,6 @@
   <!-- Inherit the core Web Toolkit stuff.                        -->
   <inherits name='com.google.gwt.user.User' />
 
-  <!-- We need the JUnit module in the main module,               -->
-  <!-- otherwise eclipse complains (Google plugin bug?)           -->
-  <inherits name='com.google.gwt.junit.JUnit' />
-
 
   <inherits name="com.google.gwt.inject.Inject"/>
   <inherits name="com.google.gwt.logging.Logging"/>
@@ -28,6 +24,10 @@
   <inherits name="ar.com.dcsys.gwt.clientMessages.ClientMessagesGWT"/>
   
   <inherits name="ar.com.dcsys.gwt.auth.AuthModelGWT"/>
+ <inherits name="ar.com.dcsys.gwt.manager.ManagerGWT"/>
+ <inherits name="ar.com.dcsys.gwt.utils.UtilsGWT"/>
+ <inherits name="ar.com.dcsys.gwt.messages.MessagesGWT"/>
+ <inherits name="ar.com.dcsys.gwt.ws.WsGWT"/>
   
   <inherits name="com.google.gwt.http.HTTP"/>  
 
@@ -44,7 +44,6 @@
   <source path='client' />
   <source path='shared' />
 
-  <add-linker name="xsiframe" />
 
 
 </module>
