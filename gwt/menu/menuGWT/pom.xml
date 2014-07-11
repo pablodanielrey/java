@@ -118,7 +118,7 @@
         <configuration>
           <runTarget>MenuGWT.html</runTarget>
           <hostedWebapp>${webappDirectory}</hostedWebapp>
-          <i18nMessagesBundle>ar.com.dcsys.gwt.auth.client.Messages</i18nMessagesBundle>
+          <i18nMessagesBundle>ar.com.dcsys.gwt.menu.client.Messages</i18nMessagesBundle>
 
           <noServer>true</noServer>
           <port>8282</port>
