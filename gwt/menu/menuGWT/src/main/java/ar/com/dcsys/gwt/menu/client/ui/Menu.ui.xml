@@ -1,0 +1,22 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+	
+	</ui:style>
+	
+	<g:FlowPanel>
+		<g:FlowPanel>
+			<g:Label ui:field="person"/>
+		</g:FlowPanel>
+		<g:FlowPanel>
+			<g:Label ui:field="assistance"/>
+		</g:FlowPanel>
+		<g:FlowPanel>
+			<g:Label ui:field="logout"/>
+		</g:FlowPanel>
+		<g:FlowPanel>
+			<g:Label ui:field="auth"/>
+		</g:FlowPanel>
+	</g:FlowPanel>
+</ui:UiBinder> 
