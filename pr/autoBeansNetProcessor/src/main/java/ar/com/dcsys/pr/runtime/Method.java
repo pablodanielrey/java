@@ -303,6 +303,9 @@ public class Method {
 		sb.append("\n").append(Utils.ident(8)).append(Manager.transport).append(".send(emsg, new ").append(Manager.transportReceiverClass).append("() {");
 		sb.append("\n").append(Utils.ident(10)).append("@Override");
 		sb.append("\n").append(Utils.ident(10)).append("public void onSuccess(String msg) {");
+		
+		sb.append("\n").append(Utils.ident(12)).append("if (msg == null || msg.equals(\"null\")) { ").append(getReceiver().getName()).append(".onSuccess(null); return; }");
+		
 		sb.append("\n").append(Utils.ident(12)).append("try {");
 		
 		String internalType = getReceiver().getInternalParam().getType();
