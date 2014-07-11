@@ -48,6 +48,8 @@ public interface JustificationPersonView  extends IsWidget{
 	public void clearPersonData();
 	public void setEnabledRemoveButton(boolean b);
 	
+	public void setEnabledFind(boolean b);
+	
 	
 	public interface Presenter {
 		public void persist();

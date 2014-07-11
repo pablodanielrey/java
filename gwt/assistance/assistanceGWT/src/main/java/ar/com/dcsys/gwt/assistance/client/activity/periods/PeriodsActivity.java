@@ -24,6 +24,7 @@ import ar.com.dcsys.gwt.manager.shared.Receiver;
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent.Handler;
@@ -50,14 +51,7 @@ public class PeriodsActivity extends AbstractActivity implements PeriodsView.Pre
 	private final SelectionChangeEvent.Handler periodFilterHandler = new SelectionChangeEvent.Handler() {
 		@Override
 		public void onSelectionChange(SelectionChangeEvent event) {
-			if (personSelection == null) {
-				return;
-			}
-			Person person = personSelection.getSelectedObject();
-			if (person == null) {
-				return;
-			}
-			getPeriods(person);
+
 		}
 	};
 	
@@ -175,6 +169,7 @@ public class PeriodsActivity extends AbstractActivity implements PeriodsView.Pre
 	
 	private void showMessage(String message) {
 		//eventBus.fireEvent(new MessageDialogEvent(message));
+		logger.log(Level.SEVERE,message);
 	}
 
 	private void update() {
@@ -251,9 +246,8 @@ public class PeriodsActivity extends AbstractActivity implements PeriodsView.Pre
 		if (end == null) {
 			return null;
 		}
-		end.setHours(23);
-		end.setMinutes(59);
-		end.setSeconds(59);
+		CalendarUtil.addDaysToDate(end, 1);
+		end.setTime(end.getTime() - 1l);
 		return end;
 	}	
 	
@@ -266,7 +260,13 @@ public class PeriodsActivity extends AbstractActivity implements PeriodsView.Pre
 		view.clearJustificationData();
 		view.clearPeriodData();
 		
-		periodsManager.findAllPeriods(start, end, persons, new Receiver<ReportSummary>() {
+		PERIODFILTER periodFilter = periodFilterSelectionModel.getSelectedObject();
+		if (periodFilter == null) {
+			showMessage("Debe seleccionar un tipo de períodos a mostrar");
+			return;
+		}
+		
+		Receiver<ReportSummary> rec = new Receiver<ReportSummary>() {
 			@Override
 			public void onError(String error) {
 				logger.log(Level.WARNING,error);
@@ -276,7 +276,14 @@ public class PeriodsActivity extends AbstractActivity implements PeriodsView.Pre
 				List<Report> reports = t.getReports();
 				view.setPeriods(reports);
 			}
-		});
+		};
+		
+		switch (periodFilter) {
+			case ALL: periodsManager.findAllPeriods(start, end, persons, false, rec); break;
+			case WORKING: periodsManager.findAllPeriods(start, end, persons, true, rec); break;
+			case ABSENT: periodsManager.findAllAbsences(start, end, persons, rec);
+			default: showMessage("No se ha seleccionado el tipo de período a buscar");
+		}
 	}
 	
 	

@@ -3,6 +3,7 @@ package ar.com.dcsys.model.reports.assistance;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -19,7 +20,6 @@ import ar.com.dcsys.data.period.Period;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.report.Report;
 import ar.com.dcsys.data.report.ReportSummary;
-import ar.com.dcsys.data.report.Report;
 import ar.com.dcsys.exceptions.JustificationException;
 import ar.com.dcsys.exceptions.PeriodException;
 import ar.com.dcsys.exceptions.PersonException;
@@ -39,11 +39,22 @@ public class ReportDataGenerator {
 	@Inject PersonsManager personsManager;
 	@Inject GroupsManager groupsManager;
 	
-
 	public ReportSummary getReport(Date start, Date end, List<Person> personsToReport) throws IOException {
+		return getReport(start, end, personsToReport,false);
+	}
+		
+	private void removeMilisDate(Date date) {
+		long milis = date.getTime();
+		date.setTime(date.getTime()-(milis % 1000));
+	}
+	
+	public ReportSummary getReport(Date start, Date end, List<Person> personsToReport,Boolean onlyWorkDays) throws IOException {
 	
 		try {
 		
+			//elimino los milis segundo de la fecha End
+			removeMilisDate(end);
+			
 			// busco las justificaciones generales.
 			
 			List<GeneralJustificationDate> generalJustifications = justificationManager.findGeneralJustificationDateBy(start, end);
@@ -61,7 +72,7 @@ public class ReportDataGenerator {
 				try {
 					
 					List<JustificationDate> justifications = justificationManager.findBy(Arrays.asList(p), start, end);			
-		            List<Period> periodsAux = periodsManager.findAll(p, start, end, true);
+		            List<Period> periodsAux = periodsManager.findAll(p, start, end, onlyWorkDays);
 		            if (periodsAux == null) {
 		            	continue;
 		            }

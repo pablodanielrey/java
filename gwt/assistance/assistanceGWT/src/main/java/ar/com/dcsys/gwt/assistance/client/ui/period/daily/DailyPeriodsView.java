@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import ar.com.dcsys.data.group.Group;
+import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.report.Report;
 import ar.com.dcsys.gwt.assistance.client.ui.period.PERIODFILTER;
@@ -33,6 +34,12 @@ public interface DailyPeriodsView extends IsWidget {
 	public void setPeriodSelectionModel(MultiSelectionModel<Report> selection);
 	
 	public void redrawPeriods();
+	
+	public void setJustificationSelectionModel(SingleSelectionModel<Justification> selection);
+	public void setJustifications(List<Justification> types);
+	public void clearJustificationData();
+	public String getNotes();
+	public void enableJustify(boolean t);
 		
 	public interface Presenter {
 		public void findPeriods();

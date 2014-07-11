@@ -81,6 +81,16 @@ public class JustificationsManagerTransferBean implements JustificationsManagerT
 			receiver.onError(e.getMessage());
 		}
 	}
+	
+	@Override
+	public void justify(List<Period> periods, Justification justification, String notes, Receiver<Void> receiver) {
+		try {
+			justificationsManager.justify(periods, justification, notes);
+			receiver.onSuccess(null);
+		} catch (JustificationException | PersonException e) {
+			receiver.onError(e.getMessage());
+		}
+	}
 
 	@Override
 	public void findBy(List<Person> persons, Date start, Date end,Receiver<List<JustificationDate>> receiver) {

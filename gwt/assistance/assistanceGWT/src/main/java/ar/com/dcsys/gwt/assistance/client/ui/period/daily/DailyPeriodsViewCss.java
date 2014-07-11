@@ -14,4 +14,13 @@ public interface DailyPeriodsViewCss extends CssResource {
 	String filterPanel();
 	String inputInline();
 	String panelFilterCount();
+	String panelJustifyStatics();
+	String statics();
+	String blockJustify();
+	String panel();
+	String subtitleCenter();
+	String labelBlock();
+	String textArea();
+	String panelButton();
+	String button();
 }

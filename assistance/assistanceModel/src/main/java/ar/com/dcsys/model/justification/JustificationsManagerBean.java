@@ -153,6 +153,23 @@ public class JustificationsManagerBean implements JustificationsManager {
 			persist(jd);
 		}	
 	}
+
+	@Override
+	public void justify(List<Period> periods, Justification justification, String notes) throws JustificationException, PersonException {
+		for (Period p : periods) {
+			Date s = p.getStart();
+			Date e = p.getEnd();
+			Person person = p.getPerson();
+			
+			JustificationDate jd = new JustificationDate();
+			jd.setStart(s);
+			jd.setEnd(e);
+			jd.setJustification(justification);
+			jd.setPerson(person);
+			jd.setNotes(notes);
+			persist(jd);
+		}	
+	}
 	
 	@Override
 	public void justify(String personId, List<Period> periods, Justification justification, String notes) throws JustificationException, PersonException {

@@ -24,6 +24,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.ValueListBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.user.datepicker.client.DateBox.DefaultFormat;
 import com.google.gwt.user.datepicker.client.DatePicker;
@@ -254,7 +255,10 @@ public class GeneralsJustification extends Composite implements GeneralsJustific
 
 	@Override
 	public Date getEnd() {
-		return end.getValue();
+		Date date = end.getValue();
+		CalendarUtil.addDaysToDate(date, 1);
+		date.setTime(date.getTime() - 1l);
+		return date;
 	}
 
 	@Override

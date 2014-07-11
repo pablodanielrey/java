@@ -9,11 +9,6 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
-import com.google.gwt.view.client.SelectionChangeEvent;
-import com.google.gwt.view.client.SelectionChangeEvent.Handler;
-import com.google.gwt.view.client.SingleSelectionModel;
-import com.google.inject.Inject;
-
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
@@ -25,18 +20,18 @@ import ar.com.dcsys.gwt.assistance.client.manager.events.JustificationModifiedEv
 import ar.com.dcsys.gwt.assistance.client.ui.justification.person.JustificationPersonView;
 import ar.com.dcsys.gwt.clientMessages.client.MessageDialogEvent;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
-import ar.com.dcsys.gwt.person.client.manager.PersonsManager;
-import ar.com.dcsys.gwt.person.client.manager.events.PersonModifiedEvent;
-import ar.com.dcsys.gwt.person.client.manager.events.PersonModifiedEventHandler;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SelectionChangeEvent.Handler;
+import com.google.gwt.view.client.SingleSelectionModel;
+import com.google.inject.Inject;
 
 public class JustificationPersonActivity extends AbstractActivity implements JustificationPersonView.Presenter {
 
@@ -51,6 +46,9 @@ public class JustificationPersonActivity extends AbstractActivity implements Jus
 	
 	private final List<Justification> justifications = new ArrayList<Justification>();
 	private final List<JustificationDate> justificationDateList = new ArrayList<JustificationDate>();
+
+	private Date startFind = null;
+	private Date endFind = null;
 	
 	private HandlerRegistration hr = null;
 	
@@ -149,6 +147,8 @@ public class JustificationPersonActivity extends AbstractActivity implements Jus
 		}
 		view.clear();
 		view.setPresenter(null);
+		startFind = null;
+		endFind = null;
 	}
 	
 	private void showMessage(String message) {
@@ -229,17 +229,16 @@ public class JustificationPersonActivity extends AbstractActivity implements Jus
 			@Override
 			public void onSuccess(Void t) {				
 				showMessage("Las justificaciones se han generado correctamente");
+
+				findBy();
+				
+				processing = false;
 			}
 
 			@Override
 			public void onError(String error) {				
 				view.clearJustificationData();
-				Date start = view.getStart();
-				Date end = view.getEnd();
-				
-				if (start != null && end != null) {
-					findBy(start,end);
-				}
+				findBy();
 				processing = false;
 				showMessage(error);
 			}
@@ -257,13 +256,14 @@ public class JustificationPersonActivity extends AbstractActivity implements Jus
 			receiver.onSuccess(null);
 		} else {
 			final Person person = personsToProcess.poll();
+			
 			createJustitificationDate(person, new Receiver<Void>() {
 
 				@Override
 				public void onSuccess(Void response) {
 					Scheduler.get().scheduleDeferred(new Command() {
 						@Override
-						public void execute() {
+						public void execute() {							
 							showMessage("Justificaciones de " + person.getDni() + " correctamente creadas");
 						}
 					});
@@ -288,11 +288,11 @@ public class JustificationPersonActivity extends AbstractActivity implements Jus
 	 * @param person
 	 * @param receiver
 	 */
-	private void createJustitificationDate(final Person person, final Receiver<Void> receiver) {
-		Date start = view.getStart();
-		Date end = view.getEnd();
+	private void createJustitificationDate(final Person person,final Receiver<Void> receiver) {
 		String notes = view.getNotes();
 		Justification justification = selectionJustification.getSelectedObject();
+		Date start = view.getStart();
+		Date end = view.getEnd();
 		
 		this.justificationsManager.justify(person, start, end, justification, notes, receiver);
 	}
@@ -322,14 +322,11 @@ public class JustificationPersonActivity extends AbstractActivity implements Jus
 		initTime(date);
 	}
 	
-	@Override
-	public void findBy(Date start, Date end) {
-		initTime(start);
-		endTime(end);
+	private void findBy() {
 		
 		List<Person> persons = new ArrayList<Person>(selection.getSelectedSet());
 		
-		this.justificationsManager.findBy(persons, start, end, new Receiver<List<JustificationDate>>() {
+		this.justificationsManager.findBy(persons, startFind, endFind, new Receiver<List<JustificationDate>>() {
 
 			@Override
 			public void onSuccess(List<JustificationDate> justificationDates) {
@@ -347,12 +344,22 @@ public class JustificationPersonActivity extends AbstractActivity implements Jus
 				showMessage(error);
 			}
 			
-		});
+		});		
+	}
+	
+	@Override
+	public void findBy(Date start, Date end) {
+		initTime(start);
+		endTime(end);
+		startFind = start;
+		endFind = end;
+		findBy();
 	}
 
 	@Override
 	public void removeJustificationDates() {
-		List<JustificationDate> justificationDates = new ArrayList<JustificationDate>(selectionJustificationDate.getSelectedSet());
+		final List<JustificationDate> justificationDates = new ArrayList<JustificationDate>(selectionJustificationDate.getSelectedSet());
+		selectionJustificationDate.clear();
 		if (justificationDates == null || justificationDates.size() < 1) {
 			return;
 		}
@@ -361,6 +368,9 @@ public class JustificationPersonActivity extends AbstractActivity implements Jus
 			@Override
 			public void onSuccess(Void t) {
 				showMessage("Se han eliminado correctamente las justificaciones seleccionadas");
+				justificationDateList.removeAll(justificationDates);
+				view.setJustificationData(justificationDateList);
+				generateStatistics();
 			}
 
 			@Override

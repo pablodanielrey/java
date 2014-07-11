@@ -250,13 +250,19 @@
 			<g:FlowPanel styleName="{style.block-dates}">
 			    <g:FlowPanel styleName="{style.panel}">
 				    <g:Label styleName="{style.subtitle-inline}" text="Fechas a buscar" />
+					
 					<g:FlowPanel styleName="{style.panel-inline}">
 						<g:Label text="Inicio" styleName="{style.label-inline}"/>
 						<d:DateBox ui:field="start" styleName="{style.date-box}"/>
 					</g:FlowPanel>
+					
 					<g:FlowPanel styleName="{style.panel-inline}">
 						<g:Label text="Fin" styleName="{style.label-inline}"/>
 						<d:DateBox ui:field="end" styleName="{style.date-box}"/>
+					</g:FlowPanel>
+					
+					<g:FlowPanel styleName="{style.panel-inline}">
+						<g:Button ui:field="find" text="Buscar" styleName="{style.input-inline}"/>
 					</g:FlowPanel>
 				</g:FlowPanel>
 			</g:FlowPanel>

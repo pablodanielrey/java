@@ -21,5 +21,7 @@ public interface PeriodsManager {
 
 	
 	public void findAllPeriods(Date start, Date end, List<Person> persons, Receiver<ReportSummary> rec);
+	public void findAllPeriods(Date start, Date end, List<Person> persons, Boolean onlyWorkDays,Receiver<ReportSummary> rec);
+	public void findAllAbsences(Date start, Date end, List<Person> persons,Receiver<ReportSummary> rec);
 	
 }

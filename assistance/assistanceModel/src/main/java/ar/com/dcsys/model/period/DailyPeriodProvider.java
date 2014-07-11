@@ -195,7 +195,7 @@ public class DailyPeriodProvider implements PeriodProvider {
 			Period a = new Period();
 			a.setPerson(person);
 			a.setStart(new Date(actualDayStart));
-			a.setEnd(new Date(actualDayStart + aDay - 1l));
+			a.setEnd(new Date(actualDayStart + aDay - 1000l));
 			absent.add(a);
 			actualDayStart = actualDayStart + aDay;
 		}
@@ -253,7 +253,7 @@ public class DailyPeriodProvider implements PeriodProvider {
 		c.set(Calendar.HOUR_OF_DAY,23);
 		c.set(Calendar.MINUTE,59);
 		c.set(Calendar.SECOND,59);
-		c.set(Calendar.MILLISECOND,999);
+		c.set(Calendar.MILLISECOND,000);
 		return c.getTime();
 	}	
 	
