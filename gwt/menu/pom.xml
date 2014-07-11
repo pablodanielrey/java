@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <!-- POM file generated with GWT webAppCreator -->
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>gwt</artifactId>
+    <groupId>ar.com.dcsys.gwt</groupId>
+    <version>1.0</version>
+  </parent>
+
+  <groupId>ar.com.dcsys.gwt.menu</groupId>
+  <artifactId>menu</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0</version>
+  <name>proyectos de menu de GWT</name>
+
+  <modules>
+    <module>menuGWT</module>
+  </modules>
+
+<dependencies>
+
+<!-- utilidaes varias -->
+
+    <dependency>
+      <groupId>com.google.gwt.inject</groupId>
+      <artifactId>gin</artifactId>
+      <version>${gin.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.gwt.utils</groupId>
+      <artifactId>clientMessagesGWT</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+
+
+<!-- shiro -->
+
+   <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-core</artifactId>
+      <version>${shiro.version}</version>
+      <scope>provided</scope>
+   </dependency>
+
+
+<!-- para que funcione el procesador de anotaciones y la generacion de codigo -->
+
+    <dependency>
+      <groupId>ar.com.dcsys.pr</groupId>
+      <artifactId>serializers</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+
+
+   <!-- para los convertidores de codigo a json y la inversa -->
+
+<dependency>
+    <groupId>com.google.code.gson</groupId>
+    <artifactId>gson</artifactId>
+    <version>${gson.version}</version>
+      <scope>compile</scope>
+</dependency>
+
+<dependency>
+    <groupId>name.pehl</groupId>
+    <artifactId>piriti-user</artifactId>
+    <version>${piriti.version}</version>
+      <scope>compile</scope>
+</dependency>
+
+<dependency>
+    <groupId>name.pehl</groupId>
+    <artifactId>piriti-dev</artifactId>
+    <version>${piriti.version}</version>
+      <scope>compile</scope>
+</dependency>
+
+<dependency>
+    <groupId>name.pehl</groupId>
+    <artifactId>totoe</artifactId>
+    <version>${totoe.version}</version>
+      <scope>compile</scope>
+</dependency>
+
+
+   <!--    -->
+
+
+
+
+    <dependency>
+      <groupId>javax.enterprise</groupId>
+      <artifactId>cdi-api</artifactId>
+      <version>${cdi.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.pr</groupId>
+      <artifactId>annotations</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.gwt.utils</groupId>
+      <artifactId>messagesGWT</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.gwt.utils</groupId>
+      <artifactId>managerGWT</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.gwt.utils</groupId>
+      <artifactId>utilsGWT</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.gwt.utils</groupId>
+      <artifactId>webSocketGWT</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+
+
+<!-- -->
+
+
+</dependencies>
+
+
+</project>

@@ -21,6 +21,7 @@
 
   <modules>
     <module>utils</module>
+    <module>menu</module>
     <module>auth</module>
     <module>person</module>
     <module>assistance</module>
