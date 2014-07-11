@@ -6,9 +6,6 @@ import ar.com.dcsys.gwt.menu.client.gin.Injector;
 import ar.com.dcsys.gwt.menu.client.place.MenuPlace;
 import ar.com.dcsys.gwt.menu.client.place.MenuPlaceHistoryMapper;
 import ar.com.dcsys.gwt.menu.client.ui.AcceptsOneWidgetAdapter;
-import ar.com.dcsys.gwt.ws.shared.SocketException;
-import ar.com.dcsys.gwt.ws.shared.event.SocketStateEvent;
-import ar.com.dcsys.gwt.ws.shared.event.SocketStateEventHandler;
 
 import com.google.gwt.activity.shared.ActivityManager;
 import com.google.gwt.core.client.EntryPoint;
@@ -46,6 +43,9 @@ public class MenuGWT implements EntryPoint {
 		historyHandler.register(pc,eventBus,new MenuPlace());
 		
 		final MenuActivity activity = injector.factory().menuActivity(new MenuPlace());
+		historyHandler.handleCurrentHistory();
+		
+		/*
 		
 		eventBus.addHandler(SocketStateEvent.TYPE, new SocketStateEventHandler() {
 			@Override
@@ -63,6 +63,7 @@ public class MenuGWT implements EntryPoint {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		*/
 	
 	}
   

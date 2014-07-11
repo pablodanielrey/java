@@ -50,7 +50,7 @@ public class MenuActivity extends AbstractActivity implements MenuView.Presenter
 
 	@Override
 	public void logout() {
-		openUrl("/logout/");
+		openUrl("/logout");
 	}
 
 	@Override

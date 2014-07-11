@@ -33,6 +33,7 @@ public class Menu extends Composite implements MenuView {
 	}
 	
 	@UiField(provided=true) Label person;
+	
 	private void createPerson() {
 		person = new Label();
 		person.setText("Administración de Personas");
@@ -47,10 +48,11 @@ public class Menu extends Composite implements MenuView {
 	}
 	
 	@UiField(provided=true) Label assistance;
+	
 	private void createAssistance() {
-		person = new Label();
-		person.setText("Sistema de Asistencia");
-		person.addClickHandler(new ClickHandler() {
+		assistance = new Label();
+		assistance.setText("Sistema de Asistencia");
+		assistance.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				if (presenter != null) {
@@ -61,10 +63,11 @@ public class Menu extends Composite implements MenuView {
 	}
 	
 	@UiField(provided=true) Label logout;
+	
 	private void createLogout() {
-		person = new Label();
-		person.setText("Salir");
-		person.addClickHandler(new ClickHandler() {
+		logout = new Label();
+		logout.setText("Salir");
+		logout.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				if (presenter != null) {
@@ -75,10 +78,11 @@ public class Menu extends Composite implements MenuView {
 	}
 	
 	@UiField(provided=true) Label auth;
+	
 	private void createAuth() {
-		person = new Label();
-		person.setText("Login");
-		person.addClickHandler(new ClickHandler() {
+		auth = new Label();
+		auth.setText("Login");
+		auth.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				if (presenter != null) {
