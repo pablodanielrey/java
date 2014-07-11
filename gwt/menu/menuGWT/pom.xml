@@ -146,6 +146,43 @@
         </configuration>
       </plugin>
 
+     <!-- para remover las clases client de gwt asi no tira error la injection -->
+     <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>2.4.1</version>
+        <executions>
+                <execution>
+                        <id>default-clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                                <goal>clean</goal>
+                        </goals>
+                </execution>
+                <execution>
+                        <id>remove-gwt-client-classes</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                                <goal>clean</goal>
+                        </goals>
+                        <configuration>
+                                <excludeDefaultDirectories>true</excludeDefaultDirectories>
+                                <filesets>
+                                        <fileset>
+                                                <directory>${webappDirectory}/WEB-INF/classes/ar/com/dcsys/gwt/menu/client</directory>
+                                                <includes>
+                                                        <include>**</include>
+                                                </includes>
+                                        </fileset>
+                                </filesets>
+                        </configuration>
+                </execution>
+        </executions>
+     </plugin>
+
+
+
+
+
       <!-- Copy static web files before executing gwt:run -->
 <!--
       <plugin>

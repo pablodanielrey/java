@@ -164,6 +164,16 @@
       <version>1.0-SNAPSHOT</version>
     </dependency>
 
+ 	<!-- menu -->
+
+       <dependency>
+            <groupId>ar.com.dcsys.gwt.menu</groupId>
+            <artifactId>menuGWT</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>war</type>
+        </dependency>
+
+
 
         <!-- auth -->
 

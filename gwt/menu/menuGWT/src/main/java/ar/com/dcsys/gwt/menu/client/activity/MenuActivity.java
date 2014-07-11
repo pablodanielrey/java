@@ -1,6 +1,7 @@
 package ar.com.dcsys.gwt.menu.client.activity;
 
 import ar.com.dcsys.gwt.clientMessages.client.MessageDialogEvent;
+import ar.com.dcsys.gwt.menu.client.place.MenuPlace;
 import ar.com.dcsys.gwt.menu.client.ui.MenuView;
 
 import com.google.gwt.activity.shared.AbstractActivity;
@@ -8,6 +9,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 public class MenuActivity extends AbstractActivity implements MenuView.Presenter {
 
@@ -15,7 +17,7 @@ public class MenuActivity extends AbstractActivity implements MenuView.Presenter
 	private EventBus eventBus;
 	
 	@Inject
-	public MenuActivity(MenuView view) {
+	public MenuActivity(MenuView view, @Assisted MenuPlace place) {
 		this.view = view;
 	}
 	
