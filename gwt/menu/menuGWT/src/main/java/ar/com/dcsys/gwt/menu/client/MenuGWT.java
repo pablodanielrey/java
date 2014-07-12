@@ -26,7 +26,7 @@ public class MenuGWT implements EntryPoint {
 	public void onModuleLoad() {
 		
 		SimplePanel sp = new SimplePanel();
-		RootPanel.get("content").add(sp);
+		RootPanel.get("menu").add(sp);
 		AcceptsOneWidgetAdapter adapter = new AcceptsOneWidgetAdapter(sp);
 		
 		EventBus eventBus = injector.eventBus();

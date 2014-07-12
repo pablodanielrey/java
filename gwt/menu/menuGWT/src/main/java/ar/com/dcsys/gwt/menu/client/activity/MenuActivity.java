@@ -8,6 +8,8 @@ import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.google.gwt.user.client.ui.Frame;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
@@ -35,7 +37,9 @@ public class MenuActivity extends AbstractActivity implements MenuView.Presenter
 	}
 
 	private void openUrl(String url) {
-		Window.open(url, "_self", "");		
+		RootPanel.get("content").clear();
+		RootPanel.get("content").add(new Frame(url));
+//		Window.open(url, "_self", "");		
 	}
 	
 	@Override

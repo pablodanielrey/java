@@ -19,4 +19,5 @@
 			<g:Label ui:field="auth"/>
 		</g:FlowPanel>
 	</g:FlowPanel>
+	
 </ui:UiBinder> 
