@@ -37,8 +37,13 @@ public class MenuActivity extends AbstractActivity implements MenuView.Presenter
 	}
 
 	private void openUrl(String url) {
+		
+		Frame frame = new Frame(url);
+		frame.setWidth("1900px");
+		frame.setHeight("900px");
+		
 		RootPanel.get("content").clear();
-		RootPanel.get("content").add(new Frame(url));
+		RootPanel.get("content").add(frame);
 //		Window.open(url, "_self", "");		
 	}
 	

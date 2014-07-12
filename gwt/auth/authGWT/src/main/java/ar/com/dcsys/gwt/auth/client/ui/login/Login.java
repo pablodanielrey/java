@@ -44,7 +44,7 @@ public class Login extends Composite implements LoginView {
 	public String getUser() {
 		return user.getText();
 	}
-
+	
 	@Override
 	public String getPassword() {
 		return password.getText();

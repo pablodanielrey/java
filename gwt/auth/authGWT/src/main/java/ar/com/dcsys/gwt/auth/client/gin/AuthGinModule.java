@@ -1,6 +1,8 @@
 package ar.com.dcsys.gwt.auth.client.gin;
 
 import ar.com.dcsys.gwt.auth.client.activity.login.LoginActivity;
+import ar.com.dcsys.gwt.auth.client.ui.logged.Logged;
+import ar.com.dcsys.gwt.auth.client.ui.logged.LoggedView;
 import ar.com.dcsys.gwt.auth.client.ui.login.LoginView;
 import ar.com.dcsys.gwt.auth.client.ui.login2.Login;
 import ar.com.dcsys.gwt.clientMessages.client.Message;
@@ -20,6 +22,7 @@ public class AuthGinModule extends AbstractGinModule {
 		bind(Message.class).asEagerSingleton();
 
 		bind(LoginView.class).to(Login.class).in(Singleton.class);
+		bind(LoggedView.class).to(Logged.class).in(Singleton.class);
 
 		bind(LoginActivity.class);
 	}

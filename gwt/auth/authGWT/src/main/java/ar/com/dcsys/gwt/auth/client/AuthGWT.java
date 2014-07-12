@@ -33,33 +33,16 @@ public class AuthGWT implements EntryPoint {
 		eventBus.addHandler(SocketStateEvent.TYPE, new SocketStateEventHandler() {
 			@Override
 			public void onOpen() {
-				
-				authManager.isAuthenticated(new Receiver<Boolean>() {
-					@Override
-					public void onSuccess(Boolean t) {
 
-						if (t == null || !(t.booleanValue())) {
-			
-							AcceptsOneWidget panel = new AcceptsOneWidget() {
-								@Override
-								public void setWidget(IsWidget w) {
-									RootPanel.get().add(w);
-								}
-							};
-							
-							LoginActivity login = injector.loginActivity();
-							login.start(panel, eventBus);
-							
-						} else {
-							Window.open("/personGWT/", "_self", "");
-						}
-						
-					}
+				AcceptsOneWidget panel = new AcceptsOneWidget() {
 					@Override
-					public void onError(String t) {
-						Window.alert(t);
+					public void setWidget(IsWidget w) {
+						RootPanel.get().add(w);
 					}
-				});				
+				};
+
+				LoginActivity login = injector.loginActivity();
+				login.start(panel, eventBus);
 				
 			}
 			
