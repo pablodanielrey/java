@@ -2,19 +2,21 @@ package ar.com.dcsys.security;
 
 import java.io.Serializable;
 
-public class FingerprintCredentials implements Serializable {
+public class Fingerprint implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
+	private String id;
+	private String personId;
 	private String codification;
 	private byte[] template;
 	private Finger finger;
 	private String algorithm;
 	
-	public FingerprintCredentials() {
+	public Fingerprint() {
 	}
 	
-	public FingerprintCredentials(Finger finger, String algorithm, String codification, byte[] template) {
+	public Fingerprint(Finger finger, String algorithm, String codification, byte[] template) {
 		this.template = template;
 		this.codification = codification;
 		this.finger = finger;
@@ -51,6 +53,22 @@ public class FingerprintCredentials implements Serializable {
 
 	public Finger getFinger() {
 		return finger;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getPersonId() {
+		return personId;
+	}
+
+	public void setPersonId(String personId) {
+		this.personId = personId;
 	}
 
 }
