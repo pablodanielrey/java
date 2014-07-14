@@ -3,13 +3,13 @@ package ar.com.dcsys.gwt.menu.client.activity;
 import ar.com.dcsys.gwt.clientMessages.client.MessageDialogEvent;
 import ar.com.dcsys.gwt.menu.client.place.MenuPlace;
 import ar.com.dcsys.gwt.menu.client.ui.MenuView;
+import ar.com.dcsys.gwt.menu.client.ui.MenuViewCss;
+import ar.com.dcsys.gwt.menu.client.ui.MenuViewResources;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
-import com.google.gwt.user.client.ui.Frame;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
@@ -30,6 +30,9 @@ public class MenuActivity extends AbstractActivity implements MenuView.Presenter
 		panel.setWidget(view);		
 		view.setPresenter(this);
 		
+		MenuViewCss style = MenuViewResources.INSTANCE.style();
+		style.ensureInjected();
+		
 	}
 	
 	private void showMessage(String msg) {
@@ -37,14 +40,7 @@ public class MenuActivity extends AbstractActivity implements MenuView.Presenter
 	}
 
 	private void openUrl(String url) {
-		
-		Frame frame = new Frame(url);
-		frame.setWidth("1900px");
-		frame.setHeight("900px");
-		
-		RootPanel.get("content").clear();
-		RootPanel.get("content").add(frame);
-//		Window.open(url, "_self", "");		
+		Window.open(url, "_self", "");		
 	}
 	
 	@Override
@@ -59,13 +55,9 @@ public class MenuActivity extends AbstractActivity implements MenuView.Presenter
 
 	@Override
 	public void logout() {
-		openUrl("/logout");
+		openUrl("/authGWT/logout");
 	}
 
-	@Override
-	public void auth() {
-		openUrl("/authGWT/");
-	}
 
 	
 }

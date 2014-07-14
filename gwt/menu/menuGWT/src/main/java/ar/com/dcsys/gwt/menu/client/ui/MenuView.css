@@ -1,0 +1,85 @@
+@CHARSET "UTF-8";
+
+.page {
+	width:600px;
+	margin:0 auto;
+	margin-top:3em;
+}
+
+.panelAssistance {
+	width: 125px;
+	height: 170px;
+	float: left;
+	margin-left: 2em;
+	border: 4px solid;
+	padding: 1em;
+	cursor:pointer;
+}
+
+.imgAssistance {
+	width:125px;
+	height:125px;
+}
+
+.assistanceImageContainer {
+	display: block;
+	text-align: center;		
+}
+
+.labelAssistance {
+	text-align:center;
+	font-size:large;
+	font-weight: bold;
+}
+
+.panelPerson {
+	width: 125px;
+	height: 170px;
+	float: left;
+	margin-left: 2em;
+	border: 4px solid;
+	padding: 1em;
+	cursor:pointer;
+}
+
+.imgPerson {
+	width:125px;
+	height:125px;
+}
+
+.personImageContainer {
+	display: block;
+	text-align: center;		
+}
+
+.labelPerson {
+	text-align:center;
+	font-size:large;
+	font-weight: bold;
+}
+
+.panelLogout {
+	width: 125px;
+	height: 170px;
+	float: left;
+	margin-left: 2em;
+	border: 4px solid;
+	padding: 1em;
+	cursor:pointer;
+}
+
+.imgLogout {
+	width:125px;
+	height:125px;
+}
+
+.logoutImageContainer {
+	display: block;
+	text-align: center;		
+}
+
+.labelLogout {
+	text-align:center;
+	font-size:large;
+	font-weight: bold;
+}

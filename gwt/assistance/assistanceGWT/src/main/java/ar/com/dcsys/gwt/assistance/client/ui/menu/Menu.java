@@ -10,6 +10,7 @@ import ar.com.dcsys.gwt.assistance.client.place.PinAuthDataPlace;
 
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.place.shared.PlaceController;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -26,6 +27,13 @@ public class Menu {
 		
 		MenuBar menu = new MenuBar();
 
+		menu.addItem(new MenuItem("Inicio",false,new ScheduledCommand() {
+			@Override
+			public void execute() {
+				Window.open("/menuGWT/", "_self", "");
+			}
+		}));
+		
 		menu.addItem(new MenuItem("Pin",false,new ScheduledCommand() {
 			@Override
 			public void execute() {
@@ -72,6 +80,14 @@ public class Menu {
 			@Override
 			public void execute() {
 				ctrl.goTo(new PeriodsAssignationPersonPlace());
+			}
+		}));
+		
+
+		menu.addItem(new MenuItem("Salir",false,new ScheduledCommand() {
+			@Override
+			public void execute() {
+				Window.open("/authGWT/logout", "_self", "");
 			}
 		}));
 		
