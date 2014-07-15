@@ -10,6 +10,5 @@ public interface MenuView extends IsWidget {
 		public void person();
 		public void assistance();
 		public void logout();
-		public void auth();
 	}
 }

@@ -1,21 +1,55 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
-	<ui:style src="login.css">
-	
+	<ui:style>
+		
+		.page {
+			text-align:center;
+		}
+		
+		.content {
+			width: 20em;
+			margin: 0 auto 0 auto;
+			background-color: #cccccc;
+			-moz-border-radius: 10px;
+			border-radius: 10px;
+			border: 1px solid #C1C1C1;
+			margin-top: 2em;	
+		}
+		
+		.label {
+			color: #015593;
+			display: block;
+			font-weight: bolder;
+			margin-top: 1em;	
+		}
+		
+		.input {
+			margin-top: 0.5em;
+			margin-bottom: 0.5em;	
+		}
+		
+		.button {
+			margin-top: 0.5em;
+			margin-bottom: 1.5em;	
+			color: #015593;
+			cursor:pointer;
+		}
+		
 	</ui:style>
 	
-	<g:FlowPanel>
-		<g:FlowPanel>
-			<g:Label text="Usuario" styleName="${style.label}"/>
-			<g:TextBox ui:field="username"/>
+	<g:FlowPanel styleName="{style.page}">
+		<g:FlowPanel styleName="{style.content}">
+			<g:FlowPanel>
+				<g:Label text="Usuario" styleName="{style.label}"/>
+				<g:TextBox ui:field="username" styleName="{style.input}"/>
+			</g:FlowPanel>
+			<g:FlowPanel>
+				<g:Label text="Clave" styleName="{style.label}"/>
+				<g:PasswordTextBox ui:field="password" styleName="{style.input}"/>
+			</g:FlowPanel>
+			<g:Button ui:field="login" text="Aceptar" styleName="{style.button}"/>
 		</g:FlowPanel>
-		<g:FlowPanel>
-			<g:Label text="Clave" styleName="${style.label}"/>
-			<g:PasswordTextBox ui:field="password"/>
-		</g:FlowPanel>
-		<g:Button ui:field="login" text="Aceptar"/>
 	</g:FlowPanel>
-
 	
 </ui:UiBinder> 

@@ -7,6 +7,7 @@ import ar.com.dcsys.gwt.person.client.place.UpdatePersonDataPlace;
 
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.place.shared.PlaceController;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -22,6 +23,14 @@ public class Menu {
 	public void attachMenu(RootPanel panel) {
 		
 		MenuBar menu = new MenuBar();
+
+		menu.addItem(new MenuItem("Inicio",false,new ScheduledCommand() {
+			@Override
+			public void execute() {
+				Window.open("/menuGWT/", "_self", "");
+			}
+		}));
+		
 		menu.addItem(new MenuItem("Datos personales",false,new ScheduledCommand() {
 			@Override
 			public void execute() {
@@ -48,6 +57,14 @@ public class Menu {
 			@Override
 			public void execute() {
 				ctrl.goTo(new PersonReportPlace());
+			}
+		}));
+
+
+		menu.addItem(new MenuItem("Salir",false,new ScheduledCommand() {
+			@Override
+			public void execute() {
+				Window.open("/authGWT/logout", "_self", "");
 			}
 		}));
 
