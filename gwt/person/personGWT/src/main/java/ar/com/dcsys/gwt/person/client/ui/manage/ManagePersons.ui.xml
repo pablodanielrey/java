@@ -61,6 +61,7 @@
 					<g:FlowPanel styleName="{style.panel-filter-count}">
 					    <g:Label text="Total:" styleName="{style.label-inline}"/> 
 						<g:Label ui:field="usersCount" styleName="{style.label-inline}"/>
+						<g:Button ui:field="updateUsers" text="Buscar"/>
 					</g:FlowPanel>
 				</g:FlowPanel>
 	   	        <g:FlowPanel ui:field="types"/>

@@ -11,6 +11,7 @@ public class Group {
 
 	private String id;
 	private String name;
+	private List<String> systems = new ArrayList<String>();
 	private List<Mail> mails = new ArrayList<Mail>();
 	private List<Person> persons = new ArrayList<Person>();
 	private List<GroupType> types = new ArrayList<GroupType>();
@@ -54,6 +55,15 @@ public class Group {
 	public void setId(String id) {
 		this.id = id;
 	}
+		
+	public List<String> getSystems() {
+		return systems;
+	}
+
+	public void setSystems(List<String> systems) {
+		this.systems = systems;
+	}
+
 	
 	
 	public int hashCode() {

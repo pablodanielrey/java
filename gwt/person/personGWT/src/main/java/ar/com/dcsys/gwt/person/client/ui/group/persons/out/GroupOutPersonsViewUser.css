@@ -1,0 +1,17 @@
+@CHARSET "UTF-8";
+
+.personOutPanel {}
+	
+.filterAndTypesPanel {}
+	
+.filterPanel {}
+.filterLabel {}
+.filter {}
+	
+.filterCountPanel {}
+.filterCountLabel {}
+.filterCount {}
+	
+.types {}
+	
+.persons {}

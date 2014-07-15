@@ -118,21 +118,10 @@ public class PersonTypes extends Composite implements PersonTypesView {
 		typesCache.addAll(types);
 		
 		this.types.clear();
+		
+		types = PersonTypeUtils.filter(types);
+		
 		for (PersonType pt : types) {
-			
-			
-			////////////////////////////////////////////
-			// TODO: eliminar!!! hay que buscar una mejor forma de implmentar esto en el caso de múltiples aplicaciones.
-			
-			// solo los tipos habilitados son : EXTERNAL y PERSONAL
-			if (!((PersonType.EXTERNAL.equals(pt)) || (PersonType.PERSONAL.equals(pt)))) {
-				continue;
-			}
-			
-			////////////////////////////////////////////
-			
-			
-			
 			CheckBox c = new CheckBox(PersonTypeUtils.getDescription(pt));
 			c.setValue(false);
 			c.setEnabled(true);

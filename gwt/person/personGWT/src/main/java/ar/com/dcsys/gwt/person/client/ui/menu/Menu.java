@@ -38,12 +38,17 @@ public class Menu {
 			}
 		}));
 		
+		
+		/*
+		 *  TODO: falta mejorar la pantalla y la funcionalidad.
+		 * 
 		menu.addItem(new MenuItem("Cambiar e-Mail",false,new ScheduledCommand() {
 			@Override
 			public void execute() {
 				ctrl.goTo(new MailChangePlace());
 			}
-		}));		
+		}));
+		*/		
 
 		menu.addItem(new MenuItem("Administrar personas",false,new ScheduledCommand() {
 			@Override
@@ -52,14 +57,16 @@ public class Menu {
 			}
 		}));
 
-		
+		/*
+		 * TODO: falta migrar ok la funcionalidad.
+		 * 
 		menu.addItem(new MenuItem("Reporte de personas",false,new ScheduledCommand() {
 			@Override
 			public void execute() {
 				ctrl.goTo(new PersonReportPlace());
 			}
 		}));
-
+		*/
 
 		menu.addItem(new MenuItem("Salir",false,new ScheduledCommand() {
 			@Override

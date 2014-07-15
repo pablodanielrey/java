@@ -1,0 +1,42 @@
+@CHARSET "UTF-8";
+
+.personOutPanel {}
+	
+.filterAndTypesPanel {
+
+}
+
+.filterPanel {
+	display:inline;
+}
+.filterLabel {
+	font-weight: bold;
+	color: #47698a;
+	display:inline;
+	margin-right:0.5em;
+}
+.filter {
+	
+}
+	
+.filterCountPanel {
+	display:inline;
+	margin-left:1em;
+}
+.filterCountLabel {
+	display:inline;
+	font-weight: bold;
+	color: #47698a;
+}
+.filterCount {
+	display:inline;
+	font-weight: bold;
+	color: #47698a;
+}
+	
+.types {}
+	
+.persons {
+	width:100%;
+	height:350px;
+}

@@ -1,0 +1,53 @@
+@CHARSET "UTF-8";
+
+.dataGroupPanel {}
+	
+.title {
+	margin-top: 0.5em;
+	color: #47698a;
+	font-size: medium;
+	font-weight: bold;
+	text-align: center;
+}
+	
+.namePanel {
+	margin:0.5em;
+}
+.nameLabel {
+	font-weight: bold;
+	color: #47698a;
+}
+.name {
+	width:100%;
+}
+	
+.mailPanel {
+	margin:0.5em;
+}
+.mailLabel {
+	font-weight: bold;
+	color: #47698a;
+}
+.mail {
+	width:100%;
+}
+
+.parentPanel {
+	margin:0.5em;
+}
+.parentLabel {
+	font-weight: bold;
+	color: #47698a;
+}
+.parent {
+	width:100%;
+}
+
+.typePanel {
+	margin:0.5em;
+}
+.typeLabel {
+	font-weight: bold;
+	color: #47698a;
+}
+.type {}

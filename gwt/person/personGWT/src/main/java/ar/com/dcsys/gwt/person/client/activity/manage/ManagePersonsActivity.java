@@ -207,7 +207,24 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 		
 		
 		if (types == null || types.size() <= 0 && (!view.isNoTypeSelected())) {
-			view.setPersons(new ArrayList<Person>());
+			// no hya nada seleccionado. busco todas las personas.
+			
+			personsManager.findAll(new Receiver<List<Person>>() {
+				@Override
+				public void onSuccess(List<Person> t) {
+					if (t == null) {
+						view.setPersons(new ArrayList<Person>());
+					} else {
+						view.setPersons(t);
+					}
+				}
+				
+				@Override
+				public void onError(String error) {
+					logger.log(Level.SEVERE,error);
+				}
+			});
+			
 			return;
 		}
 		

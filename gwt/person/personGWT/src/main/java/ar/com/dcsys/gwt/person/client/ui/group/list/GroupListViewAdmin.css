@@ -1,0 +1,55 @@
+@CHARSET "UTF-8";
+
+.groupListPanel {
+	
+}
+	
+.filterAndGroupTypePanel {
+	margin:1em;
+}
+	
+.filterPanel {
+	display:inline;
+}
+.filterLabel {
+	font-weight: bold;
+	color: #47698a;
+	display:inline;
+	margin-right:0.5em;
+}
+.filter {
+	
+}
+	
+.filterCountPanel {
+	display:inline;
+	margin-left:1em;
+}
+.filterCountLabel {
+	display:inline;
+	font-weight: bold;
+	color: #47698a;
+}
+.filterCount {
+	display:inline;
+	font-weight: bold;
+	color: #47698a;
+}
+	
+.groupTypePanel {
+	margin-top: 0.5em;	
+}
+.groupTypeLabel {
+	font-weight: bold;
+	color: #47698a;
+	display: inline;
+	margin-right: 0.5em;	
+}
+.groupType {
+	
+}
+	
+.groups {
+	width:100%;
+	height:350px;
+}

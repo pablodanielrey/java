@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
 import ar.com.dcsys.data.group.Group;
-import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.pr.CSD;
 
 import com.google.gwt.core.client.GWT;
@@ -37,5 +36,6 @@ public class GroupSerializer implements CSD<Group> {
 		Group g = READER.read(json);
 		return g;
 	}	
-	
+
+
 }

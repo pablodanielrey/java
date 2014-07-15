@@ -21,10 +21,12 @@ import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.IdentityColumn;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -60,8 +62,18 @@ public class ManagePersons extends Composite implements ManagePersonsView {
 	@UiField FlowPanel types;
 	@UiField(provided=true) DataGrid<Person> persons;
 	
+	@UiField Button updateUsers;
+	
 	@UiField FlowPanel personData;
 	@UiField FlowPanel personGroups;
+	
+	
+	@UiHandler("updateUsers")
+	public void onUpdateUsers(ClickEvent event) {
+		if (p != null) {
+			p.updateUsers();
+		}
+	}
 	
 	@Override
 	public Panel getPersonGroupsPanel() {
@@ -82,6 +94,8 @@ public class ManagePersons extends Composite implements ManagePersonsView {
 	
 	@Override
 	public void setAllTypes(List<PersonType> types) {
+		
+		types = PersonTypeUtils.filter(types);
 		
 		typesCache.clear();
 		Collections.sort(types);
