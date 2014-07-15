@@ -49,6 +49,7 @@ public class Method {
 	public String getSignature() {
 		StringBuilder sb = new StringBuilder();
 		
+		sb.append(manager.getType());
 		sb.append(name);
 		for (Param p : params) {
 			sb.append("_").append(p.getType()).append("_").append(p.getName());
