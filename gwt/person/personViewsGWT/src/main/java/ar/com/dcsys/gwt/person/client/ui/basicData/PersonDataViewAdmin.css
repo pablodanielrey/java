@@ -1,0 +1,221 @@
+@CHARSET "UTF-8";
+
+.title {
+	display:block;
+	margin-top: 1em;	
+	color: #47698A;
+	font-weight: bold;
+	font-size:medium;
+	font-weight:bold;
+	text-align:center;			
+}
+
+.personDataPanel{
+}
+
+.namePanel {
+	margin:0.5em;
+	height:2em;	
+}
+.nameLabel {
+	float:left;
+	font-weight: bold;
+	color: #47698A;
+	width:8em;
+}
+.name {
+	width: 15em;
+	background-color: #FFF;
+	text-align:center;
+	float:left;
+}
+
+.lastNamePanel {
+	margin:0.5em;
+	height:2em;	
+}
+.lastNameLabel {
+	float:left;
+	font-weight: bold;
+	color: #47698A;
+	width:8em;
+}	
+.lastName {
+	width: 15em;
+	background-color: #FFF;
+	text-align:center;
+	float:left;
+}
+
+.dniPanel {
+	margin:0.5em;
+	height:2em;	
+}
+.dniLabel {
+	float:left;
+	font-weight: bold;
+	color: #47698A;
+	width:8em;
+}	
+.dni {
+	width: 15em;
+	background-color: #FFF;
+	text-align:center;
+	float:left;
+}
+
+.mailPanel {
+	margin:0.5em;
+	height:2em;	
+}
+.mailLabel {
+	float:left;
+	font-weight: bold;
+	color: #47698A;
+	width:8em;
+}	
+.mail {
+	width: 15em;
+	background-color: #FFF;
+	text-align:center;
+	float:left;
+}
+
+.genderPanel {
+	margin:0.5em;
+	height:2em;	
+}
+.genderLabel {
+	float:left;
+	font-weight: bold;
+	color: #47698A;
+	width:8em;
+}	
+.gender {
+	width: 15em;
+	text-align:center;
+}
+
+.countryPanel {
+	margin:0.5em;
+	height:2em;	
+}
+.countryLabel {
+	float:left;
+	font-weight: bold;
+	color: #47698A;
+	width:8em;
+}	
+.country {
+	width: 15em;
+	background-color: #FFF;
+	text-align:center;
+	float:left;
+}
+
+.cityPanel {
+	margin:0.5em;
+	height:2em;	
+}
+.cityLabel {
+	float:left;
+	font-weight: bold;
+	color: #47698A;
+	width:8em;
+}	
+.city {
+	readOnly: false;
+	visibility: visible;
+	width: 15em;
+	background-color: #FFF;
+	text-align:center;
+	float:left;
+}
+
+.addressPanel {
+	margin:0.5em;
+	height:2em;	
+}
+.addressLabel {
+	float:left;
+	font-weight: bold;
+	color: #47698A;
+	width:8em;
+}	
+.address {
+	readOnly: false;
+	visibility: visible;
+	width: 15em;
+	background-color: #FFF;
+	text-align:center;
+	float:left;
+}
+
+.telephonePanel {
+	margin:0.5em;
+	height:2em;	
+}
+.telephoneLabel {
+	float:left;
+	font-weight: bold;
+	color: #47698A;
+	width:8em;
+}	
+.telephone {
+	readOnly: false;
+	visibility: visible;
+	width: 15em;
+	background-color: #FFF;
+	text-align:center;
+	float:left;
+}
+
+.studentDataPanel { 
+	visibility: hidden;
+	margin:0.5em;
+	height:2em;	
+}
+.studentNumberPanel {
+	margin:0.5em;
+	height:2em;	
+}
+.studentNumberLabel {
+	visibility: visible;
+	float:left;
+	font-weight: bold;
+	color: #47698A;
+	width:8em;
+}	
+.studentNumber {
+	readOnly: true;
+	visibility: visible;
+	width: 15em;
+	background-color: #FFF;
+	text-align:center;
+	float:left;
+}
+
+.assistanceDataPanel { 
+	visibility: hidden;
+	margin:0.5em;
+	height:2em;	
+}
+
+.pinPanel {
+	margin:0.5em;
+	height:2em;	
+}
+.pinLabel {
+	float:left;
+	font-weight: bold;
+	color: #47698A;
+	width:8em;
+}	
+.pin {
+	readOnly: true;
+	visibility: visible;
+	width: 15em;
+	background-color: #FFF;
+	text-align:center;
+	float:left;
+}

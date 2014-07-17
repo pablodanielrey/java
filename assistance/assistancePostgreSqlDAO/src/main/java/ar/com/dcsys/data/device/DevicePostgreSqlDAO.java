@@ -113,20 +113,20 @@ public class DevicePostgreSqlDAO implements DeviceDAO {
 	}
 
 	@Override
-	public List<Device> findAll() throws DeviceException {
+	public List<String> findAll() throws DeviceException {
 		
 		try {
 			Connection con = cp.getConnection();
 			try {
-				String query = "select * from device";
+				String query = "select id from device";
 				PreparedStatement st = con.prepareStatement(query);
 				try {
 					ResultSet rs = st.executeQuery();
 					try {
-						List<Device> devices = new ArrayList<Device>();
+						List<String> devices = new ArrayList<>();
 						while (rs.next()) {
-							Device d = getDevice(rs);
-							devices.add(d);
+							String id = rs.getString("id");
+							devices.add(id);
 						}
 						return devices;
 						

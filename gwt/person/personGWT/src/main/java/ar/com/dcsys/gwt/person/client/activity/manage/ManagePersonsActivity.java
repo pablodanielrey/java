@@ -14,6 +14,8 @@ import ar.com.dcsys.gwt.person.client.activity.UpdatePersonDataActivity;
 import ar.com.dcsys.gwt.person.client.manager.PersonsManager;
 import ar.com.dcsys.gwt.person.client.manager.events.PersonModifiedEvent;
 import ar.com.dcsys.gwt.person.client.manager.events.PersonModifiedEventHandler;
+import ar.com.dcsys.gwt.person.client.modules.PersonModule;
+import ar.com.dcsys.gwt.person.client.modules.PersonPortal;
 import ar.com.dcsys.gwt.person.client.place.ManagePersonsPlace;
 import ar.com.dcsys.gwt.person.client.ui.AcceptsOneWidgetAdapter;
 import ar.com.dcsys.gwt.person.client.ui.UpdatePersonDataView;
@@ -96,7 +98,6 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 								 UpdatePersonDataView updatePersonDataView, 
 								 PersonDataView personDataView, 
 //								 PersonGroupsView personGroupsView,
-								 PersonAssistanceDataView personAssistanceDataView, 
 //								 GroupDataView groupDataView,
 								 @Assisted ManagePersonsPlace place) {
 		this.personsManager = personsManager;
@@ -111,7 +112,7 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 		selection.addSelectionChangeHandler(selectionChange);
 		
 		
-		updatePersonDataActivity = new UpdatePersonDataActivity(personsManager, authManager, updatePersonDataView, personDataView, personAssistanceDataView, null);
+		updatePersonDataActivity = new UpdatePersonDataActivity(personsManager, authManager, updatePersonDataView, personDataView, null);
 		updatePersonDataActivity.setSelectionModel(personSelection);
 		
 		
@@ -120,6 +121,11 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 		
 		
 	}
+	
+	
+
+	
+
 	
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
@@ -158,11 +164,10 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 	
 	@Override
 	public void onStop() {
-
+		
 		if (hr != null) {
 			hr.removeHandler();
 		}
-		
 		
 		selection.clear();
 		personSelection.clear();

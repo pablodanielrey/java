@@ -32,14 +32,21 @@
     </dependency>
 
 
-<!--
+
     <dependency>
       <groupId>ar.com.dcsys.gwt.person</groupId>
       <artifactId>personModelGWT</artifactId>
       <version>1.0-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
--->
+
+    <dependency>
+      <groupId>ar.com.dcsys.gwt.person</groupId>
+      <artifactId>personViewsGWT</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
 
     <dependency>
       <groupId>ar.com.dcsys.gwt.utils</groupId>
@@ -143,6 +150,7 @@
           
               <artifact>ar.com.dcsys.data:personEntities</artifact>
               <artifact>ar.com.dcsys.gwt.person:personModelGWT</artifact>
+              <artifact>ar.com.dcsys.gwt.person:personViewsGWT</artifact>
 
               <artifact>ar.com.dcsys.data:documentEntities</artifact>
 

@@ -18,10 +18,11 @@
   <modules>
 	<module>assistanceEntities</module>
 	<module>assistanceDAO</module>
-	<module>assistanceHsqlDAO</module>
+<!--	<module>assistanceHsqlDAO</module> -->
 	<module>assistancePostgreSqlDAO</module>
     	<module>assistanceParams</module>
 	<module>assistanceModel</module>
+	<module>assistanceModelWar</module>
 	<module>assistanceReportsModel</module>
 	<module>assistanceReportsWar</module>
   </modules>

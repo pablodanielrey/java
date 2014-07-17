@@ -18,6 +18,7 @@
 
   <modules>
 	<module>personEntities</module>
+	<module>personServerSerializers</module>
 	<module>personDAO</module>
 	<module>personHsqlDAO</module>
 	<module>personPostgreSqlDAO</module>

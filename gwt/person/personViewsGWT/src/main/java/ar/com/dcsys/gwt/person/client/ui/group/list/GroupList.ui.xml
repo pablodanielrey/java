@@ -1,0 +1,24 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+    xmlns:d="urn:import:com.google.gwt.user.cellview.client"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:with field="res" type="ar.com.dcsys.gwt.person.client.ui.group.list.GroupListViewResources"/>
+		
+	<g:FlowPanel styleName="{res.style.groupListPanel}">
+		<g:FlowPanel styleName="{res.style.filterAndGroupTypePanel}">
+			<g:FlowPanel styleName="{res.style.filterPanel}">
+			    <g:Label text="Buscar:" styleName="{res.style.filterLabel}"/> 
+				<g:TextBox ui:field="filterGroup" styleName="{res.style.filter}"/>
+				<g:FlowPanel styleName="{res.style.filterCountPanel}">
+				    <g:Label text="Total:" styleName="{res.style.filterCountLabel}"/> 
+					<g:Label ui:field="groupsCount" styleName="{res.style.filterCount}"/>
+				</g:FlowPanel>
+			</g:FlowPanel>
+			<g:FlowPanel styleName="{res.style.groupTypePanel}">
+				<g:Label text="Filtrar por:" styleName="{res.style.groupTypeLabel}"/>
+				<g:ValueListBox ui:field="groupTypes" styleName="{res.style.groupType}"/>
+			</g:FlowPanel>
+		</g:FlowPanel>
+		<d:DataGrid ui:field="groups" styleName="{res.style.groups}"/>		   
+	</g:FlowPanel>    
+</ui:UiBinder> 

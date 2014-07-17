@@ -3,9 +3,10 @@ package ar.com.dcsys.gwt.person.client.activity;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.gwt.auth.client.manager.AuthManager;
 import ar.com.dcsys.gwt.person.client.manager.PersonsManager;
+import ar.com.dcsys.gwt.person.client.modules.PersonModule;
+import ar.com.dcsys.gwt.person.client.modules.PersonPortal;
 import ar.com.dcsys.gwt.person.client.place.UpdatePersonDataPlace;
 import ar.com.dcsys.gwt.person.client.ui.UpdatePersonDataView;
-import ar.com.dcsys.gwt.person.client.ui.assistance.PersonAssistanceDataView;
 import ar.com.dcsys.gwt.person.client.ui.basicData.PersonDataView;
 
 import com.google.gwt.activity.shared.AbstractActivity;
@@ -19,7 +20,6 @@ import com.google.inject.assistedinject.Assisted;
 public class UpdatePersonDataActivity extends AbstractActivity implements UpdatePersonDataView.Presenter {
 
 	private final PersonDataActivity personDataActivity;
-	private final PersonAssistanceDataActivity personAssistanceDataActivity;
 	private final UpdatePersonDataView updatePersonDataView;
 	
 	@Inject
@@ -27,50 +27,74 @@ public class UpdatePersonDataActivity extends AbstractActivity implements Update
 									AuthManager authManager,
 									UpdatePersonDataView updatePersonDataView,
 									PersonDataView personDataView, 
-									PersonAssistanceDataView personAssistanceDataView,
 									@Assisted UpdatePersonDataPlace place) {
 		
 		this.updatePersonDataView = updatePersonDataView;
 		
 		personDataActivity = new PersonDataActivity(personsManager, authManager, personDataView, place);
-		personAssistanceDataActivity = new PersonAssistanceDataActivity(personsManager, authManager, personAssistanceDataView);
 		
 	}
 	
 	public void setSelectionModel(SingleSelectionModel<Person> selection) {
 		
 		personDataActivity.setSelectionModel(selection);
-		personAssistanceDataActivity.setSelectionModel(selection);
+	
+		for (PersonModule m : PersonPortal.getPortal().getModules()) {
+			m.getActivity().setSelectionModel(selection);
+		}
 		
 	}
 	
 	
+	/**
+	 * da start a los módulos de person.
+	 */
+	private void startModules() {
+		for (PersonModule m : PersonPortal.getPortal().getModules()) {
+			m.getActivity().start();
+		}
+	}
+	
+	/**
+	 * stop a los modulos de person.
+	 */
+	private void stopModules() {
+		for (PersonModule m : PersonPortal.getPortal().getModules()) {
+			m.getActivity().stop();
+		}
+	}
+		
+	
 	@Override
 	public void start(AcceptsOneWidget containerPanel, EventBus eventBus) {
-		
+	
 		updatePersonDataView.setPresenter(this);
 		
 		AcceptsOneWidget panel = updatePersonDataView.getBasicPersonData();
 		personDataActivity.start(panel, eventBus);
 		
-		panel = updatePersonDataView.getAssistancePersonData();
-		personAssistanceDataActivity.start(panel, eventBus);
-		
 		containerPanel.setWidget(updatePersonDataView);
-		
+
+		startModules();
 	}
 	
 	@Override
 	public void onStop() {
 		personDataActivity.onStop();
-		personAssistanceDataActivity.onStop();
+
+		stopModules();
+		
 		super.onStop();
 	}
 
 	@Override
 	public void persist() {
 		personDataActivity.persist();
-		personAssistanceDataActivity.persist();
+
+		for (PersonModule m : PersonPortal.getPortal().getModules()) {
+			m.getActivity().accept();
+		}
+		
 	}
 
 }

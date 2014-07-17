@@ -1,0 +1,44 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	
+    <ui:style>
+        .content {
+			margin:0.5em;
+			height:2em;
+		}
+
+		.label {
+			float:left;
+			font-weight: bold;
+			color: #47698A;
+			width:8em;
+		}
+
+		.input {
+			width: 15em;
+			background-color: #FFF;
+			text-align:center;
+			float:left;
+		}	
+		
+		.notes {
+			float:left;
+			resize:none;
+			width:15em;
+		}
+    </ui:style>
+	<g:CaptionPanel captionText="Datos de Asistencia">
+		<g:FlowPanel>
+			<g:FlowPanel styleName="{style.content}">
+				<g:Label text="Clave Reloj" styleName="{style.label}"/>
+				<g:PasswordTextBox ui:field="pin" styleName="{style.input}"/>
+			</g:FlowPanel>
+			<g:FlowPanel styleName="{style.content}">
+				<g:Label text="Notas:" styleName="{style.label}"/>
+				<g:TextArea ui:field="notes" styleName="{style.notes}"/>
+			</g:FlowPanel>
+		</g:FlowPanel>
+	</g:CaptionPanel>
+
+</ui:UiBinder> 

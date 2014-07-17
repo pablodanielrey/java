@@ -5,6 +5,7 @@ import ar.com.dcsys.gwt.assistance.client.place.DailyPeriodsPlace;
 import ar.com.dcsys.gwt.assistance.client.place.GeneralsJustificationPlace;
 import ar.com.dcsys.gwt.assistance.client.place.JustificationPersonPlace;
 import ar.com.dcsys.gwt.assistance.client.place.ManageJustificationPlace;
+import ar.com.dcsys.gwt.assistance.client.place.ManagePersonsPlace;
 import ar.com.dcsys.gwt.assistance.client.place.PeriodsAssignationPersonPlace;
 import ar.com.dcsys.gwt.assistance.client.place.PeriodsPlace;
 import ar.com.dcsys.gwt.assistance.client.place.PinAuthDataPlace;
@@ -54,7 +55,11 @@ public class AssistanceActivityMapper implements ActivityMapper {
 		if (place instanceof PeriodsPlace) {
 			return factory.periodsActivity((PeriodsPlace) place);
 		}
-				
+		
+		if (place instanceof ManagePersonsPlace) {
+			return factory.managePersons((ManagePersonsPlace)place);
+		}
+		
 		return null;
 		
 	}

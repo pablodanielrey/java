@@ -1,0 +1,31 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:with field="res" type="ar.com.dcsys.gwt.person.client.ui.group.data.GroupDataViewResources"/>
+	
+	<g:FlowPanel styleName="{res.style.dataGroupPanel}">
+	
+	   	<g:Label text="Datos del Grupo" styleName="{res.style.title}"/>
+	  
+		<g:FlowPanel styleName="{res.style.namePanel}">
+			<g:Label text="Nombre:" styleName="{res.style.nameLabel}"/>
+			<g:TextBox ui:field="name" styleName="{res.style.name}"/>
+		</g:FlowPanel>
+		
+		<g:FlowPanel styleName="{res.style.mailPanel}">
+			<g:Label text="E-Mail:" styleName="{res.style.mailLabel}"/>
+			<g:TextBox ui:field="mail" styleName="{res.style.mail}"/>
+		</g:FlowPanel>
+		
+		<g:FlowPanel styleName="{res.style.parentPanel}">
+			<g:Label text="Depende de:" styleName="{res.style.parentLabel}"/>
+			<g:ValueListBox ui:field="groupParent" styleName="{res.style.parent}"/>
+		</g:FlowPanel>
+		
+		<g:FlowPanel styleName="{res.style.typePanel}">
+		    <g:Label text="Tipo:" styleName="{res.style.typeLabel}"/>
+			<g:FlowPanel ui:field="types" styleName="{res.style.type}"/>
+		</g:FlowPanel>		
+	</g:FlowPanel>
+	
+</ui:UiBinder> 

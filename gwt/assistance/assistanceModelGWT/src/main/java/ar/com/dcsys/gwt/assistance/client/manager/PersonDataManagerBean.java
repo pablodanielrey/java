@@ -24,4 +24,9 @@ public class PersonDataManagerBean implements PersonDataManager {
 		personDataManagerTransfer.setPin(personId, pin, rec);
 	}
 
+	@Override
+	public void enroll(String personId, Receiver<Boolean> rec) {
+		personDataManagerTransfer.enroll(personId, rec);
+	}
+	
 }

@@ -4,9 +4,9 @@ import ar.com.dcsys.gwt.assistance.client.place.DailyPeriodsPlace;
 import ar.com.dcsys.gwt.assistance.client.place.GeneralsJustificationPlace;
 import ar.com.dcsys.gwt.assistance.client.place.JustificationPersonPlace;
 import ar.com.dcsys.gwt.assistance.client.place.ManageJustificationPlace;
+import ar.com.dcsys.gwt.assistance.client.place.ManagePersonsPlace;
 import ar.com.dcsys.gwt.assistance.client.place.PeriodsAssignationPersonPlace;
 import ar.com.dcsys.gwt.assistance.client.place.PeriodsPlace;
-import ar.com.dcsys.gwt.assistance.client.place.PinAuthDataPlace;
 
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.place.shared.PlaceController;
@@ -33,13 +33,22 @@ public class Menu {
 				Window.open("/menuGWT/", "_self", "");
 			}
 		}));
-		
+
+		/*
 		menu.addItem(new MenuItem("Pin",false,new ScheduledCommand() {
 			@Override
 			public void execute() {
 				ctrl.goTo(new PinAuthDataPlace());
 			}
-		}));	
+		}));
+		*/	
+		
+		menu.addItem(new MenuItem("Administrar Usuarios",false,new ScheduledCommand() {
+			@Override
+			public void execute() {
+				ctrl.goTo(new ManagePersonsPlace());
+			}
+		}));
 		
 		menu.addItem(new MenuItem("Justificaciones Generales",false,new ScheduledCommand() {
 			@Override

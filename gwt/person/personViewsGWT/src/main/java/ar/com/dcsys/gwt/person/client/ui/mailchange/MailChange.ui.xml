@@ -1,0 +1,135 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+        xmlns:g="urn:import:com.google.gwt.user.client.ui"
+        xmlns:c="urn:import:com.google.gwt.user.cellview.client">
+<ui:style>
+.flowContainer{
+                background-color: #ffffff;
+                margin: 0.5em auto;
+                padding: 0.25em;
+                width: 90%;
+        }
+        
+        .flowHeader{
+                background: rgb(247, 247, 247);
+        border: 1px solid #ccc;
+        -webkit-box-shadow: 0pt 2px 5px rgba(105, 108, 109,  0.7), 0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+        -moz-box-shadow: 0pt 2px 5px rgba(105, 108, 109,  0.7), 0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+        box-shadow: 0pt 2px 5px rgba(105, 108, 109,  0.7), 0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+        -webkit-box-shadow: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        margin-bottom: 8%;
+                padding-top: 3em;
+                padding-bottom: 3em; 
+                text-align: center;
+                width: 100%;
+        }
+        
+        
+        .flowLogin {
+                background-color: #ffffff;
+                border: 2px solid #cccccc;
+                margin: 0.5em auto;
+                padding: 0.25em; 
+                width: 35%;
+        }
+        
+        .flowUsuario {
+                padding: 3.5em 0em 1em 1em;
+                text-align: left;
+        }
+        
+        .flowPassword {
+                padding: 1em;
+                text-align: left;
+        }
+        
+        .labelTitle{
+                font-family: arial;
+                font-size: 1.5em;
+        }
+        
+        .labelMailList{
+                font-family: arial;
+                font-size: 1.2em;
+                margin-bottom: 1%;
+        }
+        
+        
+        .flowBotonIngresar {
+                padding: 1em;
+                text-align: center;
+        }
+        
+        .flowRowMail{
+                margin-top: 5%;
+        }
+        
+        .boton {
+                background-color: #f1f1f1;
+                color: #212121;
+                font-family: arial;
+                font-size: 1.1em;
+                padding: 0.5em 0.5em;
+        }
+        
+        
+        .gridMailData{
+                height: 300px;
+                width: 90%;
+        }
+        
+        .flowLeft{
+                display: inline-block;
+                vertical-align: top;
+                width: 60%;
+        }
+
+        .flowRight{
+                display: inline-block;
+                vertical-align: top;
+                width: 30%;
+        }
+        
+        .captionMail{
+                font-family: arial;
+                font-size: 1.2em;
+                padding: 5%;
+        }
+        
+</ui:style>
+        
+<g:FlowPanel styleName="{style.flowContainer}">
+        
+	<g:FlowPanel styleName="{style.flowHeader}">
+		<g:Label text="Cambiar Email" styleName="{style.labelTitle}"/>
+	</g:FlowPanel>
+                
+	<g:FlowPanel styleName="{style.flowLeft}">
+		<g:Label text="Lista de Emails" styleName="{style.labelMailList}"/>
+		<c:DataGrid ui:field="mailDatas" styleName="{style.gridMailData}"/>
+	</g:FlowPanel>
+            
+	<g:FlowPanel styleName="{style.flowRight}">
+		<g:CaptionPanel captionText="Completar" styleName="{style.captionMail}">
+			<g:FlowPanel>
+				<g:FlowPanel styleName="{style.flowRowMail}">
+					<g:Label text="Ingresar Email" />
+					<g:TextBox ui:field="mail" />
+                </g:FlowPanel> 
+                
+                <g:FlowPanel styleName="{style.flowRowMail}">
+					<g:Label text="Repetir Email" />
+					<g:TextBox ui:field="mailRepeat" />
+                </g:FlowPanel> 
+                
+                <g:FlowPanel styleName="{style.flowBotonIngresar}" >
+					<g:Button ui:field="save" text="Guardar" styleName="{style.boton}"/>
+				</g:FlowPanel>    
+            </g:FlowPanel>             
+		</g:CaptionPanel>              
+	</g:FlowPanel>        
+</g:FlowPanel>
+        
+</ui:UiBinder> 

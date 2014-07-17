@@ -29,12 +29,22 @@ public class AssistanceGWT implements EntryPoint {
 
 	private final Injector injector = GWT.create(Injector.class);
 	
+	/*
+	private void initializePersonModules() {
+		PersonModulesPortal portal = PersonPortal.getPortal();
+		portal.add(injector.enrollModule());
+	}
+	*/
+	
 	public void onModuleLoad() {
 		  SimplePanel sp = new SimplePanel();
 		  RootPanel.get("content").add(sp);
 		  AcceptsOneWidgetAdapter adapter = new AcceptsOneWidgetAdapter(sp);
 		  
 		  EventBus eventBus = injector.eventbus();
+		  
+		  
+//		  initializePersonModules();	  		  
 		  
 		  // inicializo la parte de los activities y places
 		  PlaceController pc = new PlaceController(eventBus);

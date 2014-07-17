@@ -28,7 +28,6 @@ public class Message extends Composite {
 	
 	private Timer timer;
 	
-	
 	@Inject
 	public Message(EventBus eventBus) {
 		initWidget(uiBinder.createAndBindUi(this));

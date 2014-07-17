@@ -7,10 +7,12 @@ import ar.com.dcsys.gwt.assistance.client.activity.justification.ManageJustifica
 import ar.com.dcsys.gwt.assistance.client.activity.periods.DailyPeriodsActivity;
 import ar.com.dcsys.gwt.assistance.client.activity.periods.PeriodsActivity;
 import ar.com.dcsys.gwt.assistance.client.activity.periods.PeriodsAssignationPersonActivity;
+import ar.com.dcsys.gwt.assistance.client.activity.person.ManagePersonsActivity;
 import ar.com.dcsys.gwt.assistance.client.place.DailyPeriodsPlace;
 import ar.com.dcsys.gwt.assistance.client.place.GeneralsJustificationPlace;
 import ar.com.dcsys.gwt.assistance.client.place.JustificationPersonPlace;
 import ar.com.dcsys.gwt.assistance.client.place.ManageJustificationPlace;
+import ar.com.dcsys.gwt.assistance.client.place.ManagePersonsPlace;
 import ar.com.dcsys.gwt.assistance.client.place.PeriodsAssignationPersonPlace;
 import ar.com.dcsys.gwt.assistance.client.place.PeriodsPlace;
 import ar.com.dcsys.gwt.assistance.client.place.PinAuthDataPlace;
@@ -25,4 +27,6 @@ public interface AssistedInjectionFactory {
 	public ManageJustificationsActivity manageJustificationsActivity(ManageJustificationPlace place);
 	public PeriodsAssignationPersonActivity periodsAssignationPersonActivity(PeriodsAssignationPersonPlace place);
 	public PeriodsActivity periodsActivity(PeriodsPlace place);
+	
+	public ManagePersonsActivity managePersons(ManagePersonsPlace place);
 }

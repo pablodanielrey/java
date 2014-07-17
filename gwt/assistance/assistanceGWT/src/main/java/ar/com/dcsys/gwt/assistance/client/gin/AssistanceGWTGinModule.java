@@ -15,6 +15,8 @@ import ar.com.dcsys.gwt.assistance.client.ui.period.daily.DailyPeriods;
 import ar.com.dcsys.gwt.assistance.client.ui.period.daily.DailyPeriodsView;
 import ar.com.dcsys.gwt.assistance.client.ui.period.person.PeriodsAssignationPerson;
 import ar.com.dcsys.gwt.assistance.client.ui.period.person.PeriodsAssignationPersonView;
+import ar.com.dcsys.gwt.assistance.client.ui.person.PersonData;
+import ar.com.dcsys.gwt.assistance.client.ui.person.PersonDataView;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
@@ -36,6 +38,18 @@ public class AssistanceGWTGinModule extends AbstractGinModule {
 		bind(ManageJustificationsView.class).to(ManageJustifications.class).in(Singleton.class);
 		bind(PeriodsAssignationPersonView.class).to(PeriodsAssignationPerson.class).in(Singleton.class);
 		bind(PeriodsView.class).to(Periods.class).in(Singleton.class);
+		
+		bind(PersonDataView.class).to(PersonData.class).in(Singleton.class);
+		
+		/*
+		//// modulos de person ///
+		
+		bind(EnrollView.class).to(Enroll.class).in(Singleton.class);
+		bind(EnrollActivity.class);
+		bind(EnrollModule.class);
+		
+		/////
+		*/
 		
 		bind(AssistanceActivityMapper.class).in(Singleton.class);
 		

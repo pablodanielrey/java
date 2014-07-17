@@ -17,5 +17,6 @@ import ar.com.dcsys.pr.SerializerType;
 public interface PersonDataManagerTransfer extends Manager {
 	
 	public void setPin(String personId, String pin, Receiver<Boolean> rec);
+	public void enroll(String personId, Receiver<Boolean> rec);
 	
 }

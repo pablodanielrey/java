@@ -1,8 +1,6 @@
 package ar.com.dcsys.gwt.person.client.ui.menu;
 
-import ar.com.dcsys.gwt.person.client.place.MailChangePlace;
 import ar.com.dcsys.gwt.person.client.place.ManagePersonsPlace;
-import ar.com.dcsys.gwt.person.client.place.PersonReportPlace;
 import ar.com.dcsys.gwt.person.client.place.UpdatePersonDataPlace;
 
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;

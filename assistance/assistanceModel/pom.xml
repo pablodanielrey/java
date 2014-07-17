@@ -41,6 +41,21 @@
     </dependency>
 -->
 
+        <dependency>
+                <groupId>org.glassfish.tyrus</groupId>
+                <artifactId>tyrus-container-grizzly-client</artifactId>
+                <version>${tyrus.version}</version>
+                <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+                <groupId>org.glassfish.tyrus</groupId>
+                <artifactId>tyrus-client</artifactId>
+                <version>${tyrus.version}</version>
+                <scope>compile</scope>
+        </dependency>
+
+
 
     <dependency>
       <groupId>javax.inject</groupId>
@@ -54,6 +69,12 @@
     	<artifactId>guava</artifactId>
 	<version>${guava.version}</version>
 	<scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.security</groupId>
+      <artifactId>fingerprintCredentials</artifactId>
+      <version>1.0-SNAPSHOT</version>
     </dependency>
 
     <dependency>

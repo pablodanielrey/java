@@ -17,6 +17,7 @@
 
   <modules>
     <module>personModelGWT</module>
+    <module>personViewsGWT</module>
     <module>personGWT</module>
   </modules>
 

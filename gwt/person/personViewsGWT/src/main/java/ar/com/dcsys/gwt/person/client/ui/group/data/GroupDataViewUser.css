@@ -1,0 +1,21 @@
+@CHARSET "UTF-8";
+
+.dataGroupPanel {}
+	
+.title {}
+	
+.namePanel {}
+.nameLabel {}
+.name {}
+	
+.mailPanel {}
+.mailLabel {}
+.mail {}
+
+.parentPanel {}
+.parentLabel {}
+.parent {}
+
+.typePanel {}
+.typeLabel {}
+.type {}

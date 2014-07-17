@@ -1,0 +1,45 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+
+		.groupsPanel {
+			float:left;
+			background-color: #e8eef7;
+			margin: 1em;
+			-moz-border-radius: 5px;
+			border-radius: 5px;
+			border: 1px solid #c1c1c1;
+			width:25em;
+		}
+		
+		.panel-button {
+			text-align:center;
+			margin-top:1em;
+			margin-bottom:1em;
+		}
+		
+		.button {
+			color: #47698a;
+			font-weight: bold;
+		}
+
+		.personsPanel {
+			float:left;
+			background-color: #e8eef7;
+			margin: 1em;
+			-moz-border-radius: 5px;
+			border-radius: 5px;
+			border: 1px solid #c1c1c1;
+		}
+	</ui:style>
+	<g:FlowPanel>
+	    <g:FlowPanel styleName="{style.groupsPanel}">
+	        <g:FlowPanel ui:field="groupListView"/>
+	        <g:FlowPanel styleName="{style.panel-button}">	        
+	        	<g:Button ui:field="createGroup" text="Crear Grupo" styleName="{style.button}"/>
+	        </g:FlowPanel>
+	    </g:FlowPanel>
+	    <g:FlowPanel ui:field="personsView" styleName="{style.personsPanel}"/>
+	</g:FlowPanel>
+</ui:UiBinder> 
