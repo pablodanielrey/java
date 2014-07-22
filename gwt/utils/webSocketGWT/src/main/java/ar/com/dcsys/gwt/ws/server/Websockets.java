@@ -9,6 +9,7 @@ import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpSession;
@@ -25,6 +26,7 @@ import ar.com.dcsys.gwt.messages.server.handlers.MessageHandler;
 import ar.com.dcsys.gwt.messages.server.handlers.MessageHandlers;
 import ar.com.dcsys.gwt.messages.shared.MessageEncoderDecoder;
 import ar.com.dcsys.gwt.messages.shared.Transport;
+import ar.com.dcsys.gwt.messages.shared.TransportEvent;
 import ar.com.dcsys.gwt.messages.shared.TransportReceiver;
 import ar.com.dcsys.utils.BeanManagerLocator;
 import ar.com.dcsys.utils.BeanManagerUtils;
@@ -40,6 +42,19 @@ public class Websockets implements Transport {
 	private final List<MessageHandler> handlers = new ArrayList<>();
 	private final ExecutorService execService = Executors.newCachedThreadPool();
 
+	
+	
+	/*
+	 * Envío de eventos desde el server hacia el cliente.
+	 */
+	private void onTransportEvent(@Observes TransportEvent event) {
+		String type = event.getType();
+		String msg = event.getMessage();
+		TransportReceiver tr = event.getTransportReceiver();
+		sendEvent(type + ";" + msg,tr);
+	}
+
+	
 	public Websockets() {
 		
 		try {
@@ -151,7 +166,7 @@ public class Websockets implements Transport {
 			registerResponse(dmsg[0], session.getId());
 		}
 		
-		execService.execute(new MessageWorker(dmsg[0], dmsg[1], ctx, handlers));
+		execService.execute(new MessageWorker(dmsg[0], dmsg[2], ctx, handlers));
 		/*
 		try {
 			MessageWorker mw = new MessageWorker(dmsg[0], dmsg[1], ctx, handlers);
@@ -189,7 +204,7 @@ public class Websockets implements Transport {
 				logger.info("MESSAGE : SERVER -> CLIENT : " + msg);
 				
 				try {
-					String emsg = MessageEncoderDecoder.encode(id, msg);
+					String emsg = MessageEncoderDecoder.encode(MessageEncoderDecoder.RPC, id, msg);
 					boolean failure = false;
 					String error = "";
 					for (String sid : sids) {
@@ -238,7 +253,32 @@ public class Websockets implements Transport {
 		sendBroadcast(msg, rec);
 	}
 
+	
+	/**
+	 * Envía un evento a todas las sesiones abiertas.
+	 * @param msg
+	 * @param rec
+	 */
+	private void sendEvent(String msg, TransportReceiver rec) {
+		try {
+			String emsg = MessageEncoderDecoder.encode(MessageEncoderDecoder.EVENT, MessageEncoderDecoder.BROADCAST, msg);
+			for (String sid : sessions.keySet()) {
+				Session s = sessions.get(sid);
+				if (!s.isOpen()) {
+					sessions.remove(sid);
+				} else {
+					s.getBasicRemote().sendText(emsg);
+				} 
+			}
+			rec.onSuccess(null);
+			
+		} catch (Exception e) {
+			logger.severe(e.getMessage());
+			rec.onFailure(e.getMessage());
+		}
+	}	
 
+	
 	/**
 	 * Envía un mensaje a todas las sesiones abiertas.
 	 * @param msg
@@ -246,7 +286,7 @@ public class Websockets implements Transport {
 	 */
 	private void sendBroadcast(String msg, TransportReceiver rec) {
 		try {
-			String emsg = MessageEncoderDecoder.encode(MessageEncoderDecoder.BROADCAST, msg);
+			String emsg = MessageEncoderDecoder.encode(MessageEncoderDecoder.RPC, MessageEncoderDecoder.BROADCAST, msg);
 			for (String sid : sessions.keySet()) {
 				Session s = sessions.get(sid);
 				if (!s.isOpen()) {

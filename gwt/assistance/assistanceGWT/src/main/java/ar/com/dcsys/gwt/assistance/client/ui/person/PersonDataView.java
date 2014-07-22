@@ -9,5 +9,8 @@ public interface PersonDataView extends IsWidget {
 	public interface Presenter {
 		public void enroll();
 	}
+
+	public void showMessage(String msg);
+	
 	
 }

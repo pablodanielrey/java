@@ -4,12 +4,12 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import ar.com.dcsys.gwt.messages.client.event.MessageEvent;
 import ar.com.dcsys.gwt.messages.shared.MessageEncoderDecoder;
 import ar.com.dcsys.gwt.messages.shared.TransportReceiver;
 import ar.com.dcsys.gwt.utils.client.GUID;
 import ar.com.dcsys.gwt.ws.shared.InvalidUrlException;
 import ar.com.dcsys.gwt.ws.shared.SocketException;
-import ar.com.dcsys.gwt.ws.shared.event.SocketMessageEvent;
 import ar.com.dcsys.gwt.ws.shared.event.SocketStateEvent;
 
 import com.google.gwt.core.client.GWT;
@@ -30,7 +30,6 @@ public class WebSocketImpl implements WebSocket {
 	
 	private final EventBus eventBus;
 	private final HashMap<String,TransportReceiver> receivers;
-	
 	
 	private final WebsocketListener wsListener = new WebsocketListener() {
 		@Override
@@ -58,28 +57,62 @@ public class WebSocketImpl implements WebSocket {
 
 			String[] msgd = MessageEncoderDecoder.decode(msg);
 			final String id = msgd[0];
-			final String msg2 = msgd[1];
+			final String subsystem = msgd[1];
+			final String msg2 = msgd[2];
 			
-			Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-				@Override
-				public void execute() {
-					try {
-						TransportReceiver rec = receivers.get(id);
-						if (rec != null) {
-							rec.onSuccess(msg2);
+			if (MessageEncoderDecoder.RPC.equals(subsystem)) {
+
+				Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+					@Override
+					public void execute() {
+						
+						if (MessageEncoderDecoder.BROADCAST.equals(id)) {
+	
+							for (TransportReceiver receiver : receivers.values() ) {
+								try {		
+									TransportReceiver rec = receiver;
+									if (rec != null) {
+										rec.onSuccess(msg2);
+									}
+								} catch(Exception e) {
+									logger.log(Level.SEVERE,e.getMessage(),e);
+								}
+							}
+							
+						} else {
+							
+							TransportReceiver receiver = receivers.get(id);
+							try {		
+								TransportReceiver rec = receiver;
+								if (rec != null) {
+									rec.onSuccess(msg2);
+								}
+							} catch(Exception e) {
+								logger.log(Level.SEVERE,e.getMessage(),e);
+							}
+						
 						}
-					} catch(Exception e) {
-						logger.log(Level.SEVERE,e.getMessage(),e);
 					}
-				}
-			});
+				});
+				
+			} else if (MessageEncoderDecoder.EVENT.equals(subsystem)) {
+
+				Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+					@Override
+					public void execute() {
+						
+						int i = msg2.indexOf(";");
+						String type = msg2.substring(0,i);
+						String msg3 = msg2.substring(i + 1);
+						
+						logger.log(Level.INFO,"Llego evento tipo : " + type + " msg : " + msg3);
+						
+						eventBus.fireEvent(new MessageEvent(type,msg3));
+					}
+				});
+				
+			}
 			
-			Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-				@Override
-				public void execute() {
-					eventBus.fireEvent(new SocketMessageEvent(msg2));
-				}
-			});
 		}
 	};
 	
@@ -168,7 +201,7 @@ public class WebSocketImpl implements WebSocket {
 		}
 		
 		try {		
-			String emsg = MessageEncoderDecoder.encode(id,msg);
+			String emsg = MessageEncoderDecoder.encode(MessageEncoderDecoder.RPC,id,msg);
 			receivers.put(id, rec);
 			socket.send(emsg);
 			

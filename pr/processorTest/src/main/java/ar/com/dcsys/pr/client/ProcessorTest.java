@@ -28,8 +28,6 @@ import ar.com.dcsys.data.report.Report;
 import ar.com.dcsys.data.report.ReportSummary;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.ws.client.WebSocket;
-import ar.com.dcsys.gwt.ws.shared.event.SocketMessageEvent;
-import ar.com.dcsys.gwt.ws.shared.event.SocketMessageEventHandler;
 import ar.com.dcsys.gwt.ws.shared.event.SocketStateEvent;
 import ar.com.dcsys.gwt.ws.shared.event.SocketStateEventHandler;
 import ar.com.dcsys.pr.client.gin.Injector;
@@ -61,13 +59,7 @@ public class ProcessorTest implements EntryPoint {
 	
 		EventBus bus = injector.getEventBus();
 
-		bus.addHandler(SocketMessageEvent.TYPE, new SocketMessageEventHandler() {
-			@Override
-			public void onMessage(String msg) {
-				logger.log(Level.INFO, msg);
-			}
-		});
-		
+	
 		
 		try {
 			tm = injector.testManagerProvider().get();

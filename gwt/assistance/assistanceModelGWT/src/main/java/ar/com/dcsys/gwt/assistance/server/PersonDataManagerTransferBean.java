@@ -1,5 +1,6 @@
 package ar.com.dcsys.gwt.assistance.server;
 
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
 import ar.com.dcsys.data.person.AssistancePersonData;
@@ -7,9 +8,15 @@ import ar.com.dcsys.exceptions.DeviceException;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.gwt.assistance.shared.PersonDataManagerTransfer;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
+import ar.com.dcsys.gwt.messages.shared.MessageEncoderDecoder;
 import ar.com.dcsys.gwt.messages.shared.Transport;
+import ar.com.dcsys.gwt.messages.shared.TransportEvent;
+import ar.com.dcsys.gwt.messages.shared.TransportReceiver;
 import ar.com.dcsys.model.device.DevicesManager;
+import ar.com.dcsys.model.device.EnrollAction;
+import ar.com.dcsys.model.device.EnrollManager;
 import ar.com.dcsys.model.person.AssistancePersonDataManager;
+import ar.com.dcsys.security.Fingerprint;
 
 public class PersonDataManagerTransferBean implements PersonDataManagerTransfer {
 
@@ -47,12 +54,51 @@ public class PersonDataManagerTransferBean implements PersonDataManagerTransfer 
 		
 	}
 	
+	@Inject
+	private Event<TransportEvent> transportEvent;
+	
 	@Override
-	public void enroll(String personId, Receiver<Boolean> rec) {
+	public void enroll(String personId, final Receiver<String> rec) {
 		try {
-			devicesManager.enroll(personId);
-			rec.onSuccess(true);
 			
+			TransportEvent te = new TransportEvent();
+			te.setMessage("iniciando enroll");
+			te.setTransportReceiver(new TransportReceiver() {
+				@Override
+				public void onSuccess(String message) {
+				}
+				@Override
+				public void onFailure(String error) {
+				}
+			});
+			te.setType("enroll");
+			transportEvent.fire(te);
+			
+			EnrollManager em = new EnrollManager() {
+				@Override
+				public void onMessage(EnrollAction action) {
+					TransportEvent tr = new TransportEvent();
+					tr.setMessage(action.toString());
+					tr.setTransportReceiver(new TransportReceiver() {
+						@Override
+						public void onSuccess(String ok) {
+						}
+						@Override
+						public void onFailure(String error) {
+						}
+					});
+					tr.setType("enroll");
+					transportEvent.fire(tr);
+				}
+				
+				@Override
+				public void onSuccess(Fingerprint fingerprint) {
+					rec.onSuccess(new String(fingerprint.getTemplate()));					
+				}
+			};
+			
+			devicesManager.enroll(personId, em);
+		
 		} catch (PersonException | DeviceException e) {
 			e.printStackTrace();
 			rec.onError(e.getMessage());

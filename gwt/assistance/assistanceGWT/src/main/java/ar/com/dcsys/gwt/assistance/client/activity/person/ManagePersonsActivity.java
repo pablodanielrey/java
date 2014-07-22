@@ -10,11 +10,14 @@ import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.gwt.assistance.client.manager.PersonDataManager;
 import ar.com.dcsys.gwt.assistance.client.ui.person.PersonDataView;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
+import ar.com.dcsys.gwt.messages.client.event.MessageEvent;
+import ar.com.dcsys.gwt.messages.client.event.MessageEventHandler;
 import ar.com.dcsys.gwt.person.client.manager.PersonsManager;
 import ar.com.dcsys.gwt.person.client.ui.manage.ManagePersonsView;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.ResettableEventBus;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -64,18 +67,24 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 			logger.log(Level.SEVERE,"selection.person == null");
 			return;
 		}
-		personDataManager.enroll(person.getId(), new Receiver<Boolean>() {
+		personDataManager.enroll(person.getId(), new Receiver<String>() {
 			@Override
 			public void onError(String error) {
 				logger.log(Level.SEVERE,error);
 			}
 			@Override
-			public void onSuccess(Boolean t) {
-				logger.log(Level.INFO, "usuario enrolado exitósamente");
+			public void onSuccess(String t) {
+				logger.log(Level.INFO, "huella : " + t);
+				if (personDataView != null) {
+					personDataView.showMessage(t);
+				}
 			}
 		});
 	}
 
+	
+	private ResettableEventBus eventBus;
+	
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
 		view.setPresenter(this);
@@ -91,10 +100,25 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 		
 		panel.setWidget(principalView);
 		
+		this.eventBus = new ResettableEventBus(eventBus);
+		this.eventBus.addHandler(MessageEvent.TYPE, new MessageEventHandler() {
+			@Override
+			public void onMessage(MessageEvent event) {
+				if ("enroll".equals(event.getType())) {
+					logger.log(Level.INFO,event.getMessage());
+					if (personDataView != null) {
+						personDataView.showMessage(event.getMessage());
+					}
+// TODO: ver por que no funca.					ManagePersonsActivity.this.eventBus.fireEvent(new MessageDialogEvent(event.getMessage()));
+				}
+			}
+		});
 	}
 	
 	@Override
 	public void onStop() {
+		eventBus.removeHandlers();
+		
 		view.clear();
 		view.setPresenter(null);
 	}

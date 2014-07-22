@@ -12,6 +12,8 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 
+import ar.com.dcsys.security.Fingerprint;
+
 @ClientEndpoint
 public class EnrollWebsocketClient {
 
@@ -30,7 +32,7 @@ public class EnrollWebsocketClient {
 		logger.fine("EnrollWebsocketClient - onOpen");
 		
 		try {
-			session.getBasicRemote().sendText("enroll " + personId);
+			session.getBasicRemote().sendText("enroll;" + personId);
 			
 		} catch (IOException e) {
 			logger.log(Level.SEVERE,e.getMessage(),e);
@@ -85,7 +87,10 @@ public class EnrollWebsocketClient {
 			
 		} else {
 			
-			enrollManager.onSuccess(m);
+			Fingerprint fp = new Fingerprint();
+			fp.setTemplate(m.getBytes());
+			enrollManager.onSuccess(fp);
+			
 			try {
 				session.close();
 			} catch (IOException e) {

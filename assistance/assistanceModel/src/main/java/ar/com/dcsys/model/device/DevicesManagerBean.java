@@ -38,7 +38,7 @@ public class DevicesManagerBean implements DevicesManager {
 	}
 	
 	@Override
-	public void enroll(String personId) throws PersonException, DeviceException {
+	public void enroll(String personId, final EnrollManager em) throws PersonException, DeviceException {
 		
 		// por ahora solo existe un reloj. asi que se usa el primero de la lista para enrolar
 		List<String> devices = findAll();
@@ -56,22 +56,6 @@ public class DevicesManagerBean implements DevicesManager {
 		String ip = device.getIp();
 		String url = "ws://" + ip + ":8025/websocket/cmd";
 		URI uri = URI.create(url);
-		
-		
-		
-		EnrollManager em = new EnrollManager() {
-			@Override
-			public void onSuccess(String fingerprint) {
-				System.out.println(fingerprint);
-			}
-			
-			@Override
-			public void onMessage(EnrollAction action) {
-				System.out.println(action.toString());
-			}
-		};
-		
-		
 		
 		
 		EnrollWebsocketClient ewc = new EnrollWebsocketClient(personId, em);

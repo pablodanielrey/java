@@ -3,10 +3,18 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<ui:style>
 	
+		.messages {
+			width: 900px;
+			height: 600px;
+		}
+	
 	</ui:style>
 
 	<g:FlowPanel>
 		<g:Button ui:field="enroll" text="enrolar"/>
+		<g:FlowPanel styleName="${style.messages}">
+			<g:VerticalPanel ui:field="messages" styleName="${style.messages}"/>
+		</g:FlowPanel>
 	</g:FlowPanel>
 
 </ui:UiBinder> 

@@ -25,7 +25,7 @@ public class PersonDataManagerBean implements PersonDataManager {
 	}
 
 	@Override
-	public void enroll(String personId, Receiver<Boolean> rec) {
+	public void enroll(String personId, Receiver<String> rec) {
 		personDataManagerTransfer.enroll(personId, rec);
 	}
 	

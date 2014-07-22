@@ -26,5 +26,5 @@ public interface Transport {
 	 */
 	public void send(String id, String msg, TransportReceiver rec);
 
-	
+
 }

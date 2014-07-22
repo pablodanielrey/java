@@ -36,10 +36,10 @@ public class DevicesWebsocket {
 	@OnMessage
 	public void onMessage(String m, Session session) {
 		logger.fine("Mensaje recibido : " + m);
-		
+		/*
 		if (m.contains("enroll")) {
 			try {
-				manager.enroll("personid-pablo");
+//				manager.enroll("personid-pablo", new EnrollMana);
 				logger.fine("enrolado exitoso");
 			
 			} catch (PersonException | DeviceException e) {
@@ -47,6 +47,7 @@ public class DevicesWebsocket {
 				logger.log(Level.SEVERE, e.getMessage(), e);
 			}
 		}
+		*/
 	}
 	
 	@OnClose

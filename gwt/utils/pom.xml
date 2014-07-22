@@ -19,8 +19,8 @@
     <module>utilsGWT</module>
     <module>clientMessagesGWT</module>
     <module>messagesGWT</module>
-    <module>webSocketGWT</module>
     <module>managerGWT</module>
+    <module>webSocketGWT</module>
   </modules>
 
 

@@ -12,6 +12,6 @@ public interface DevicesManager {
 	public Device findById(String id) throws DeviceException;
 	public void persist(Device d) throws DeviceException;
 	
-	public void enroll(String personId) throws PersonException, DeviceException;
+	public void enroll(String personId, EnrollManager r) throws PersonException, DeviceException;
 	
 }

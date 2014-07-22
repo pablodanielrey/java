@@ -73,10 +73,10 @@ public class EnrollActivity implements PersonModule.Activity, EnrollView.Present
 			return;
 		}
 		
-		personDataManager.enroll(id, new Receiver<Boolean>() {
+		personDataManager.enroll(id, new Receiver<String>() {
 			@Override
-			public void onSuccess(Boolean t) {
-				if (t) {
+			public void onSuccess(String t) {
+				if (t != null) {
 					logger.log(Level.INFO,"Enrolado exitosamente");
 				} else {
 					logger.log(Level.INFO,"falla en el enrolado");
