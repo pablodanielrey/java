@@ -14,4 +14,11 @@ public interface DevicesManager {
 	
 	public void enroll(String personId, EnrollManager r) throws PersonException, DeviceException;
 	
+	/**
+	 * Cancela cualquier comando que se esté llevando a cabo.
+	 * es mas que nada para debug.
+	 * @throws DeviceException
+	 */
+	public void cancel() throws DeviceException;
+	
 }

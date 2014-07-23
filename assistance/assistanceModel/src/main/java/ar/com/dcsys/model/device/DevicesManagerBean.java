@@ -2,6 +2,7 @@ package ar.com.dcsys.model.device;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -16,6 +17,27 @@ import ar.com.dcsys.exceptions.PersonException;
 public class DevicesManagerBean implements DevicesManager {
 
 	private final DeviceDAO deviceDAO;
+
+	private static final String wsPort = "8025";
+	private static final String wsUrl = "/websocket/cmd";
+	
+	private String getWsUrl(String ip) {
+		return "ws://" + ip + ":" + wsPort + wsUrl;
+	}
+	
+	private List<Device> getDevices() throws DeviceException {
+		
+		// por ahora solo existe un reloj. asi que se usa el primero de la lista para enrolar
+		List<String> devices = findAll();
+		if (devices == null || devices.size() <= 0) {
+			throw new DeviceException("No existe ningun device para enrolar");
+		}
+		
+		String id = devices.get(0);
+		Device device = findById(id);
+		
+		return Arrays.asList(device);
+	}
 	
 	@Inject
 	public DevicesManagerBean(DeviceDAO deviceDAO) {
@@ -40,21 +62,14 @@ public class DevicesManagerBean implements DevicesManager {
 	@Override
 	public void enroll(String personId, final EnrollManager em) throws PersonException, DeviceException {
 		
-		// por ahora solo existe un reloj. asi que se usa el primero de la lista para enrolar
-		List<String> devices = findAll();
-		if (devices == null || devices.size() <= 0) {
-			throw new DeviceException("No existe ningun device para enrolar");
-		}
-		
-		String id = devices.get(0);
-		Device device = findById(id);
-		
+		List<Device> devices = getDevices();
+		Device device = devices.get(0);
 		if (!device.getEnabled()) {
 			throw new DeviceException("Dispositivo no habilitado");
 		}
 		
 		String ip = device.getIp();
-		String url = "ws://" + ip + ":8025/websocket/cmd";
+		String url = getWsUrl(ip);
 		URI uri = URI.create(url);
 		
 		
@@ -74,6 +89,11 @@ public class DevicesManagerBean implements DevicesManager {
 
 		}
 		
+		
+	}
+	
+	@Override
+	public void cancel() throws DeviceException {
 		
 	}
 	
