@@ -44,6 +44,7 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 	
 	@Override
 	public void updateUsers() {
+		selection.clear();
 		personsManager.findAll(new Receiver<List<Person>>() {
 			@Override
 			public void onSuccess(List<Person> t) {
