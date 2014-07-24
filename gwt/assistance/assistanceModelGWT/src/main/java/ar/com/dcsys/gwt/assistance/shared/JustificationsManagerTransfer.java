@@ -46,11 +46,11 @@ import ar.com.dcsys.pr.SerializerType;
 		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.server.GeneralJustificationDateListSerializer", clazz="java.util.List<ar.com.dcsys.data.justification.GeneralJustificationDate>", type=SerializerType.SERVER),
 
 		@Serializer(serializer="ar.com.dcsys.gwt.person.client.PersonTypeSerializer", clazz="ar.com.dcsys.data.person.PersonType", type=SerializerType.CLIENT),
-		@Serializer(serializer="ar.com.dcsys.gwt.person.server.PersonTypeSerializer", clazz="ar.com.dcsys.data.person.PersonType", type=SerializerType.SERVER),
+		@Serializer(serializer="ar.com.dcsys.person.server.PersonTypeSerializer", clazz="ar.com.dcsys.data.person.PersonType", type=SerializerType.SERVER),
 		@Serializer(serializer="ar.com.dcsys.gwt.person.client.PersonSerializer", clazz="ar.com.dcsys.data.person.Person", type=SerializerType.CLIENT),
-		@Serializer(serializer="ar.com.dcsys.gwt.person.server.PersonSerializer", clazz="ar.com.dcsys.data.person.Person", type=SerializerType.SERVER),
+		@Serializer(serializer="ar.com.dcsys.person.server.PersonSerializer", clazz="ar.com.dcsys.data.person.Person", type=SerializerType.SERVER),
 		@Serializer(serializer="ar.com.dcsys.gwt.person.client.PersonListSerializer", clazz="java.util.List<ar.com.dcsys.data.person.Person>", type=SerializerType.CLIENT),
-		@Serializer(serializer="ar.com.dcsys.gwt.person.server.PersonListSerializer", clazz="java.util.List<ar.com.dcsys.data.person.Person>", type=SerializerType.SERVER)
+		@Serializer(serializer="ar.com.dcsys.person.server.PersonListSerializer", clazz="java.util.List<ar.com.dcsys.data.person.Person>", type=SerializerType.SERVER)
 		
 		
 })
