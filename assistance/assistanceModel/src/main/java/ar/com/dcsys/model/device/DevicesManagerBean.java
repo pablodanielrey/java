@@ -95,7 +95,7 @@ public class DevicesManagerBean implements DevicesManager {
 	@Override
 	public void enroll(String personId, final EnrollManager enrollManager) throws PersonException, DeviceException {
 		
-		logger.fine("enroll")
+		logger.fine("enroll");
 		
 		URI uri = getConnectionUri();
 		
@@ -156,6 +156,11 @@ public class DevicesManagerBean implements DevicesManager {
 					FingerprintSerializer fps = new FingerprintSerializer();
 					Fingerprint fp = fps.read(json);
 					
+					try {
+						session.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}					
 					
 					// se tiene la huella. asi que se la almacena en la base.
 					try {
@@ -169,12 +174,7 @@ public class DevicesManagerBean implements DevicesManager {
 						
 					}
 										
-	
-					try {
-						session.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+
 					return;
 				}
 				
