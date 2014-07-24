@@ -474,13 +474,31 @@ public class PersonPostgreSqlDAO extends  AbstractPersonDAO {
 			Connection con = cp.getConnection();
 			try {
 				
+				String insertQuery = "insert into persons (dni,name,lastName,address,city,country,gender,id) values (?,?,?,?,?,?,?,?)"; 
 				StringBuffer sb = new StringBuffer();
 				if (p.getId() == null) {
-					sb.append("insert into persons (dni,name,lastName,address,city,country,gender,id) values (?,?,?,?,?,?,?,?)");
+					sb.append(insertQuery);
 					String id = UUID.randomUUID().toString();
 					p.setId(id);
 				} else {
-					sb.append("update persons set dni = ?, name = ?, lastName = ?, address = ?, city = ?, country = ?, gender = ? where id = ?");
+					
+					String query = "select id from persons where id = ?";
+					PreparedStatement st = con.prepareStatement(query);
+					try {
+						st.setString(1, p.getId());
+						ResultSet rs = st.executeQuery();
+						try {
+							if (rs.next()) {
+								sb.append("update persons set dni = ?, name = ?, lastName = ?, address = ?, city = ?, country = ?, gender = ? where id = ?");
+							} else {
+								sb.append(insertQuery);
+							}
+						} finally {
+							rs.close();
+						}
+					} finally {
+						st.close();
+					}
 				}
 				
 				String query = sb.toString();
