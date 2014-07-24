@@ -1,4 +1,4 @@
-package ar.com.dcsys.gwt.data.assistance.server;
+package ar.com.dcsys.assistance.server;
 
 import java.lang.reflect.Type;
 import java.util.logging.Logger;

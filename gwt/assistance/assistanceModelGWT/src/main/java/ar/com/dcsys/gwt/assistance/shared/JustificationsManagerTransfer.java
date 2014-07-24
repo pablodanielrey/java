@@ -26,24 +26,24 @@ import ar.com.dcsys.pr.SerializerType;
 
 
 		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.client.PeriodSerializer", clazz="ar.com.dcsys.data.period.Period", type=SerializerType.CLIENT),
-		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.server.PeriodSerializer", clazz="ar.com.dcsys.data.period.Period", type=SerializerType.SERVER),	
+		@Serializer(serializer="ar.com.dcsys.assistance.server.PeriodSerializer", clazz="ar.com.dcsys.data.period.Period", type=SerializerType.SERVER),	
 		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.client.PeriodListSerializer", clazz="java.util.List<ar.com.dcsys.data.period.Period>", type=SerializerType.CLIENT),
-		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.server.PeriodListSerializer", clazz="java.util.List<ar.com.dcsys.data.period.Period>", type=SerializerType.SERVER),
+		@Serializer(serializer="ar.com.dcsys.assistance.server.PeriodListSerializer", clazz="java.util.List<ar.com.dcsys.data.period.Period>", type=SerializerType.SERVER),
 		
 		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.client.JustificationSerializer", clazz="ar.com.dcsys.data.justification.Justification", type=SerializerType.CLIENT),
-		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.server.JustificationSerializer", clazz="ar.com.dcsys.data.justification.Justification", type=SerializerType.SERVER),
+		@Serializer(serializer="ar.com.dcsys.assistance.server.JustificationSerializer", clazz="ar.com.dcsys.data.justification.Justification", type=SerializerType.SERVER),
 		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.client.JustificationListSerializer", clazz="java.util.List<ar.com.dcsys.data.justification.Justification>", type=SerializerType.CLIENT),
-		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.server.JustificationListSerializer", clazz="java.util.List<ar.com.dcsys.data.justification.Justification>", type=SerializerType.SERVER),
+		@Serializer(serializer="ar.com.dcsys.assistance.server.JustificationListSerializer", clazz="java.util.List<ar.com.dcsys.data.justification.Justification>", type=SerializerType.SERVER),
 		
 		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.client.JustificationDateSerializer", clazz="ar.com.dcsys.data.justification.JustificationDate", type=SerializerType.CLIENT),
-		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.server.JustificationDateSerializer", clazz="ar.com.dcsys.data.justification.JustificationDate", type=SerializerType.SERVER),
+		@Serializer(serializer="ar.com.dcsys.assistance.server.JustificationDateSerializer", clazz="ar.com.dcsys.data.justification.JustificationDate", type=SerializerType.SERVER),
 		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.client.JustificationDateListSerializer", clazz="java.util.List<ar.com.dcsys.data.justification.JustificationDate>", type=SerializerType.CLIENT),
-		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.server.JustificationDateListSerializer", clazz="java.util.List<ar.com.dcsys.data.justification.JustificationDate>", type=SerializerType.SERVER),
+		@Serializer(serializer="ar.com.dcsys.assistance.server.JustificationDateListSerializer", clazz="java.util.List<ar.com.dcsys.data.justification.JustificationDate>", type=SerializerType.SERVER),
 		
 		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.client.GeneralJustificationDateSerializer", clazz="ar.com.dcsys.data.justification.GeneralJustificationDate", type=SerializerType.CLIENT),
-		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.server.GeneralJustificationDateSerializer", clazz="ar.com.dcsys.data.justification.GeneralJustificationDate", type=SerializerType.SERVER),
+		@Serializer(serializer="ar.com.dcsys.assistance.server.GeneralJustificationDateSerializer", clazz="ar.com.dcsys.data.justification.GeneralJustificationDate", type=SerializerType.SERVER),
 		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.client.GeneralJustificationDateListSerializer", clazz="java.util.List<ar.com.dcsys.data.justification.GeneralJustificationDate>", type=SerializerType.CLIENT),
-		@Serializer(serializer="ar.com.dcsys.gwt.data.assistance.server.GeneralJustificationDateListSerializer", clazz="java.util.List<ar.com.dcsys.data.justification.GeneralJustificationDate>", type=SerializerType.SERVER),
+		@Serializer(serializer="ar.com.dcsys.assistance.server.GeneralJustificationDateListSerializer", clazz="java.util.List<ar.com.dcsys.data.justification.GeneralJustificationDate>", type=SerializerType.SERVER),
 
 		@Serializer(serializer="ar.com.dcsys.gwt.person.client.PersonTypeSerializer", clazz="ar.com.dcsys.data.person.PersonType", type=SerializerType.CLIENT),
 		@Serializer(serializer="ar.com.dcsys.person.server.PersonTypeSerializer", clazz="ar.com.dcsys.data.person.PersonType", type=SerializerType.SERVER),

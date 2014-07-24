@@ -1,4 +1,4 @@
-package ar.com.dcsys.gwt.data.assistance.server;
+package ar.com.dcsys.assistance.server;
 
 import ar.com.dcsys.data.period.PeriodType;
 import ar.com.dcsys.pr.CSD;

@@ -1,4 +1,4 @@
-package ar.com.dcsys.gwt.data.assistance.server;
+package ar.com.dcsys.assistance.server;
 
 import java.util.ArrayList;
 import java.util.List;

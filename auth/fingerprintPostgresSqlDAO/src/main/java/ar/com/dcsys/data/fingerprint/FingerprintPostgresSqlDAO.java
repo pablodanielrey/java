@@ -68,7 +68,7 @@ public class FingerprintPostgresSqlDAO implements FingerprintDAO {
 					fp.setId(id);
 					query = "insert into fingerprints (person_id, codification, template, finger, algorithm, id) values (?,?,?,?,?,?)";
 				} else {
-					query = "update fingerprints set person_id = ?, codification = ?, template = ?, finger = ?, algorithm = ?) where id = ?";
+					query = "update fingerprints set person_id = ?, codification = ?, template = ?, finger = ?, algorithm = ? where id = ?";
 				}
 				
 				PreparedStatement st = con.prepareStatement(query);
