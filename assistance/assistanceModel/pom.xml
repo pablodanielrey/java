@@ -78,6 +78,19 @@
     </dependency>
 
     <dependency>
+      <groupId>ar.com.dcsys.auth</groupId>
+      <artifactId>authServerSerializers</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.data</groupId>
+      <artifactId>fingerprintDAO</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+
+    <dependency>
       <groupId>ar.com.dcsys.data</groupId>
       <artifactId>assistanceDAO</artifactId>
       <version>1.0-SNAPSHOT</version>

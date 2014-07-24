@@ -61,23 +61,10 @@ public class PersonDataManagerTransferBean implements PersonDataManagerTransfer 
 	@Override
 	public void enroll(String personId, final Receiver<String> rec) {
 		try {
-			
-			TransportEvent te = new TransportEvent();
-			te.setMessage("iniciando enroll");
-			te.setTransportReceiver(new TransportReceiver() {
-				@Override
-				public void onSuccess(String message) {
-				}
-				@Override
-				public void onFailure(String error) {
-				}
-			});
-			te.setType("enroll");
-			transportEvent.fire(te);
-			
 			EnrollManager em = new EnrollManager() {
 				@Override
 				public void onMessage(EnrollAction action) {
+					
 					TransportEvent tr = new TransportEvent();
 					tr.setMessage(action.toString());
 					tr.setTransportReceiver(new TransportReceiver() {
@@ -94,7 +81,7 @@ public class PersonDataManagerTransferBean implements PersonDataManagerTransfer 
 				
 				@Override
 				public void onSuccess(Fingerprint fingerprint) {
-					rec.onSuccess(new String(fingerprint.getTemplate()));					
+					rec.onSuccess(fingerprint.getId());					
 				}
 			};
 			
