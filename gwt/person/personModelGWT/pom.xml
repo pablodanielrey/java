@@ -55,6 +55,12 @@
       <scope>compile</scope>
     </dependency>
 
+    <dependency>
+      <groupId>ar.com.dcsys.person</groupId>
+      <artifactId>personServerSerializers</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
 
 
   <!-- para los convertidores de codigo a json y la inversa -->

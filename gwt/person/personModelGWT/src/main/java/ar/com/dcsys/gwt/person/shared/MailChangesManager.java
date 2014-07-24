@@ -13,11 +13,11 @@ import ar.com.dcsys.pr.SerializerType;
 @ClientManager(serializers = {
 		@Serializer(serializer="ar.com.dcsys.pr.serializers.shared.VoidSerializer", clazz="java.lang.Void", type=SerializerType.COMBINED),
 		@Serializer(serializer="ar.com.dcsys.gwt.person.client.PersonSerializer", clazz="ar.com.dcsys.data.person.Person", type=SerializerType.CLIENT),
-		@Serializer(serializer="ar.com.dcsys.gwt.person.server.PersonSerializer", clazz="ar.com.dcsys.data.person.Person", type=SerializerType.SERVER),
+		@Serializer(serializer="ar.com.dcsys.person.server.PersonSerializer", clazz="ar.com.dcsys.data.person.Person", type=SerializerType.SERVER),
 		@Serializer(serializer="ar.com.dcsys.gwt.person.client.MailChangeSerializer", clazz="ar.com.dcsys.data.person.MailChange", type=SerializerType.CLIENT),
-		@Serializer(serializer="ar.com.dcsys.gwt.person.server.MailChangeSerializer", clazz="ar.com.dcsys.data.person.MailChange", type=SerializerType.SERVER),
+		@Serializer(serializer="ar.com.dcsys.person.server.MailChangeSerializer", clazz="ar.com.dcsys.data.person.MailChange", type=SerializerType.SERVER),
 		@Serializer(serializer="ar.com.dcsys.gwt.person.client.MailChangeListSerializer", clazz="java.util.List<ar.com.dcsys.data.person.MailChange>", type=SerializerType.CLIENT),
-		@Serializer(serializer="ar.com.dcsys.gwt.person.server.MailChangeListSerializer", clazz="java.util.List<ar.com.dcsys.data.person.MailChange>", type=SerializerType.SERVER)			
+		@Serializer(serializer="ar.com.dcsys.person.server.MailChangeListSerializer", clazz="java.util.List<ar.com.dcsys.data.person.MailChange>", type=SerializerType.SERVER)			
 })
 public interface MailChangesManager extends Manager {
 	
