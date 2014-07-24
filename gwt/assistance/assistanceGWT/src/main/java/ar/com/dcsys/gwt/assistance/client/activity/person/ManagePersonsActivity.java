@@ -81,6 +81,28 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 			}
 		});
 	}
+	
+	@Override
+	public void persist() {
+		Person person = selection.getSelectedObject();
+		if (person == null) {
+			logger.log(Level.SEVERE,"selection.person == null");
+			return;
+		}
+		personDataManager.persist(person, new Receiver<String>() {
+			@Override
+			public void onError(String error) {
+				logger.log(Level.SEVERE, error);
+			}
+			@Override
+			public void onSuccess(String t) {
+				logger.log(Level.INFO,"OK : " + t);
+				if (personDataView != null) {
+					personDataView.showMessage(t);
+				}				
+			}
+		});
+	}
 
 	
 	private ResettableEventBus eventBus;

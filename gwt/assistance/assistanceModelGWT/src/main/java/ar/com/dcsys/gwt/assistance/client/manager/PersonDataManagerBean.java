@@ -2,6 +2,7 @@ package ar.com.dcsys.gwt.assistance.client.manager;
 
 import javax.inject.Inject;
 
+import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.gwt.assistance.shared.PersonDataManagerTransfer;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.ws.client.WebSocket;
@@ -27,6 +28,11 @@ public class PersonDataManagerBean implements PersonDataManager {
 	@Override
 	public void enroll(String personId, Receiver<String> rec) {
 		personDataManagerTransfer.enroll(personId, rec);
+	}
+	
+	@Override
+	public void persist(Person p, Receiver<String> rec) {
+		personDataManagerTransfer.persist(p, rec);
 	}
 	
 }

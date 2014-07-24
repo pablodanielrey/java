@@ -3,6 +3,7 @@ package ar.com.dcsys.model.device;
 import java.util.List;
 
 import ar.com.dcsys.data.device.Device;
+import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.exceptions.DeviceException;
 import ar.com.dcsys.exceptions.PersonException;
 
@@ -20,5 +21,7 @@ public interface DevicesManager {
 	 * @throws DeviceException
 	 */
 	public void cancel() throws DeviceException;
+	
+	public void persist(Person p) throws PersonException, DeviceException;
 	
 }

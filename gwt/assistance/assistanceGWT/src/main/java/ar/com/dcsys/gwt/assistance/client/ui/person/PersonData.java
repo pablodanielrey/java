@@ -38,6 +38,14 @@ public class PersonData extends Composite implements PersonDataView {
 		this.p = p;
 	}
 	
+	@UiHandler("persist")
+	public void onPersist(ClickEvent event) {
+		if (p == null) {
+			return;
+		}
+		p.persist();
+	}
+	
 	@UiHandler("enroll")
 	public void onEnroll(ClickEvent event) {
 		if (p == null) {

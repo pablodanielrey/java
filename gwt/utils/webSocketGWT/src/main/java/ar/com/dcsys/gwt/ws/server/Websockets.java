@@ -9,9 +9,10 @@ import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.event.Observes;
+import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
-import javax.inject.Inject;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpSession;
 import javax.websocket.CloseReason;
@@ -38,7 +39,7 @@ public class Websockets implements Transport {
 
 	private static Logger logger = Logger.getLogger(Websockets.class.getName());
 	
-	private SessionRegister sessions;
+	private static Map<String,Session> sessions = new ConcurrentHashMap<>();
 	
 	private final Map<String,List<String>> responses = new ConcurrentHashMap<>();
 	private final List<MessageHandler> handlers = new ArrayList<>();
@@ -71,8 +72,6 @@ public class Websockets implements Transport {
 			handlers.clear();
 			handlers.addAll(mhandlers);
 			
-			sessions = BeanManagerUtils.lookup(SessionRegister.class, bm);
-			
 		} catch (NamingException e) {
 			logger.log(Level.SEVERE,"No se configura ningun handler ya que no se pudo obtener el BeanManager",e);
 		} catch (Exception e) {
@@ -101,7 +100,7 @@ public class Websockets implements Transport {
 		saveHttpSession(session, config);
 		
 		
-		sessions.registerSession(session);
+		sessions.put(session.getId(), session);
 		/*
 		Session s = sessions.get(session.getId());
 		if (s == null) {
@@ -116,7 +115,7 @@ public class Websockets implements Transport {
 		sb.append("onClose - ").append(reason.getCloseCode().getCode()).append(" - ").append(reason.getReasonPhrase());
 		logger.log(Level.INFO,sb.toString());
 		
-		sessions.unregisterSession(session);
+		sessions.remove(session.getId());
 	}
 	
 	@OnError
@@ -158,7 +157,7 @@ public class Websockets implements Transport {
 		
 		String[] dmsg = MessageEncoderDecoder.decode(msg);
 
-		sessions.registerSession(session);
+		sessions.put(session.getId(),session);
 		if (!MessageEncoderDecoder.BROADCAST.equals(dmsg[0])) {
 			registerResponse(dmsg[0], session.getId());
 		}
@@ -213,7 +212,7 @@ public class Websockets implements Transport {
 						
 						if (!s.isOpen()) {
 							
-							sessions.unregisterSession(s);;
+							sessions.remove(s.getId());;
 							
 						} else {
 							try {
@@ -259,10 +258,10 @@ public class Websockets implements Transport {
 	private void sendEvent(String msg, TransportReceiver rec) {
 		try {
 			String emsg = MessageEncoderDecoder.encode(MessageEncoderDecoder.EVENT, MessageEncoderDecoder.BROADCAST, msg);
-			for (String sid : sessions.getIds()) {
+			for (String sid : sessions.keySet()) {
 				Session s = sessions.get(sid);
 				if (!s.isOpen()) {
-					sessions.unregisterSession(s);
+					sessions.remove(s.getId());
 				} else {
 					s.getBasicRemote().sendText(emsg);
 				} 
@@ -284,10 +283,10 @@ public class Websockets implements Transport {
 	private void sendBroadcast(String msg, TransportReceiver rec) {
 		try {
 			String emsg = MessageEncoderDecoder.encode(MessageEncoderDecoder.RPC, MessageEncoderDecoder.BROADCAST, msg);
-			for (String sid : sessions.getIds()) {
+			for (String sid : sessions.keySet()) {
 				Session s = sessions.get(sid);
 				if (!s.isOpen()) {
-					sessions.unregisterSession(s);
+					sessions.remove(s.getId());
 				} else {
 					s.getBasicRemote().sendText(emsg);
 				} 

@@ -4,6 +4,7 @@ import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
 import ar.com.dcsys.data.person.AssistancePersonData;
+import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.exceptions.DeviceException;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.gwt.assistance.shared.PersonDataManagerTransfer;
@@ -105,4 +106,19 @@ public class PersonDataManagerTransferBean implements PersonDataManagerTransfer 
 		}
 	}
 
+	@Override
+	public void persist(Person person, Receiver<String> rec) {
+		
+		try {
+			devicesManager.persist(person);
+			rec.onSuccess(person.getId());
+			
+		} catch (PersonException | DeviceException e) {
+			e.printStackTrace();
+			rec.onError(e.getMessage());
+		}
+
+		
+	}
+	
 }

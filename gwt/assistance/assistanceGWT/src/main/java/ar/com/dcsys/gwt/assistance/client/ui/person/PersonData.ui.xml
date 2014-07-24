@@ -12,6 +12,7 @@
 
 	<g:FlowPanel>
 		<g:Button ui:field="enroll" text="enrolar"/>
+		<g:Button ui:field="persist" text="transferir"/>
 		<g:FlowPanel styleName="${style.messages}">
 			<g:VerticalPanel ui:field="messages" styleName="${style.messages}"/>
 		</g:FlowPanel>
