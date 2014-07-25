@@ -150,17 +150,30 @@ public class DevicePostgreSqlDAO implements DeviceDAO {
 	@Override
 	public String persist(Device d) throws DeviceException {
 		
+		boolean existent = false;
+		if (d.getId() != null) {
+			Device d2 = findById(d.getId());
+			if (d2 != null) {
+				existent = true;
+			}
+		}
+
+	
 		try {
 			Connection con = cp.getConnection();
 			try {
 				String query;
-				if (d.getId() == null) {
-					String id = UUID.randomUUID().toString();
-					d.setId(id);
-					query = "insert into devices (name, description, ip, netmask, gateway, mac, enabled, id) values (?,?,?,?,?,?,?,?)";
-				} else {
+				
+				if (existent) {
 					query = "update devices set name = ?, description = ?, ip = ?, netmask = ?, gateway = ?, mac = ?, enabled = ? where id = ?";
+				} else {
+					if (d.getId() == null) {
+						String id = UUID.randomUUID().toString();
+						d.setId(id);
+					}
+					query = "insert into devices (name, description, ip, netmask, gateway, mac, enabled, id) values (?,?,?,?,?,?,?,?)";
 				}
+				
 				PreparedStatement st = con.prepareStatement(query);
 				try {
 					st.setString(1, d.getName());
