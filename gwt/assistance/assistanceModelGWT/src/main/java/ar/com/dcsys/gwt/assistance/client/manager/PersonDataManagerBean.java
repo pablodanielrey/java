@@ -35,4 +35,9 @@ public class PersonDataManagerBean implements PersonDataManager {
 		personDataManagerTransfer.persist(p, rec);
 	}
 	
+	@Override
+	public void transferFingerprints(String personId, Receiver<Boolean> rec) {
+		personDataManagerTransfer.transferFingerprints(personId, rec);
+	}
+	
 }

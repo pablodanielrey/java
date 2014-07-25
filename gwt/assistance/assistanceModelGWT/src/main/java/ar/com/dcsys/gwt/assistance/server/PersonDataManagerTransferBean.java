@@ -108,4 +108,19 @@ public class PersonDataManagerTransferBean implements PersonDataManagerTransfer 
 		
 	}
 	
+	
+	@Override
+	public void transferFingerprints(String personId, Receiver<Boolean> rec) {
+
+		try {
+			devicesManager.transferFingerprints(personId);
+			rec.onSuccess(true);
+			
+		} catch (PersonException | DeviceException e) {
+			e.printStackTrace();
+			rec.onError(e.getMessage());
+		}
+	
+	}
+	
 }

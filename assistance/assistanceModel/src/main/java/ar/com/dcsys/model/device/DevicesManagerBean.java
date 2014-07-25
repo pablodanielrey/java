@@ -2,7 +2,10 @@ package ar.com.dcsys.model.device;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,7 +25,6 @@ import ar.com.dcsys.exceptions.DeviceException;
 import ar.com.dcsys.exceptions.FingerprintException;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.model.device.GenericWebsocketClient.WebsocketClient;
-import ar.com.dcsys.model.log.AttLogsManager;
 import ar.com.dcsys.person.server.PersonSerializer;
 import ar.com.dcsys.security.Fingerprint;
 
@@ -173,7 +175,6 @@ public class DevicesManagerBean implements DevicesManager {
 						enrollManager.onMessage(EnrollAction.ERROR);
 						
 					}
-										
 
 					return;
 				}
@@ -273,6 +274,154 @@ public class DevicesManagerBean implements DevicesManager {
 		}		
 		
 	}
+	
+	
+	
+	
+	
+	
+	private interface TransferFingerprintsResult {
+		
+		public void setError(DeviceException e);
+		public DeviceException getError();
+		
+		
+	}
+	
+	private class DefaultTransferFingerprintsResult implements TransferFingerprintsResult {
+
+		private DeviceException ex = null;
+		
+		@Override
+		public void setError(DeviceException e) {
+			this.ex = e;
+		}
+
+		@Override
+		public DeviceException getError() {
+			return ex;
+		}
+		
+	}
+	
+	@Override
+	public void transferFingerprints(String personId) throws PersonException, DeviceException {
+
+		if (personId == null) {
+			throw new PersonException("person.id == null");
+		}
+		
+		final List<Fingerprint> fps = new ArrayList<Fingerprint>();
+		try {
+			List<Fingerprint> fpss = fingerprintDAO.findByPerson(personId);
+			if (fpss != null) {
+				fps.addAll(fpss);
+			}
+			
+		} catch (FingerprintException e) {
+			logger.log(Level.SEVERE,e.getMessage(),e);
+			throw new PersonException(e);
+		}
+		
+		if (fps.size() <= 0) {
+			return;
+		}
+		
+		final FingerprintSerializer fs = new FingerprintSerializer();
+		String json = fs.toJson(fps.get(0));
+		
+		URI uri = getConnectionUri();
+		final String cmd = "persistFingerprint;" + json; 
+		
+		// realizo la llamada asincrónica pero espero a que se termine. con un timeout.
+		
+		final TransferFingerprintsResult result = new DefaultTransferFingerprintsResult();
+		final Semaphore sem = new Semaphore(0);
+		
+		
+		GenericWebsocketClient gwc = new GenericWebsocketClient(new WebsocketClient() {
+			
+			private int index = 1;
+			
+			@Override
+			public void onClose(Session session, CloseReason reason) {
+				logger.fine("onClose " + String.valueOf(reason.getCloseCode().getCode()));
+				sem.release();
+			}
+			
+			@Override
+			public void onMessage(String m, Session s) {
+				if (m.startsWith("OK")) {
+					
+					if (index >= fps.size()) {
+			
+						sem.release();
+			
+					} else {
+						
+						Fingerprint fp = fps.get(index); 
+						index = index + 1;
+						String json = fs.toJson(fp);
+						String cmd = "persistFingerprint;" + json;
+						
+						try {
+							s.getBasicRemote().sendText(cmd);
+							
+						} catch (IOException e) {
+							logger.log(Level.SEVERE,e.getMessage(),e);
+							result.setError(new DeviceException(e));
+							sem.release();
+							
+						}
+						
+					}
+					
+				} else {
+					
+					result.setError(new DeviceException("ERROR : " + m));
+					sem.release();
+				}
+			}
+			
+			@Override
+			public void onOpen(Session s, EndpointConfig config) {
+				try {
+					s.getBasicRemote().sendText(cmd);
+					
+				} catch (IOException e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+		
+		try {
+			ContainerProvider.getWebSocketContainer().connectToServer(gwc, uri);
+			
+		} catch (DeploymentException e) {
+			e.printStackTrace();
+			throw new DeviceException(e);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new DeviceException(e);
+
+		}		
+
+		try {
+			sem.tryAcquire(5, TimeUnit.MINUTES);
+		} catch (InterruptedException e) {
+
+		}
+
+		if (result.getError() != null) {
+			throw result.getError();
+		}
+	
+	
+	}
+	
+	
+	
 	
 	@Override
 	public void cancel() throws DeviceException {

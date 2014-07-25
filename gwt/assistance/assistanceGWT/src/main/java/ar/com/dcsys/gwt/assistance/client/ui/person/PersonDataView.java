@@ -9,6 +9,7 @@ public interface PersonDataView extends IsWidget {
 	public interface Presenter {
 		public void enroll();
 		public void persist();
+		public void transferFingerprints();
 	}
 
 	public void showMessage(String msg);

@@ -104,6 +104,35 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 			}
 		});
 	}
+	
+	@Override
+	public void transferFingerprints() {
+		Person person = selection.getSelectedObject();
+		if (person == null) {
+			logger.log(Level.SEVERE,"selection.person == null");
+			return;
+		}
+		
+		if (person.getId() == null) {
+			logger.log(Level.SEVERE,"selection.person.id == null");
+			return;
+		}
+		String personId = person.getId();
+		
+		personDataManager.transferFingerprints(personId, new Receiver<Boolean>() {
+			@Override
+			public void onError(String error) {
+				logger.log(Level.SEVERE, error);
+			}
+			@Override
+			public void onSuccess(Boolean t) {
+				logger.log(Level.INFO,"OK");
+				if (personDataView != null) {
+					personDataView.showMessage("OK tranferencia de huellas completada");
+				}				
+			}
+		});		
+	}
 
 	
 	private ResettableEventBus eventBus;

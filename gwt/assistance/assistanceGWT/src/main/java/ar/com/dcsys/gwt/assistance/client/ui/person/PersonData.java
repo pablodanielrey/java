@@ -54,4 +54,12 @@ public class PersonData extends Composite implements PersonDataView {
 		p.enroll();
 	}
 
+	@UiHandler("transfer")
+	public void onTransfer(ClickEvent event) {
+		if (p == null) {
+			return;
+		}
+		p.transferFingerprints();
+	}
+	
 }
