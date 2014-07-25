@@ -57,18 +57,31 @@ public class FingerprintPostgresSqlDAO implements FingerprintDAO {
 	
 	@Override
 	public String persist(Fingerprint fp) throws FingerprintException {
+		
+		boolean existent = false;
+		
+		if (fp.getId() != null) {
+			Fingerprint fp2 = findById(fp.getId());
+			if (fp2 != null) {
+				existent = true;
+			}
+		}
+		
+		
 		try {
 			Connection con = cp.getConnection();
 			try {
 				String query = "";
 				String id = fp.getId();
 				
-				if (id == null) {
+				if (existent) {
+					query = "update fingerprints set person_id = ?, codification = ?, template = ?, finger = ?, algorithm = ? where id = ?";
+				} else if (fp.getId() == null) {
 					id = UUID.randomUUID().toString();
 					fp.setId(id);
 					query = "insert into fingerprints (person_id, codification, template, finger, algorithm, id) values (?,?,?,?,?,?)";
 				} else {
-					query = "update fingerprints set person_id = ?, codification = ?, template = ?, finger = ?, algorithm = ? where id = ?";
+					query = "insert into fingerprints (person_id, codification, template, finger, algorithm, id) values (?,?,?,?,?,?)";
 				}
 				
 				PreparedStatement st = con.prepareStatement(query);
