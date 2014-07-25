@@ -82,7 +82,7 @@ public class DevicePostgreSqlDAO implements DeviceDAO {
 		try {
 			Connection con = cp.getConnection();
 			try {
-				String query = "select * from device where id = ?";
+				String query = "select * from devices where id = ?";
 				PreparedStatement st = con.prepareStatement(query);
 				try {
 					st.setString(1,id);
@@ -118,7 +118,7 @@ public class DevicePostgreSqlDAO implements DeviceDAO {
 		try {
 			Connection con = cp.getConnection();
 			try {
-				String query = "select id from device";
+				String query = "select id from devices";
 				PreparedStatement st = con.prepareStatement(query);
 				try {
 					ResultSet rs = st.executeQuery();
@@ -157,9 +157,9 @@ public class DevicePostgreSqlDAO implements DeviceDAO {
 				if (d.getId() == null) {
 					String id = UUID.randomUUID().toString();
 					d.setId(id);
-					query = "insert into device (name, description, ip, netmask, gateway, mac, enabled, id) values (?,?,?,?,?,?,?,?)";
+					query = "insert into devices (name, description, ip, netmask, gateway, mac, enabled, id) values (?,?,?,?,?,?,?,?)";
 				} else {
-					query = "update device set name = ?, description = ?, ip = ?, netmask = ?, gateway = ?, mac = ?, enabled = ? where id = ?";
+					query = "update devices set name = ?, description = ?, ip = ?, netmask = ?, gateway = ?, mac = ?, enabled = ? where id = ?";
 				}
 				PreparedStatement st = con.prepareStatement(query);
 				try {
