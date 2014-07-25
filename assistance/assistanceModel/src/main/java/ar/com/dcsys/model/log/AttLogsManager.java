@@ -18,6 +18,8 @@ public interface AttLogsManager {
 	
 	public Boolean findByExactDate(Person person, Date date) throws AttLogException, PersonException, DeviceException;
 	
+	public void persist(AttLog log) throws AttLogException;
+	
 	
 //	public List<RawAttLogValue> findLogsToSynchronize(Device d) throws AttLogException, DeviceException;
 //	public void synchronizeLogs(Device d) throws AttLogException;

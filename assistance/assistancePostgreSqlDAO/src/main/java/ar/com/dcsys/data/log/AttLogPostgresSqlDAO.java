@@ -282,21 +282,41 @@ public class AttLogPostgresSqlDAO implements AttLogDAO {
 	
 	@Override
 	public void persist(AttLog log) throws AttLogException {
+		
+		boolean existent = false;
+		if (log.getId() != null) {
+			try {
+				AttLog log2 = findById(log.getId());
+				if (log2 != null) {
+					existent = true;
+				}
+				
+			} catch (PersonException e) {
+				throw new AttLogException(e);
+			}
+		}
+		
+		
+		
 		try {
 			Connection con = cp.getConnection();
 			try {
 				String query;
-				if (log.getId() == null) {
-					loadId(con, log);
-					if (log.getId() != null) {
-						// existe asi que no lo agrego. retorno sin error. esta operación es idempotente.
-						return;
-					}
-					log.setId(UUID.randomUUID().toString());
-					query = "insert into attLog (person_id, device_id, verifyMode, date, id) values (?,?,?,?,?)";
-				} else {
+				
+				if (existent) {
 					query = "update attLog set person_id = ?, device_id = ?, verifyMode = ?, date = ? where id = ?";
+				} else {
+					if (log.getId() == null) {
+						loadId(con, log);
+						if (log.getId() != null) {
+							// existe asi que no lo agrego. retorno sin error. esta operación es idempotente.
+							return;
+						}
+						log.setId(UUID.randomUUID().toString());
+					}
+					query = "insert into attLog (person_id, device_id, verifyMode, date, id) values (?,?,?,?,?)";
 				}
+
 				PreparedStatement st = con.prepareStatement(query);
 				try {
 					st.setString(1, log.getPerson().getId());

@@ -38,6 +38,11 @@ public class AttLogsManagerBean implements AttLogsManager {
 
 	
 	@Override
+	public void persist(AttLog log) throws AttLogException {
+		attLogManager.persist(log);
+	}
+	
+	@Override
 	public AttLog findById(String id) throws AttLogException, PersonException {
 		return attLogManager.findById(id);
 	}
