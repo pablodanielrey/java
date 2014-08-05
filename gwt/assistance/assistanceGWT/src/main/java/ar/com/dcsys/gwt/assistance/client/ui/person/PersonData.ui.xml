@@ -2,21 +2,87 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<ui:style>
-	
-		.messages {
-			width: 900px;
-			height: 600px;
+			
+		.panelPersonData {
+			float:left;
+			width:30em;
+			margin-left:1em;
+			-moz-border-radius: 5px;
+			border-radius: 5px;
+			border: 1px solid #C1C1C1;
+			background-color: #E8EEF7;		
+			margin-top:1em;			
 		}
+		
+		.personData {
+			display:block;
+			text-align:center;
+			margin:1em;
+		}
+		
+		.labelPerson {
+			color: #47698A;
+			font-weight:bold;
+			display:inline;		
+		}	
+		
+		.panelActions {
+			text-align: center;
+			margin: 1em;
+			border-top: 2px solid;
+			border-bottom: 2px solid;
+			padding: 0.5em;	
+		}
+	
+		.separator {
+			width: 1em;
+			height: 1em;
+			border-right: 2px solid black;
+			margin-right: 1em;
+			margin-left: 1em;
+			display: inline;
+		}	
+		
+		.enroll, .persist, .transfer {
+			display:inline;
+			cursor: pointer;
+			font-weight: bold;	
+		}	
+		
+		.enroll:hover, .persist:hover, .transfer:hover {
+			color: white;
+			background-color: black;	
+		}		
+		
+		.messages {
+			display:block;
+			color: #47698a;
+			font-style: italic;
+			text-align:center;
+			margin:1em;
+		}	
 	
 	</ui:style>
 
 	<g:FlowPanel>
-		<g:Button ui:field="enroll" text="enrolar"/>
-		<g:Button ui:field="persist" text="transferir persona"/>
-		<g:Button ui:field="transfer" text="transferir huellas"/>
+		<g:FlowPanel styleName="{style.panelPersonData}">
 		
-		<g:FlowPanel styleName="${style.messages}">
-			<g:VerticalPanel ui:field="messages" styleName="${style.messages}"/>
+			<g:FlowPanel styleName="{style.personData}">
+				<g:Label ui:field="personData" styleName="{style.labelPerson}"/>
+			</g:FlowPanel>
+			
+			<g:FlowPanel styleName="{style.panelActions}">
+				<g:Label ui:field="enroll" text="Enrolar" styleName="{style.enroll}"/>
+				<g:FlowPanel styleName="{style.separator}"/>
+				<g:Label ui:field="persist" styleName="{style.persist}"/>
+				<g:FlowPanel styleName="{style.separator}"/>
+				<g:Label ui:field="transfer" text="Transferir Huellas" styleName="{style.transfer}"/>
+		    </g:FlowPanel>
+			
+			<g:FlowPanel styleName="{style.messages}">
+				<g:Label ui:field="messages"/>
+			</g:FlowPanel>
+			
 		</g:FlowPanel>
 	</g:FlowPanel>
 

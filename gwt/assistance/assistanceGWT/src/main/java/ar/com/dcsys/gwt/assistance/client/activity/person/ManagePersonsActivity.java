@@ -20,6 +20,8 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.ResettableEventBus;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SelectionChangeEvent.Handler;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 public class ManagePersonsActivity extends AbstractActivity implements ManagePersonsView.Presenter, PersonDataView.Presenter {
@@ -40,6 +42,18 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 		this.personDataView = personDataView;
 		this.personsManager = personsManager;
 		this.personDataManager = personDataManager;
+		
+		selection.addSelectionChangeHandler(new Handler() {			
+			@Override
+			public void onSelectionChange(SelectionChangeEvent event) {
+				if (ManagePersonsActivity.this.personDataView == null) {
+					return;
+				}
+				Person p = selection.getSelectedObject();
+				ManagePersonsActivity.this.personDataView.setPersonData(p);
+				ManagePersonsActivity.this.personDataView.showMessage("");
+			}
+		});
 	}
 	
 	@Override
@@ -110,6 +124,7 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 		Person person = selection.getSelectedObject();
 		if (person == null) {
 			logger.log(Level.SEVERE,"selection.person == null");
+			personDataView.showMessage("Error: debe seleccionar una persona");
 			return;
 		}
 		
@@ -128,7 +143,7 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 			public void onSuccess(Boolean t) {
 				logger.log(Level.INFO,"OK");
 				if (personDataView != null) {
-					personDataView.showMessage("OK tranferencia de huellas completada");
+					personDataView.showMessage("La tranferencia de huellas se ha realizado exitosamente");
 				}				
 			}
 		});		

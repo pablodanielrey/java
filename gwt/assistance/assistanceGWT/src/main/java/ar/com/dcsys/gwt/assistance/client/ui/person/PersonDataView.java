@@ -1,5 +1,7 @@
 package ar.com.dcsys.gwt.assistance.client.ui.person;
 
+import ar.com.dcsys.data.person.Person;
+
 import com.google.gwt.user.client.ui.IsWidget;
 
 public interface PersonDataView extends IsWidget {
@@ -13,6 +15,7 @@ public interface PersonDataView extends IsWidget {
 	}
 
 	public void showMessage(String msg);
+	public void setPersonData(Person person);
 	
 	
 }
