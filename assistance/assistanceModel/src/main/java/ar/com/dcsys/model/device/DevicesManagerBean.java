@@ -220,7 +220,7 @@ public class DevicesManagerBean implements DevicesManager {
 				
 		PersonSerializer ps = new PersonSerializer();
 		String json = ps.toJson(p);
-		final String cmd = "persistPerson;" + json;
+		final String cmd = "model;persistPerson;" + json;
 		
 		GenericWebsocketClient gwc = new GenericWebsocketClient(new WebsocketClient() {
 			@Override
