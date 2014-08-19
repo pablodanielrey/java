@@ -331,7 +331,7 @@ public class DevicesManagerBean implements DevicesManager {
 		String json = fs.toJson(fps.get(0));
 		
 		URI uri = getConnectionUri();
-		final String cmd = "persistFingerprint;" + json; 
+		final String cmd = "model;persistFingerprint;" + json; 
 		
 		// realizo la llamada asincrónica pero espero a que se termine. con un timeout.
 		
