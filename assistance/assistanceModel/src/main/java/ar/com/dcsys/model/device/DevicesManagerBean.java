@@ -101,7 +101,7 @@ public class DevicesManagerBean implements DevicesManager {
 		
 		URI uri = getConnectionUri();
 		
-		final String cmd = "enroll;" + personId;
+		final String cmd = "reader;enroll;" + personId;
 		
 		GenericWebsocketClient gwc = new GenericWebsocketClient(new WebsocketClient() {
 			@Override
