@@ -2,6 +2,8 @@ package ar.com.dcsys.gwt.assistance.client.gin;
 
 import ar.com.dcsys.gwt.assistance.client.manager.JustificationsManager;
 import ar.com.dcsys.gwt.assistance.client.manager.JustificationsManagerBean;
+import ar.com.dcsys.gwt.assistance.client.manager.LogsManager;
+import ar.com.dcsys.gwt.assistance.client.manager.LogsManagerBean;
 import ar.com.dcsys.gwt.assistance.client.manager.PeriodsManager;
 import ar.com.dcsys.gwt.assistance.client.manager.PeriodsManagerBean;
 import ar.com.dcsys.gwt.assistance.client.manager.PersonDataManager;
@@ -18,7 +20,7 @@ public class AssistanceModelGinModule extends AbstractGinModule {
 		bind(JustificationsManager.class).to(JustificationsManagerBean.class).in(Singleton.class);
 		bind(PeriodsManager.class).to(PeriodsManagerBean.class).in(Singleton.class);
 		bind(PersonDataManager.class).to(PersonDataManagerBean.class).in(Singleton.class);
-		
+		bind(LogsManager.class).to(LogsManagerBean.class).in(Singleton.class);
 	}
 	
 }

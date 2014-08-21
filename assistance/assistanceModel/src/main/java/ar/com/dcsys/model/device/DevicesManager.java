@@ -4,6 +4,7 @@ import java.util.List;
 
 import ar.com.dcsys.data.device.Device;
 import ar.com.dcsys.data.person.Person;
+import ar.com.dcsys.exceptions.AttLogException;
 import ar.com.dcsys.exceptions.DeviceException;
 import ar.com.dcsys.exceptions.PersonException;
 
@@ -24,5 +25,7 @@ public interface DevicesManager {
 	
 	public void persist(Person p) throws PersonException, DeviceException;
 	public void transferFingerprints(String personId) throws PersonException, DeviceException;
+	
+	public List<String> syncLogs() throws AttLogException, DeviceException;
 	
 }

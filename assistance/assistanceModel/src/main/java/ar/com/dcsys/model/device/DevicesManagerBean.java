@@ -16,15 +16,19 @@ import javax.websocket.DeploymentException;
 import javax.websocket.EndpointConfig;
 import javax.websocket.Session;
 
+import ar.com.dcsys.assistance.server.AttLogSerializer;
 import ar.com.dcsys.auth.server.FingerprintSerializer;
 import ar.com.dcsys.data.device.Device;
 import ar.com.dcsys.data.device.DeviceDAO;
 import ar.com.dcsys.data.fingerprint.FingerprintDAO;
+import ar.com.dcsys.data.log.AttLog;
 import ar.com.dcsys.data.person.Person;
+import ar.com.dcsys.exceptions.AttLogException;
 import ar.com.dcsys.exceptions.DeviceException;
 import ar.com.dcsys.exceptions.FingerprintException;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.model.device.GenericWebsocketClient.WebsocketClient;
+import ar.com.dcsys.model.log.AttLogsManager;
 import ar.com.dcsys.person.server.PersonSerializer;
 import ar.com.dcsys.security.Fingerprint;
 
@@ -34,6 +38,9 @@ public class DevicesManagerBean implements DevicesManager {
 	
 	private final FingerprintDAO fingerprintDAO;
 	private final DeviceDAO deviceDAO;
+	
+	private final AttLogsManager attLogsManager;
+	private final AttLogSerializer attLogsSerializer;
 
 	private static final String wsPort = "8025";
 	private static final String wsUrl = "/websocket/cmd";
@@ -74,9 +81,11 @@ public class DevicesManagerBean implements DevicesManager {
 	}
 	
 	@Inject
-	public DevicesManagerBean(DeviceDAO deviceDAO, FingerprintDAO fingerprintDAO) {
+	public DevicesManagerBean(DeviceDAO deviceDAO, FingerprintDAO fingerprintDAO, AttLogsManager attLogsManager, AttLogSerializer attLogSerializer) {
 		this.deviceDAO = deviceDAO;
 		this.fingerprintDAO = fingerprintDAO;
+		this.attLogsManager = attLogsManager;
+		this.attLogsSerializer = attLogSerializer;
 	}
 	
 	@Override
@@ -93,6 +102,102 @@ public class DevicesManagerBean implements DevicesManager {
 	public void persist(Device d) throws DeviceException {
 		deviceDAO.persist(d);
 	}
+	
+	
+	/**
+	 * se conecta el reloj y obteiene los logs.
+	 * los guarda en la base de datos y responde los ids de los logs exitósamente almacenados.
+	 */
+	@Override
+	public List<String> syncLogs() throws AttLogException, DeviceException {
+	
+		URI uri = getConnectionUri();
+		final String cmd = "model;getAttLogs";
+		final List<String> ids = new ArrayList<String>();
+		final Semaphore sem = new Semaphore(0);
+		
+		GenericWebsocketClient gwc = new GenericWebsocketClient(new WebsocketClient() {
+			
+			private final List<AttLog> logs = new ArrayList<AttLog>();
+			
+			@Override
+			public void onClose(Session session, CloseReason reason) {
+				logger.fine("onClose " + String.valueOf(reason.getCloseCode().getCode()));
+			}
+			
+			@Override
+			public void onMessage(String m, Session session) {
+				logger.fine("Mensaje recibido : " + m);
+				
+				if (m.contains("ok")) {
+					
+					try {
+						String json = m.replace("ok ", "");
+						AttLog log = attLogsSerializer.read(json);
+						logs.add(log);
+						
+					} catch (Exception e) {
+						logger.log(Level.SEVERE,e.getMessage(),e);
+					}
+					
+				
+				} else if (m.startsWith("OK ")) {
+					
+					try {
+						session.close();
+
+					} catch (IOException e) {
+						e.printStackTrace();
+					}					
+					
+					// almaceno los logs en el server.
+					for (AttLog log : logs) {
+						try {
+							attLogsManager.persist(log);
+							ids.add(log.getId());
+							
+						} catch (AttLogException e) {
+							logger.log(Level.SEVERE,e.getMessage(),e);
+						}
+					}
+
+					sem.release();
+				}
+				
+			}
+			@Override
+			public void onOpen(Session s, EndpointConfig config) {
+				try {
+					s.getBasicRemote().sendText(cmd);
+					
+				} catch (IOException e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+				
+		try {
+			ContainerProvider.getWebSocketContainer().connectToServer(gwc, uri);
+			
+		} catch (DeploymentException e) {
+			e.printStackTrace();
+			throw new DeviceException(e);
+
+
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new DeviceException(e);
+
+		}		
+		
+		// espero a que termine la conexion del websocket y sus resultados.
+		sem.acquireUninterruptibly();
+		
+		return ids;
+		
+	}
+	
+	
 	
 	@Override
 	public void enroll(String personId, final EnrollManager enrollManager) throws PersonException, DeviceException {

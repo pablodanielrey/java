@@ -7,6 +7,7 @@ import ar.com.dcsys.gwt.assistance.client.place.ManageJustificationPlace;
 import ar.com.dcsys.gwt.assistance.client.place.ManagePersonsPlace;
 import ar.com.dcsys.gwt.assistance.client.place.PeriodsAssignationPersonPlace;
 import ar.com.dcsys.gwt.assistance.client.place.PeriodsPlace;
+import ar.com.dcsys.gwt.assistance.client.place.SyncLogsPlace;
 
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.place.shared.PlaceController;
@@ -34,6 +35,15 @@ public class Menu {
 			}
 		}));
 
+		
+		menu.addItem(new MenuItem("Actualizar Logs",false,new ScheduledCommand() {
+			@Override
+			public void execute() {
+				ctrl.goTo(new SyncLogsPlace());
+			}
+		}));
+
+		
 		/*
 		menu.addItem(new MenuItem("Pin",false,new ScheduledCommand() {
 			@Override
