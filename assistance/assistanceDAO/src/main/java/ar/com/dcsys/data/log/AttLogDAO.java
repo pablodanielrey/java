@@ -20,6 +20,7 @@ public interface AttLogDAO extends Serializable {
 	public Boolean findByExactDate(Person person, Date date) throws AttLogException, PersonException, DeviceException;
 	
 	public void persist(AttLog log) throws AttLogException;
+	public void remove(String id) throws AttLogException;
 	
 	public interface Params {
 		public Person findPersonById(String person_id) throws PersonException;

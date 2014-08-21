@@ -84,6 +84,29 @@ public class AttLogPostgresSqlDAO implements AttLogDAO {
 		log.setDevice(params.findDeviceById(device_id));
 	}
 	
+	
+	@Override
+	public void remove(String id) throws AttLogException {
+		try {
+			Connection	con = cp.getConnection();
+			try {
+				String query = "delete from attLog where id = ?";
+				PreparedStatement st = con.prepareStatement(query);
+				try {
+					st.setString(1,id);
+					st.executeUpdate();
+
+				} finally {
+					st.close();
+				}
+			} finally {
+				cp.closeConnection(con);
+			}
+		} catch (SQLException e) {
+			throw new AttLogException(e);
+		}
+	}
+	
 	@Override
 	public AttLog findById(String id) throws AttLogException, PersonException {
 		try {

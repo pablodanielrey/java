@@ -21,6 +21,8 @@ public interface AttLogsManager {
 	
 	public void persist(AttLog log) throws AttLogException;
 	
+	public void remove(String id) throws AttLogException;
+	
 	
 //	public List<RawAttLogValue> findLogsToSynchronize(Device d) throws AttLogException, DeviceException;
 //	public void synchronizeLogs(Device d) throws AttLogException;

@@ -43,6 +43,11 @@ public class AttLogsManagerBean implements AttLogsManager {
 	}
 	
 	@Override
+	public void remove(String id) throws AttLogException {
+		attLogManager.remove(id);
+	}
+	
+	@Override
 	public List<String> findAll() throws AttLogException {
 		return attLogManager.findAll();
 	}
