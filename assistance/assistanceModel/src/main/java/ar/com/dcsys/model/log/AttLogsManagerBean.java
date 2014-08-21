@@ -43,6 +43,11 @@ public class AttLogsManagerBean implements AttLogsManager {
 	}
 	
 	@Override
+	public List<String> findAll() throws AttLogException {
+		return attLogManager.findAll();
+	}
+	
+	@Override
 	public AttLog findById(String id) throws AttLogException, PersonException {
 		return attLogManager.findById(id);
 	}

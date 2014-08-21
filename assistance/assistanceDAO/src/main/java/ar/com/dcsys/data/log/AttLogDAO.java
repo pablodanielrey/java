@@ -12,6 +12,7 @@ import ar.com.dcsys.exceptions.PersonException;
 
 public interface AttLogDAO extends Serializable {
 
+	public List<String> findAll() throws AttLogException;
 	public List<AttLog> findAll(Date start, Date end) throws AttLogException, PersonException;
 	public List<AttLog> findAll(Person person, Date start, Date end) throws AttLogException;
 	public AttLog findById(String id) throws AttLogException, PersonException;

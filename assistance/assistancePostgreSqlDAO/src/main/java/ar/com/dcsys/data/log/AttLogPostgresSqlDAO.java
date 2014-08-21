@@ -118,6 +118,37 @@ public class AttLogPostgresSqlDAO implements AttLogDAO {
 		}
 	}
 	
+	
+	@Override
+	public List<String> findAll() throws AttLogException {
+		try {
+			Connection	con = cp.getConnection();
+			try {
+				String query = "select id from attLog";
+				PreparedStatement st = con.prepareStatement(query);
+				try {
+					ResultSet rs = st.executeQuery();
+					try {
+						List<String> logs = new ArrayList<>();
+						while (rs.next()) {
+							logs.add(rs.getString("id"));
+						}
+						return logs;
+						
+					} finally {
+						rs.close();
+					}
+				} finally {
+					st.close();
+				}
+			} finally {
+				cp.closeConnection(con);
+			}
+		} catch (SQLException e) {
+			throw new AttLogException(e);
+		}
+	}
+	
 	@Override
 	public List<AttLog> findAll(Date start, Date end) throws AttLogException, PersonException {
 		try {
