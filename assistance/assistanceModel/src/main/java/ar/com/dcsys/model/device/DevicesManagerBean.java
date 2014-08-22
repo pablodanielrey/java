@@ -409,6 +409,7 @@ public class DevicesManagerBean implements DevicesManager {
 		
 	}
 	
+	
 	@Override
 	public void transferFingerprints(String personId) throws PersonException, DeviceException {
 
@@ -467,7 +468,7 @@ public class DevicesManagerBean implements DevicesManager {
 						Fingerprint fp = fps.get(index); 
 						index = index + 1;
 						String json = fs.toJson(fp);
-						String cmd = "persistFingerprint;" + json;
+						String cmd = "model;persistFingerprint;" + json;
 						
 						try {
 							s.getBasicRemote().sendText(cmd);
