@@ -1,0 +1,3 @@
+insert into persons (id,name,lastname,dni) values ('378b5dad-a6e2-4875-9ee4-9ceed699d4c9','pablo daniel','rey','27294557');
+insert into user_password_auth (person_id, username, password) values ('378b5dad-a6e2-4875-9ee4-9ceed699d4c9','admin','admin');
+insert into user_password_auth (person_id, username, password) values ('378b5dad-a6e2-4875-9ee4-9ceed699d4c9','pablo','pablo');

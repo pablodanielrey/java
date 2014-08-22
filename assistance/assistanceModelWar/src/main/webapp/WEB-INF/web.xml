@@ -4,8 +4,8 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
     version="3.0">
 
-  <display-name>Reportes</display-name>
-  
+  <display-name>AssisstanceModelWar</display-name>
+  <!-- 
         <listener>
             <listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
         </listener>
@@ -33,5 +33,5 @@
 				<transport-guarantee>CONFIDENTIAL</transport-guarantee>
 			</user-data-constraint>
 		</security-constraint>
-  
+   -->
 </web-app>

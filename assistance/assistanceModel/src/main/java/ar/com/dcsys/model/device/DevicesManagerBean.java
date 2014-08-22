@@ -179,6 +179,11 @@ public class DevicesManagerBean implements DevicesManager {
 		try {
 			ContainerProvider.getWebSocketContainer().connectToServer(gwc, uri);
 			
+			// espero a que termine la conexion del websocket y sus resultados.
+			sem.acquireUninterruptibly();
+			
+			return ids;
+			
 		} catch (DeploymentException e) {
 			e.printStackTrace();
 			throw new DeviceException(e);
@@ -188,12 +193,7 @@ public class DevicesManagerBean implements DevicesManager {
 			e.printStackTrace();
 			throw new DeviceException(e);
 
-		}		
-		
-		// espero a que termine la conexion del websocket y sus resultados.
-		sem.acquireUninterruptibly();
-		
-		return ids;
+		}
 		
 	}
 	

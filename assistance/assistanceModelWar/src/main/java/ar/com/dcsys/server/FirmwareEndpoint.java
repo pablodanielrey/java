@@ -15,7 +15,10 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 import ar.com.dcsys.assistance.server.AttLogSerializer;
+import ar.com.dcsys.assistance.server.DeviceSerializer;
+import ar.com.dcsys.data.device.Device;
 import ar.com.dcsys.data.log.AttLog;
+import ar.com.dcsys.model.device.DevicesManager;
 import ar.com.dcsys.model.log.AttLogsManager;
 
 @ServerEndpoint(value="/firmware")
@@ -23,13 +26,18 @@ public class FirmwareEndpoint {
 
 	public static final Logger logger = Logger.getLogger(FirmwareEndpoint.class.getName());
 	
+	private final DeviceSerializer deviceSerializer;
+	private final DevicesManager devicesManager;
+	
 	private final AttLogSerializer attLogSerializer;
 	private final AttLogsManager attLogsManager;
 	
 	@Inject
-	public FirmwareEndpoint(AttLogSerializer attLogSerializer, AttLogsManager attLogsManager) {
+	public FirmwareEndpoint(AttLogSerializer attLogSerializer, DeviceSerializer deviceSerializer, AttLogsManager attLogsManager, DevicesManager devicesManager) {
+		this.deviceSerializer = deviceSerializer;
 		this.attLogSerializer = attLogSerializer;
 		this.attLogsManager = attLogsManager;
+		this.devicesManager = devicesManager;
 	}
 	
 	@OnOpen
@@ -42,7 +50,15 @@ public class FirmwareEndpoint {
 		try {
 			logger.log(Level.FINE,m);
 	
-			if (m.startsWith("attLog;")) {
+			if (m.startsWith("device;")) {
+				
+				String deviceJson = m.substring("device;".length());
+				Device device = deviceSerializer.read(deviceJson);
+				devicesManager.persist(device);
+
+				session.getBasicRemote().sendText("OK");
+				
+			} else if (m.startsWith("attLog;")) {
 				String attLogJson = m.replace("attLog;", "");
 				AttLog attLog = attLogSerializer.read(attLogJson);
 				attLogsManager.persist(attLog);
