@@ -63,7 +63,7 @@ public class FirmwareEndpoint {
 				AttLog attLog = attLogSerializer.read(attLogJson);
 				attLogsManager.persist(attLog);
 				
-				session.getBasicRemote().sendText("OK");
+				session.getBasicRemote().sendText("OK;delete;" + attLog.getId());
 				
 			} else {
 				logger.log(Level.SEVERE,"comando desconocido");
