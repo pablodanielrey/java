@@ -26,6 +26,7 @@ public class WebsocketsConfigurator extends ServerEndpointConfig.Configurator {
 	}
 	
 	
+	/*
 	@Override
 	public <T> T getEndpointInstance(Class<T> endpointClass) throws InstantiationException {
 		if (Websockets.class.equals(endpointClass)) {
@@ -36,5 +37,6 @@ public class WebsocketsConfigurator extends ServerEndpointConfig.Configurator {
 		}
 		return super.getEndpointInstance(endpointClass);
 	}
+	*/
 	
 }

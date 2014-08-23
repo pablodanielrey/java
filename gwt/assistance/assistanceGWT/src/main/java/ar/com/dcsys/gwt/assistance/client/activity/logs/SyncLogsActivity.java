@@ -8,6 +8,8 @@ import ar.com.dcsys.gwt.messages.client.event.MessageEvent;
 import ar.com.dcsys.gwt.messages.client.event.MessageEventHandler;
 
 import com.google.gwt.activity.shared.AbstractActivity;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -24,19 +26,63 @@ public class SyncLogsActivity extends AbstractActivity {
 	}
 	
 	
+	
+	
+	/////// notificaciones de html5 //////
+	
+	public native boolean supportsNotifications() /*-{
+		return $wnd.webkitNotifications;
+	}-*/;
+	
+	public native void requestNativePermission() /*-{
+		if ($wnd.webkitNotifications.checkPermission() != 0) {
+        	$wnd.webkitNotifications.requestPermission();
+    	}
+	}-*/;
+
+	public native void  showNativeNotification(String msg) /*-{
+    	if ($wnd.webkitNotifications.checkPermission() == 0) {
+        	$wnd.webkitNotifications.createNotification('','Notificación', msg).show();
+    	} else {
+        	alert(msg);
+    	}
+	}-*/;
+	
+	////////////////////////////////////////////
+	
+	
+	public void showNotification(String msg) {
+		if (supportsNotifications()) {
+			showNativeNotification(msg);
+		} else {
+			Window.alert(msg);
+		}
+	}
+	
+
 	private HandlerRegistration hr;
 	private final MessageEventHandler meh = new MessageEventHandler() {
 		@Override
 		public void onMessage(MessageEvent event) {
 			if ("attLogUpdate".equals(event.getType())) {
-				String json = event.getMessage();
-				Window.alert(json);
+				final String json = event.getMessage();
+				Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+					@Override
+					public void execute() {
+						showNotification(json);
+					}
+				});
 			}
 		}
 	};
 	
+	
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
+		
+		if (supportsNotifications()) {
+			requestNativePermission();
+		}
 		
 		hr = eventBus.addHandler(MessageEvent.TYPE, meh);
 		
@@ -44,12 +90,12 @@ public class SyncLogsActivity extends AbstractActivity {
 			
 			@Override
 			public void onSuccess(List<String> t) {
-				Window.alert("Logs " + t.size() + " transferidos correctamente");
+				showNotification("Logs " + t.size() + " transferidos correctamente");
 			}
 			
 			@Override
 			public void onError(String error) {
-				Window.alert(error);
+				showNotification(error);
 			}
 		});
 		

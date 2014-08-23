@@ -1,6 +1,5 @@
 package ar.com.dcsys.gwt.assistance.client.manager;
 
-import javax.inject.Inject;
 
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.gwt.assistance.shared.PersonDataManagerTransfer;
@@ -8,6 +7,7 @@ import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.ws.client.WebSocket;
 
 import com.google.gwt.core.client.GWT;
+import com.google.inject.Inject;
 
 public class PersonDataManagerBean implements PersonDataManager {
 
