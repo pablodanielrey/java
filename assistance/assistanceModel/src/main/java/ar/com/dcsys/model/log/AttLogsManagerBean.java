@@ -3,16 +3,19 @@ package ar.com.dcsys.model.log;
 import java.util.Date;
 import java.util.List;
 
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import ar.com.dcsys.assistance.server.AttLogSerializer;
 import ar.com.dcsys.data.log.AttLog;
 import ar.com.dcsys.data.log.AttLogDAO;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.exceptions.AttLogException;
 import ar.com.dcsys.exceptions.DeviceException;
 import ar.com.dcsys.exceptions.PersonException;
-import ar.com.dcsys.model.PersonsManager;
+import ar.com.dcsys.gwt.messages.shared.TransportEvent;
+import ar.com.dcsys.gwt.messages.shared.TransportReceiver;
 
 /**
  * 
@@ -25,21 +28,49 @@ public class AttLogsManagerBean implements AttLogsManager {
 
 	private final AttLogDAO attLogManager;
 	
-//	@EJB MailService mailService;
-//	@EJB Configuration config;
-//	@EJB DevicesManager devicesManager;
-	private final PersonsManager personsManager;
+	private final Event<TransportEvent> transportEventBus;
+	private final AttLogSerializer attLogSerializer;
+
+	/**
+	 * creo un receiver para poder enviar el mensaje. ignoro cualquier resultado.
+	 */
+	private final TransportReceiver tr = new TransportReceiver() {
+		@Override
+		public void onSuccess(String message) {
+		}
+		@Override
+		public void onFailure(String error) {
+		}
+	};
 	
 	@Inject
-	public AttLogsManagerBean(AttLogDAO attLogDAO, PersonsManager personsManager) {
+	public AttLogsManagerBean(AttLogDAO attLogDAO, Event<TransportEvent> transportEventBus, AttLogSerializer attLogSerializer) {
 		this.attLogManager = attLogDAO;
-		this.personsManager = personsManager;
+		this.transportEventBus = transportEventBus;
+		this.attLogSerializer = attLogSerializer;
 	}
 
+	
+	
+	/**
+	 * Dispara un evento cdi para transferir el log al lado cliente.
+	 * @param log
+	 */
+	private void fireLogUpdate(AttLog log) {
+		String json = attLogSerializer.toJson(log);
+		
+		TransportEvent te = new TransportEvent();
+		te.setTransportReceiver(tr);
+		te.setMessage(json);
+		te.setType("attLogUpdate");					// TODO: cambiar esto por algun enumerativo compartido globalmente o algo asi.
+		
+		transportEventBus.fire(te);
+	}
 	
 	@Override
 	public void persist(AttLog log) throws AttLogException {
 		attLogManager.persist(log);
+		fireLogUpdate(log);
 	}
 	
 	@Override

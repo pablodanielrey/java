@@ -155,6 +155,26 @@
       <version>1.0-SNAPSHOT</version>
     </dependency>
 
+
+
+	<!-- ver si la puedo cambiar por un esquema mas genérico de eventos -->
+
+   <dependency>
+      <groupId>javax.enterprise</groupId>
+      <artifactId>cdi-api</artifactId>
+      <version>${cdi.version}</version>
+      <scope>provided</scope>
+   </dependency>
+
+
+	<dependency>
+      		<groupId>ar.com.dcsys.gwt.utils</groupId>
+      		<artifactId>messagesGWT</artifactId>
+      		<version>1.0-SNAPSHOT</version>
+    	</dependency>
+
+	<!-- -->
+
   </dependencies>
 
 </project>

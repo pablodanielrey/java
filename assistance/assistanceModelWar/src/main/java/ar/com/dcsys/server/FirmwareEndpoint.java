@@ -33,7 +33,9 @@ public class FirmwareEndpoint {
 	private final AttLogsManager attLogsManager;
 	
 	@Inject
-	public FirmwareEndpoint(AttLogSerializer attLogSerializer, DeviceSerializer deviceSerializer, AttLogsManager attLogsManager, DevicesManager devicesManager) {
+	public FirmwareEndpoint(AttLogSerializer attLogSerializer, DeviceSerializer deviceSerializer, 
+															   AttLogsManager attLogsManager, 
+															   DevicesManager devicesManager) {
 		this.deviceSerializer = deviceSerializer;
 		this.attLogSerializer = attLogSerializer;
 		this.attLogsManager = attLogsManager;
