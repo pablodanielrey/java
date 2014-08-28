@@ -1,6 +1,7 @@
 <module>
   <inherits name="com.google.gwt.user.User"/>
 
+  <inherits name="ar.com.dcsys.AnnotationsProcessor" />
   <inherits name="name.pehl.piriti.json.JSON" />
 
   <source path="client"/>

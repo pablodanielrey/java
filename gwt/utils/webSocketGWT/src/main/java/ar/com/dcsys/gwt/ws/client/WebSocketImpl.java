@@ -117,6 +117,10 @@ public class WebSocketImpl implements WebSocket {
 	};
 	
 
+	@Override
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
 	
 	/**
@@ -142,6 +146,11 @@ public class WebSocketImpl implements WebSocket {
 		this.eventBus = eventBus;
 		receivers = new HashMap<String,TransportReceiver>();
 		wsState = WebSocketState.CLOSED;		
+	}
+	
+	@Override
+	public WebSocketState getState() {
+		return wsState;
 	}
 	
 	@Override

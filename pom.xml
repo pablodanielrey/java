@@ -22,7 +22,7 @@
 	<module>assistance</module>
 <!--	<module>mapau</module> -->
 	<module>gwt</module>
-	<module>ear</module>
+<!--	<module>ear</module> -->
   </modules>
   
   <properties>

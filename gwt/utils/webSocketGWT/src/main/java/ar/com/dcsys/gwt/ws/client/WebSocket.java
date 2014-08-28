@@ -25,4 +25,19 @@ public interface WebSocket extends Transport {
 	public void close() throws SocketException;
 	
 	
+	/**
+	 * Retorna el estado interno del socket.
+	 * @return
+	 */
+	public WebSocketState getState();
+	
+	
+	/**
+	 * Setea la url de conexion. 
+	 * en el caso de no setearla se toma una por defecto.
+	 * @param url
+	 */
+	public void setUrl(String url);
+	
+	
 }
