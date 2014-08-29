@@ -83,7 +83,7 @@ public class Menu extends Composite implements MenuView {
 		};
 		panelAssistance = new FlowPanel();
 		panelAssistance.addDomHandler(clickHandler, ClickEvent.getType());
-		
+		panelAssistance.setVisible(false);
 		
 		assistanceImageContainer = new FlowPanel();
 		Image img = new Image(resources.icoAssistance());

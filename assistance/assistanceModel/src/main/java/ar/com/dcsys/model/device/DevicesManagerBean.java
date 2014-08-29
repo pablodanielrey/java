@@ -200,7 +200,7 @@ public class DevicesManagerBean implements DevicesManager {
 	
 	
 	@Override
-	public void enroll(String personId, final EnrollManager enrollManager) throws PersonException, DeviceException {
+	public void enroll(final String personId, final EnrollManager enrollManager) throws PersonException, DeviceException {
 		
 		logger.fine("enroll");
 		
@@ -272,7 +272,6 @@ public class DevicesManagerBean implements DevicesManager {
 					// se tiene la huella. asi que se la almacena en la base.
 					try {
 						fingerprintDAO.persist(fp);
-						
 						enrollManager.onSuccess(fp);
 						
 					} catch (FingerprintException e1) {
