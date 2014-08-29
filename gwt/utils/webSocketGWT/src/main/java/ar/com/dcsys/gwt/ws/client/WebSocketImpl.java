@@ -145,7 +145,7 @@ public class WebSocketImpl implements WebSocket {
 		this.url = getUrl();
 		this.eventBus = eventBus;
 		receivers = new HashMap<String,TransportReceiver>();
-		wsState = WebSocketState.CLOSED;		
+		wsState = WebSocketState.CLOSED;	
 	}
 	
 	@Override
@@ -155,6 +155,10 @@ public class WebSocketImpl implements WebSocket {
 	
 	@Override
 	public void open() throws SocketException {
+
+		if (!Websocket.isSupported()) {
+			throw new SocketException("Websockets no soportados");
+		}
 		
 		if (url == null) {
 			throw new InvalidUrlException();
@@ -201,12 +205,20 @@ public class WebSocketImpl implements WebSocket {
 	
 	@Override
 	public void send(String id, String msg, TransportReceiver rec) {
+		
+		if (!Websocket.isSupported()) {
+			rec.onFailure("Websockets no soportados");
+			return;
+		}
+		
 		if (wsState != WebSocketState.OPEN) {
 			rec.onFailure("La conexión con el servidor se encuentra cerrada");
+			return;
 		}
 
 		if (msg == null) {
 			rec.onFailure("msg == null");
+			return;
 		}
 		
 		try {		
