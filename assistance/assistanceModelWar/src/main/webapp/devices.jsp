@@ -3,7 +3,7 @@
 <html>
 <head>
 	<c:if test="${refresh != null}">
-		<meta http-equiv="refresh" content="5">
+		<meta http-equiv="refresh" content="2">
 	</c:if>
 	<style>
 		ul li {
