@@ -36,6 +36,10 @@
 		.col4 button {
 		    cursor:pointer;
 		}
+		
+		.col5 button {
+		    cursor:pointer;
+		}		
 	</style>
 </head>
 <body>
@@ -46,6 +50,14 @@
 			<button type="submit"/>Actualizar Usuarios</button>
 		</form>
 	</div>
+
+	<div>
+		<form action="devices" method="post">
+			<input type="hidden" name="function" value="cancel"/> 
+			<button type="submit"/>Cancelar Enrolamiento</button>
+		</form>
+	</div>
+
 	
 	<div>
 		<c:if test="${messages != null}">${messages}</c:if>

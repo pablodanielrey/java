@@ -198,6 +198,51 @@ public class DevicesManagerBean implements DevicesManager {
 	}
 	
 	
+	@Override
+	public void cancel() throws DeviceException {
+		logger.fine("cancel");
+
+		URI uri = getConnectionUri();
+		
+		final String cmd = "reader;cancel";
+
+		GenericWebsocketClient gwc = new GenericWebsocketClient(new WebsocketClient() {
+			@Override
+			public void onClose(Session session, CloseReason reason) {
+				logger.fine("onClose " + String.valueOf(reason.getCloseCode().getCode()));
+			}
+			
+			@Override
+			public void onMessage(String m, Session session) {
+				logger.fine("Mensaje recibido : " + m);
+			}
+			@Override
+			public void onOpen(Session s, EndpointConfig config) {
+				try {
+					s.getBasicRemote().sendText(cmd);
+					
+				} catch (IOException e) {
+					logger.log(Level.SEVERE,e.getMessage(),e);
+				}
+			}
+		});
+				
+		try {
+			ContainerProvider.getWebSocketContainer().connectToServer(gwc, uri);
+			
+		} catch (DeploymentException e) {
+			e.printStackTrace();
+			throw new DeviceException(e);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new DeviceException(e);
+			
+		}		
+	}
+	
+	
+	
 	
 	@Override
 	public void enroll(final String personId, final EnrollManager enrollManager) throws PersonException, DeviceException {
@@ -305,11 +350,10 @@ public class DevicesManagerBean implements DevicesManager {
 			e.printStackTrace();
 			throw new DeviceException(e);
 
-
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new DeviceException(e);
-
+			
 		}
 
 	}
@@ -527,11 +571,7 @@ public class DevicesManagerBean implements DevicesManager {
 	
 	
 	
-	
-	@Override
-	public void cancel() throws DeviceException {
-		
-	}
+
 	
 	
 }

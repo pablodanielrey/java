@@ -53,8 +53,13 @@ public class DevicesServlet extends HttpServlet {
 		}
 		
 		if ("enroll".equals(function)) {
-			getUsers(req, resp);
+//			getUsers(req, resp);
 			enroll(req,resp);
+		}
+		
+		if ("cancel".equals(function)) {
+//			getUsers(req, resp);
+			cancel(req,resp);
 		}
 		
 		req.getRequestDispatcher("/devices.jsp").forward(req, resp);
@@ -76,6 +81,18 @@ public class DevicesServlet extends HttpServlet {
 		
 	}
 
+	private void cancel(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
+		enroller.cancel();
+		try {
+			Thread.sleep(1000l);
+		} catch (InterruptedException e) {
+
+		}
+		String msg = enroller.getStatus();
+		req.setAttribute("refresh",true);
+		req.setAttribute("messages", msg);
+	}
+	
 	
 	private void enroll(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
 		

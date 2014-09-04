@@ -56,21 +56,27 @@ public class Enroller {
 						try {
 							transferPerson(personId);
 							showMessage("Usuario correctamente enrolado");
+							running = false;
+							
 						} catch (PersonException | DeviceException e) {
 							showMessage("Error enrolando usuario en el dispositivo");
+							running = false;
 						}
 						
 					}
 					@Override
 					public void onMessage(EnrollAction action) {
 						showMessage(action.toString());
+						if (EnrollAction.CANCELED.equals(action) || EnrollAction.ERROR.equals(action)) {
+							running = false;
+						}
 					}
 				});
+				
 			} catch (Exception e) {
 				showMessage(e.getMessage());
-
-			} finally {
 				running = false;
+
 			}
 		};
 	};
@@ -89,6 +95,16 @@ public class Enroller {
 		this.personsManager = personsManager;
 	}
 	
+	public synchronized void cancel() {
+		if (!running) {
+			return;
+		}
+		try {
+			devicesManager.cancel();
+		} catch (DeviceException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public synchronized void enroll(String personId) {
 		if (running) {
