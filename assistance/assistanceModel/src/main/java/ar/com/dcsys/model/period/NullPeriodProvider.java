@@ -5,6 +5,7 @@ import java.util.List;
 
 import ar.com.dcsys.data.period.Period;
 import ar.com.dcsys.data.period.PeriodType;
+import ar.com.dcsys.data.period.PeriodTypeNull;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.exceptions.PeriodException;
 import ar.com.dcsys.model.log.AttLogsManager;
@@ -19,11 +20,11 @@ public class NullPeriodProvider implements PeriodProvider {
 
 	@Override
 	public boolean isUsable(PeriodType type) {
-		return type.equals(PeriodType.NULL);
+		return type instanceof PeriodTypeNull;
 	}
 
 	@Override
-	public List<Period> findPeriods(Date pstart, Date pend, Date start,	Date end, Person person, AttLogsManager logManager, boolean onlyWorkDays) throws PeriodException {
+	public List<Period> findPeriods(Date pstart, Date pend, Date start,	Date end, Person person, AttLogsManager logManager, boolean onlyWorkDays, PeriodType type) throws PeriodException {
 		return null;
 	}
 

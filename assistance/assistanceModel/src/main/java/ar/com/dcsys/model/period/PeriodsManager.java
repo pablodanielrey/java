@@ -12,7 +12,7 @@ import ar.com.dcsys.exceptions.PersonException;
 
 
 public interface PeriodsManager {
-
+	
 	public List<Period> findAll(Person person, Date start, Date end) throws PeriodException;
 	public List<Period> findAll(Person person, Date start, Date end, boolean onlyWorkDays) throws PeriodException;
 	

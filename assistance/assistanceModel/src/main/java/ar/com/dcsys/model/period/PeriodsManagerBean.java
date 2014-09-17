@@ -12,8 +12,8 @@ import ar.com.dcsys.data.period.Period;
 import ar.com.dcsys.data.period.PeriodAssignation;
 import ar.com.dcsys.data.period.PeriodDAO;
 import ar.com.dcsys.data.period.PeriodType;
+import ar.com.dcsys.data.period.PeriodTypeNull;
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.exceptions.PeriodException;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.model.PersonsManager;
@@ -34,6 +34,8 @@ public class PeriodsManagerBean implements PeriodsManager {
 		new SystemPeriodProvider(),
 		new WatchmanPeriodProvider()
 	};
+	
+	
 
 	@Inject
 	public PeriodsManagerBean(PeriodDAO periodDAO, AttLogsManager attLogsManager,PersonsManager personsManager) {
@@ -98,9 +100,9 @@ public class PeriodsManagerBean implements PeriodsManager {
 				
 				PeriodProvider pp = findFirstProvider(type);
 				if (pp == null) {
-					throw new PeriodException("No se puede encontrar el períod provider " + type.name() + " para la persona : " + person.getId());
+					throw new PeriodException("No se puede encontrar el períod provider " + type.getName() + " para la persona : " + person.getId());
 				}
-				List<Period> periods = pp.findPeriods(pstart, pend, start, end, person, attLogsManager, onlyWorkDays);
+				List<Period> periods = pp.findPeriods(pstart, pend, start, end, person, attLogsManager, onlyWorkDays,type);
 				if (periods != null && periods.size() > 0) {
 					periodsR.addAll(periods);
 				}
@@ -189,7 +191,7 @@ public class PeriodsManagerBean implements PeriodsManager {
 				//throw new PeriodException("Asignación de período con persona nula");
 			}
 			
-			if (pa.getType().equals(PeriodType.NULL)) {
+			if (pa.getType() instanceof PeriodTypeNull) {
 				if (persons.contains(p)) {
 					persons.remove(p);
 				}

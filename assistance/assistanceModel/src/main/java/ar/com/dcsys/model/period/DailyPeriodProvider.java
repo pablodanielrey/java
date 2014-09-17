@@ -5,12 +5,16 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import ar.com.dcsys.data.common.Days;
 import ar.com.dcsys.data.log.AttLog;
 import ar.com.dcsys.data.period.Period;
-import ar.com.dcsys.data.period.WorkedHours;
 import ar.com.dcsys.data.period.PeriodType;
+import ar.com.dcsys.data.period.PeriodTypeDailyParams;
+import ar.com.dcsys.data.period.WorkedHours;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.exceptions.PeriodException;
 import ar.com.dcsys.model.log.AttLogsManager;
@@ -20,12 +24,11 @@ public class DailyPeriodProvider implements PeriodProvider {
 
 	@Override
 	public boolean isUsable(PeriodType type) {
-		return type.equals(PeriodType.DAILY);
+		return type instanceof PeriodTypeDailyParams;
 	}
 
 	@Override
-	public List<Period> findPeriods(Date pstart, Date pend, Date start,	Date end, Person person, AttLogsManager logManager, boolean onlyWorkDays) throws PeriodException {
-
+	public List<Period> findPeriods(Date pstart, Date pend, Date start,	Date end, Person person, AttLogsManager logManager, boolean onlyWorkDays, PeriodType type) throws PeriodException {
 		
 		calendar = Calendar.getInstance();
 		
@@ -107,7 +110,7 @@ public class DailyPeriodProvider implements PeriodProvider {
 			if (periods.size() <= 0) {
 				
 				// son todas faltas.
-				absent.addAll(getAbsent(person, estart, eend, onlyWorkDays));
+				absent.addAll(getAbsent(person, estart, eend, onlyWorkDays, type));
 				
 			} else {
 			
@@ -118,7 +121,7 @@ public class DailyPeriodProvider implements PeriodProvider {
 				if (estart.before(firstPeriod.getStart())) {
 					
 					Date endAbsent = new Date(firstPeriod.getStart().getTime() - aDay);
-					absent.addAll(getAbsent(person, estart, endAbsent, onlyWorkDays));
+					absent.addAll(getAbsent(person, estart, endAbsent, onlyWorkDays, type));
 					
 				}
 				
@@ -134,7 +137,7 @@ public class DailyPeriodProvider implements PeriodProvider {
 					
 					long daysElapsed = ((actualPeriod - previousPeriod) / aDay);
 					if (daysElapsed > 1) {
-						absent.addAll(getAbsent(person, new Date(previousPeriod + aDay), new Date(actualPeriod - aDay), onlyWorkDays));
+						absent.addAll(getAbsent(person, new Date(previousPeriod + aDay), new Date(actualPeriod - aDay), onlyWorkDays, type));
 					}
 					
 					previousPeriod = actualPeriod;
@@ -144,7 +147,7 @@ public class DailyPeriodProvider implements PeriodProvider {
 				long endQuery = initialInDay(eend).getTime();
 				long daysElapsed = (endQuery - previousPeriod) / aDay;
 				if (daysElapsed > 0) {
-					absent.addAll(getAbsent(person, new Date(previousPeriod + aDay), new Date(endQuery), onlyWorkDays));
+					absent.addAll(getAbsent(person, new Date(previousPeriod + aDay), new Date(endQuery), onlyWorkDays, type));
 				}
 			}
 			
@@ -161,6 +164,20 @@ public class DailyPeriodProvider implements PeriodProvider {
 
 	
 	private Calendar calendar;
+
+	private Map<Integer,Days> hashDays = null;
+	
+	private void initializeHashDays() {
+		hashDays = new HashMap<Integer,Days>();
+		
+		hashDays.put(Calendar.SUNDAY, Days.SUN);
+		hashDays.put(Calendar.MONDAY, Days.MON);
+		hashDays.put(Calendar.TUESDAY, Days.TUE);
+		hashDays.put(Calendar.WEDNESDAY, Days.WED);
+		hashDays.put(Calendar.THURSDAY, Days.THU);
+		hashDays.put(Calendar.FRIDAY, Days.FRI);
+		hashDays.put(Calendar.SATURDAY, Days.SAT);
+	}
 	
 	
 	/**
@@ -173,7 +190,7 @@ public class DailyPeriodProvider implements PeriodProvider {
 	 * @param end
 	 * @return
 	 */
-	private List<Period> getAbsent(Person person, Date start, Date end, boolean onlyWorkDays) {
+	private List<Period> getAbsent(Person person, Date start, Date end, boolean onlyWorkDays, PeriodType type) {
 		long aDay = 1000l * 60l * 60l * 24l;
 		long actualDayStart = initialInDay(start).getTime();
 		long queryEnd = initialInDay(end).getTime();
@@ -184,7 +201,7 @@ public class DailyPeriodProvider implements PeriodProvider {
 			if (onlyWorkDays) {
 				calendar.setTimeInMillis(actualDayStart);
 				int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-				if (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) {
+				if (!verifyWorkDay(dayOfWeek, calendar, type)) {
 					// fin de semana no se tiene en cuenta.
 					actualDayStart = actualDayStart + aDay;
 					continue;
@@ -202,6 +219,15 @@ public class DailyPeriodProvider implements PeriodProvider {
 		return absent;
 	}
 	
+	
+	
+	private boolean verifyWorkDay(int dayOfWeek, Calendar calendar, PeriodType type) {
+		if (hashDays == null) {
+			initializeHashDays();
+		}		
+		PeriodTypeDailyParams tDaily = (PeriodTypeDailyParams)type;
+		return tDaily.getDays().contains(hashDays.get(dayOfWeek));
+	}
 	
 	private List<List<AttLog>> organize(List<AttLog> logs) {
 

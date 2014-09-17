@@ -9,7 +9,6 @@ import ar.com.dcsys.data.justification.GeneralJustificationDate;
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.data.period.PeriodAssignation;
-import ar.com.dcsys.data.period.PeriodType;
 import ar.com.dcsys.data.period.WorkedHours;
 import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.MailChange;
@@ -145,7 +144,6 @@ public interface TestManager extends Manager {
 	
 	public void test40(Group group, Receiver<List<Person>> receiver);
 	public void test41(Person person, Receiver<List<PeriodAssignation>> receiver);
-	public void test42(Receiver<List<PeriodType>> receiver);
 	public void test43(Person person, PeriodAssignation periodAssignation, Receiver<Void> receiver); 
 	
 	
@@ -163,7 +161,6 @@ public interface TestManager extends Manager {
 	
 	
 	public void test60(Person person, Receiver<List<PeriodAssignation>> receiver);
-	public void test61(Receiver<List<PeriodType>> receiver);
 	public void test62(Person person, PeriodAssignation periodAssignation, Receiver<Void> receiver);
 	
 	public void test63(Date start, Date end, List<Person> persons, Receiver<ReportSummary> rec);

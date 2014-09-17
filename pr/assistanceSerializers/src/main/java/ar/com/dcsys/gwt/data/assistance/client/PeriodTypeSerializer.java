@@ -1,21 +1,147 @@
 package ar.com.dcsys.gwt.data.assistance.client;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import name.pehl.piriti.json.client.JsonReader;
+import name.pehl.piriti.json.client.JsonWriter;
+import ar.com.dcsys.data.common.Days;
 import ar.com.dcsys.data.period.PeriodType;
+import ar.com.dcsys.data.period.PeriodTypeDailyParams;
+import ar.com.dcsys.data.period.PeriodTypeNull;
+import ar.com.dcsys.data.period.PeriodTypeSystem;
+import ar.com.dcsys.data.period.PeriodTypeWatchman;
 import ar.com.dcsys.pr.CSD;
+
+import com.google.gwt.core.shared.GWT;
 
 public class PeriodTypeSerializer implements CSD<PeriodType> {
 	
+	public static final Logger logger = Logger.getLogger(PeriodTypeSerializer.class.getName());
 	
-	@Override
-	public PeriodType read(String json) {
-		String data = json.replace("\"", "");
-		return PeriodType.valueOf(data);
-	}
+	/*public interface Reader extends JsonReader<PeriodType> {}
+	public static final Reader READER = GWT.create(Reader.class);
+	
+	public interface Writer extends JsonWriter<PeriodType> {}
+	public static final Writer WRITER = GWT.create(Writer.class);*/
+	
+	
+
 	
 	@Override
 	public String toJson(PeriodType o) {
-		String data = "\"" + o.toString() + "\"";
-		return data;
+		String d = "";
+		if (o instanceof PeriodTypeNull) {
+			PeriodTypeNull p = (PeriodTypeNull)o;
+			d = "{\"type\":\"" + PeriodTypeNull.class.getName() + "\",\"id\":\"" + p.getId() + "\",\"name\":\"" + p.getName() + "\"}";
+			logger.log(Level.WARNING,"PeriodTypeSerializer:" + d);
+			return d;
+		}
+		if (o instanceof PeriodTypeSystem) {
+			PeriodTypeSystem p = (PeriodTypeSystem)o;
+			d = "{\"type\":\"" + PeriodTypeSystem.class.getName() + "\",\"id\":\"" + p.getId() + "\",\"name\":\"" + p.getName() + "\"}";
+			logger.log(Level.WARNING,"PeriodTypeSerializer:" + d);
+			return d;
+		}
+		if (o instanceof PeriodTypeWatchman) {
+			PeriodTypeWatchman p = (PeriodTypeWatchman)o;
+			d = "{\"type\":\"" + PeriodTypeWatchman.class.getName() + "\",\"id\":\"" + p.getId() + "\",\"name\":\"" + p.getName() + "\"}";
+			logger.log(Level.WARNING,"PeriodTypeSerializer:" + d);
+			return d;
+		}
+		if (o instanceof PeriodTypeDailyParams) {
+			PeriodTypeDailyParams p = (PeriodTypeDailyParams)o;
+			d = "{\"type\":\"" + PeriodTypeSystem.class.getName() + "\",\"id\":\"" + p.getId() + "\",\"name\":\"" + p.getName() + "\"";
+			for(Days day : Days.values()) {
+				d += ",\"" + day.toString() + "\":";
+				if (p.getDays().contains(day)) {
+					d += "true";				
+				} else {
+					d += "false";
+				}
+			}
+			d += "}";
+			logger.log(Level.WARNING,"PeriodTypeSerializer:" + d);
+			return d;
+		}
+
+		logger.log(Level.WARNING,"PeriodTypeSerializer: tipo no encontrado");
+		return "";
+	}
+	
+	@Override
+	public PeriodType read(String json) {
+		logger.log(Level.WARNING,json);
+		
+		if (json == null || json.equals("")) {
+			return null;
+		}
+		
+		json.replace("\"", "");
+		String[] str = json.split(",");
+		String type = (str[0].split(":"))[0]; 
+		
+		if (type.equals(PeriodTypeNull.class.getName())) {
+			PeriodTypeNull p = new PeriodTypeNull();
+			for(int i = 0; i <= str.length; i++) {
+				String [] elems = str[i].split(":");
+				if (elems[0].equals("id")) {
+					p.setId(elems[1]);
+					break;
+				}
+			}
+			return p;
+		}
+		
+		if (type.equals(PeriodTypeSystem.class.getName())) {
+			PeriodTypeSystem p = new PeriodTypeSystem();
+			for(int i = 0; i <= str.length; i++) {
+				String [] elems = str[i].split(":");
+				if (elems[0].equals("id")) {
+					p.setId(elems[1]);
+					break;
+				}
+			}
+			return p;
+		}
+		
+		if (type.equals(PeriodTypeWatchman.class.getName())) {
+			PeriodTypeWatchman p = new PeriodTypeWatchman();
+			for(int i = 0; i <= str.length; i++) {
+				String [] elems = str[i].split(":");
+				if (elems[0].equals("id")) {
+					p.setId(elems[1]);
+					break;
+				}
+			}
+			return p;
+		}
+		
+		if (type.equals(PeriodTypeDailyParams.class.getName())) {
+			PeriodTypeDailyParams p = new PeriodTypeDailyParams();
+			for(int i = 0; i <= str.length; i++) {
+				String [] elems = str[i].split(":");
+				
+				if (elems[0].equals("id")) {
+					p.setId(elems[1]);
+				} else {
+					Set<Days> days = new HashSet<>();
+					for(Days day : Days.values()) {
+						if(elems[0].equals(day.toString())) {
+							if (elems[1].equals("true")) {
+								days.add(day);
+							}
+						}
+					}
+					p.setDays(days);
+				}
+			}
+			return p;
+		}
+		
+		return null;
 	}
 	
 }

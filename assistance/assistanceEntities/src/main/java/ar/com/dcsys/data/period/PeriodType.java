@@ -1,6 +1,10 @@
 package ar.com.dcsys.data.period;
 
 
-public enum PeriodType {
-	NULL, DAILY, SYSTEMS, WATCHMAN;
+public interface PeriodType {
+		
+	public String getName();
+	
+	public String getId();
+	public void setId(String id);
 }

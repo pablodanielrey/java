@@ -158,15 +158,6 @@ public class PeriodsManagerTransferBean implements PeriodsManagerTransfer {
 		}		
 	}
 
-	@Override
-	public void findAllTypesPeriods(Receiver<List<PeriodType>> receiver) {
-		try {
-			List<PeriodType> types = Arrays.asList(PeriodType.values());
-			receiver.onSuccess(types);
-		} catch (Exception e) {
-			receiver.onError(e.getMessage());
-		}
-	}
 
 	@Override
 	public void remove(Person person, PeriodAssignation periodAssignation,Receiver<Void> receiver) {

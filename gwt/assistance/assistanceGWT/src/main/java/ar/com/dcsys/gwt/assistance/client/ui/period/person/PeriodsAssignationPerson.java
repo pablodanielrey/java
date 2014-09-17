@@ -3,11 +3,12 @@ package ar.com.dcsys.gwt.assistance.client.ui.period.person;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-
+import ar.com.dcsys.data.common.Days;
 import ar.com.dcsys.data.period.PeriodAssignation;
-import ar.com.dcsys.data.period.PeriodType;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.gwt.assistance.client.common.PeriodsAssignationSort;
 import ar.com.dcsys.gwt.assistance.client.ui.cell.PersonCell;
@@ -40,6 +41,7 @@ import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ValueListBox;
@@ -49,7 +51,7 @@ import com.google.gwt.user.datepicker.client.DateBox.DefaultFormat;
 import com.google.gwt.user.datepicker.client.DatePicker;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-public class PeriodsAssignationPerson extends Composite implements PeriodsAssignationPersonView{
+public class PeriodsAssignationPerson extends Composite implements PeriodsAssignationPersonView {
 
 	private static PeriodsPersonUiBinder uiBinder = GWT.create(PeriodsPersonUiBinder.class);
 
@@ -67,7 +69,7 @@ public class PeriodsAssignationPerson extends Composite implements PeriodsAssign
 	private Timer filterTimer = null;		
 	private Presenter p;
 	
-	private SingleSelectionModel<PeriodType> typeSelection;
+	private SingleSelectionModel<PeriodTypeEnum> typeSelection;
 	
 	@UiField(provided=true) TextBox filter;
 	@UiField(provided=true) Label usersCount;
@@ -76,7 +78,7 @@ public class PeriodsAssignationPerson extends Composite implements PeriodsAssign
 	
 	@UiField(provided=true) DataGrid<PeriodAssignation> periods;
 	@UiField(provided=true) DateBox date;
-	@UiField(provided=true) ValueListBox<PeriodType> types;
+	@UiField(provided=true) ValueListBox<PeriodTypeEnum> types;
 	@UiField Button commit;
 
 	private void createFilter() {
@@ -172,31 +174,16 @@ public class PeriodsAssignationPerson extends Composite implements PeriodsAssign
 	}
 	
 	
-	private String periodTypeToString(PeriodType pt) {
-		switch (pt) {
-			case NULL:
-				return "nulo";
-			case DAILY:
-				return "diario";
-			case SYSTEMS:
-				return "sistemas";
-			case WATCHMAN:
-				return "sereno";
-			default:
-				return "indefinido";
-		}
-	}
-	
 	private void createType() {
-		types = new ValueListBox<PeriodType>(new Renderer<PeriodType>() {
-			private String getValue(PeriodType type) {
+		types = new ValueListBox<PeriodTypeEnum>(new Renderer<PeriodTypeEnum>() {
+			private String getValue(PeriodTypeEnum type) {
 				if (type == null) {
-					return "Nulo";
+					return "-";
 				}
-				return periodTypeToString(type);
+				return type.getName();
 			}
 			@Override
-			public String render(PeriodType object) {
+			public String render(PeriodTypeEnum object) {
 				if (object == null) {
 					return "";
 				}
@@ -204,7 +191,7 @@ public class PeriodsAssignationPerson extends Composite implements PeriodsAssign
 			}
 
 			@Override
-			public void render(PeriodType object, Appendable appendable) throws IOException {
+			public void render(PeriodTypeEnum object, Appendable appendable) throws IOException {
 				if (object == null) {
 					return;
 				}
@@ -213,14 +200,20 @@ public class PeriodsAssignationPerson extends Composite implements PeriodsAssign
 			
 		});
 		
-		types.addValueChangeHandler(new ValueChangeHandler<PeriodType>() {
+		types.addValueChangeHandler(new ValueChangeHandler<PeriodTypeEnum>() {
 
 			@Override
-			public void onValueChange(ValueChangeEvent<PeriodType> event) {
+			public void onValueChange(ValueChangeEvent<PeriodTypeEnum> event) {
 				if (typeSelection != null) {
-					PeriodType t = types.getValue();
+					PeriodTypeEnum t = types.getValue();
 					if (t != null) {
 						typeSelection.setSelected(t, true);
+						if (t.equals(PeriodTypeEnum.DAILY)) {
+							clearDays();
+							setVisibleWeekDays(true);
+						} else {							
+							setVisibleWeekDays(false);
+						}
 					}
 				}
 			}
@@ -238,6 +231,7 @@ public class PeriodsAssignationPerson extends Composite implements PeriodsAssign
 		initWidget(uiBinder.createAndBindUi(this));
 		personsFilteredData = new ArrayList<Person>();
 		personsData = new ArrayList<Person>();
+		createDays();
 	}
 
 	@Override
@@ -252,6 +246,7 @@ public class PeriodsAssignationPerson extends Composite implements PeriodsAssign
 		clearTypes();
 		displayAll.setChecked(false);
 		setEnabledNewPeriod(false);
+		clearDays();
 	}
 	
 	
@@ -276,13 +271,13 @@ public class PeriodsAssignationPerson extends Composite implements PeriodsAssign
 	
 	private void clearTypes() {
 		types.setValue(null);
-		types.setAcceptableValues(new ArrayList<PeriodType>());
+		types.setAcceptableValues(new ArrayList<PeriodTypeEnum>());
 	}
 	
 	@Override
-	public void setTypes(List<PeriodType> types) {
+	public void setTypes(List<PeriodTypeEnum> types) {
 		if (types.size() > 0) {
-			PeriodType t = types.get(0);
+			PeriodTypeEnum t = types.get(0);
 			this.types.setValue(t);
 			if (typeSelection != null) {
 				typeSelection.setSelected(t, true);
@@ -292,7 +287,7 @@ public class PeriodsAssignationPerson extends Composite implements PeriodsAssign
 	}
 	
 	@Override
-	public void setTypesSelectionModel(SingleSelectionModel<PeriodType> selection) {
+	public void setTypesSelectionModel(SingleSelectionModel<PeriodTypeEnum> selection) {
 		typeSelection = selection;
 	}
 
@@ -351,6 +346,67 @@ public class PeriodsAssignationPerson extends Composite implements PeriodsAssign
 	@Override
 	public void setEnabledNewPeriod(boolean enabled) {
 		commit.setEnabled(enabled);
+	}
+	
+	
+	/* *********************************************************************
+	 * ************************ PERIODO DIARIO *****************************
+	 * *********************************************************************
+	 */
+	
+	@UiField FlowPanel panelWeekDays;
+	
+	private void setVisibleWeekDays(Boolean v) {
+		panelWeekDays.setVisible(v);
+	}
+	
+	private void createDays() {
+		clearDays();
+		Map<Days,String> days = new HashMap<Days,String>(7);
+		for (Days d : Days.values()) {
+			switch (d) {
+				case SUN: days.put(d, "dom"); break;
+				case MON: days.put(d, "lun"); break;
+				case TUE: days.put(d, "mar"); break;
+				case WED: days.put(d, "mie"); break;
+				case THU: days.put(d, "jue"); break;
+				case FRI: days.put(d, "vie"); break;
+				case SAT: days.put(d, "sab"); break;
+			}
+		}
+		
+		for (Days d : days.keySet()) {
+			CheckBox c = new CheckBox(days.get(d));
+			c.setName(d.toString());
+			this.panelWeekDays.add(c);
+		}
+		
+		setVisibleWeekDays(false);
+	}
+	
+	private void clearDays() {
+		for (int i = 0; i < this.panelWeekDays.getWidgetCount(); i++) {
+			CheckBox c = (CheckBox)this.panelWeekDays.getWidget(i);
+			if (c.getName().equals(Days.SUN.toString()) || c.getName().equals(Days.SAT.toString())) {
+				c.setValue(false);				
+			} else {
+				c.setValue(true);
+			}
+		}
+	}
+	
+	@Override
+	public List<Days> getDays() {
+		List<Days> selected = new ArrayList<Days>();
+		for(int i = 0; i < this.panelWeekDays.getWidgetCount(); i++) {
+			CheckBox c = (CheckBox)this.panelWeekDays.getWidget(i);
+			if (c.getValue()) {
+				Days d = Days.valueOf(c.getName());
+				selected.add(d);
+			}
+		}
+		
+		return selected;
 	}
 
 }

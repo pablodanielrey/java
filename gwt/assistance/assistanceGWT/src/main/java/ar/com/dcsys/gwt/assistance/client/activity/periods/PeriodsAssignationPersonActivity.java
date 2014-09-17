@@ -1,16 +1,24 @@
 package ar.com.dcsys.gwt.assistance.client.activity.periods;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
+import ar.com.dcsys.data.common.Days;
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.period.PeriodAssignation;
 import ar.com.dcsys.data.period.PeriodType;
+import ar.com.dcsys.data.period.PeriodTypeDailyParams;
+import ar.com.dcsys.data.period.PeriodTypeNull;
+import ar.com.dcsys.data.period.PeriodTypeSystem;
+import ar.com.dcsys.data.period.PeriodTypeWatchman;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.gwt.assistance.client.manager.PeriodsManager;
 import ar.com.dcsys.gwt.assistance.client.manager.events.PeriodModifiedEvent;
 import ar.com.dcsys.gwt.assistance.client.manager.events.PeriodModifiedEventHandler;
 import ar.com.dcsys.gwt.assistance.client.ui.period.person.PeriodsAssignationPersonView;
+import ar.com.dcsys.gwt.assistance.client.ui.period.person.PeriodsAssignationPersonView.PeriodTypeEnum;
 import ar.com.dcsys.gwt.clientMessages.client.MessageDialogEvent;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.person.client.manager.PersonsManager;
@@ -33,7 +41,7 @@ public class PeriodsAssignationPersonActivity extends AbstractActivity implement
 	private final SingleSelectionModel<Person> personSelection;
 	private Person personSelected;
 	
-	private final SingleSelectionModel<PeriodType> selectionType;
+	private final SingleSelectionModel<PeriodTypeEnum> selectionType;
 	
 	private EventBus eventBus;
 	
@@ -77,7 +85,7 @@ public class PeriodsAssignationPersonActivity extends AbstractActivity implement
 			}			
 		});
 		
-		selectionType = new SingleSelectionModel<PeriodType>();
+		selectionType = new SingleSelectionModel<PeriodTypeEnum>();
 		selectionType.addSelectionChangeHandler(new Handler() {
 			@Override
 			public void onSelectionChange(SelectionChangeEvent event) {
@@ -95,6 +103,11 @@ public class PeriodsAssignationPersonActivity extends AbstractActivity implement
 		
 		view.setSelectionModel(personSelection);
 		view.setTypesSelectionModel(selectionType);
+		
+
+		view.setTypes(Arrays.asList(PeriodTypeEnum.values()));
+		selectionType.setSelected(PeriodTypeEnum.DAILY, true);
+		
 		panel.setWidget(view);
 		update();
 		hr = eventBus.addHandler(PeriodModifiedEvent.TYPE, handler);
@@ -116,7 +129,6 @@ public class PeriodsAssignationPersonActivity extends AbstractActivity implement
 	
 	private void update() {
 		updatePersons(false);
-		updateTypes();
 	}
 	
 	private void getPeriods(Person person) {
@@ -129,26 +141,6 @@ public class PeriodsAssignationPersonActivity extends AbstractActivity implement
 					return;
 				}
 				view.setPeriodsData(periodsAssignation);
-			}
-
-			@Override
-			public void onError(String error) {
-				showMessage(error);
-			}
-			
-		});
-	}
-	
-	private void updateTypes() {
-		this.periodsManager.findAllTypesPeriods(new Receiver<List<PeriodType>>() {
-
-			@Override
-			public void onSuccess(List<PeriodType> types) {
-				if (types == null) {
-					return;
-				}
-				view.setTypes(types);
-				selectionType.setSelected(types.get(0), true);
 			}
 
 			@Override
@@ -228,6 +220,21 @@ public class PeriodsAssignationPersonActivity extends AbstractActivity implement
 			
 		});
 	}
+	
+	private PeriodType createPeriodType() {
+		PeriodTypeEnum typeEnum = selectionType.getSelectedObject();
+		PeriodType type = null;
+		
+		switch (typeEnum) {
+			case NULL: type = new PeriodTypeNull(); break;
+			case SYSTEM: type = new PeriodTypeSystem(); break;
+			case WATCHMAN: type = new PeriodTypeWatchman(); break;
+			case DAILY: type = new PeriodTypeDailyParams(); ((PeriodTypeDailyParams)type).setDays(new HashSet<Days>(view.getDays())); break;
+		}
+		
+		return type;
+
+	}
 
 	@Override
 	public void create() {
@@ -239,7 +246,7 @@ public class PeriodsAssignationPersonActivity extends AbstractActivity implement
 		date.setHours(0);
 		date.setMinutes(0);
 		date.setSeconds(0);
-		PeriodType type = selectionType.getSelectedObject();
+		PeriodType type = createPeriodType();
 		
 		PeriodAssignation periodAssignation = new PeriodAssignation();
 		periodAssignation.setStart(date);

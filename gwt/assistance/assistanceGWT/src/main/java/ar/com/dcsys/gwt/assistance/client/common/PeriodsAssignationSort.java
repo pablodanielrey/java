@@ -25,7 +25,7 @@ public class PeriodsAssignationSort {
 
 			int valueReturn = arg0.getStart().compareTo(arg1.getStart());
 			if (valueReturn == 0) {
-				valueReturn = arg0.getType().compareTo(arg1.getType());
+				valueReturn = arg0.getType().getName().compareTo(arg1.getType().getName());
 			}
 			return valueReturn;
 		}

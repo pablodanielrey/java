@@ -3,11 +3,13 @@ package ar.com.dcsys.pr.server;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import ar.com.dcsys.data.common.Days;
 import ar.com.dcsys.data.device.Device;
 import ar.com.dcsys.data.document.Document;
 import ar.com.dcsys.data.group.Group;
@@ -18,6 +20,8 @@ import ar.com.dcsys.data.log.AttLog;
 import ar.com.dcsys.data.period.Period;
 import ar.com.dcsys.data.period.PeriodAssignation;
 import ar.com.dcsys.data.period.PeriodType;
+import ar.com.dcsys.data.period.PeriodTypeDailyParams;
+import ar.com.dcsys.data.period.PeriodTypeSystem;
 import ar.com.dcsys.data.period.WorkedHours;
 import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.MailChange;
@@ -285,15 +289,13 @@ public class TestManagerBean implements TestManager {
 		p.setId("sdfdsfsdf");
 		p.setPerson(null);
 		p.setStart(new Date());
-		p.setType(PeriodType.DAILY);
+		PeriodType type = new PeriodTypeDailyParams();
+		((PeriodTypeDailyParams)type).setDays(new HashSet<>(Arrays.asList(Days.MON,Days.FRI)));
+		p.setType(type);
 		pa.add(p);
 		receiver.onSuccess(pa);
 	}
 	
-	@Override
-	public void test42(Receiver<List<PeriodType>> receiver) {
-		receiver.onSuccess(Arrays.asList(PeriodType.DAILY,PeriodType.NULL, PeriodType.SYSTEMS, PeriodType.WATCHMAN));
-	}
 	
 	@Override
 	public void test43(Person person, PeriodAssignation periodAssignation, Receiver<Void> receiver) {
@@ -368,17 +370,12 @@ public class TestManagerBean implements TestManager {
 			pa.setId(String.valueOf(i));
 			pa.setPerson(person);
 			pa.setStart(new Date());
-			pa.setType(PeriodType.SYSTEMS);
+			pa.setType(new PeriodTypeSystem());
 			pal.add(pa);
 		}
 		rec.onSuccess(pal);
 	}
 	
-	@Override
-	public void test61(Receiver<List<PeriodType>> rec) {
-		logger.log(Level.INFO, "test61");
-		rec.onSuccess(Arrays.asList(PeriodType.values()));
-	}
 	
 	@Override
 	public void test62(Person person, PeriodAssignation periodAssignation, Receiver<Void> receiver) {

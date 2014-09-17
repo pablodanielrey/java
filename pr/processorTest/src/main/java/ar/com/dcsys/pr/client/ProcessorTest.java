@@ -3,10 +3,12 @@ package ar.com.dcsys.pr.client;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import ar.com.dcsys.data.common.Days;
 import ar.com.dcsys.data.device.Device;
 import ar.com.dcsys.data.document.Document;
 import ar.com.dcsys.data.document.DocumentBean;
@@ -19,6 +21,7 @@ import ar.com.dcsys.data.log.AttLog;
 import ar.com.dcsys.data.period.Period;
 import ar.com.dcsys.data.period.PeriodAssignation;
 import ar.com.dcsys.data.period.PeriodType;
+import ar.com.dcsys.data.period.PeriodTypeDailyParams;
 import ar.com.dcsys.data.period.WorkedHours;
 import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.MailChange;
@@ -135,7 +138,6 @@ public class ProcessorTest implements EntryPoint {
 
 			test40();
 			test41();
-			test42();
 			test43();
 			
 			
@@ -150,7 +152,6 @@ public class ProcessorTest implements EntryPoint {
 			test58();
 			
 			test60();
-			test61();
 			test62();		
 			test63();
 			
@@ -1133,34 +1134,6 @@ public class ProcessorTest implements EntryPoint {
 		vp.add(b);
 	}
 	
-	private void test42() {
-		
-		Button b = new Button("test42()");
-		
-		b.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				try {
-
-					tm.test42(new Receiver<List<PeriodType>>() {
-						@Override
-						public void onSuccess(List<PeriodType> t) {
-							logger.log(Level.INFO,t.toString());
-						}
-						
-						@Override
-						public void onError(String error) {
-							Window.alert(error);
-						}
-					});
-				} catch (Exception e) {
-					logger.log(Level.SEVERE,e.getMessage(),e);
-				}
-			}
-		});
-		
-		vp.add(b);
-	}
 	
 	private void test43() {
 		
@@ -1178,7 +1151,9 @@ public class ProcessorTest implements EntryPoint {
 					pa.setId("sfdsdfds");
 					pa.setPerson(p);
 					pa.setStart(new Date());
-					pa.setType(PeriodType.DAILY);
+					PeriodType type = new PeriodTypeDailyParams();
+					((PeriodTypeDailyParams)type).setDays(new HashSet<>(Arrays.asList(Days.MON,Days.FRI)));
+					pa.setType(type);
 					
 					tm.test43(p, pa, new Receiver<Void>() {
 						@Override
@@ -1645,7 +1620,7 @@ public class ProcessorTest implements EntryPoint {
 					gjds.add(gjd);
 					gjds.add(gjd);							
 					
-					tm.test61(new Receiver<List<PeriodType>>() {
+					/*tm.test61(new Receiver<List<PeriodType>>() {
 						@Override
 						public void onSuccess(List<PeriodType> t) {
 							logger.log(Level.INFO,t.toString());
@@ -1655,7 +1630,7 @@ public class ProcessorTest implements EntryPoint {
 						public void onError(String error) {
 							Window.alert(error);
 						}
-					});
+					});*/
 				} catch (Exception e) {
 					logger.log(Level.SEVERE,e.getMessage(),e);
 				}
@@ -1700,7 +1675,9 @@ public class ProcessorTest implements EntryPoint {
 					pa.setId("id-pa");
 					pa.setPerson(p);
 					pa.setStart(new Date());
-					pa.setType(PeriodType.DAILY);
+					PeriodType type = new PeriodTypeDailyParams();
+					((PeriodTypeDailyParams)type).setDays(new HashSet<>(Arrays.asList(Days.MON,Days.FRI)));
+					pa.setType(type);
 					
 					tm.test62(p, pa, new Receiver<Void>() {
 						@Override

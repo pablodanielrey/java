@@ -130,7 +130,8 @@
 	.type-list {
 			background-color: #FFF;		
 	}
-
+	
+	
 	</ui:style>
 	<g:FlowPanel styleName="{style.page}">
 		<g:Label text="Editar Asignaciones de Períodos" ui:field="title" styleName="{style.title}"/>
@@ -178,6 +179,10 @@
 					 <g:Label text="Tipo:" styleName="{style.label-inline}" />
 				     <g:ValueListBox ui:field="types" styleName="{style.type-list}"/>
 				 </g:FlowPanel>
+				 
+				 <!-- Si el Periodo es diario muestro los dias  -->
+				 <g:FlowPanel ui:field="panelWeekDays"/>
+				 
 				 <g:FlowPanel styleName="{style.panel-button}">			
 					<g:Button ui:field="commit" text="Guardar" styleName="{style.button}"/>
 				 </g:FlowPanel>

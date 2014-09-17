@@ -68,14 +68,6 @@ public class PeriodsManagerBean implements PeriodsManager {
 		}		
 	}
 
-	@Override
-	public void findAllTypesPeriods(Receiver<List<PeriodType>> receiver) {
-		try {
-			this.periodsManagerTransfer.findAllTypesPeriods(receiver);
-		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getMessage());
-		}
-	}
 
 	@Override
 	public void remove(Person person, PeriodAssignation periodAssignation,Receiver<Void> receiver) {

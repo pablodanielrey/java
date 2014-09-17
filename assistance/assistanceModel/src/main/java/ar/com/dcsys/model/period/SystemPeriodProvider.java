@@ -9,6 +9,7 @@ import java.util.List;
 
 import ar.com.dcsys.data.log.AttLog;
 import ar.com.dcsys.data.period.Period;
+import ar.com.dcsys.data.period.PeriodTypeSystem;
 import ar.com.dcsys.data.period.WorkedHours;
 import ar.com.dcsys.data.period.PeriodType;
 import ar.com.dcsys.data.person.Person;
@@ -20,11 +21,11 @@ public class SystemPeriodProvider implements PeriodProvider {
 
 	@Override
 	public boolean isUsable(PeriodType type) {
-		return type.equals(PeriodType.SYSTEMS);
+		return type instanceof PeriodTypeSystem;
 	}
 
 	@Override
-	public List<Period> findPeriods(Date pstart, Date pend, Date start,	Date end, Person person, AttLogsManager logManager, boolean onlyWorkDays) throws PeriodException {
+	public List<Period> findPeriods(Date pstart, Date pend, Date start,	Date end, Person person, AttLogsManager logManager, boolean onlyWorkDays, PeriodType type) throws PeriodException {
 
 		try {
 			

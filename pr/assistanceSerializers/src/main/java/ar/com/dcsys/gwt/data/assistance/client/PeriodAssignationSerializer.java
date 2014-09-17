@@ -14,8 +14,9 @@ import com.google.gwt.core.client.GWT;
 public class PeriodAssignationSerializer implements CSD<PeriodAssignation> {
 
 	private static final Logger logger = Logger.getLogger(PeriodAssignationSerializer.class.getName());
-	
+
 	public static final PersonSerializer ps = GWT.create(PersonSerializer.class);
+	//public static final PeriodTypeSerializer pts = GWT.create(PeriodTypeSerializer.class);
 	
 	public interface Reader extends JsonReader<PeriodAssignation> {}
 	public static final Reader READER = GWT.create(Reader.class);
@@ -34,8 +35,8 @@ public class PeriodAssignationSerializer implements CSD<PeriodAssignation> {
 	@Override
 	public PeriodAssignation read(String json) {
 		logger.log(Level.WARNING,"PeriodAssignationSerializer : " + json);
-		PeriodAssignation person = READER.read(json);
-		return person;
+		PeriodAssignation pa = READER.read(json);
+		return pa;
 	}
 
 }

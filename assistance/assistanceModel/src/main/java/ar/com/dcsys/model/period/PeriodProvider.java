@@ -12,6 +12,6 @@ import ar.com.dcsys.model.log.AttLogsManager;
 public interface PeriodProvider {
 
 	public boolean isUsable(PeriodType type);
-	public List<Period> findPeriods(Date pstart, Date pend, Date start, Date end, Person person, AttLogsManager logManager, boolean onlyWorkDays) throws PeriodException;
+	public List<Period> findPeriods(Date pstart, Date pend, Date start, Date end, Person person, AttLogsManager logManager, boolean onlyWorkDays,PeriodType type) throws PeriodException;
 	
 }
