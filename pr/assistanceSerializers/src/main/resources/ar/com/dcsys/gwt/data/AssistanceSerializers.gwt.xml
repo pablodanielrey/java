@@ -3,6 +3,9 @@
 
   <inherits name="name.pehl.piriti.json.JSON" />
 
+  <inherits name="com.google.gwt.json.JSON" />
+
+  
   <source path="assistance/client"/>
   <source path="assistance/shared"/>
 </module>

@@ -54,7 +54,7 @@ public class PeriodPostgresSqlDAO implements PeriodDAO {
 																	"id varchar not null primary key, " +
 																	"person_id varchar not null, " +
 																	"pstart timestamp not null, " +
-																	"type_id varchar not null)");
+																	"type varchar not null)");
 				try {
 					st.execute();
 				} finally {
@@ -99,7 +99,7 @@ public class PeriodPostgresSqlDAO implements PeriodDAO {
 		String query = "select * from periodTypeDailyParams where id = ?";
 		PreparedStatement st = con.prepareStatement(query);
 		try {
-			st.setString(1, "id");
+			st.setString(1, id);
 			ResultSet rs = st.executeQuery();
 			try {
 				if (rs.next()) {
@@ -144,7 +144,7 @@ public class PeriodPostgresSqlDAO implements PeriodDAO {
 	}
 	
 	private PeriodType getPeriodType(Connection con, String id, String type) throws SQLException {		
-		PeriodType pt = null;; 
+		PeriodType pt = null;
 		
 		if (PeriodTypeDailyParams.class.getName().equals(type)) {
 			pt = getPeriodTypeDailyParams(con, id);
@@ -159,6 +159,10 @@ public class PeriodPostgresSqlDAO implements PeriodDAO {
 		
 		if (PeriodTypeSystem.class.getName().equals(type)) {
 			pt = new PeriodTypeSystem();
+		}
+		
+		if (PeriodTypeWatchman.class.getName().equals(type)) {
+			pt = new PeriodTypeWatchman();
 		}
 
 		if (pt != null) {
@@ -203,7 +207,7 @@ public class PeriodPostgresSqlDAO implements PeriodDAO {
 		PeriodAssignation pa = new PeriodAssignation();
 		pa.setId(rs.getString("id"));
 		pa.setStart(new Date(rs.getTimestamp("pstart").getTime()));
-		pa.setType(getPeriodType(rs.getString("type_id")));
+		pa.setType(getPeriodType(rs.getString("type")));
 		return pa;
 	}
 	
@@ -235,7 +239,7 @@ public class PeriodPostgresSqlDAO implements PeriodDAO {
 				try {
 					st.setString(1,person.getId());
 					st.setTimestamp(2,new Timestamp(date.getTime()));
-					st.setString(3,type.toString());
+					st.setString(3,type.getClass().getName());
 					
 					ResultSet rs = st.executeQuery();
 					try {
@@ -361,12 +365,14 @@ public class PeriodPostgresSqlDAO implements PeriodDAO {
 		
 	}
 	
-	private void persistPeriodType(Connection con, PeriodType type, Boolean isNew) throws SQLException {
-		String typeStr = type.getClass().getName();
-		String id = type.getId();
-		
+	private String persistPeriodType(Connection con, PeriodType type) throws SQLException {
+		String typeStr = type.getClass().getName();		
 		String query;
-		if (isNew) {
+		Boolean isNew = false;
+		if (type.getId() == null) {
+			String id = UUID.randomUUID().toString();
+			type.setId(id);
+			isNew = true;
 			query = "insert into periodType (type, id) values (?,?)";
 		} else {
 			query = "update periodType set type = ? where id = ?";
@@ -375,13 +381,14 @@ public class PeriodPostgresSqlDAO implements PeriodDAO {
 		PreparedStatement st = con.prepareStatement(query);
 		try {
 			st.setString(1, typeStr);
-			st.setString(2, id);
+			st.setString(2, type.getId());
 			
 			st.executeUpdate();
 			
 			if (type instanceof PeriodTypeDailyParams) {
-				persistPeriodTypeDaily(con, (PeriodTypeDailyParams)type, isNew);
+				persistPeriodTypeDaily(con, (PeriodTypeDailyParams)type,isNew);
 			}
+			return type.getId();
 		} finally {
 			st.close();
 		}
@@ -399,19 +406,22 @@ public class PeriodPostgresSqlDAO implements PeriodDAO {
 					String id = UUID.randomUUID().toString();
 					p.setId(id);
 					isNew = true;
-					query = "insert into periodassignation (person_id, pstart, type_id, id) values (?,?,?,?)";
+					query = "insert into periodassignation (person_id, pstart, type, id) values (?,?,?,?)";
 				} else {
-					query = "update periodassignation set person_id = ?, pstart = ?, type_id = ? where id = ?";
+					query = "update periodassignation set person_id = ?, pstart = ?, type = ? where id = ?";
 				}
 				PreparedStatement st = con.prepareStatement(query);
 				try {
 					st.setString(1, p.getPerson().getId());
 					st.setTimestamp(2, new Timestamp(p.getStart().getTime()));
+					
+					String typeId = persistPeriodType(con, p.getType());
+					p.getType().setId(typeId);
+					
 					st.setString(3, p.getType().getId());
 					st.setString(4, p.getId());
 					
 					st.executeUpdate();
-					persistPeriodType(con, p.getType(), isNew);
 					return p.getId();
 				} finally {
 					st.close();

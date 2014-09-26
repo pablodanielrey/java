@@ -5,7 +5,6 @@ import java.util.List;
 
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.period.PeriodAssignation;
-import ar.com.dcsys.data.period.PeriodType;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.report.ReportSummary;
 import ar.com.dcsys.gwt.manager.shared.Manager;

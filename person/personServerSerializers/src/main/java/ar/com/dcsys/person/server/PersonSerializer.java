@@ -12,7 +12,7 @@ public class PersonSerializer implements CSD<Person> {
 
 	private static final Logger logger = Logger.getLogger(PersonSerializer.class.getName());
 	
-	private final Gson gson = (new GsonBuilder()).create();
+	private final Gson gson = (new GsonBuilder()).setDateFormat("HH:mm:ss dd/MM/yyyy").create();
 	
 	@Override
 	public Person read(String json) {

@@ -134,7 +134,7 @@ public class PeriodsAssignationPerson extends Composite implements PeriodsAssign
 				/*
 				 * TODO: tengo que ponerle descripcion
 				 */
-				return object.getType().toString();
+				return object.getType().getName();
 			}
 		};		
 		ActionCell<PeriodAssignation> deleteC = new ActionCell<PeriodAssignation>("Borrar", new Delegate<PeriodAssignation>() {

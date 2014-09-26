@@ -6,7 +6,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.period.PeriodAssignation;
-import ar.com.dcsys.data.period.PeriodAssignation;
 import ar.com.dcsys.pr.CSD;
 
 import com.google.gson.Gson;
@@ -17,7 +16,7 @@ public class PeriodAssignationListSerializer implements CSD<List<PeriodAssignati
 
 	private static final Logger logger = Logger.getLogger(PeriodAssignationListSerializer.class.getName());
 	
-	private final Gson gson = (new GsonBuilder()).setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+	private final Gson gson = (new GsonBuilder()).setDateFormat("HH:mm:ss dd/MM/yyyy")
 												 .create();
 	
 	private class Container {

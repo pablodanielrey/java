@@ -9,10 +9,17 @@ public class PeriodTypeDailyParams implements PeriodType {
 
 	private Set<Days> days;
 	private String id;
+	private String type;
 	
 	public PeriodTypeDailyParams() {
 		days = new HashSet<Days>();
+		type = PeriodTypeDailyParams.class.getName();
 	}	
+	
+	@Override
+	public String getType() {
+		return type;
+	}
 	
 	@Override
 	public String getId() {

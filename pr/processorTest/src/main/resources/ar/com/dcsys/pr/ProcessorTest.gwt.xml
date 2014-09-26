@@ -38,6 +38,7 @@
   <inherits name="ar.com.dcsys.gwt.data.DocumentSerializers"/>
   <inherits name="ar.com.dcsys.gwt.data.AssistanceSerializers"/>
   <inherits name="name.pehl.piriti.json.JSON" />
+  <inherits name="com.google.gwt.json.JSON" />  
   <!-- <inherits name="name.pehl.piriti.xml.XML" /> -->
 
 
