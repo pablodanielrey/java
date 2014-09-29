@@ -163,7 +163,7 @@ public class PeriodsManagerTransferBean implements PeriodsManagerTransfer {
 	public void remove(Person person, PeriodAssignation periodAssignation,Receiver<Void> receiver) {
 		try {
 			//verifico que  exista
-	        PeriodAssignation pa = periodsManager.findBy(person, periodAssignation.getStart(), periodAssignation.getType());
+	        PeriodAssignation pa = periodsManager.findBy(person, periodAssignation.getStart(), periodAssignation.getType().getId());
 	        if (pa == null) {
 	        	receiver.onSuccess(null);
 	            return;
@@ -173,7 +173,7 @@ public class PeriodsManagerTransferBean implements PeriodsManagerTransfer {
 	        periodsManager.remove(periodAssignation);
 	        
 	        receiver.onSuccess(null);
-		} catch (PeriodException e) {
+		} catch (Exception e) {
 			receiver.onError(e.getMessage());
 		}
 	}
@@ -182,8 +182,8 @@ public class PeriodsManagerTransferBean implements PeriodsManagerTransfer {
 	public void persist(Person person, PeriodAssignation periodAssignation,	Receiver<Void> receiver) {
 		try {
 			//verifico que  exista
-	        PeriodAssignation pa = periodsManager.findBy(person, periodAssignation.getStart(), periodAssignation.getType());
-	        if (pa != null) {
+	        List<PeriodAssignation> periods = periodsManager.findBy(person, periodAssignation.getStart(), periodAssignation.getType());
+	        if (periods.size() > 0 ) {
 	        	receiver.onSuccess(null);
 	            return;
 	        }

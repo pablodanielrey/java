@@ -16,7 +16,8 @@ public interface PeriodDAO extends Serializable {
 	public String persist(PeriodAssignation p) throws PeriodException;
 	public void remove(PeriodAssignation p) throws PeriodException;
 	
-	public PeriodAssignation findBy(Person person, Date date, PeriodType type) throws PeriodException;
+	public List<PeriodAssignation> findBy(Person person, Date date, PeriodType type) throws PeriodException;
+	public PeriodAssignation findBy(Person person, Date date, String typeId) throws PeriodException;
 	
 	public interface Params {
 		public Person findPersonById(String person_id) throws PersonException;

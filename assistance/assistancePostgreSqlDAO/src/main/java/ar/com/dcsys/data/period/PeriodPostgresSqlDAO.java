@@ -218,17 +218,69 @@ public class PeriodPostgresSqlDAO implements PeriodDAO {
 
 
 	@Override
-	public PeriodAssignation findBy(Person person, Date date, PeriodType type) throws PeriodException {
-		if (person.getId() == null) {
+	public List<PeriodAssignation> findBy(Person person, Date date, PeriodType type) throws PeriodException {
+		
+		if (person == null || person.getId() == null) {
 			throw new PeriodException("Person.id == null");
 		}
 		
 		if (date == null) {
-			throw new PeriodException("date == null");
+			return new ArrayList<PeriodAssignation>();
 		}
 		
 		if (type == null) {
-			throw new PeriodException("PeriodType == null");
+			return new ArrayList<PeriodAssignation>();
+		}
+		
+		try {
+			Connection con = cp.getConnection();
+			try {
+				String query = "select * from periodAssignation where person_id = ? and pstart = ?";
+				PreparedStatement st = con.prepareStatement(query);
+				try {
+					st.setString(1,person.getId());
+					st.setTimestamp(2,new Timestamp(date.getTime()));
+					
+					ResultSet rs = st.executeQuery();
+					try {
+						List<PeriodAssignation> periods = new ArrayList<>();
+						while (rs.next()) {
+							PeriodAssignation pa = getPeriodAssignation(rs);
+							pa.setPerson(person);
+							if (type.getName().equals(pa.getType().getName())) {
+								periods.add(pa);								
+							}
+						}
+						
+						return periods;
+						
+					} finally {
+						rs.close();
+					}
+				} finally {
+					st.close();
+				}
+			} finally {
+				cp.closeConnection(con);
+			}
+		} catch (SQLException e) {
+			throw new PeriodException(e);
+		}
+	}	
+
+
+	@Override
+	public PeriodAssignation findBy(Person person, Date date, String typeId) throws PeriodException {
+		if (person == null || person.getId() == null) {
+			throw new PeriodException("Person.id == null");
+		}
+		
+		if (date == null) {
+			return null;
+		}
+		
+		if (typeId == null) {
+			return null;
 		}
 		
 		try {
@@ -239,7 +291,7 @@ public class PeriodPostgresSqlDAO implements PeriodDAO {
 				try {
 					st.setString(1,person.getId());
 					st.setTimestamp(2,new Timestamp(date.getTime()));
-					st.setString(3,type.getClass().getName());
+					st.setString(3,typeId);
 					
 					ResultSet rs = st.executeQuery();
 					try {
@@ -263,7 +315,7 @@ public class PeriodPostgresSqlDAO implements PeriodDAO {
 		} catch (SQLException e) {
 			throw new PeriodException(e);
 		}
-	}	
+	}
 
 	@Override
 	public List<PeriodAssignation> findAllPeriodAssignations() throws PeriodException, PersonException {
@@ -401,11 +453,9 @@ public class PeriodPostgresSqlDAO implements PeriodDAO {
 			Connection con = cp.getConnection();
 			try {
 				String query;
-				Boolean isNew = false;
 				if (p.getId() == null) {
 					String id = UUID.randomUUID().toString();
 					p.setId(id);
-					isNew = true;
 					query = "insert into periodassignation (person_id, pstart, type, id) values (?,?,?,?)";
 				} else {
 					query = "update periodassignation set person_id = ?, pstart = ?, type = ? where id = ?";

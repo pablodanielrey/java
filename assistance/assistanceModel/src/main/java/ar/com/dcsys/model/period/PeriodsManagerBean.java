@@ -210,7 +210,12 @@ public class PeriodsManagerBean implements PeriodsManager {
 	}
 
 	@Override
-	public PeriodAssignation findBy(Person person, Date date, PeriodType type)	throws PeriodException {
+	public List<PeriodAssignation> findBy(Person person, Date date, PeriodType type)	throws PeriodException {
+		return periodManager.findBy(person, date, type);
+	}
+	
+	@Override
+	public PeriodAssignation findBy(Person person, Date date, String type)	throws PeriodException {
 		return periodManager.findBy(person, date, type);
 	}
 

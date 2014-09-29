@@ -89,12 +89,14 @@ public class PeriodTypeUtilsSerializers {
 			PeriodTypeDailyParams ptd = new PeriodTypeDailyParams();
 			ptd.setId(id);
 			Set<Days> days = new HashSet<>();
-			for(Days d : Days.values()) {
-				JSONValue typeVal = typeObj.get("days");
-				if (typeVal != null) {
-					JSONArray array = typeVal.isArray();
-					if (contains(array,d)) {
-						days.add(d);
+			JSONValue typeVal = typeObj.get("days");
+			JSONArray array = typeVal.isArray();
+			if (array != null) {
+				for(Days d : Days.values()) {
+					if (typeVal != null) {
+						if (contains(array,d)) {
+							days.add(d);
+						}
 					}
 				}
 			}
@@ -110,7 +112,7 @@ public class PeriodTypeUtilsSerializers {
 		for (int i = 0; i<array.size(); i++) {
 			JSONValue value = array.get(i);
 			String dStr = value.isString().toString();
-			dStr.replace("\"", "");
+			dStr = dStr.replaceAll("\"", "");
 			Days dNew = Days.valueOf(dStr);
 			if (d.equals(dNew)) {
 				return true;
