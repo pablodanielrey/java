@@ -96,8 +96,10 @@ public class ManagePersons extends Composite implements ManagePersonsView {
 	
 	@Override
 	public void setAllTypes(List<PersonType> types) {
-		
-		types = PersonTypeUtils.filter(types);
+		/*
+		 * TODO:lo comente para que no filtre los persons
+		 */
+		//types = PersonTypeUtils.filter(types);
 		
 		typesCache.clear();
 		Collections.sort(types);

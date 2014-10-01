@@ -1,5 +1,6 @@
 package ar.com.dcsys.gwt.person.client.ui.menu;
 
+import ar.com.dcsys.gwt.person.client.place.GroupsPlace;
 import ar.com.dcsys.gwt.person.client.place.ManagePersonsPlace;
 import ar.com.dcsys.gwt.person.client.place.UpdatePersonDataPlace;
 
@@ -52,6 +53,13 @@ public class Menu {
 			@Override
 			public void execute() {
 				ctrl.goTo(new ManagePersonsPlace());
+			}
+		}));
+
+		menu.addItem(new MenuItem("Administrar grupos",false,new ScheduledCommand() {
+			@Override
+			public void execute() {
+				ctrl.goTo(new GroupsPlace());
 			}
 		}));
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.group.GroupType;
+import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.gwt.manager.shared.Manager;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.pr.ClientManager;
@@ -23,11 +24,17 @@ import ar.com.dcsys.pr.SerializerType;
 		@Serializer(serializer="ar.com.dcsys.gwt.person.client.GroupSerializer", clazz="ar.com.dcsys.data.group.Group", type=SerializerType.CLIENT),
 		@Serializer(serializer="ar.com.dcsys.person.server.GroupSerializer", clazz="ar.com.dcsys.data.group.Group", type=SerializerType.SERVER),
 		@Serializer(serializer="ar.com.dcsys.gwt.person.client.GroupListSerializer", clazz="java.util.List<ar.com.dcsys.data.group.Group>", type=SerializerType.CLIENT),
-		@Serializer(serializer="ar.com.dcsys.person.server.GroupListSerializer", clazz="java.util.List<ar.com.dcsys.data.group.Group>", type=SerializerType.SERVER)
+		@Serializer(serializer="ar.com.dcsys.person.server.GroupListSerializer", clazz="java.util.List<ar.com.dcsys.data.group.Group>", type=SerializerType.SERVER),
+		@Serializer(serializer="ar.com.dcsys.gwt.person.client.PersonSerializer", clazz="ar.com.dcsys.data.person.Person", type=SerializerType.CLIENT),
+		@Serializer(serializer="ar.com.dcsys.person.server.PersonSerializer", clazz="ar.com.dcsys.data.person.Person", type=SerializerType.SERVER)
 })
 public interface GroupsManager extends Manager {
 
 	public void findAllGroupTypes(Receiver<List<GroupType>> types);
 	public void findAll(Receiver<List<Group>> groups);	
+	
+	public void persist(Group g, Receiver<String> receiver);
+	public void addPersonTo(Group g, Person p, Receiver<Void> receiver);
+	public void removePersonFrom(Group g, Person p, Receiver<Void> receiver);
 	
 }

@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.persistence.JdbcConnectionProvider;
@@ -55,7 +56,7 @@ public class GroupSqlDAO implements GroupDAO {
 				}
 				
 				st = con.prepareStatement("create table if not exists groups_mails ("
-						+ "group_id varchar not null primary key,"
+						+ "group_id varchar not null,"
 						+ "mail varchar not null)");
 				try {
 					st.execute();
@@ -64,13 +65,17 @@ public class GroupSqlDAO implements GroupDAO {
 				}
 				
 				st = con.prepareStatement("create table if not exists groups_types ("
-						+ "group_id varchar not null primary key,"
+						+ "group_id varchar not null,"
 						+ "type varchar not null)");
 				try {
 					st.execute();
 				} finally {
 					st.close();
 				}
+				
+				st = con.prepareStatement("create table if not exists groups_systems ("
+						+ "group_id varchar not null,"
+						+ "system_id varchar not null)");
 			
 				con.commit();
 			} finally {
@@ -116,6 +121,30 @@ public class GroupSqlDAO implements GroupDAO {
 		}
 	}
 	
+	private void loadMails(Connection con, Group g) throws SQLException {
+		
+		PreparedStatement st = con.prepareStatement("select * from groups_mails where group_id = ?");
+		try {
+			st.setString(1, g.getId());
+			ResultSet rs = st.executeQuery();
+			try {
+				g.getMails().clear();
+				while (rs.next()) {
+					Mail mail = new Mail();
+					mail.setMail(rs.getString("mail"));
+					g.getMails().add(mail);
+				}
+				if (g.getMails().size() > 0) {
+					g.getMails().get(g.getMails().size() - 1).setPrimary(true);
+				}
+			} finally {
+				rs.close();
+			}
+		} finally {
+			st.close();
+		}
+	}
+	
 	@Override
 	public List<GroupType> findAllTypes() {
 		return Arrays.asList(GroupType.values());
@@ -134,6 +163,7 @@ public class GroupSqlDAO implements GroupDAO {
 						while (rs.next()) {
 							Group g = getGroup(rs);
 							loadTypes(con, g);
+							loadMails(con, g);
 							groups.add(g);
 						}
 						return groups;
@@ -181,6 +211,43 @@ public class GroupSqlDAO implements GroupDAO {
 			throw new PersonException(e);
 		}
 	}
+	
+	@Override
+	public List<String> getMembersIds(Group g) throws PersonException {
+
+		List<String> ids = new ArrayList<String>();
+		if (g == null || g.getId() == null) {
+			return ids;
+		}
+		
+		try {
+			Connection con = cp.getConnection();
+			try {
+				String query = "select * from groups_persons where group_id = ?";
+				PreparedStatement st = con.prepareStatement(query);
+				try {
+					st.setString(1, g.getId());
+					ResultSet rs = st.executeQuery();
+					try {
+						while (rs.next()) {
+							String id = rs.getString("person_id");
+							ids.add(id);
+						}
+					} finally {
+						rs.close();
+					}
+				} finally {
+					st.close();
+				}
+			} finally {
+				con.close();
+			}
+		} catch (SQLException e) {
+			throw new PersonException(e);
+		}
+		
+		return ids;
+	}
 
 	@Override
 	public void loadMembers(Group g) throws PersonException {
@@ -205,6 +272,7 @@ public class GroupSqlDAO implements GroupDAO {
 						if (rs.next()) {
 							Group g = getGroup(rs);
 							loadTypes(con, g);
+							loadMails(con, g);
 							return g;
 						}
 						return null;
@@ -374,19 +442,21 @@ public class GroupSqlDAO implements GroupDAO {
 				if (g.getId() == null) {
 					String id = UUID.randomUUID().toString();
 					g.setId(id);
-					query = "insert into groups (name, group_id) values (?,?)";
+					query = "insert into groups (name, id) values (?,?)";
 				} else {
-					query = "update groups set name = ? where group_id = ?";
+					query = "update groups set name = ? where id = ?";
 				}
 				PreparedStatement st = con.prepareStatement(query);
 				try {
-					st.setString(1, g.getId());
-					st.setString(2, g.getName());
+					st.setString(1, g.getName());
+					st.setString(2, g.getId());
 					st.executeUpdate();
 					
 				} finally {
 					st.close();
 				}
+				
+				removeTypes(con, g.getId());
 				
 				List<GroupType> types = g.getTypes();
 				if (types != null) {
@@ -396,6 +466,23 @@ public class GroupSqlDAO implements GroupDAO {
 						try {
 							st.setString(1, g.getId());
 							st.setString(2, t.toString());
+							st.executeUpdate();
+						} finally {
+							st.close();
+						}
+					}
+				}
+				
+				removeMails(con,g.getId());
+				
+				List<Mail> mails = g.getMails();
+				if (mails != null) {
+					for (Mail m : mails) {
+						query = "insert into groups_mails (group_id, mail) values (?,?)";
+						st = con.prepareStatement(query);
+						try {
+							st.setString(1, g.getId());
+							st.setString(2, m.getMail());
 							st.executeUpdate();
 						} finally {
 							st.close();
@@ -415,6 +502,28 @@ public class GroupSqlDAO implements GroupDAO {
 		}		
 	}
 
+	private void removeTypes(Connection con, String groupId) throws SQLException {
+		String query = "delete from groups_types where group_id = ?";
+		PreparedStatement st = con.prepareStatement(query);
+		try {
+			st.setString(1, groupId);
+			st.executeUpdate();
+		} finally {
+			st.close();
+		}	
+	}
+	
+	private void removeMails (Connection con, String groupId) throws SQLException {
+		String query = "delete from groups_mails where group_id = ?";
+		PreparedStatement st = con.prepareStatement(query);
+		try {
+			st.setString(1, groupId);
+			st.executeUpdate();
+		} finally {
+			st.close();
+		}
+	}
+	
 	@Override
 	public void remove(Group g) throws PersonException {
 		if (g == null || g.getId() == null) {
@@ -435,23 +544,9 @@ public class GroupSqlDAO implements GroupDAO {
 					st.close();
 				}
 				
-				query = "delete from groups_types where group_id = ?";
-				st = con.prepareStatement(query);
-				try {
-					st.setString(1, g.getId());
-					st.executeUpdate();
-				} finally {
-					st.close();
-				}
+				removeTypes(con, g.getId());
 
-				query = "delete from groups_mails where group_id = ?";
-				st = con.prepareStatement(query);
-				try {
-					st.setString(1, g.getId());
-					st.executeUpdate();
-				} finally {
-					st.close();
-				}
+				removeMails(con, g.getId());
 				
 				query = "delete from groups_persons where group_id = ?";
 				st = con.prepareStatement(query);

@@ -40,7 +40,6 @@ public class GroupsActivity extends AbstractActivity implements GroupsView.Prese
 	
 	private final List<Person> personsCache;
 	private final List<Group> groupsCache;
-	private final Map<Group,List<GroupType>> groupTypesCache;
 	
 	private final PersonsManager personsManager;
 	private final GroupsManager groupsManager;
@@ -55,7 +54,6 @@ public class GroupsActivity extends AbstractActivity implements GroupsView.Prese
 		
 		personsCache = new ArrayList<Person>();
 		groupsCache = new ArrayList<Group>();
-		groupTypesCache = new HashMap<Group,List<GroupType>>();
 		
 		groupsSelection = new SingleSelectionModel<Group>();
 		groupsSelection.addSelectionChangeHandler(new Handler() {
@@ -103,7 +101,6 @@ public class GroupsActivity extends AbstractActivity implements GroupsView.Prese
 				assert group != null;
 				
 				removePersonFromGroup(group, person);
-				updateGroupPersons(group.getId());
 			}
 		});
 		
@@ -120,27 +117,44 @@ public class GroupsActivity extends AbstractActivity implements GroupsView.Prese
 				assert group != null;
 				
 				addPersonToGroup(group, person);
-				updateGroupPersons(group.getId());
 			}
 		});
 		
 
 	}
 	
-	private void addPersonToGroup(Group g, Person p) {
+	private void addPersonToGroup(final Group g, final Person p) {
+		/*
+			TODO: comentado 30/9/2014
+			
 		String personId = p.getId();
 		Person person = null;
 		for (Person p2 : g.getPersons()) {
 			if (personId.equals(p2.getId())) {
 				person = p2;
 			}
-		}
-		if (person == null) {
-			g.getPersons().add(p);
+		}*/
+		
+		if (p != null) {
+			groupsManager.addPersonTo(g, p, new Receiver<Void>() {
+				@Override
+				public void onSuccess(Void t) {
+					g.getPersons().add(p);
+					updateGroupPersons(g.getId());
+				}
+				
+				@Override
+				public void onError(String error) {
+					showMessage(error);
+				}
+			});
 		}		
 	}
 	
-	private void removePersonFromGroup(Group g, Person p) {
+	private void removePersonFromGroup(final Group g, final Person p) {
+		/*
+		 * TODO: comentado 30/09/2014
+		
 		String personId = p.getId();
 		Person personToRemove = null;
 		for (Person p2 : g.getPersons()) {
@@ -150,7 +164,20 @@ public class GroupsActivity extends AbstractActivity implements GroupsView.Prese
 		}
 		if (personToRemove != null) {
 			g.getPersons().remove(personToRemove);
-		}		
+		}		*/
+		if (p != null) {
+			groupsManager.removePersonFrom(g, p, new Receiver<Void>() {
+				@Override
+				public void onSuccess(Void t) {
+					g.getPersons().remove(p);
+					updateGroupPersons(g.getId());
+				}
+				@Override
+				public void onError(String error) {
+					showMessage(error);
+				}
+			});
+		}
 	}
 	
 	
@@ -304,7 +331,7 @@ public class GroupsActivity extends AbstractActivity implements GroupsView.Prese
 		// filtro los grupos del cache por los que tienen ese tipo y los seteo nuevamente en la vista.
 		List<Group> selectedGroups = new ArrayList<Group>();
 		for (Group g : groupsCache) {
-			List<GroupType> groupTypes = groupTypesCache.get(g);
+			List<GroupType> groupTypes = g.getTypes();
 			if (groupTypes == null) {
 				continue;
 			}
@@ -410,9 +437,19 @@ public class GroupsActivity extends AbstractActivity implements GroupsView.Prese
 		List<GroupType> types = view.getSelectedGroupTypes();
 		g.setTypes(types);
 		
-		showMessage("Grupo creado exitosamente");
-		clearSelections();
-		findGroups();
+		groupsManager.persist(g, new Receiver<String>() {
+			@Override
+			public void onSuccess(String t) {
+				clearSelections();
+				findGroups();				
+			}
+			
+			@Override
+			public void onError(String error) {
+				showMessage(error);
+			}
+		});
+		
 	}
 	
 	

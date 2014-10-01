@@ -119,7 +119,7 @@ public class PersonTypes extends Composite implements PersonTypesView {
 		
 		this.types.clear();
 		
-		types = PersonTypeUtils.filter(types);
+		//types = PersonTypeUtils.filter(types);
 		
 		for (PersonType pt : types) {
 			CheckBox c = new CheckBox(PersonTypeUtils.getDescription(pt));

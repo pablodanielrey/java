@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.group.GroupType;
+import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.ws.client.WebSocket;
 
@@ -30,6 +31,21 @@ public class GroupsManagerBean implements GroupsManager {
 	@Override
 	public void findAll(Receiver<List<Group>> groups) {
 		groupsManager.findAll(groups);
+	}
+	
+	@Override
+	public void persist(Group g, Receiver<String> receiver) {
+		groupsManager.persist(g, receiver);
+	}
+	
+	@Override
+	public void addPersonTo(Group g, Person p, Receiver<Void> receiver) {
+		groupsManager.addPersonTo(g, p, receiver);
+	}
+	
+	@Override
+	public void removePersonFrom(Group g, Person p, Receiver<Void> receiver) {
+		groupsManager.removePersonFrom(g, p, receiver);
 	}
 
 }

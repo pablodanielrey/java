@@ -143,6 +143,16 @@ public class GroupLdapDAO implements GroupDAO {
 	
 	
 	
+	@Override
+	public List<String> getMembersIds(Group g) throws PersonException {
+		loadMembers(g);
+		List<String> ids = new ArrayList<String>();
+		for (Person p : g.getPersons()) {
+			ids.add(p.getId());
+		}
+		return ids;
+	}
+	
 	////// Tipos de Grupos ///////////////
 	
 	@Override

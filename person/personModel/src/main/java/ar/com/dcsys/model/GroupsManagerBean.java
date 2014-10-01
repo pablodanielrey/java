@@ -18,8 +18,8 @@ import com.google.common.cache.LoadingCache;
 
 public class GroupsManagerBean implements GroupsManager {
 
-	private final PersonsManager personsManager;
 	private final GroupDAO groupManager;
+	private final PersonsManager personsManager;
 	
 	private LoadingCache<String,Group> groupCache;
 	
@@ -126,14 +126,20 @@ public class GroupsManagerBean implements GroupsManager {
 			return new ArrayList<Group>();
 		}
 		
-		try {
-			return groupCache.getAll(ids).values().asList();
-		} catch (ExecutionException e) {
+		//try {
+			List<Group> groups = new ArrayList<>();		
+			for (String id : ids) {
+			//for (Group g : groupCache.getAll(ids).values()) {
+				Group g = groupManager.findById(id);
+				groups.add(g);
+			}
+			return groups;
+		/*} catch (ExecutionException e) {
 			throw new PersonException(e.getCause().getMessage());
-		}
+		}*/
 		
 		
-		/*
+		/* TODO: comentario viejo
 		
 		try {			
 			// si soy super administrador entonces retorno todos los grupos sin restricciones de ou.
@@ -238,12 +244,14 @@ public class GroupsManagerBean implements GroupsManager {
 			throw new PersonException("id == null");
 		}
 		
-		try {
+		/*try {
 			Group g = groupCache.get(id);
 			return g;
 		} catch (ExecutionException e) {
 			throw new PersonException(e.getCause().getMessage());
-		}
+		}*/
+
+		return groupManager.findById(id);
 	}
 
 	
@@ -252,7 +260,15 @@ public class GroupsManagerBean implements GroupsManager {
 	 */
 	@Override
 	public void loadMembers(Group g) throws PersonException {
-		groupManager.loadMembers(g);
+		List<String> idsPersons = groupManager.getMembersIds(g);
+		List<Person> persons = new ArrayList<>();
+		for (String id : idsPersons) {
+			Person p = personsManager.findById(id);
+			if (p != null) {
+				persons.add(p);
+			}
+		}
+		g.setPersons(persons);
 	}
 	
 	/**
@@ -288,16 +304,12 @@ public class GroupsManagerBean implements GroupsManager {
 		}
 		
 		String id = g.getId();
-		String log = "nulo";
-		if (id != null) {
-			log = id;
-		}		
-
-		id = groupManager.persist(g);
 		if (id != null) {
 			groupCache.invalidate(id);
-		}
-		return id;
+			
+		}		
+
+		return groupManager.persist(g);
 	}
 
 	

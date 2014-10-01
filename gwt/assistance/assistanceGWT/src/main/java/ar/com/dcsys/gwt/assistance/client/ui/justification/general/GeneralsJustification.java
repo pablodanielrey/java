@@ -28,6 +28,7 @@ import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.user.datepicker.client.DateBox.DefaultFormat;
 import com.google.gwt.user.datepicker.client.DatePicker;
+import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 
@@ -43,8 +44,12 @@ public class GeneralsJustification extends Composite implements GeneralsJustific
 	
 	private List<GeneralJustificationDate> dateList;
 	private SingleSelectionModel<Justification> typeSelection;
+	
 	@UiField(provided=true) GeneralsJustificationDateList dates;
+	
 	@UiField(provided=true) GeneralsJustificationDateList generalsJustificationDate;
+	private ListDataProvider<GeneralJustificationDate> generalsJustificationProvider;
+	
 	@UiField(provided=true) ValueListBox<Justification> types;
 	@UiField(provided=true) DateBox date;
 	@UiField(provided=true) DateBox start;

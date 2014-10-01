@@ -13,6 +13,7 @@ public interface GroupDAO {
 	public List<String> findAllIds() throws PersonException;
 	
 	public void loadMembers(Group g) throws PersonException;
+	public List<String> getMembersIds(Group g) throws PersonException;
 	
 	public Group findById(String id) throws PersonException;
 	public List<String> findByPerson(Person p) throws PersonException;
