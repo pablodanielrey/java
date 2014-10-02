@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Set;
 
 import ar.com.dcsys.data.person.PersonType;
-import ar.com.dcsys.utils.PersonTypeUtils;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -103,7 +102,7 @@ public class PersonTypes extends Composite implements PersonTypesView {
 				CheckBox c = (CheckBox)this.types.getWidget(i);
 				c.setValue(false);
 				for (PersonType pt : types) {
-					if (c.getText().equalsIgnoreCase(PersonTypeUtils.getDescription(pt))) {
+					if (c.getText().equalsIgnoreCase(pt.getName())) {
 						c.setValue(true);
 					}
 				}
@@ -122,7 +121,7 @@ public class PersonTypes extends Composite implements PersonTypesView {
 		//types = PersonTypeUtils.filter(types);
 		
 		for (PersonType pt : types) {
-			CheckBox c = new CheckBox(PersonTypeUtils.getDescription(pt));
+			CheckBox c = new CheckBox(pt.getName());
 			c.setValue(false);
 			c.setEnabled(true);
 			c.addClickHandler(new ClickHandler() {
@@ -146,7 +145,7 @@ public class PersonTypes extends Composite implements PersonTypesView {
 		for (PersonType pt : typesCache) {
 			for (int i = 0; i < this.types.getWidgetCount(); i++) {
 				CheckBox c = (CheckBox)this.types.getWidget(i);
-				if (PersonTypeUtils.getDescription(pt).equalsIgnoreCase(c.getText())) {
+				if (pt.getName().equalsIgnoreCase(c.getText())) {
 					typesSelection.setSelected(pt, c.getValue());
 					break;
 				}

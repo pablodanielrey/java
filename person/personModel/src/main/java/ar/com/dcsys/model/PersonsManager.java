@@ -23,8 +23,6 @@ public interface PersonsManager {
 	
 	public String persist(Person p) throws PersonException;
 	public void remove(Person p) throws PersonException;	
-
-	public List<PersonType> findAllTypes() throws PersonException;
 	
 	void addMail(String personId, Mail mail) throws PersonException;
 	void removeMail(String personId, Mail mail) throws PersonException;

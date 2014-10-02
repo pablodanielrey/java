@@ -16,7 +16,7 @@ import javax.inject.Inject;
 import ar.com.dcsys.data.HsqlConnectionProvider;
 import ar.com.dcsys.exceptions.PersonException;
 
-public class PersonHsqlDAO extends  AbstractPersonDAO {
+public class PersonHsqlDAO implements PersonDAO {
 
 	private final static Logger logger = Logger.getLogger(PersonDAO.class.getName());
 	
@@ -485,8 +485,8 @@ public class PersonHsqlDAO extends  AbstractPersonDAO {
 			try {
 				while (rs.next()) {
 					String stype = rs.getString("persontype_id");
-					PersonType type = PersonType.valueOf(stype);
-					p.getTypes().add(type);
+					/*PersonType type = PersonType.valueOf(stype);
+					p.getTypes().add(type);*/
 				}
 			} finally {
 				rs.close();

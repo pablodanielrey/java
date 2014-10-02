@@ -5,14 +5,13 @@ import java.util.List;
 
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonType;
-import ar.com.dcsys.gwt.person.client.common.EnumPersonTypesSort;
+import ar.com.dcsys.gwt.person.client.common.PersonTypesSort;
 import ar.com.dcsys.gwt.person.client.common.filter.FilterPerson;
 import ar.com.dcsys.gwt.person.client.common.filter.FilterPersonDni;
 import ar.com.dcsys.gwt.person.client.common.filter.FilterPersonName;
 import ar.com.dcsys.gwt.person.client.ui.cell.PersonCell;
 import ar.com.dcsys.gwt.person.client.ui.common.PersonResources;
 import ar.com.dcsys.utils.PersonSort;
-import ar.com.dcsys.utils.PersonTypeUtils;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -178,7 +177,7 @@ public class GroupOutPersons extends Composite implements GroupOutPersonsView {
 			CheckBox c = (CheckBox)this.personTypes.getWidget(i);
 			if (c.getValue()) {
 				for (PersonType pt : personTypesCache) {
-					if (PersonTypeUtils.getDescription(pt).equalsIgnoreCase(c.getText())) {
+					if (pt.getName().equalsIgnoreCase(c.getText())) {
 						selected.add(pt);
 					}
 				}
@@ -195,14 +194,14 @@ public class GroupOutPersons extends Composite implements GroupOutPersonsView {
 	@Override
 	public void setPersonTypes(List<PersonType> types) {
 		personTypesCache.clear();
-		EnumPersonTypesSort.sort(types);
+		PersonTypesSort.sort(types);
 		personTypesCache.addAll(types);
 		
 
 		
 		this.personTypes.clear();
 		for (PersonType pt : types) {
-			CheckBox c = new CheckBox(PersonTypeUtils.getDescription(pt));
+			CheckBox c = new CheckBox(pt.getName());
 			c.setValue(false);
 			c.addClickHandler(handler);
 			this.personTypes.add(c);

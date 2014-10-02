@@ -7,7 +7,7 @@ import java.util.List;
 import ar.com.dcsys.data.person.PersonType;
 
 
-public class EnumPersonTypesSort {
+public class PersonTypesSort {
 	public static void sort(List<PersonType> types) {
 		Collections.sort(types, new Comparator<PersonType>() {
 			@Override
@@ -24,22 +24,11 @@ public class EnumPersonTypesSort {
 					return 1;
 				}
 				
-				String description0 = getDescription(arg0).trim().toLowerCase();
-				String description1 = getDescription(arg1).trim().toLowerCase();
+				String name0 = arg0.getName().trim().toLowerCase();
+				String name1 = arg1.getName().trim().toLowerCase();
 				
-				return description0.compareTo(description1);
+				return name0.compareTo(name1);
 			}
 		});
-	}
-	
-	private static String getDescription(PersonType type) {
-		switch (type) {
-			case EXTERNAL: return "Visitante";
-			case PERSONAL: return "No Docente";
-			case POSTGRADUATE: return "Posgrado";
-			case STUDENT: return "Estudiante";
-			case TEACHER: return "Docente";
-		}
-		return "";
 	}
 }

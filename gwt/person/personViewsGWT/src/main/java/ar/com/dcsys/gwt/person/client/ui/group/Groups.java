@@ -10,7 +10,7 @@ import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.gwt.person.client.common.EnumGroupTypesSort;
-import ar.com.dcsys.gwt.person.client.common.EnumPersonTypesSort;
+import ar.com.dcsys.gwt.person.client.common.PersonTypesSort;
 import ar.com.dcsys.gwt.person.client.common.filter.FilterGroup;
 import ar.com.dcsys.gwt.person.client.common.filter.FilterGroupName;
 import ar.com.dcsys.gwt.person.client.common.filter.FilterPerson;
@@ -21,7 +21,6 @@ import ar.com.dcsys.gwt.person.client.ui.common.PersonResources;
 import ar.com.dcsys.utils.GroupSort;
 import ar.com.dcsys.utils.GroupTypeUtils;
 import ar.com.dcsys.utils.PersonSort;
-import ar.com.dcsys.utils.PersonTypeUtils;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -132,7 +131,7 @@ public class Groups extends Composite implements GroupsView {
 	@Override
 	public void setAllPersonTypes(List<PersonType> types) {
 		personTypesCache.clear();
-		EnumPersonTypesSort.sort(types);
+		PersonTypesSort.sort(types);
 		personTypesCache.addAll(types);
 		
 		final ClickHandler handler = new ClickHandler() {
@@ -147,7 +146,7 @@ public class Groups extends Composite implements GroupsView {
 		
 		this.personTypes.clear();
 		for (PersonType pt : types) {
-			CheckBox c = new CheckBox(PersonTypeUtils.getDescription(pt));
+			CheckBox c = new CheckBox(pt.getName());
 			c.setValue(false);
 			c.addClickHandler(handler);
 			this.personTypes.add(c);
@@ -161,7 +160,7 @@ public class Groups extends Composite implements GroupsView {
 			CheckBox c = (CheckBox)this.personTypes.getWidget(i);
 			if (c.getValue()) {
 				for (PersonType pt : personTypesCache) {
-					if (PersonTypeUtils.getDescription(pt).equalsIgnoreCase(c.getText())) {
+					if (pt.getName().equalsIgnoreCase(c.getText())) {
 						selected.add(pt);
 					}
 				}

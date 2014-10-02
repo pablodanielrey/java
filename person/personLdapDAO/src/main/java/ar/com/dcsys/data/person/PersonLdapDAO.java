@@ -49,7 +49,7 @@ import ar.com.dcsys.data.OpenLdapContextProvider;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.persistence.DirContextProvider;
 
-public class PersonLdapDAO extends AbstractLdapPersonDAO {
+public class PersonLdapDAO implements PersonDAO {
 
 	private static final String[] userAttrs = {"entryUUID", 
 												"dn","uid",
@@ -158,8 +158,12 @@ public class PersonLdapDAO extends AbstractLdapPersonDAO {
 						while (ne.hasMore()) {
 							sTypes.add((String)ne.next());
 						}
+						/**
+						 * TODO: comentado para que compile: se cambio el person type de enum a clases
+						 * 02/10/2014
 						List<PersonType> types = fromObjectClass(sTypes);
 
+						*/
 						
 						//Person person = getCachedObject(Person.class,uuid);
 						Person person = null;
@@ -188,8 +192,12 @@ public class PersonLdapDAO extends AbstractLdapPersonDAO {
 							
 							person.setCity(locality);
 							person.setCountry(country);
+
+							/**
+							 * TODO: comentado para que compile: se cambio el person type de enum a clases
+							 * 02/10/2014
 							person.setTypes(types);
-							
+							*/
 							Attribute tels = attrs.get("telephoneNumber");
 							if (tels != null) {
 								NamingEnumeration ntels = tels.getAll();
@@ -335,6 +343,10 @@ public class PersonLdapDAO extends AbstractLdapPersonDAO {
 			throw new PersonException("no se puede buscar por tipos = null");
 		}
 
+
+		/**
+		 * TODO: comentado para que compile: se cambio el person type de enum a clases
+		 * 02/10/2014
 		if (types.size() <= 0) {
 			// si es vacío entonces busco por todas las personas que no tengan ningun tipo.
 			types = findAllTypes();
@@ -345,7 +357,8 @@ public class PersonLdapDAO extends AbstractLdapPersonDAO {
 			List<String> pts = toObjectClass(types);
 			String filter = getFilterObjectClass(pts,"|");
 			return findIdsByFilter(filter);
-		}
+		}*/
+		return null;
 	}
 	
 	/*
@@ -545,11 +558,14 @@ public class PersonLdapDAO extends AbstractLdapPersonDAO {
 			// si no tiene tipo no agrega ningun object class adicional.
 			return;
 		}
-		
+
+		/**
+		 * TODO: comentado para que compile: se cambio el person type de enum a clases
+		 * 02/10/2014
 		List<String> pts = toObjectClass(person.getTypes());
 		for (String t : pts) {
 			objectClass.add(t);
-		}
+		}*/
 	}
 	
 	/**

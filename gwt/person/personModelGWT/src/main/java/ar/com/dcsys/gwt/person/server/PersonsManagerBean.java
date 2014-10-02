@@ -1,13 +1,11 @@
 package ar.com.dcsys.gwt.person.server;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import ar.com.dcsys.data.document.Document;
-import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonType;
@@ -85,12 +83,6 @@ public class PersonsManagerBean implements PersonsManager {
 	public void addMail(Person p, Mail m, Receiver<Void> rec) {
 		// no esta implementado asi que llamo al rec sin nada
 		rec.onSuccess(null);
-	}
-
-	@Override
-	public void findAllTypes(Receiver<List<PersonType>> rec) {
-		List<PersonType> types = Arrays.asList(PersonType.values());
-		rec.onSuccess(types);
 	}
 
 	@Override

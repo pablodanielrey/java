@@ -1,21 +1,17 @@
 package ar.com.dcsys.gwt.person.client.ui.manage;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonType;
+import ar.com.dcsys.gwt.person.client.common.PersonTypesSort;
 import ar.com.dcsys.gwt.person.client.common.filter.FilterPerson;
 import ar.com.dcsys.gwt.person.client.common.filter.FilterPersonDni;
 import ar.com.dcsys.gwt.person.client.common.filter.FilterPersonName;
-import ar.com.dcsys.gwt.person.client.modules.PersonModule;
-import ar.com.dcsys.gwt.person.client.modules.PersonModulesPortal;
-import ar.com.dcsys.gwt.person.client.modules.PersonPortal;
 import ar.com.dcsys.gwt.person.client.ui.cell.PersonCell;
 import ar.com.dcsys.gwt.person.client.ui.common.PersonResources;
 import ar.com.dcsys.utils.PersonSort;
-import ar.com.dcsys.utils.PersonTypeUtils;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -102,8 +98,7 @@ public class ManagePersons extends Composite implements ManagePersonsView {
 		//types = PersonTypeUtils.filter(types);
 		
 		typesCache.clear();
-		Collections.sort(types);
-//		EnumPersonTypesSort.sort(types);
+		PersonTypesSort.sort(types);
 		typesCache.addAll(types);
 		
 		final ClickHandler handler = new ClickHandler() {
@@ -118,7 +113,7 @@ public class ManagePersons extends Composite implements ManagePersonsView {
 		
 		this.types.clear();
 		for (PersonType pt : types) {
-			CheckBox c = new CheckBox(PersonTypeUtils.getDescription(pt));
+			CheckBox c = new CheckBox(pt.getName());
 			c.setValue(false);
 			c.addClickHandler(handler);
 			this.types.add(c);
@@ -137,7 +132,7 @@ public class ManagePersons extends Composite implements ManagePersonsView {
 			CheckBox c = (CheckBox)this.types.getWidget(i);
 			if (c.getValue()) {
 				for (PersonType pt : typesCache) {
-					if (PersonTypeUtils.getDescription(pt).equalsIgnoreCase(c.getText())) {
+					if (pt.getName().equalsIgnoreCase(c.getText())) {
 						selected.add(pt);
 					}
 				}

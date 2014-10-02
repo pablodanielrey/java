@@ -16,7 +16,7 @@ import javax.inject.Inject;
 import ar.com.dcsys.data.PostgresSqlConnectionProvider;
 import ar.com.dcsys.exceptions.PersonException;
 
-public class PersonPostgreSqlDAO extends  AbstractPersonDAO {
+public class PersonPostgreSqlDAO implements PersonDAO {
 
 	private final static Logger logger = Logger.getLogger(PersonDAO.class.getName());
 	
@@ -103,6 +103,26 @@ public class PersonPostgreSqlDAO extends  AbstractPersonDAO {
 			st = con.prepareStatement("create table if not exists persons_persontypes (" +
 														"person_id varchar not null," +
 														"persontype_id varchar not null)");
+			try {
+				st.execute();
+			} finally {
+				st.close();
+			}
+			
+			st = con.prepareStatement("create table if not exists persontypes (" + 
+														"id varchar not null primary key," + 
+														"type varchar not null");
+			
+			try {
+				st.execute();
+			} finally {
+				st.close();
+			}
+			
+			st = con.prepareStatement("create table if not exists persontypestudent (" +
+														"id varchar not null primary key," +
+														"studentNumber varchar not null");
+			
 			try {
 				st.execute();
 			} finally {
@@ -540,27 +560,100 @@ public class PersonPostgreSqlDAO extends  AbstractPersonDAO {
 	 */
 	private void persistTypes(Connection con, Person p) throws SQLException {
 		
-		String query = "delete from persons_persontypes where person_id = ?";
-		PreparedStatement st = con.prepareStatement(query);
-		st.setString(1, p.getId());
-		try {
-			st.execute();
-		} finally {
-			st.close();
-		}
+		deleteAllPersonTypes(con, p.getId());		
+		
 		
 		if (p.getTypes() == null || p.getTypes().size() <= 0) {
 			return;
 		}
 		
-		query = "insert into persons_persontypes (person_id, persontype_id) values (?,?)";
-		st = con.prepareStatement(query);
+		String query = "insert into persons_persontypes (person_id, persontype_id) values (?,?)";
+		PreparedStatement st = con.prepareStatement(query);
 		try {
 			for (PersonType pt : p.getTypes()) {
 				st.setString(1,p.getId());
 				st.setString(2,pt.toString());
 				st.execute();
+				persistPersonType(con,pt);
 			};
+		} finally {
+			st.close();
+		}
+	}
+	
+	private void persistPersonType(Connection con, PersonType pt) throws SQLException {		
+		if (pt.getId() == null) {
+			String id = UUID.randomUUID().toString();
+			pt.setId(id);
+		}
+		
+		String query = "insert into persontypes (id, type) values (?,?)";
+		PreparedStatement st = con.prepareStatement(query);
+		try {
+			st.setString(1, pt.getId());
+			st.setString(2, pt.getClass().getName());
+			st.execute();
+		} finally {
+			st.close();
+		}
+		
+		if (pt instanceof PersonTypeStudent) {
+			query = "insert into persontypestudent (id,studentNumber) values (?,?)";
+			st = con.prepareStatement(query);
+			try {
+				st.setString(1,pt.getId());
+				st.setString(2,((PersonTypeStudent) pt).getStudentNumber());
+				st.execute();
+			} finally {
+				st.close();
+			}
+		}
+	}
+	
+	private void deleteAllPersonTypes(Connection con, String personId) throws SQLException {
+		String query = "select persontype_id from persons_persontypes where person_id = ?";
+		PreparedStatement st = con.prepareStatement(query);
+		try {
+			st.setString(1, personId);
+			ResultSet rs = st.executeQuery();
+			try {
+				while (rs.next()) {
+					String typeId = rs.getString("persontype_id");
+					deletePersonType(con,typeId);					
+				}
+				
+			} finally {
+				rs.close();
+			}
+		} finally {
+			st.close();
+		}
+		
+		query = "delete from persons_persontypes where person_id = ?";
+		st = con.prepareStatement(query);
+		try {
+			st.setString(1, personId);
+			st.execute();
+		} finally {
+			st.close();
+		}
+	}
+	
+	private void deletePersonType(Connection con, String typeId) throws SQLException {
+		String query = "delete from persontypes where id = ?";
+		PreparedStatement st = con.prepareStatement(query);
+		try {
+			st.setString(1, typeId);
+			st.execute();
+		} finally {
+			st.close();
+		}
+		
+		query = "delete from persontypestudent where id = ?";
+		st = con.prepareStatement(query);
+		try {
+			st.setString(1, typeId);
+			st.execute();			
 		} finally {
 			st.close();
 		}
@@ -585,9 +678,83 @@ public class PersonPostgreSqlDAO extends  AbstractPersonDAO {
 			ResultSet rs = st.executeQuery();
 			try {
 				while (rs.next()) {
-					String stype = rs.getString("persontype_id");
-					PersonType type = PersonType.valueOf(stype);
+					String typeId = rs.getString("persontype_id");					
+					PersonType type = getPersonType(con, typeId);
 					p.getTypes().add(type);
+				}
+			} finally {
+				rs.close();
+			}
+		} finally {
+			st.close();
+		}
+	}
+	
+	private PersonType getPersonType(Connection con, String id) throws SQLException {
+		String query = "select type from persontypes where id = ?";
+		PreparedStatement st = con.prepareStatement(query);
+		try {
+			st.setString(1, id);
+			ResultSet rs = st.executeQuery();
+			try {
+				if (rs.next()) {
+					String typeStr = rs.getString("type");
+					return getPersonType(con,id,typeStr);
+				} else {
+					return null;
+				}
+			} finally {
+				rs.close();
+			}
+		} finally {
+			st.close();
+		}
+	}
+	
+	private PersonType getPersonType(Connection con, String id, String type) throws SQLException {
+		
+		PersonType personType = null;
+		
+		if (PersonTypeStudent.class.getName().equals(type)) {
+			personType = getPersonTypeStudent(con,id);
+		}
+		
+		else if (PersonTypeExternal.class.getName().equals(type)) {
+			personType = new PersonTypeExternal();
+		}
+		
+		else if (PersonTypePostgraduate.class.getName().equals(type)) {
+			personType = new PersonTypePostgraduate();
+		}
+		
+		else if (PersonTypeTeacher.class.getName().equals(type)) {
+			personType = new PersonTypeTeacher();
+		}
+		
+		else if (PersonTypePersonal.class.getName().equals(type)) {
+			personType = new PersonTypePersonal();
+		}
+		
+		if (personType != null) {
+			personType.setId(id);
+		}
+		
+		return personType;
+	}
+	
+	private PersonType getPersonTypeStudent(Connection con, String id) throws SQLException {
+		String query = "select * from persontypestudent where id = ?";
+		PreparedStatement st = con.prepareStatement(query);
+		try {
+			st.setString(1, id);
+			ResultSet rs = st.executeQuery();
+			try {
+				if (rs.next()) {
+					PersonTypeStudent t = new PersonTypeStudent();
+					t.setStudentNumber(rs.getString("studentNumber"));
+					return t;
+				} else {
+					return null;
 				}
 			} finally {
 				rs.close();

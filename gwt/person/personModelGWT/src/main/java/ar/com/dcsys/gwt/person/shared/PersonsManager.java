@@ -56,7 +56,6 @@ public interface PersonsManager extends Manager {
 	public void addMail(Person p, Mail m, Receiver<Void> rec);
 	
 	
-	public void findAllTypes(Receiver<List<PersonType>> rec);								// PersonDataActivity
 	public void findByDni(String dni, Receiver<Person> rec);								// PersonDAtaActvity
 	public void findById(String id, Receiver<Person> rec);
 	

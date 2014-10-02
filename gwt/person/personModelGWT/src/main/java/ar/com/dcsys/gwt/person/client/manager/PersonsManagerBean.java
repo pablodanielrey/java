@@ -51,10 +51,6 @@ public class PersonsManagerBean implements PersonsManager {
 		pm.addMail(p, m, rec);		
 	}
 	
-	@Override
-	public void findAllTypes(final Receiver<List<PersonType>> rec) {
-		pm.findAllTypes(rec);
-	}
 	
 	
 	@Override

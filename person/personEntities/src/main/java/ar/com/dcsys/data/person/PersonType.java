@@ -1,8 +1,11 @@
 package ar.com.dcsys.data.person;
 
 
-public enum PersonType {
+public interface PersonType {
 	
-	PERSONAL, POSTGRADUATE, STUDENT, TEACHER, EXTERNAL;
+	public String getType();
+	public String getName();
 	
+	public String getId();
+	public void setId(String id);
 }

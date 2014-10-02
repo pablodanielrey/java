@@ -15,8 +15,6 @@ public interface PersonDAO {
 
 	public Person findById(String id) throws PersonException;
 	public Person findByDni(String dni) throws PersonException;
-
-	public List<PersonType> findAllTypes() throws PersonException;
 	
 	public void remove(Person p) throws PersonException;
 	public String persist(Person p) throws PersonException;

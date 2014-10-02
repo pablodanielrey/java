@@ -222,7 +222,6 @@ public class PersonsManagerBean implements PersonsManager {
 		
 		invalidateCaches(p);
 		
-		String id = p.getId();
 		String newId = personDAO.persist(p);
 		
 		return newId;
@@ -232,12 +231,6 @@ public class PersonsManagerBean implements PersonsManager {
 	public void remove(Person p) throws PersonException {
 		throw new PersonException("No implementado");
 	}
-
-	@Override
-	public List<PersonType> findAllTypes() throws PersonException {
-		return personDAO.findAllTypes();
-	}
-
 	
 	@Override
 	public void addMail(String personId, Mail mail) throws PersonException {

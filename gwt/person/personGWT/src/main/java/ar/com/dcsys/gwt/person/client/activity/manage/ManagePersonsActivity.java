@@ -189,6 +189,9 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 	}
 	
 	private void findAllPersonTypes() {
+		
+		
+		/** TODO: falta implementar el findAllTypes
 		personsManager.findAllTypes(new Receiver<List<PersonType>>() {
 			@Override
 			public void onSuccess(List<PersonType> types) {
@@ -201,7 +204,7 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 					showMessage("Error llamando obteniendo los tipos de persona");
 				}
 			};
-		});
+		});*/
 	}
 	
 	/**

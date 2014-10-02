@@ -271,6 +271,8 @@ public class GroupsActivity extends AbstractActivity implements GroupsView.Prese
 	}
 	
 	private void findAllPersonTypes() {
+		/** TODO: falta implementar el findAllTypes
+		
 		personsManager.findAllTypes(new Receiver<List<PersonType>>() {
 			@Override
 			public void onSuccess(List<PersonType> types) {
@@ -280,6 +282,7 @@ public class GroupsActivity extends AbstractActivity implements GroupsView.Prese
 				showMessage(error);
 			};
 		});
+		*/
 	}
 
 	private void clearSelections() {

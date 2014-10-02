@@ -9,6 +9,7 @@ import java.util.Set;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonType;
+import ar.com.dcsys.data.person.PersonTypeStudent;
 import ar.com.dcsys.data.person.Telephone;
 import ar.com.dcsys.data.person.Telephone;
 import ar.com.dcsys.gwt.auth.client.manager.AuthManager;
@@ -110,7 +111,6 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 		 * ahora lo pongo en false.
 		 */
 		view.setStudentDataVisible(false);
-		view.setStudentNumberReadOnly(true);
 		
 		
 	}
@@ -130,7 +130,7 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 		}
 		
 		for (PersonType type : types) {
-			if (type.equals(PersonType.STUDENT)) {
+			if (type instanceof PersonTypeStudent) {
 				view.setStudentDataVisible(true);
 				return;
 			}
@@ -271,7 +271,8 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 		
 		determineUserRole();
 		
-		personsManager.findAllTypes(new Receiver<List<PersonType>>() {
+		/** TODO: Falta implementar el findAllTypes
+		 * personsManager.findAllTypes(new Receiver<List<PersonType>>() {
 			@Override
 			public void onSuccess(List<PersonType> types) {
 				setAllTypesInView(types);
@@ -280,7 +281,7 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 			public void onError(String error) {
 				Window.alert(error);
 			}
-		});
+		});*/
 	}
 	
 	@Override
