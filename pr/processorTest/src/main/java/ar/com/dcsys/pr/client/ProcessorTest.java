@@ -27,6 +27,9 @@ import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.MailChange;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonType;
+import ar.com.dcsys.data.person.PersonTypeExternal;
+import ar.com.dcsys.data.person.PersonTypePostgraduate;
+import ar.com.dcsys.data.person.PersonTypeStudent;
 import ar.com.dcsys.data.report.Report;
 import ar.com.dcsys.data.report.ReportSummary;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
@@ -208,7 +211,7 @@ public class ProcessorTest implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				try {
-					tm.testEnum2(PersonType.EXTERNAL,new Receiver<PersonType>() {
+					tm.testEnum2(new PersonTypeExternal(),new Receiver<PersonType>() {
 						@Override
 						public void onSuccess(PersonType t) {
 							logger.log(Level.INFO,t.toString());
@@ -238,7 +241,7 @@ public class ProcessorTest implements EntryPoint {
 				try {
 					Person p = new Person();
 					p.setDni("1");
-					PersonType pt = PersonType.POSTGRADUATE;
+					PersonType pt = new PersonTypePostgraduate();
 					
 					tm.testEnum3(p,pt,new Receiver<PersonType>() {
 						@Override
@@ -270,8 +273,9 @@ public class ProcessorTest implements EntryPoint {
 			public void onClick(ClickEvent event) {
 				try {
 					Person p = new Person();
-					
-					tm.testEnum4("algo",PersonType.STUDENT,new Receiver<PersonType>() {
+					PersonTypeStudent pt = new PersonTypeStudent();
+					pt.setStudentNumber("6999/6");
+					tm.testEnum4("algo",pt,new Receiver<PersonType>() {
 						@Override
 						public void onSuccess(PersonType t) {
 							logger.log(Level.INFO,t.toString());

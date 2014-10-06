@@ -1,29 +1,34 @@
 package ar.com.dcsys.gwt.data.assistance.client;
 
-import name.pehl.piriti.converter.client.Converter;
-import name.pehl.piriti.json.client.JsonReader;
-import name.pehl.piriti.json.client.JsonWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import name.pehl.piriti.converter.client.AbstractConverter;
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.data.person.Person;
 
-import com.google.gwt.core.shared.GWT;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONValue;
 
-public class PiritiPersonConverter implements Converter<Person> {
+public class PiritiPersonConverter extends AbstractConverter<Person> {
 
-
-	public interface PersonReader extends JsonReader<Person> {};
-	public static final PersonReader PREADER = GWT.create(PersonReader.class);
-
-	public interface PersonWriter extends JsonWriter<Person> {}
-	public static final PersonWriter PWRITER = GWT.create(PersonWriter.class);
+	private static final Logger logger = Logger.getLogger(PiritiPersonConverter.class.getName());
 	
 	@Override
-	public Person convert(String value) {
-		return PREADER.read(value);
+	public Person convert(String json) {
+		try {
+			JSONValue value = JSONParser.parseStrict(json);
+			JSONObject personObj = value.isObject();
+			return PersonUtilsSerializer.read(personObj);
+		} catch (Exception e) {
+			logger.log(Level.SEVERE,e.getMessage());
+			return null;
+		}
 	}
+	
 	@Override
 	public String serialize(Person value) {
-		String d = PWRITER.toJson((Person)value);
-		return d;
+		JSONObject jo = PersonUtilsSerializer.toJson(value);
+		return jo.toString();
 	}
 }

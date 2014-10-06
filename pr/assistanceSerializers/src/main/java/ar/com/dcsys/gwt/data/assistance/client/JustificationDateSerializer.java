@@ -8,7 +8,6 @@ import name.pehl.piriti.commons.client.Mappings;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
 import ar.com.dcsys.data.justification.JustificationDate;
-import ar.com.dcsys.data.justification.JustificationDate;
 import ar.com.dcsys.pr.CSD;
 
 import com.google.gwt.core.client.GWT;

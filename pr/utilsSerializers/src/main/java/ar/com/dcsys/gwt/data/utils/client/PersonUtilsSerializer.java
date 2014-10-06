@@ -1,4 +1,4 @@
-package ar.com.dcsys.gwt.data.assistance.client;
+package ar.com.dcsys.gwt.data.utils.client;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,6 +19,17 @@ import com.google.gwt.json.client.JSONValue;
 public class PersonUtilsSerializer {
 
 	private static final DateTimeFormat df = DateTimeFormat.getFormat("dd/MM/yyyy"); 
+	
+	public static JSONArray toJsonArray(List<Person> persons) {
+		if (persons == null) {
+			return null;
+		}
+		JSONArray personsObj = new JSONArray();
+		for (int i = 0; i < persons.size(); i ++) {
+			personsObj.set(i, toJson(persons.get(i)));
+		}
+		return personsObj;
+	}
 	
 	public static JSONObject toJson(Person p) {		
 				
@@ -73,7 +84,7 @@ public class PersonUtilsSerializer {
 		List<Telephone> telephones = p.getTelephones();
 		if (telephones != null && telephones.size() > 0) {
 			JSONArray telephonesObj = new JSONArray();
-			for (int i=0; i<telephones.size(); i++) {
+			for (int i = 0; i < telephones.size(); i++) {
 				JSONObject telObj = new JSONObject();
 				telObj.put("number", new JSONString(telephones.get(i).getNumber()));
 				telObj.put("isMobile",JSONBoolean.getInstance(telephones.get(i).isMobile()));
@@ -85,13 +96,29 @@ public class PersonUtilsSerializer {
 		List<PersonType> types = p.getTypes();
 		if (types != null && types.size() > 0) {
 			JSONArray typesObj = new JSONArray();
-			for (int i=0; i<types.size(); i++) {
-				typesObj.set(i,new JSONString(types.get(i).toString()));
+			for (int i = 0; i < types.size(); i++) {
+				typesObj.set(i,PersonTypeUtilsSerializer.toJson(types.get(i)));
 			}
 			personObj.put("types", typesObj);
 		}
 		
 		return personObj;		
+	}
+	
+	public static List<Person> read(JSONArray personsArray) {
+		
+		List<Person> persons = new ArrayList<>();
+		
+		if (personsArray != null) {
+			for (int i = 0; i < personsArray.size(); i++) {
+				JSONObject personObj = personsArray.get(i).isObject();
+				if (personObj != null) {
+					persons.add(read(personObj));
+				}
+			}
+		}
+		
+		return persons;
 	}
 	
 	public static Person read(JSONObject personObj) {
@@ -100,8 +127,11 @@ public class PersonUtilsSerializer {
 
 			Person p = new Person();
 			
-			String id = personObj.get("id").isString().stringValue();
-			p.setId(id);
+			JSONValue idVal = personObj.get("id");
+			if (idVal != null) {
+				String id = idVal.isString().stringValue();
+				p.setId(id);
+			} 
 			
 			JSONValue addressValue = personObj.get("address");
 			if (addressValue != null) {
@@ -157,7 +187,7 @@ public class PersonUtilsSerializer {
 				JSONArray telephonesArray = telephonesValue.isArray();
 				List<Telephone> telephones = new ArrayList<>();
 				if (telephonesArray != null) {
-					for (int i=0; i<=telephonesArray.size(); i++) {
+					for (int i = 0; i < telephonesArray.size(); i++) {
 						
 						JSONValue telVal = telephonesArray.get(i);
 						if (telVal != null) {
@@ -183,11 +213,10 @@ public class PersonUtilsSerializer {
 				JSONArray typesArray = typesValue.isArray();
 				List<PersonType> types = new ArrayList<>();
 				if (typesArray != null) {
-					for (int i=0; i<typesArray.size(); i++) {
-						JSONValue typeValue = typesArray.get(i);
+					for (int i = 0; i < typesArray.size(); i++) {
+						JSONObject typeValue = typesArray.get(i).isObject();
 						if (typeValue != null) {
-							String typeStr = typeValue.isString().stringValue();
-							types.add(PersonType.valueOf(typeStr));
+							types.add(PersonTypeUtilsSerializer.read(typeValue));
 						}
 					}
 				}			

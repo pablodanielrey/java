@@ -3,38 +3,45 @@ package ar.com.dcsys.gwt.person.client;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import name.pehl.piriti.json.client.JsonReader;
-import name.pehl.piriti.json.client.JsonWriter;
 import ar.com.dcsys.data.group.Group;
+import ar.com.dcsys.gwt.data.utils.client.GroupUtilsSerializer;
 import ar.com.dcsys.pr.CSD;
 
-import com.google.gwt.core.client.GWT;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONValue;
 
 public class GroupSerializer implements CSD<Group> {
 
 	private static final Logger logger = Logger.getLogger(GroupSerializer.class.getName());
-	
-	public interface Reader extends JsonReader<Group> {}
-	public static final Reader READER = GWT.create(Reader.class);
 
-	public interface Writer extends JsonWriter<Group> {}
-	public static final Writer WRITER = GWT.create(Writer.class);
-	
 	@Override
 	public String toJson(Group o) {
-		String d = WRITER.toJson((Group)o);
+		if (o == null) {
+			logger.log(Level.WARNING, "group == null");
+			return "";
+		}
 		
-		d = d.replaceAll("\\\"\\{", ":{").replaceAll("\\}\"", "}").replace("\\","");
-		
-		logger.log(Level.WARNING,d);
-		return d;	
+		JSONObject groupObj = GroupUtilsSerializer.toJson(o);
+		return groupObj.toString();
 	}
 	
 	@Override
 	public Group read(String json) {
-		logger.log(Level.WARNING,json);
-		Group g = READER.read(json);
-		return g;
+		logger.log(Level.WARNING, "GroupSerializer : " + json);
+		try {
+			JSONValue value = JSONParser.parseStrict(json);
+			JSONObject groupObj = value.isObject();
+			
+			if (groupObj != null) {
+				return GroupUtilsSerializer.read(groupObj);
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			logger.log(Level.WARNING, e.getMessage());
+			return null;
+		}
 	}	
 
 

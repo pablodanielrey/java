@@ -5,36 +5,47 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.person.MailChange;
+import ar.com.dcsys.gwt.data.utils.client.MailChangeUtilsSerializer;
 import ar.com.dcsys.pr.CSD;
 
-import com.google.gwt.core.shared.GWT;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONValue;
 
 public class MailChangeListSerializer implements CSD<List<MailChange>> {
 	
 	private static final Logger logger = Logger.getLogger(MailChangeListSerializer.class.getName());
 	
-	interface Reader extends name.pehl.piriti.json.client.JsonReader<MailChangeListContainer> {}
-	private static final Reader READER = GWT.create(Reader.class);
-	
-	interface Writer extends name.pehl.piriti.json.client.JsonWriter<MailChangeListContainer> {}
-	private static final Writer WRITER = GWT.create(Writer.class);
-
 	@Override
 	public String toJson(List<MailChange> o) {
-		MailChangeListContainer sc = new MailChangeListContainer();
-		sc.list = o;
-		String d = WRITER.toJson(sc);
+		if (o == null) {
+			logger.log(Level.WARNING, "mailChanges == null");
+			return "";
+		}
 		
-		d = d.replaceAll("mail\\\":\\\"\\{", "mail\":{").replaceAll("\\}\"", "}").replace("\\","");
-		
-		logger.log(Level.WARNING,"piriti : " + d);
-		return d;
+		JSONArray mailChangeArray = MailChangeUtilsSerializer.toJsonArray(o);
+		return mailChangeArray.toString();
 	}
 	
 	@Override
 	public List<MailChange> read(String json) {
-		logger.log(Level.WARNING,"piriti : " + json);
-		MailChangeListContainer sc = READER.read(json);
-		return sc.list;
+		logger.log(Level.WARNING, "MailChangeListSerializer : " + json);
+		try {
+			JSONValue value = JSONParser.parseStrict(json);
+			JSONObject obj = value.isObject();
+			JSONArray mailChangeArray = obj.get("list").isArray();
+			
+			if (mailChangeArray == null) {
+				return null;
+			}
+			
+			List<MailChange> mailChanges = MailChangeUtilsSerializer.read(mailChangeArray);
+			return mailChanges;
+			
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, e.getMessage());
+			return null;
+		}
 	}
 }

@@ -3,43 +3,35 @@ package ar.com.dcsys.gwt.person.client;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import name.pehl.piriti.json.client.JsonReader;
-import name.pehl.piriti.json.client.JsonWriter;
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.data.person.Telephone;
+import ar.com.dcsys.gwt.data.utils.client.PersonUtilsSerializer;
 import ar.com.dcsys.pr.CSD;
 
-import com.google.gwt.core.client.GWT;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONValue;
 
 public class PersonSerializer implements CSD<Person> {
 
 	private static final Logger logger = Logger.getLogger(PersonSerializer.class.getName());
-	
-	public interface TelephoneReader extends JsonReader<Telephone> {};
-	public static final TelephoneReader TREADER = GWT.create(TelephoneReader.class);
-	
-	public interface TelephoneWriter extends JsonWriter<Telephone> {};
-	public static final TelephoneWriter TWRITER = GWT.create(TelephoneWriter.class);	
-	
-	public interface Reader extends JsonReader<Person> {}
-	public static final Reader READER = GWT.create(Reader.class);
-	
-	public interface Writer extends JsonWriter<Person> {}
-	public static final Writer WRITER = GWT.create(Writer.class);
-	
 
 	@Override
 	public String toJson(Person o) {
-		String d = WRITER.toJson((Person)o);
-		logger.log(Level.WARNING,"PersonSerializer : " + d);
-		return d;
+		JSONObject jo = PersonUtilsSerializer.toJson(o);
+		return jo.toString();
 	}
 
 	@Override
 	public Person read(String json) {
 		logger.log(Level.WARNING,"PersonSerializer : " + json);
-		Person person = READER.read(json);
-		return person;
+		try {
+			JSONValue value = JSONParser.parseStrict(json);
+			JSONObject personObj = value.isObject();
+			return PersonUtilsSerializer.read(personObj);
+		} catch (Exception e) {
+			logger.log(Level.SEVERE,e.getMessage());
+			return null;
+		}
 	}
 
 }

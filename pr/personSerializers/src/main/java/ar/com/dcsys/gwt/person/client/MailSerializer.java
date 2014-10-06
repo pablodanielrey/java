@@ -4,40 +4,46 @@ package ar.com.dcsys.gwt.person.client;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import name.pehl.piriti.json.client.JsonReader;
-import name.pehl.piriti.json.client.JsonWriter;
 import ar.com.dcsys.data.person.Mail;
-import ar.com.dcsys.data.person.Mail;
+import ar.com.dcsys.gwt.data.utils.client.MailUtilsSerializer;
 import ar.com.dcsys.pr.CSD;
 
-import com.google.gwt.core.shared.GWT;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONValue;
 
 public class MailSerializer implements CSD<Mail> {
 	
 	private static final Logger logger = Logger.getLogger(MailSerializer.class.getName());
 	
-	public interface Reader extends JsonReader<Mail> {}
-	public static final Reader READER = GWT.create(Reader.class);
-	
-	public interface Writer extends JsonWriter<Mail> {}
-	public static final Writer WRITER = GWT.create(Writer.class);
 	
 	@Override
 	public String toJson(Mail o) {
+		if (o == null) {
+			logger.log(Level.WARNING,"mail == null");
+			return "";
+		}
 		
-		String d = WRITER.toJson((Mail) o);
-		logger.log(Level.WARNING,"MailSerializer : " + d);
-		
-		return d;
+		JSONObject mailObj = MailUtilsSerializer.toJson(o);
+		return mailObj.toString();
 	}
 	
 	@Override
 	public Mail read(String json) {
-	
-		logger.log(Level.WARNING,"MailSerializer : " + json);
-		Mail mail = READER.read(json);
-		
-		return mail;
+		logger.log(Level.WARNING, "MailSerializer : " + json);
+		try {
+			JSONValue value = JSONParser.parseStrict(json);
+			JSONObject mailObj = value.isObject();
+			
+			if (mailObj != null) {
+				return MailUtilsSerializer.read(mailObj);
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, e.getMessage());
+			return null;
+		}
 	}
 
 }
