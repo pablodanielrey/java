@@ -1,10 +1,13 @@
-package ar.com.dcsys.gwt.data.assistance.client;
+package ar.com.dcsys.gwt.data.utils.client;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import ar.com.dcsys.data.period.PeriodAssignation;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
@@ -12,6 +15,18 @@ import com.google.gwt.json.client.JSONValue;
 public class PeriodAssignationUtilsSerializers {
 
 	private static final DateTimeFormat df = DateTimeFormat.getFormat("HH:mm:ss dd/MM/yyyy");
+	
+	public static JSONArray toJsonArray(List<PeriodAssignation> periodAssignations) {
+		if (periodAssignations == null) {
+			return null;
+		}
+		JSONArray periodAssignationsObj = new JSONArray();
+		for (int i = 0; i < periodAssignations.size(); i++) {
+			periodAssignationsObj.set(i, toJson(periodAssignations.get(i)));
+		}
+		
+		return periodAssignationsObj;
+	}
 	
 	public static JSONObject toJson(PeriodAssignation o) {
 		JSONObject periodAssignationObj = new JSONObject();
@@ -35,6 +50,22 @@ public class PeriodAssignationUtilsSerializers {
 		}
 		
 		return periodAssignationObj;		
+	}
+	
+	public static List<PeriodAssignation> read(JSONArray paArray) {
+		
+		List<PeriodAssignation> periodAssignations = new ArrayList<>();
+		
+		if (paArray != null) {
+			for (int i = 0; i < paArray.size(); i++) {
+				JSONObject paObj = paArray.get(i).isObject();
+				if (paObj != null) {
+					periodAssignations.add(read(paObj));
+				}
+			}
+		}
+		
+		return periodAssignations;
 	}
 	
 	public static PeriodAssignation read(JSONObject periodAssignationObj) {

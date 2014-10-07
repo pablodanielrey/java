@@ -1,6 +1,8 @@
-package ar.com.dcsys.gwt.data.assistance.client;
+package ar.com.dcsys.gwt.data.utils.client;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import ar.com.dcsys.data.common.Days;
@@ -17,6 +19,18 @@ import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 
 public class PeriodTypeUtilsSerializers {
+	
+	public static JSONArray toJsonArray(List<PeriodType> types) {
+		if (types == null) {
+			return null;
+		}
+		JSONArray ptArray = new JSONArray();
+		for (int i = 0; i < types.size(); i++) {
+			ptArray.set(i, toJson(types.get(i)));
+		}
+		
+		return ptArray;
+	}
 	
 	public static JSONObject toJson(PeriodType type) {
 		
@@ -46,6 +60,22 @@ public class PeriodTypeUtilsSerializers {
 		}
 		
 		return typeObj;
+	}
+	
+	public static List<PeriodType> read(JSONArray ptArray) {
+		
+		List<PeriodType> types = new ArrayList<>();
+		
+		if (ptArray != null) {
+			for (int i = 0; i < ptArray.size(); i++) {
+				JSONObject ptObject = ptArray.get(i).isObject();
+				if (ptObject != null) {
+					types.add(read(ptObject));
+				}
+			}
+		}
+		
+		return types;
 	}
 	
 	public static PeriodType read(JSONObject typeObj) {
