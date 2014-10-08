@@ -149,7 +149,11 @@ public class ManagePersons extends Composite implements ManagePersonsView {
 	@Override
 	public boolean isNoTypeSelected() {
 		int w = types.getWidgetCount() - 1;
+		if (w < 0) {
+			return false;
+		}
 		return ((CheckBox)types.getWidget(w)).getValue();
+		 
 	}
 	
 	private void createFilter() {
