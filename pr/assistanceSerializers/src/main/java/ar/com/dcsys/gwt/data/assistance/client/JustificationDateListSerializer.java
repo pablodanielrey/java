@@ -5,37 +5,47 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.justification.JustificationDate;
+import ar.com.dcsys.gwt.data.utils.client.JustificationDateUtilsSerializer;
 import ar.com.dcsys.pr.CSD;
 
-import com.google.gwt.core.shared.GWT;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONValue;
 
 public class JustificationDateListSerializer implements CSD<List<JustificationDate>> {
 	
 	private static final Logger logger = Logger.getLogger(JustificationDateListSerializer.class.getName());
-	
-	interface Reader extends name.pehl.piriti.json.client.JsonReader<JustificationDateListContainer> {}
-	private static final Reader READER = GWT.create(Reader.class);
-	
-	interface Writer extends name.pehl.piriti.json.client.JsonWriter<JustificationDateListContainer> {}
-	private static final Writer WRITER = GWT.create(Writer.class);
 
 	@Override
 	public String toJson(List<JustificationDate> o) {
-		JustificationDateListContainer sc = new JustificationDateListContainer();
-		sc.list = o;
-		String d = WRITER.toJson(sc);
+		if (o == null) {
+			logger.log(Level.WARNING,"justificationdates = null");
+			return "";
+		}
 		
-		d = d.replaceAll("\\\"\\{", "{").replaceAll("\\}\"", "}").replace("\\","");
-		
-		logger.log(Level.WARNING,"piriti : " + d);
-		return d;
+		JSONArray array = JustificationDateUtilsSerializer.toJsonArray(o);
+		return array.toString();
 	}
 	
 	@Override
 	public List<JustificationDate> read(String json) {
-		logger.log(Level.WARNING,"piriti : " + json);
-		JustificationDateListContainer sc = READER.read(json);
-		return sc.list;
+		logger.log(Level.WARNING,"JustificationDateListSerializer : " + json);
+		try {
+			JSONValue value = JSONParser.parseStrict(json);
+			JSONObject obj = value.isObject();
+			JSONArray array = obj.get("list").isArray();
+			
+			if (array == null) {
+				return null;
+			}
+			
+			List<JustificationDate> jds = JustificationDateUtilsSerializer.read(array);
+			return jds;
+		} catch (Exception e) {
+			logger.log(Level.SEVERE,e.getMessage());
+			return null;
+		}
 	}
 
 }

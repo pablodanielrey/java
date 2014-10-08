@@ -5,37 +5,48 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.justification.GeneralJustificationDate;
+import ar.com.dcsys.gwt.data.utils.client.GeneralJustificationDateUtilsSerializer;
 import ar.com.dcsys.pr.CSD;
 
-import com.google.gwt.core.shared.GWT;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONValue;
 
 public class GeneralJustificationDateListSerializer implements CSD<List<GeneralJustificationDate>> {
 	
 	private static final Logger logger = Logger.getLogger(GeneralJustificationDateListSerializer.class.getName());
-	
-	interface Reader extends name.pehl.piriti.json.client.JsonReader<GeneralJustificationDateListContainer> {}
-	private static final Reader READER = GWT.create(Reader.class);
-	
-	interface Writer extends name.pehl.piriti.json.client.JsonWriter<GeneralJustificationDateListContainer> {}
-	private static final Writer WRITER = GWT.create(Writer.class);
 
 	@Override
 	public String toJson(List<GeneralJustificationDate> o) {
-		GeneralJustificationDateListContainer sc = new GeneralJustificationDateListContainer();
-		sc.list = o;
-		String d = WRITER.toJson(sc);
+		if (o == null) {
+			logger.log(Level.WARNING, "generaljustificationdates == null");
+			return "";
+		}
 		
-		d = d.replaceAll("\\\"\\{", "{").replaceAll("\\}\"", "}").replace("\\","");
-		
-		logger.log(Level.WARNING,"piriti toJson: " + d);
-		return d;
+		JSONArray gjdsObj = GeneralJustificationDateUtilsSerializer.toJsonArray(o);
+		return gjdsObj.toString();
 	}
 	
 	@Override
 	public List<GeneralJustificationDate> read(String json) {
-		logger.log(Level.WARNING,"piriti read: " + json);
-		GeneralJustificationDateListContainer sc = READER.read(json);
-		return sc.list;
+		logger.log(Level.WARNING, "GeneralJustificationDateSerializer : " + json);
+		try {
+			JSONValue value = JSONParser.parseStrict(json);
+			JSONObject obj = value.isObject();
+			JSONArray array = obj.get("list").isArray();
+			
+			if (array == null) {
+				return null;
+			}
+			
+			List<GeneralJustificationDate> gjds = GeneralJustificationDateUtilsSerializer.read(array);
+			return gjds;
+			
+		} catch (Exception e) {
+			logger.log(Level.SEVERE,e.getMessage());
+			return null;
+		}
 	}
 
 }

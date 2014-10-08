@@ -3,37 +3,35 @@ package ar.com.dcsys.gwt.data.assistance.client;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import name.pehl.piriti.json.client.JsonReader;
-import name.pehl.piriti.json.client.JsonWriter;
 import ar.com.dcsys.data.period.Period;
+import ar.com.dcsys.gwt.data.utils.client.PeriodUtilsSerializer;
 import ar.com.dcsys.pr.CSD;
 
-import com.google.gwt.core.client.GWT;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONValue;
 
 public class PeriodSerializer implements CSD<Period> {
 
 	public static final Logger logger = Logger.getLogger(PeriodSerializer.class.getName());
 	
-	public static final WorkedHoursSerializer workedHours = GWT.create(WorkedHoursSerializer.class);
-	
-	public interface Reader extends JsonReader<Period> {}
-	public static final Reader READER = GWT.create(Reader.class);
-
-	public interface Writer extends JsonWriter<Period> {}
-	public static final Writer WRITER = GWT.create(Writer.class);	
-	
 	@Override
 	public String toJson(Period o) {
-		String rs = WRITER.toJson(o);
-		logger.log(Level.WARNING, rs);
-		return rs;
+		JSONObject jo = PeriodUtilsSerializer.toJson(o);
+		return jo.toString();
 	}
 
 	@Override
 	public Period read(String json) {
-		logger.log(Level.WARNING,json);
-		Period rs = READER.read(json);
-		return rs;
+		logger.log(Level.WARNING,"PeriodSerializer : " + json);
+		try {
+			JSONValue value = JSONParser.parseStrict(json);
+			JSONObject obj = value.isObject();
+			return PeriodUtilsSerializer.read(obj);
+		} catch (Exception e) {
+			logger.log(Level.SEVERE,e.getMessage());
+			return null;
+		}
 	}
 
 }

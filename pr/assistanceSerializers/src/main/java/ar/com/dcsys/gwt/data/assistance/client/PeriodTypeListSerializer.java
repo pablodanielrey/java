@@ -1,11 +1,11 @@
 package ar.com.dcsys.gwt.data.assistance.client;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.period.PeriodType;
+import ar.com.dcsys.gwt.data.utils.client.PeriodTypeUtilsSerializers;
 import ar.com.dcsys.pr.CSD;
 
 import com.google.gwt.json.client.JSONArray;
@@ -21,16 +21,10 @@ public class PeriodTypeListSerializer implements CSD<List<PeriodType>> {
 	@Override
 	public String toJson(List<PeriodType> o) {
 		if (o == null) {
+			logger.log(Level.WARNING, "periodstype == null");
 			return "";
-		}
-		
-		JSONArray typesObj = new JSONArray();
-		
-		for (int i=0; i<o.size(); i++) {
-			typesObj.set(i,PeriodTypeUtilsSerializers.toJson(o.get(i)));
-		}
-		
-		logger.log(Level.WARNING, "PeriodTypeListSerializer.toJson : " + typesObj.toString());
+		}		
+		JSONArray typesObj = PeriodTypeUtilsSerializers.toJsonArray(o);		
 		return typesObj.toString();
 	}
 
@@ -39,19 +33,14 @@ public class PeriodTypeListSerializer implements CSD<List<PeriodType>> {
 		logger.log(Level.WARNING,"PeriodTypeListSerializer : " + json);
 		try {
 			JSONValue value = JSONParser.parseStrict(json);
-			JSONArray typesArray = value.isArray();
+			JSONObject obj = value.isObject();
+			JSONArray array = obj.get("list").isArray();
 			
-			if (typesArray == null) {
+			if (array == null) {
 				return null;
 			}
 			
-			List<PeriodType> types = new ArrayList<PeriodType>();
-			for(int i=0; i<typesArray.size(); i++) {
-				JSONObject typeObj = typesArray.get(i).isObject();
-				PeriodType t = PeriodTypeUtilsSerializers.read(typeObj);
-				types.add(t);
-			}
-			
+			List<PeriodType> types = PeriodTypeUtilsSerializers.read(array);
 			return types;
 			
 		} catch (Exception e) {

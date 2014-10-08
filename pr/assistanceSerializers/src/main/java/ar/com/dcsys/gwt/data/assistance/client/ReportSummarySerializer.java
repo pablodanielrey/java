@@ -3,37 +3,35 @@ package ar.com.dcsys.gwt.data.assistance.client;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import name.pehl.piriti.json.client.JsonReader;
-import name.pehl.piriti.json.client.JsonWriter;
 import ar.com.dcsys.data.report.ReportSummary;
+import ar.com.dcsys.gwt.data.utils.client.ReportSummaryUtilsSerializer;
 import ar.com.dcsys.pr.CSD;
 
-import com.google.gwt.core.client.GWT;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONValue;
 
 public class ReportSummarySerializer implements CSD<ReportSummary> {
 
 	public static final Logger logger = Logger.getLogger(ReportSummarySerializer.class.getName());
-		
-	public static final ReportSerializer reportSerializer = GWT.create(ReportSerializer.class);
-	
-	public interface Reader extends JsonReader<ReportSummary> {}
-	public static final Reader READER = GWT.create(Reader.class);
-
-	public interface Writer extends JsonWriter<ReportSummary> {}
-	public static final Writer WRITER = GWT.create(Writer.class);	
 	
 	@Override
 	public String toJson(ReportSummary o) {
-		String rs = WRITER.toJson(o);
-		logger.log(Level.WARNING, rs);
-		return rs;
+		JSONObject jo = ReportSummaryUtilsSerializer.toJson(o);
+		return jo.toString();
 	}
 
 	@Override
 	public ReportSummary read(String json) {
-		logger.log(Level.WARNING,json);
-		ReportSummary rs = READER.read(json);
-		return rs;
+		logger.log(Level.WARNING,"ReportSummary : " + json);
+		try {
+			JSONValue value = JSONParser.parseStrict(json);
+			JSONObject obj = value.isObject();
+			return ReportSummaryUtilsSerializer.read(obj);
+		} catch (Exception e) {
+			logger.log(Level.SEVERE,e.getMessage());
+			return null;
+		}
 	}
 
 }

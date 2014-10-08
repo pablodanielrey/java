@@ -4,6 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.period.PeriodAssignation;
+import ar.com.dcsys.gwt.data.utils.client.PeriodAssignationUtilsSerializers;
 import ar.com.dcsys.pr.CSD;
 
 import com.google.gwt.json.client.JSONObject;

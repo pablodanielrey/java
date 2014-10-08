@@ -3,35 +3,35 @@ package ar.com.dcsys.gwt.data.assistance.client;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import name.pehl.piriti.json.client.JsonReader;
-import name.pehl.piriti.json.client.JsonWriter;
 import ar.com.dcsys.data.log.AttLog;
+import ar.com.dcsys.gwt.data.utils.client.AttLogUtilsSerializer;
 import ar.com.dcsys.pr.CSD;
 
-import com.google.gwt.core.client.GWT;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONValue;
 
 public class AttLogSerializer implements CSD<AttLog> {
 
 	public static final Logger logger = Logger.getLogger(AttLogSerializer.class.getName());
 	
-	public interface Reader extends JsonReader<AttLog> {}
-	public static final Reader READER = GWT.create(Reader.class);
-
-	public interface Writer extends JsonWriter<AttLog> {}
-	public static final Writer WRITER = GWT.create(Writer.class);	
-	
 	@Override
 	public String toJson(AttLog o) {
-		String rs = WRITER.toJson(o);
-		logger.log(Level.WARNING, rs);
-		return rs;
+		JSONObject jo = AttLogUtilsSerializer.toJson(o);
+		return jo.toString();
 	}
 
 	@Override
-	public AttLog read(String json) {
-		logger.log(Level.WARNING,json);
-		AttLog rs = READER.read(json);
-		return rs;
+	public AttLog read(String json) {		
+		logger.log(Level.WARNING,"AttLogSerializer : " + json);
+		try {
+			JSONValue value = JSONParser.parseStrict(json);
+			JSONObject logObj = value.isObject();
+			return AttLogUtilsSerializer.read(logObj);
+		} catch (Exception e) {
+			logger.log(Level.SEVERE,e.getMessage());
+			return null;
+		}
 	}
 
 }

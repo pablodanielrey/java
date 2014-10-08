@@ -31,6 +31,13 @@
       <scope>compile</scope>
     </dependency>
 
+    <dependency>
+      <groupId>ar.com.dcsys.pr</groupId>
+      <artifactId>utilsSerializers</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
 
 
    <!-- para los convertidores de codigo a json y la inversa -->
@@ -324,6 +331,7 @@
               <artifact>ar.com.dcsys.pr:personSerializers</artifact>
               <artifact>ar.com.dcsys.pr:assistanceSerializers</artifact>
               <artifact>ar.com.dcsys.pr:documentSerializers</artifact>
+              <artifact>ar.com.dcsys.pr:utilsSerializers</artifact>
 
 <!--              <artifact>ar.com.dcsys.data:documentEntities</artifact>
               <artifact>ar.com.dcsys.gwt.utils:messageGWT</artifact>
