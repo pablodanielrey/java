@@ -111,7 +111,7 @@ public class PersonPostgreSqlDAO implements PersonDAO {
 			
 			st = con.prepareStatement("create table if not exists persontypes (" + 
 														"id varchar not null primary key," + 
-														"type varchar not null");
+														"type varchar not null)");
 			
 			try {
 				st.execute();
@@ -121,7 +121,7 @@ public class PersonPostgreSqlDAO implements PersonDAO {
 			
 			st = con.prepareStatement("create table if not exists persontypestudent (" +
 														"id varchar not null primary key," +
-														"studentNumber varchar not null");
+														"studentNumber varchar not null)");
 			
 			try {
 				st.execute();
@@ -291,29 +291,47 @@ public class PersonPostgreSqlDAO implements PersonDAO {
 	}
 
 	@Override
-	public List<String> findAllIdsBy(List<PersonType> type) throws PersonException {
+	public List<String> findAllIdsBy(List<String> types) throws PersonException {
 		
 		try {
 
 			final List<String> ids = new ArrayList<>();
 			
-			for (PersonType pt : type) {
-				final String id = pt.toString();
-				
-				executeSqlQuery("select person_id from persons_persontypes where persontype_id = ?", new QueryProcessor() {
+			if (types == null || types.size() <= 0) {
+				executeSqlQuery("select id from persons where id not in (select person_id from persons_persontypes)", new QueryProcessor() {
 					@Override
 					public void setParams(PreparedStatement st)	throws SQLException {
-						st.setString(1, id);
+						
 					}
 					@Override
 					public void process(ResultSet rs) throws SQLException, PersonException {
-						String id = rs.getString("person_id");
+						String id = rs.getString("id");
 						ids.add(id);
 					}
 					@Override
 					public void postProcess(Connection con) throws SQLException {
 					}
-				});
+				});				
+			} else {
+			
+				for (String pt : types) {
+					final String type = pt;
+					
+					executeSqlQuery("select person_id from persons_persontypes pt inner join (select id from persontypes where type = ?) as t on (pt.persontype_id = t.id)", new QueryProcessor() {
+						@Override
+						public void setParams(PreparedStatement st)	throws SQLException {
+							st.setString(1, type);
+						}
+						@Override
+						public void process(ResultSet rs) throws SQLException, PersonException {
+							String id = rs.getString("person_id");
+							ids.add(id);
+						}
+						@Override
+						public void postProcess(Connection con) throws SQLException {
+						}
+					});
+				}
 			}
 			
 			return ids;
@@ -572,7 +590,11 @@ public class PersonPostgreSqlDAO implements PersonDAO {
 		try {
 			for (PersonType pt : p.getTypes()) {
 				st.setString(1,p.getId());
-				st.setString(2,pt.toString());
+				if (pt.getId() == null) {
+					String id = UUID.randomUUID().toString();
+					pt.setId(id);
+				}
+				st.setString(2,pt.getId());
 				st.execute();
 				persistPersonType(con,pt);
 			};
@@ -582,10 +604,6 @@ public class PersonPostgreSqlDAO implements PersonDAO {
 	}
 	
 	private void persistPersonType(Connection con, PersonType pt) throws SQLException {		
-		if (pt.getId() == null) {
-			String id = UUID.randomUUID().toString();
-			pt.setId(id);
-		}
 		
 		String query = "insert into persontypes (id, type) values (?,?)";
 		PreparedStatement st = con.prepareStatement(query);
@@ -657,6 +675,7 @@ public class PersonPostgreSqlDAO implements PersonDAO {
 		} finally {
 			st.close();
 		}
+		
 	}
 	
 	/**

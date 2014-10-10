@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.data.person.PersonType;
-import ar.com.dcsys.gwt.person.client.common.PersonTypesSort;
+import ar.com.dcsys.data.person.PersonTypeEnum;
 import ar.com.dcsys.gwt.person.client.common.filter.FilterPerson;
 import ar.com.dcsys.gwt.person.client.common.filter.FilterPersonDni;
 import ar.com.dcsys.gwt.person.client.common.filter.FilterPersonName;
@@ -15,7 +14,6 @@ import ar.com.dcsys.utils.PersonSort;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -52,7 +50,7 @@ public class ManagePersons extends Composite implements ManagePersonsView {
 	private final List<Person> personsFilteredData;
 	private final PersonResources resources = GWT.create(PersonResources.class);
 
-	private final List<PersonType> typesCache = new ArrayList<PersonType>();
+	private final List<PersonTypeEnum> typesCache = new ArrayList<PersonTypeEnum>();
 	
 	private Timer filterTimer = null;
 	
@@ -91,17 +89,16 @@ public class ManagePersons extends Composite implements ManagePersonsView {
 	}
 	
 	@Override
-	public void setAllTypes(List<PersonType> types) {
+	public void setAllTypes(List<PersonTypeEnum> types) {
 		/*
 		 * TODO:lo comente para que no filtre los persons
 		 */
 		//types = PersonTypeUtils.filter(types);
 		
 		typesCache.clear();
-		PersonTypesSort.sort(types);
 		typesCache.addAll(types);
 		
-		final ClickHandler handler = new ClickHandler() {
+		/*final ClickHandler handler = new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				if (p == null) {
@@ -109,30 +106,30 @@ public class ManagePersons extends Composite implements ManagePersonsView {
 				}
 				p.updateUsers();
 			}
-		}; 
+		}; */
 		
 		this.types.clear();
-		for (PersonType pt : types) {
-			CheckBox c = new CheckBox(pt.getName());
+		for (PersonTypeEnum pt : types) {
+			CheckBox c = new CheckBox(pt.getDescription());
 			c.setValue(false);
-			c.addClickHandler(handler);
+			//c.addClickHandler(handler);
 			this.types.add(c);
 		}
 		
 		CheckBox c = new CheckBox("Sin Tipo");
 		c.setValue(false);
-		c.addClickHandler(handler);
+		//c.addClickHandler(handler);
 		this.types.add(c);
 	}	
 	
 	@Override
-	public List<PersonType> getSelectedTypes() {
-		List<PersonType> selected = new ArrayList<PersonType>();
+	public List<PersonTypeEnum> getSelectedTypes() {
+		List<PersonTypeEnum> selected = new ArrayList<PersonTypeEnum>();
 		for (int i = 0; i < this.types.getWidgetCount(); i++) {
 			CheckBox c = (CheckBox)this.types.getWidget(i);
 			if (c.getValue()) {
-				for (PersonType pt : typesCache) {
-					if (pt.getName().equalsIgnoreCase(c.getText())) {
+				for (PersonTypeEnum pt : typesCache) {
+					if (pt.getDescription().equalsIgnoreCase(c.getText())) {
 						selected.add(pt);
 					}
 				}

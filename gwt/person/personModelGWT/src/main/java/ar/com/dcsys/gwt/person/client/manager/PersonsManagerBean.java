@@ -1,12 +1,13 @@
 package ar.com.dcsys.gwt.person.client.manager;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.document.Document;
 import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.data.person.PersonType;
+import ar.com.dcsys.data.person.PersonTypeEnum;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.ws.client.WebSocket;
 
@@ -134,8 +135,12 @@ public class PersonsManagerBean implements PersonsManager {
 	}
 
 	@Override
-	public void findAll(List<PersonType> types, final Receiver<List<Person>> rec) {
-		pm.findAll(types,rec);
+	public void findAll(List<PersonTypeEnum> types, final Receiver<List<Person>> rec) {
+		List<String> typesStr = new ArrayList<String>();
+		for (PersonTypeEnum pt : types) {
+			typesStr.add(pt.getClazz());
+		}
+		pm.findAll(typesStr,rec);
 	}
 	
 }

@@ -7,10 +7,13 @@ import java.util.List;
 import java.util.Set;
 
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonType;
+import ar.com.dcsys.data.person.PersonTypeEnum;
+import ar.com.dcsys.data.person.PersonTypeExternal;
+import ar.com.dcsys.data.person.PersonTypePersonal;
+import ar.com.dcsys.data.person.PersonTypePostgraduate;
 import ar.com.dcsys.data.person.PersonTypeStudent;
-import ar.com.dcsys.data.person.Telephone;
+import ar.com.dcsys.data.person.PersonTypeTeacher;
 import ar.com.dcsys.data.person.Telephone;
 import ar.com.dcsys.gwt.auth.client.manager.AuthManager;
 import ar.com.dcsys.gwt.clientMessages.client.MessageDialogEvent;
@@ -21,7 +24,6 @@ import ar.com.dcsys.gwt.person.client.ui.basicData.PersonDataView;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -36,7 +38,7 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 	private final PersonsManager personsManager;
 	private final AuthManager authManager;
 	
-	private MultiSelectionModel<PersonType> typesSelection;
+	private MultiSelectionModel<PersonTypeEnum> typesSelection;
 	private SingleSelectionModel<Person> selection;
 	private EventBus eventBus = null;
 	
@@ -81,7 +83,7 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 		this.authManager = authManager;
 		this.view = view;
 		
-		typesSelection = new MultiSelectionModel<PersonType>();
+		typesSelection = new MultiSelectionModel<PersonTypeEnum>();
 		typesSelection.addSelectionChangeHandler(typesHandler);
 		
 		checkStudentData();
@@ -110,6 +112,7 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 		 * TODO: Hasta que implemente el manager de studentData del lado del cliente.
 		 * ahora lo pongo en false.
 		 */
+				
 		view.setStudentDataVisible(false);
 		
 		
@@ -124,20 +127,24 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 	private void checkStudentData() {
 		view.setStudentDataVisible(false);
 //		List<PersonType> types = view.getSelectedTypes();
-		Set<PersonType> types = typesSelection.getSelectedSet();
+		Set<PersonTypeEnum> types = typesSelection.getSelectedSet();
 		if (types == null) {
 			return;
 		}
 		
-		for (PersonType type : types) {
-			if (type instanceof PersonTypeStudent) {
-				view.setStudentDataVisible(true);
+		for (PersonTypeEnum type : types) {
+			if (type == PersonTypeEnum.STUDENT) {
+				view.setStudentDataVisible(true);				
 				return;
 			}
 		}
 	}
 	
 	private void setPersonTypesInView(List<PersonType> types) {
+		/**
+		 * TODO: tengo que modificar esto
+		 */
+		
 		//view.setSelectedTypes(types);
 		typesSelection.clear();
 		
@@ -146,11 +153,33 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 		}
 		
 		for (PersonType pt : types) {
-			typesSelection.setSelected(pt,true);
+			
+			if (PersonTypeEnum.EXTERNAL.getClazz().equals(pt.getClass().getName())) {
+				typesSelection.setSelected(PersonTypeEnum.EXTERNAL,true);
+			}
+			
+			else if (PersonTypeEnum.PERSONAL.getClazz().equals(pt.getClass().getName())) {
+				typesSelection.setSelected(PersonTypeEnum.PERSONAL,true);
+			}
+			
+			else if (PersonTypeEnum.POSTGRADUATE.getClazz().equals(pt.getClass().getName())) {
+				typesSelection.setSelected(PersonTypeEnum.POSTGRADUATE,true);
+			}
+			
+			else if (PersonTypeEnum.STUDENT.getClazz().equals(pt.getClass().getName())) {
+				typesSelection.setSelected(PersonTypeEnum.STUDENT,true);
+				String studentNumber = ((PersonTypeStudent)pt).getStudentNumber();
+				view.setStudentNumber(studentNumber);
+			}
+			
+			else if (PersonTypeEnum.TEACHER.getClazz().equals(pt.getClass().getName())) {
+				typesSelection.setSelected(PersonTypeEnum.TEACHER,true);
+			}
+			
 		}
 	}
 	
-	private void setAllTypesInView(List<PersonType> types) {
+	private void setAllTypesInView(List<PersonTypeEnum> types) {
 		view.getPersonTypesView().setAllTypes(types);
 	}
 	
@@ -173,14 +202,14 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 		
 
 		///////////////// PARCHE HASTA SOLUCIONAR LO DE AUTENTIFICACION /////////////
-		view.setMailReadOnly(false);
+	/*	view.setMailReadOnly(false);
 		view.setDniReadOnly(false);
 		view.setNameReadOnly(false);
 		view.setLastNameReadOnly(false);
 		view.setStudentNumberReadOnly(false);
 		view.getPersonTypesView().setReadOnly(false);
 
-		view.setMailVisible(true);
+		view.setMailVisible(true);*/
 
 		/*
 		authManager.isUserInRole("ADMIN", new Receiver<Boolean>() {
@@ -271,17 +300,9 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 		
 		determineUserRole();
 		
-		/** TODO: Falta implementar el findAllTypes
-		 * personsManager.findAllTypes(new Receiver<List<PersonType>>() {
-			@Override
-			public void onSuccess(List<PersonType> types) {
-				setAllTypesInView(types);
-			}
-			@Override
-			public void onError(String error) {
-				Window.alert(error);
-			}
-		});*/
+		List<PersonTypeEnum> types = Arrays.asList(PersonTypeEnum.values());
+		setAllTypesInView(types);
+		
 	}
 	
 	@Override
@@ -343,6 +364,27 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 		updateUser(person,view);
 	}		
 	
+		
+	private PersonType convert(PersonTypeEnum type) {
+		PersonType t = null;
+		switch (type) {
+			case EXTERNAL: t = new PersonTypeExternal(); break;
+			case PERSONAL : t = new PersonTypePersonal(); break;
+			case POSTGRADUATE: t = new PersonTypePostgraduate(); break;
+			case STUDENT: t = new PersonTypeStudent(); ((PersonTypeStudent)t).setStudentNumber(view.getStudentNumber());break;
+			case TEACHER: t = new PersonTypeTeacher(); break;
+		}
+		return t;
+	}
+	
+	private List<PersonType> convert(List<PersonTypeEnum> typesEnum) {
+		List<PersonType> types = new ArrayList<PersonType>();
+		for (PersonTypeEnum t : typesEnum) {
+			types.add(convert(t));
+		}
+		return types;
+	}
+	
 	/**
 	 * Agrego a un usuario nuevo
 	 * @param view
@@ -350,9 +392,11 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 	private void updateUser(Person eP, final PersonDataView view) {
 		setData(eP, view);
 		//List<PersonType> types = view.getSelectedTypes();
-		Set<PersonType> stypes = typesSelection.getSelectedSet();
-		List<PersonType> types = (stypes == null) ? new ArrayList<PersonType>() : new ArrayList<PersonType>(typesSelection.getSelectedSet());
-		eP.setTypes(types);
+		Set<PersonTypeEnum> stypes = typesSelection.getSelectedSet();
+		List<PersonTypeEnum> types = (stypes == null) ? new ArrayList<PersonTypeEnum>() : new ArrayList<PersonTypeEnum>(typesSelection.getSelectedSet());
+		
+		
+		eP.setTypes(convert(types));
 		
 		personsManager.persist(eP, new Receiver<String>() {
 			@Override

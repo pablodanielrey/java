@@ -1,12 +1,14 @@
 package ar.com.dcsys.gwt.person.client.activity.manage;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonType;
+import ar.com.dcsys.data.person.PersonTypeEnum;
 import ar.com.dcsys.gwt.auth.client.manager.AuthManager;
 import ar.com.dcsys.gwt.clientMessages.client.MessageDialogEvent;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
@@ -14,12 +16,9 @@ import ar.com.dcsys.gwt.person.client.activity.UpdatePersonDataActivity;
 import ar.com.dcsys.gwt.person.client.manager.PersonsManager;
 import ar.com.dcsys.gwt.person.client.manager.events.PersonModifiedEvent;
 import ar.com.dcsys.gwt.person.client.manager.events.PersonModifiedEventHandler;
-import ar.com.dcsys.gwt.person.client.modules.PersonModule;
-import ar.com.dcsys.gwt.person.client.modules.PersonPortal;
 import ar.com.dcsys.gwt.person.client.place.ManagePersonsPlace;
 import ar.com.dcsys.gwt.person.client.ui.AcceptsOneWidgetAdapter;
 import ar.com.dcsys.gwt.person.client.ui.UpdatePersonDataView;
-import ar.com.dcsys.gwt.person.client.ui.assistance.PersonAssistanceDataView;
 import ar.com.dcsys.gwt.person.client.ui.basicData.PersonDataView;
 import ar.com.dcsys.gwt.person.client.ui.manage.ManagePersonsView;
 
@@ -138,6 +137,12 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 		view.clear();
 		view.getPersonDataPanel().clear();
 		
+
+				
+		
+		AcceptsOneWidgetAdapter container = new AcceptsOneWidgetAdapter(view.getPersonDataPanel());
+		updatePersonDataActivity.start(container, eventBus);
+		
 		personDataView.setDniReadOnly(false);
 		personDataView.setNameReadOnly(false);
 		personDataView.setLastNameReadOnly(false);
@@ -145,11 +150,7 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 		personDataView.setStudentNumberReadOnly(false);
 		personDataView.getPersonTypesView().setReadOnly(false);
 		
-		personDataView.setMailVisible(true);
-				
-		
-		AcceptsOneWidgetAdapter container = new AcceptsOneWidgetAdapter(view.getPersonDataPanel());
-		updatePersonDataActivity.start(container, eventBus);
+		personDataView.setMailVisible(true);		
 		
 //		container = new AcceptsOneWidgetAdapter(view.getPersonGroupsPanel());
 //		personToGroupActivity.start(container, eventBus);
@@ -189,29 +190,15 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 	}
 	
 	private void findAllPersonTypes() {
-		
-		
-		/** TODO: falta implementar el findAllTypes
-		personsManager.findAllTypes(new Receiver<List<PersonType>>() {
-			@Override
-			public void onSuccess(List<PersonType> types) {
-				view.setAllTypes(types);
-			}
-			public void onError(String error) {
-				if (error != null) {
-					showMessage(error);
-				} else {
-					showMessage("Error llamando obteniendo los tipos de persona");
-				}
-			};
-		});*/
+		List<PersonTypeEnum> types = Arrays.asList(PersonTypeEnum.values());
+		view.setAllTypes(types);
 	}
 	
 	/**
 	 * Obtiene todas las personas como PersonValueProxy que tengan determinado types.
 	 * @param types
 	 */
-	private void update(List<PersonType> types) {
+	private void update(List<PersonTypeEnum> types) {
 		
 		
 		if (types == null || types.size() <= 0 && (!view.isNoTypeSelected())) {
@@ -256,7 +243,7 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 				public void onSuccess(final List<Person> persons) {
 					if (view.isNoTypeSelected()) {
 						// busco las personas que no tienen ningun tipo.
-						personsManager.findAll(new ArrayList<PersonType>(),new Receiver<List<Person>>() {
+						personsManager.findAll(new ArrayList<PersonTypeEnum>(),new Receiver<List<Person>>() {
 							public void onSuccess(List<Person> persons2) {
 								
 								if (persons == null) {
@@ -294,7 +281,7 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 		selection.clear();
 		personSelection.clear();
 		
-		List<PersonType> types = view.getSelectedTypes();
+		List<PersonTypeEnum> types = view.getSelectedTypes();
 		update(types);
 	}
 

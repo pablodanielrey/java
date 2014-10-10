@@ -49,7 +49,7 @@ public class PersonTypeUtilsSerializer {
 			
 			if (type instanceof PersonTypeStudent) {
 				String studentNumber = ((PersonTypeStudent)type).getStudentNumber();
-				typeObj.put("studenNumber", new JSONString(studentNumber));
+				typeObj.put("studentNumber", new JSONString(studentNumber));
 			}
 		}
 		
@@ -88,7 +88,7 @@ public class PersonTypeUtilsSerializer {
 		String id = null;
 		JSONValue idValue = typeObj.get("id");
 		if (idValue != null) {
-			id = idValue.isString().toString();
+			id = idValue.isString().stringValue();
 		}
 		
 		if (PersonTypeStudent.class.getName().equals(type)) {
@@ -96,7 +96,7 @@ public class PersonTypeUtilsSerializer {
 			
 			JSONValue snValue = typeObj.get("studentNumber");
 			if (snValue != null) {
-				pt.setStudentNumber(snValue.isString().toString());
+				pt.setStudentNumber(snValue.isString().stringValue());
 			}
 			
 			pt.setId(id);

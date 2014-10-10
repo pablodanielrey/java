@@ -338,7 +338,7 @@ public class PersonLdapDAO implements PersonDAO {
 	 * En el caso de que types.size == 0 retorna todas las peronsas que no tengan ningun tipo.
 	 */
 	@Override
-	public List<String> findAllIdsBy(List<PersonType> types) throws PersonException {
+	public List<String> findAllIdsBy(List<String> types) throws PersonException {
 		if (types == null) {
 			throw new PersonException("no se puede buscar por tipos = null");
 		}

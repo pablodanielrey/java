@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import ar.com.dcsys.data.person.PersonType;
+import ar.com.dcsys.data.person.PersonTypeEnum;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -26,8 +27,8 @@ public class PersonTypes extends Composite implements PersonTypesView {
 	interface PersonTypesUiBinder extends UiBinder<Widget, PersonTypes> {
 	}
 
-	private final List<PersonType> typesCache = new ArrayList<PersonType>();
-	private MultiSelectionModel<PersonType> typesSelection; 
+	private final List<PersonTypeEnum> typesCache = new ArrayList<PersonTypeEnum>();
+	private MultiSelectionModel<PersonTypeEnum> typesSelection; 
 	
 	private boolean readOnly = false;
 	
@@ -64,19 +65,19 @@ public class PersonTypes extends Composite implements PersonTypesView {
 			if (typesSelection == null) {
 				return;
 			}
-			Set<PersonType> selected = typesSelection.getSelectedSet();
+			Set<PersonTypeEnum> selected = typesSelection.getSelectedSet();
 			if (selected == null) {
 				clear();
 				return;
 			}
-			List<PersonType> selectedTypes = new ArrayList<PersonType>(selected);
+			List<PersonTypeEnum> selectedTypes = new ArrayList<PersonTypeEnum>(selected);
 			setSelectedTypes(selectedTypes);
 		}
 	};
 	
 	
 	@Override
-	public void setTypesSelectionModel(MultiSelectionModel<PersonType> selection) {
+	public void setTypesSelectionModel(MultiSelectionModel<PersonTypeEnum> selection) {
 		typesSelection = selection;
 		typesSelection.addSelectionChangeHandler(typesHandler);
 	}
@@ -95,14 +96,14 @@ public class PersonTypes extends Composite implements PersonTypesView {
 	 * Setea a true los checkboxs que representan los tipos seleccionados.
 	 * @param types
 	 */
-	private void setSelectedTypes(List<PersonType> types) {
+	private void setSelectedTypes(List<PersonTypeEnum> types) {
 		clear();
 		if (types != null && types.size() > 0) {
 			for (int i = 0; i < this.types.getWidgetCount(); i++) {
 				CheckBox c = (CheckBox)this.types.getWidget(i);
 				c.setValue(false);
-				for (PersonType pt : types) {
-					if (c.getText().equalsIgnoreCase(pt.getName())) {
+				for (PersonTypeEnum pt : types) {
+					if (c.getText().equalsIgnoreCase(pt.getDescription())) {
 						c.setValue(true);
 					}
 				}
@@ -112,7 +113,7 @@ public class PersonTypes extends Composite implements PersonTypesView {
 
 	
 	@Override
-	public void setAllTypes(List<PersonType> types) {
+	public void setAllTypes(List<PersonTypeEnum> types) {
 		typesCache.clear();
 		typesCache.addAll(types);
 		
@@ -120,8 +121,8 @@ public class PersonTypes extends Composite implements PersonTypesView {
 		
 		//types = PersonTypeUtils.filter(types);
 		
-		for (PersonType pt : types) {
-			CheckBox c = new CheckBox(pt.getName());
+		for (PersonTypeEnum pt : types) {
+			CheckBox c = new CheckBox(pt.getDescription());
 			c.setValue(false);
 			c.setEnabled(true);
 			c.addClickHandler(new ClickHandler() {
@@ -142,10 +143,10 @@ public class PersonTypes extends Composite implements PersonTypesView {
 	 * Actualiza el selection model a los valores de los checkbox.
 	 */
 	private void updateSelectedTypes() {
-		for (PersonType pt : typesCache) {
+		for (PersonTypeEnum pt : typesCache) {
 			for (int i = 0; i < this.types.getWidgetCount(); i++) {
 				CheckBox c = (CheckBox)this.types.getWidget(i);
-				if (pt.getName().equalsIgnoreCase(c.getText())) {
+				if (pt.getDescription().equalsIgnoreCase(c.getText())) {
 					typesSelection.setSelected(pt, c.getValue());
 					break;
 				}

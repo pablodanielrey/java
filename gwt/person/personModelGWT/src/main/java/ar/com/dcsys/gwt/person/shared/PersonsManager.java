@@ -49,7 +49,7 @@ public interface PersonsManager extends Manager {
 	 * @param receiver
 	 */
 	public void findAll(Receiver<List<Person>> receiver);
-	public void findAll(List<PersonType> types, Receiver<List<Person>> rec);
+	public void findAll(List<String> types, Receiver<List<Person>> rec);
 	
 	
 	public void findMails(Person p, Receiver<List<Mail>> rec);

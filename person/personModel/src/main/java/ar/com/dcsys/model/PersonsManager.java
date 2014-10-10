@@ -5,7 +5,6 @@ import java.util.List;
 
 import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.exceptions.PersonException;
 
 public interface PersonsManager {
@@ -16,7 +15,7 @@ public interface PersonsManager {
 	public Person getLoggedPerson() throws PersonException;
 	
 	public List<Person> findAll() throws PersonException;
-	public List<Person> findAllBy(List<PersonType> types) throws PersonException;
+	public List<Person> findAllBy(List<String> types) throws PersonException;
 	
 	public Person findById(String id) throws PersonException;
 	public Person findByDni(String dni) throws PersonException;

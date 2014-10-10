@@ -59,7 +59,7 @@ public class PersonsManagerBean implements PersonsManager {
 	}
 
 	@Override
-	public void findAll(List<PersonType> types, Receiver<List<Person>> rec) {
+	public void findAll(List<String> types, Receiver<List<Person>> rec) {
 		try {
 			List<Person> persons = personsManager.findAllBy(types);
 			rec.onSuccess(persons);

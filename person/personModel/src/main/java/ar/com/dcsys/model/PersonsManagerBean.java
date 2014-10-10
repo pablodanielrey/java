@@ -18,7 +18,6 @@ import ar.com.dcsys.data.auth.principals.IdPrincipal;
 import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonDAO;
-import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.exceptions.AuthenticationException;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.exceptions.PersonNotFoundException;
@@ -36,7 +35,7 @@ public class PersonsManagerBean implements PersonsManager {
 	
 	private LoadingCache<String,Person> personCache;
 	private LoadingCache<String,String> dnisCache;
-	private LoadingCache<PersonType,List<String>> personTypesCache;
+	private LoadingCache<String,List<String>> personTypesCache;
 	
 	private final AuthManager authManager;
 	private final PersonDAO personDAO;
@@ -105,9 +104,9 @@ public class PersonsManagerBean implements PersonsManager {
 			}
 		});
 		
-		personTypesCache = CacheBuilder.newBuilder().maximumSize(500).build(new CacheLoader<PersonType,List<String>>() {
+		personTypesCache = CacheBuilder.newBuilder().maximumSize(500).build(new CacheLoader<String,List<String>>() {
 			@Override
-			public List<String> load(PersonType key) throws Exception {
+			public List<String> load(String key) throws Exception {
 				List<String> ids = personDAO.findAllIdsBy(Arrays.asList(key));
 				if (ids == null) {
 					throw new PersonException("findAllIdsBy ---> null");
@@ -151,7 +150,7 @@ public class PersonsManagerBean implements PersonsManager {
 	 * en el caso de que types == null o types.size == 0 busca todas las peronsas que NO tengna ningun tipo.
 	 */
 	@Override
-	public List<Person> findAllBy(List<PersonType> types) throws PersonException {
+	public List<Person> findAllBy(List<String> types) throws PersonException {
 		
 		
 		Set<String> ids = new HashSet<String>();
@@ -163,7 +162,7 @@ public class PersonsManagerBean implements PersonsManager {
 				ids.addAll(personDAO.findAllIdsBy(types));
 			} else {
 				// personas con algun tipo aunque sea.
-				for (PersonType t : types) {
+				for (String t : types) {
 					List<String> i = personTypesCache.get(t);
 					ids.addAll(i);
 				}

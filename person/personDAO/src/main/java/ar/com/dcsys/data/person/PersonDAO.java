@@ -8,7 +8,7 @@ public interface PersonDAO {
 	
 	public List<String> findAllIds() throws PersonException;
 	public String findIdByDni(String dni) throws PersonException;
-	public List<String> findAllIdsBy(List<PersonType> type) throws PersonException;
+	public List<String> findAllIdsBy(List<String> type) throws PersonException;
 	
 	public List<Person> findAll() throws PersonException;
 	public List<Person> findAll(Iterable<? extends String> ids) throws PersonException;

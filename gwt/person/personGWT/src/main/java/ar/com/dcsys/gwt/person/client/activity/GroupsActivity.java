@@ -355,6 +355,7 @@ public class GroupsActivity extends AbstractActivity implements GroupsView.Prese
 	public void updatePersons() {
 		personsCache.clear();
 		List<PersonType> types = view.getSelectedPersonTypes();
+		/** TODO: lo comente para que compile
 		personsManager.findAll(types, new Receiver<List<Person>>() {
 			@Override
 			public void onSuccess(List<Person> persons) {
@@ -366,7 +367,7 @@ public class GroupsActivity extends AbstractActivity implements GroupsView.Prese
 			public void onError(String error) {
 				showMessage(error);
 			}
-		});
+		});*/
 	}
 	
 	/**

@@ -184,14 +184,14 @@ public class PersonHsqlDAO implements PersonDAO {
 	}
 
 	@Override
-	public List<String> findAllIdsBy(List<PersonType> type) throws PersonException {
+	public List<String> findAllIdsBy(List<String> type) throws PersonException {
 		
 		try {
 
 			final List<String> ids = new ArrayList<>();
 			
-			for (PersonType pt : type) {
-				final String id = pt.toString();
+			for (String pt : type) {
+				final String id = pt;
 				
 				executeSqlQuery("select person_id from persons_persontypes where persontype_id = ?", new QueryProcessor() {
 					@Override

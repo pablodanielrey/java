@@ -37,6 +37,7 @@
   <inherits name="ar.com.dcsys.gwt.assistance.AssistanceModelGWT"/>
 
   <inherits name="ar.com.dcsys.pr.Serializers"/>
+  <inherits name="ar.com.dcsys.gwt.data.UtilsSerializers"/>
   <inherits name="ar.com.dcsys.gwt.person.PersonSerializers"/>
   <inherits name="ar.com.dcsys.gwt.data.DocumentSerializers"/>
   <inherits name="ar.com.dcsys.gwt.data.AssistanceSerializers"/>
