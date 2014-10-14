@@ -3,7 +3,6 @@ package ar.com.dcsys.person.server;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.person.Mail;
-import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.pr.CSD;
 
 import com.google.gson.Gson;

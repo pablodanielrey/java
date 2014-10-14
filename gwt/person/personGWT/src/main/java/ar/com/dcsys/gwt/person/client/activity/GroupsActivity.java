@@ -2,16 +2,14 @@ package ar.com.dcsys.gwt.person.client.activity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.group.GroupType;
 import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.data.person.PersonType;
+import ar.com.dcsys.data.person.PersonTypeEnum;
 import ar.com.dcsys.gwt.clientMessages.client.MessageDialogEvent;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.person.client.manager.GroupsManager;
@@ -68,6 +66,8 @@ public class GroupsActivity extends AbstractActivity implements GroupsView.Prese
 					setGroupPersons(null);
 
 				} else {
+
+					GroupsActivity.this.view.clearGroupData();
 					
 					GroupsActivity.this.view.setGroup(group);
 					GroupsActivity.this.view.setSelectedGroupTypes(group.getTypes());
@@ -271,18 +271,8 @@ public class GroupsActivity extends AbstractActivity implements GroupsView.Prese
 	}
 	
 	private void findAllPersonTypes() {
-		/** TODO: falta implementar el findAllTypes
-		
-		personsManager.findAllTypes(new Receiver<List<PersonType>>() {
-			@Override
-			public void onSuccess(List<PersonType> types) {
-				view.setAllPersonTypes(types);
-			}
-			public void onError(String error) {
-				showMessage(error);
-			};
-		});
-		*/
+		List<PersonTypeEnum> types = Arrays.asList(PersonTypeEnum.values());
+		view.setAllPersonTypes(types);
 	}
 
 	private void clearSelections() {
@@ -354,20 +344,38 @@ public class GroupsActivity extends AbstractActivity implements GroupsView.Prese
 	@Override
 	public void updatePersons() {
 		personsCache.clear();
-		List<PersonType> types = view.getSelectedPersonTypes();
-		/** TODO: lo comente para que compile
-		personsManager.findAll(types, new Receiver<List<Person>>() {
-			@Override
-			public void onSuccess(List<Person> persons) {
-				assert persons != null;
-				personsCache.addAll(persons);
-				updatePersonGroups();
-			}
-			@Override
-			public void onError(String error) {
-				showMessage(error);
-			}
-		});*/
+		List<PersonTypeEnum> types = view.getSelectedPersonTypes();
+		if (types == null ||types.size() <= 0) {
+			personsManager.findAll(new Receiver<List<Person>>() {
+
+				@Override
+				public void onSuccess(List<Person> persons) {
+					assert persons != null;
+					personsCache.addAll(persons);
+					updatePersonGroups();
+				}
+
+				@Override
+				public void onError(String error) {
+					showMessage(error);
+				}
+				
+			});
+		} else {
+			personsManager.findAll(types, new Receiver<List<Person>>(){
+				@Override
+				public void onSuccess(List<Person> persons) {
+					assert persons != null;
+					personsCache.addAll(persons);
+					updatePersonGroups();
+				}
+
+				@Override
+				public void onError(String error) {
+					showMessage(error);
+				}				
+			});
+		}
 	}
 	
 	/**

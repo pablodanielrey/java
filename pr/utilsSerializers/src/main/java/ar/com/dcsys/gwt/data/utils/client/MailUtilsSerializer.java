@@ -35,7 +35,7 @@ public class MailUtilsSerializer {
 		
 		Boolean isPrimary = mail.isPrimary();
 		if (isPrimary != null) {
-			mailObj.put("isPrimary", JSONBoolean.getInstance(isPrimary));
+			mailObj.put("primary", JSONBoolean.getInstance(isPrimary));
 		} 
 		
 		return mailObj;
@@ -71,7 +71,7 @@ public class MailUtilsSerializer {
 			mail.setMail(mailStr);
 		}
 		
-		JSONValue primaryVal = mailObj.get("isPrimary");
+		JSONValue primaryVal = mailObj.get("primary");
 		if (primaryVal != null) {
 			Boolean primary = primaryVal.isBoolean().booleanValue();
 			mail.setPrimary(primary);

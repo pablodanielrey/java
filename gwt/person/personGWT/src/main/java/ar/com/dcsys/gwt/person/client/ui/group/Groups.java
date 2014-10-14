@@ -9,6 +9,7 @@ import ar.com.dcsys.data.group.GroupType;
 import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonType;
+import ar.com.dcsys.data.person.PersonTypeEnum;
 import ar.com.dcsys.gwt.person.client.common.EnumGroupTypesSort;
 import ar.com.dcsys.gwt.person.client.common.PersonTypesSort;
 import ar.com.dcsys.gwt.person.client.common.filter.FilterGroup;
@@ -63,7 +64,7 @@ public class Groups extends Composite implements GroupsView {
 	
 	private final PersonResources resources = GWT.create(PersonResources.class);
 	
-	private final List<PersonType> personTypesCache = new ArrayList<PersonType>();
+	private final List<PersonTypeEnum> personTypesCache = new ArrayList<PersonTypeEnum>();
 	private final List<GroupType> groupTypesCache = new ArrayList<GroupType>();
 	
 
@@ -129,9 +130,8 @@ public class Groups extends Composite implements GroupsView {
 	///////////////////////// PERSONAS EN LOS GRUPOS //////////////////////////////////////
 	
 	@Override
-	public void setAllPersonTypes(List<PersonType> types) {
+	public void setAllPersonTypes(List<PersonTypeEnum> types) {
 		personTypesCache.clear();
-		PersonTypesSort.sort(types);
 		personTypesCache.addAll(types);
 		
 		final ClickHandler handler = new ClickHandler() {
@@ -145,8 +145,8 @@ public class Groups extends Composite implements GroupsView {
 		};
 		
 		this.personTypes.clear();
-		for (PersonType pt : types) {
-			CheckBox c = new CheckBox(pt.getName());
+		for (PersonTypeEnum pt : types) {
+			CheckBox c = new CheckBox(pt.getDescription());
 			c.setValue(false);
 			c.addClickHandler(handler);
 			this.personTypes.add(c);
@@ -154,13 +154,13 @@ public class Groups extends Composite implements GroupsView {
 	}
 
 	@Override
-	public List<PersonType> getSelectedPersonTypes() {
-		List<PersonType> selected = new ArrayList<PersonType>();
+	public List<PersonTypeEnum> getSelectedPersonTypes() {
+		List<PersonTypeEnum> selected = new ArrayList<PersonTypeEnum>();
 		for (int i = 0; i < this.personTypes.getWidgetCount(); i++) {
 			CheckBox c = (CheckBox)this.personTypes.getWidget(i);
 			if (c.getValue()) {
-				for (PersonType pt : personTypesCache) {
-					if (pt.getName().equalsIgnoreCase(c.getText())) {
+				for (PersonTypeEnum pt : personTypesCache) {
+					if (pt.getDescription().equalsIgnoreCase(c.getText())) {
 						selected.add(pt);
 					}
 				}

@@ -5,7 +5,7 @@ import java.util.List;
 import ar.com.dcsys.data.group.Group;
 import ar.com.dcsys.data.group.GroupType;
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.data.person.PersonType;
+import ar.com.dcsys.data.person.PersonTypeEnum;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -33,8 +33,8 @@ public interface GroupsView extends IsWidget {
 	public void setParents(List<Group> groups);
 	public void setParent(Group group);
 	
-	public List<PersonType> getSelectedPersonTypes();
-	public void setAllPersonTypes(List<PersonType> types);
+	public List<PersonTypeEnum> getSelectedPersonTypes();
+	public void setAllPersonTypes(List<PersonTypeEnum> types);
 	
 	public void setGroup(Group group);
 	public String getMail();
