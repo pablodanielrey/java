@@ -25,7 +25,9 @@ public class PeriodAssignationListSerializer implements CSD<List<PeriodAssignati
 		}
 		
 		JSONArray array = PeriodAssignationUtilsSerializers.toJsonArray(o);		
-		return array.toString();
+		JSONObject obj = new JSONObject();
+		obj.put("list", array);
+		return obj.toString();
 	}
 	
 	@Override

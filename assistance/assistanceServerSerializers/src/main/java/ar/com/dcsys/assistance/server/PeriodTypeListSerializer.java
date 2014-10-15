@@ -16,7 +16,7 @@ public class PeriodTypeListSerializer implements CSD<List<PeriodType>> {
 	
 	private static final Logger logger = Logger.getLogger(PeriodTypeListSerializer.class.getName());
 	
-	private final Gson gson = (new GsonBuilder()).setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+	private final Gson gson = (new GsonBuilder()).setDateFormat("HH:mm:ss dd/MM/yyyy")
 												 .create();
 	
 	private class Container {

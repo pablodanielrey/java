@@ -24,8 +24,10 @@ public class PersonTypeListSerializer implements CSD<List<PersonType>> {
 			return "";
 		}
 		
-		JSONArray typesObj = PersonTypeUtilsSerializer.toJsonArray(o);		
-		return typesObj.toString();
+		JSONArray array = PersonTypeUtilsSerializer.toJsonArray(o);		
+		JSONObject obj = new JSONObject();
+		obj.put("list", array);
+		return obj.toString();
 	}
 
 	@Override

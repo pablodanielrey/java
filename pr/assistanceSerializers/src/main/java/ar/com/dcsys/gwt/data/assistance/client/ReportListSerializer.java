@@ -25,7 +25,9 @@ public class ReportListSerializer implements CSD<List<Report>> {
 		}
 		
 		JSONArray array = ReportUtilsSerializer.toJsonArray(o);
-		return array.toString();
+		JSONObject obj = new JSONObject();
+		obj.put("list", array);
+		return obj.toString();
 	}
 	
 	@Override

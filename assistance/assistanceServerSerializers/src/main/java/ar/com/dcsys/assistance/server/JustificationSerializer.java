@@ -3,7 +3,6 @@ package ar.com.dcsys.assistance.server;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.justification.Justification;
-import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.pr.CSD;
 
 import com.google.gson.Gson;

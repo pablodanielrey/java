@@ -24,8 +24,10 @@ public class PeriodTypeListSerializer implements CSD<List<PeriodType>> {
 			logger.log(Level.WARNING, "periodstype == null");
 			return "";
 		}		
-		JSONArray typesObj = PeriodTypeUtilsSerializers.toJsonArray(o);		
-		return typesObj.toString();
+		JSONArray array = PeriodTypeUtilsSerializers.toJsonArray(o);		
+		JSONObject obj = new JSONObject();
+		obj.put("list", array);
+		return obj.toString();
 	}
 
 	@Override

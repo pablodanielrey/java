@@ -90,7 +90,7 @@ public class ReportSummaryUtilsSerializer {
 		//start
 		JSONValue startVal = reportSumObj.get("start");
 		if (startVal != null) {
-			String startStr = startVal.isString().toString();
+			String startStr = startVal.isString().stringValue();
 			Date start = df.parse(startStr);
 			reportSum.setStart(start);
 		}
@@ -99,7 +99,7 @@ public class ReportSummaryUtilsSerializer {
 		//end
 		JSONValue endVal = reportSumObj.get("end");
 		if (endVal != null) {
-			String endStr = endVal.isString().toString();
+			String endStr = endVal.isString().stringValue();
 			Date end = df.parse(endStr);
 			reportSum.setEnd(end);
 		}

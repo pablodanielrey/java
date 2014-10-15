@@ -12,7 +12,7 @@ public class ReportSummarySerializer implements CSD<ReportSummary> {
 
 	public static final Logger logger = Logger.getLogger(ReportSummarySerializer.class.getName());
 	
-	private final Gson gson = (new GsonBuilder()).setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").create();
+	private final Gson gson = (new GsonBuilder()).setDateFormat("HH:mm:ss dd/MM/yyyy").create();
 	
 	@Override
 	public String toJson(ReportSummary o) {

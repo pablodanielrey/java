@@ -12,7 +12,7 @@ public class WorkedHoursSerializer implements CSD<WorkedHours> {
 
 	public static final Logger logger = Logger.getLogger(WorkedHoursSerializer.class.getName());
 	
-	private final Gson gson = (new GsonBuilder()).setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").create();
+	private final Gson gson = (new GsonBuilder()).setDateFormat("HH:mm:ss dd/MM/yyyy").create();
 	
 	@Override
 	public String toJson(WorkedHours o) {

@@ -50,7 +50,7 @@ public class PeriodUtilsSerializer {
 		Date end = period.getEnd();
 		if (end != null) {
 			String endStr = df.format(end);
-			periodObj.put("start",new JSONString(endStr));
+			periodObj.put("end",new JSONString(endStr));
 		} 
 		
 		//workedHours
@@ -99,7 +99,7 @@ public class PeriodUtilsSerializer {
 		//start
 		JSONValue startVal = periodObj.get("start");
 		if (startVal != null) {
-			String startStr = startVal.isString().toString();
+			String startStr = startVal.isString().stringValue();
 			Date start = df.parse(startStr);
 			period.setStart(start);
 		}
@@ -107,7 +107,7 @@ public class PeriodUtilsSerializer {
 		//end
 		JSONValue endVal = periodObj.get("end");
 		if (endVal != null) {
-			String endStr = endVal.isString().toString();
+			String endStr = endVal.isString().stringValue();
 			Date end = df.parse(endStr);
 			period.setEnd(end);
 		}

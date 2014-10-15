@@ -4,7 +4,6 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.justification.GeneralJustificationDate;
-import ar.com.dcsys.data.justification.GeneralJustificationDate;
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.pr.CSD;
 
@@ -16,7 +15,7 @@ public class GeneralJustificationDateSerializer implements CSD<GeneralJustificat
 
 	private static final Logger logger = Logger.getLogger(GeneralJustificationDateSerializer.class.getName());
 
-	private final Gson gson = (new GsonBuilder()).setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+	private final Gson gson = (new GsonBuilder()).setDateFormat("HH:mm:ss dd/MM/yyyy")
 												 .registerTypeAdapter(Justification.class, new JustificationInstanceCreator())
 												 .create();	
 	

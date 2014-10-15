@@ -5,6 +5,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.group.Group;
+import ar.com.dcsys.data.person.PersonType;
+import ar.com.dcsys.person.server.common.PersonTypeJsonDeserializer;
+import ar.com.dcsys.person.server.common.PersonTypeJsonSerializer;
 import ar.com.dcsys.pr.CSD;
 
 import com.google.gson.Gson;
@@ -16,7 +19,9 @@ public class GroupListSerializer implements CSD<List<Group>> {
 	
 	private static final Logger logger = Logger.getLogger(GroupListSerializer.class.getName());
 	
-	private final Gson gson = (new GsonBuilder()).create();
+	private final Gson gson = (new GsonBuilder()).registerTypeAdapter(PersonType.class, new PersonTypeJsonSerializer())
+			 									 .registerTypeAdapter(PersonType.class, new PersonTypeJsonDeserializer())
+			 									 .create();
 	
 	private class Container {
 		List<Group> list;

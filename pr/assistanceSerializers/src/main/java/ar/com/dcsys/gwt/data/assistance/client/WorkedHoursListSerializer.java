@@ -25,7 +25,9 @@ public class WorkedHoursListSerializer implements CSD<List<WorkedHours>> {
 		}
 		
 		JSONArray array = WorkedHoursUtilsSerializer.toJsonArray(o);
-		return array.toString();
+		JSONObject obj = new JSONObject();
+		obj.put("list", array);
+		return obj.toString();
 	}
 
 	@Override

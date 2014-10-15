@@ -2,6 +2,9 @@ package ar.com.dcsys.assistance.server;
 
 import java.util.logging.Logger;
 
+import ar.com.dcsys.assistance.server.common.PersonTypeJsonDeserializer;
+import ar.com.dcsys.assistance.server.common.PersonTypeJsonSerializer;
+import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.data.report.Report;
 import ar.com.dcsys.pr.CSD;
 
@@ -12,7 +15,10 @@ public class ReportSerializer implements CSD<Report> {
 
 	public static final Logger logger = Logger.getLogger(ReportSerializer.class.getName());
 	
-	private final Gson gson = (new GsonBuilder()).setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").create();
+	private final Gson gson = (new GsonBuilder()).setDateFormat("HH:mm:ss dd/MM/yyyy")
+												 .registerTypeAdapter(PersonType.class, new PersonTypeJsonSerializer())
+												 .registerTypeAdapter(PersonType.class, new PersonTypeJsonDeserializer())
+												 .create();
 	
 	@Override
 	public String toJson(Report o) {

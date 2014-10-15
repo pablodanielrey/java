@@ -25,7 +25,9 @@ public class JustificationListSerializer implements CSD<List<Justification>> {
 		}
 		
 		JSONArray array = JustificationUtilsSerializer.toJsonArray(o);
-		return array.toString();
+		JSONObject obj = new JSONObject();
+		obj.put("list", array);
+		return obj.toString();
 	}
 	
 	@Override

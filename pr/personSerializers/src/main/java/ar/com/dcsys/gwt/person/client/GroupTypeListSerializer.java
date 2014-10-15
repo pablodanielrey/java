@@ -25,11 +25,13 @@ public class GroupTypeListSerializer implements CSD<List<GroupType>> {
 			return "";
 		}
 		
-		JSONArray groupTypesObj = new JSONArray();
+		JSONArray array = new JSONArray();
 		for (int i = 0; i < o.size(); i++) {
-			groupTypesObj.set(i, new JSONString(o.get(i).toString()));
+			array.set(i, new JSONString(o.get(i).toString()));
 		}
-		return groupTypesObj.toString();
+		JSONObject obj = new JSONObject();
+		obj.put("list", array);
+		return obj.toString();
 	}
 
 	@Override

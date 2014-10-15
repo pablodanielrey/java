@@ -6,12 +6,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import ar.com.dcsys.data.justification.Justification;
+import ar.com.dcsys.assistance.server.common.PersonTypeJsonDeserializer;
+import ar.com.dcsys.assistance.server.common.PersonTypeJsonSerializer;
 import ar.com.dcsys.data.justification.Justification;
 import ar.com.dcsys.data.justification.JustificationDate;
-import ar.com.dcsys.data.justification.JustificationDate;
-import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.data.person.Person;
+import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.pr.CSD;
 
 import com.google.gson.Gson;
@@ -23,10 +22,11 @@ public class JustificationDateListSerializer implements CSD<List<JustificationDa
 
 	private static final Logger logger = Logger.getLogger(JustificationDateListSerializer.class.getName());
 	
-	private final Gson gson = (new GsonBuilder()).setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+	private final Gson gson = (new GsonBuilder()).setDateFormat("HH:mm:ss dd/MM/yyyy")
 												 .registerTypeAdapter(JustificationDate.class, new JustificationDateInstanceCreator())
-												 .registerTypeAdapter(Person.class, new PersonInstanceCreator())
 												 .registerTypeAdapter(Justification.class, new JustificationInstanceCreator())
+												 .registerTypeAdapter(PersonType.class, new PersonTypeJsonSerializer())
+												 .registerTypeAdapter(PersonType.class, new PersonTypeJsonDeserializer())
 												 .create();
 	
 	
@@ -38,13 +38,6 @@ public class JustificationDateListSerializer implements CSD<List<JustificationDa
 		@Override
 		public JustificationDate createInstance(Type arg0) {
 			return new JustificationDate();
-		}
-	}
-	
-	private class PersonInstanceCreator implements InstanceCreator<Person> {
-		@Override
-		public Person createInstance(Type arg0) {
-			return new Person();
 		}
 	}
 

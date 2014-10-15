@@ -18,7 +18,7 @@ public class WorkedHoursListSerializer implements CSD<List<WorkedHours>> {
 
 	private static final Logger logger = Logger.getLogger(WorkedHoursListSerializer.class.getName());
 	
-	private final Gson gson = (new GsonBuilder()).setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+	private final Gson gson = (new GsonBuilder()).setDateFormat("HH:mm:ss dd/MM/yyyy")
 												 .registerTypeAdapter(WorkedHours.class, new WorkedHoursInstanceCreator()).create();
 	
 

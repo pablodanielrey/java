@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import ar.com.dcsys.assistance.server.common.PersonTypeJsonDeserializer;
+import ar.com.dcsys.assistance.server.common.PersonTypeJsonSerializer;
 import ar.com.dcsys.data.period.Period;
+import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.pr.CSD;
 
 import com.google.gson.Gson;
@@ -16,7 +19,10 @@ public class PeriodListSerializer implements CSD<List<Period>> {
 
 	private static final Logger logger = Logger.getLogger(PeriodListSerializer.class.getName());
 	
-	private final Gson gson = (new GsonBuilder()).setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").create();
+	private final Gson gson = (new GsonBuilder()).setDateFormat("HH:mm:ss dd/MM/yyyy")
+												 .registerTypeAdapter(PersonType.class, new PersonTypeJsonSerializer())
+												 .registerTypeAdapter(PersonType.class, new PersonTypeJsonDeserializer())
+												 .create();
 	
 	
 	private class Container {

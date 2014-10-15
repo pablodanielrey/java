@@ -24,8 +24,10 @@ public class GeneralJustificationDateListSerializer implements CSD<List<GeneralJ
 			return "";
 		}
 		
-		JSONArray gjdsObj = GeneralJustificationDateUtilsSerializer.toJsonArray(o);
-		return gjdsObj.toString();
+		JSONArray array = GeneralJustificationDateUtilsSerializer.toJsonArray(o);
+		JSONObject obj = new JSONObject();
+		obj.put("list", array);
+		return obj.toString();
 	}
 	
 	@Override

@@ -121,7 +121,7 @@ public class AttLogUtilsSerializer {
 		//date
 		JSONValue dateVal = logObj.get("date");
 		if (dateVal != null) {
-			String dateStr = dateVal.isString().toString();
+			String dateStr = dateVal.isString().stringValue();
 			Date date = df.parse(dateStr);
 			log.setDate(date);
 		}
