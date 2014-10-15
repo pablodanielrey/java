@@ -20,6 +20,7 @@ import ar.com.dcsys.gwt.assistance.client.manager.PeriodsManager;
 import ar.com.dcsys.gwt.assistance.client.ui.period.PERIODFILTER;
 import ar.com.dcsys.gwt.assistance.client.ui.period.PeriodsView;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
+import ar.com.dcsys.gwt.person.client.manager.GroupsManager;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
@@ -36,6 +37,7 @@ public class PeriodsActivity extends AbstractActivity implements PeriodsView.Pre
 	public static final Logger logger = Logger.getLogger(PeriodsActivity.class.getName());
 	
 	private final PeriodsManager periodsManager;
+	private final GroupsManager groupsManager;
 	private final JustificationsManager justificationsManager;
 	private final PeriodsView view;
 	
@@ -65,10 +67,11 @@ public class PeriodsActivity extends AbstractActivity implements PeriodsView.Pre
 	private final SingleSelectionModel<Justification> justificationSelection;
 	
 	@Inject
-	public PeriodsActivity(PeriodsView view, PeriodsManager periodsManager, JustificationsManager justificationsManager) {
+	public PeriodsActivity(PeriodsView view, GroupsManager groupsManager, PeriodsManager periodsManager, JustificationsManager justificationsManager) {
 		this.periodsManager = periodsManager;
 		this.view = view;
 		this.justificationsManager = justificationsManager;
+		this.groupsManager = groupsManager;
 		
 		periodFilterSelectionModel = new SingleSelectionModel<PERIODFILTER>();
 		periodFilterSelectionModel.addSelectionChangeHandler(periodFilterHandler);
@@ -172,12 +175,29 @@ public class PeriodsActivity extends AbstractActivity implements PeriodsView.Pre
 		logger.log(Level.SEVERE,message);
 	}
 
-	private void update() {
-		/*
-		 * TODO: falta implementar en GroupsManager
-		 */
+	private void update() {		
+		updateGroup();
 		updatePersons();
 		updateJustifications();
+	}
+	
+	private void updateGroup() {
+		groupsManager.findAll(new Receiver<List<Group>>() {
+			@Override
+			public void onSuccess(List<Group> groups) {
+				if (groups == null || view == null) {
+					return;
+				}
+				groupSelection.clear();
+				view.setGroups(groups);
+			}
+			
+			@Override
+			public void onError(String error) {
+				groupSelection.clear();
+				showMessage(error);
+			}
+		});
 	}
 	
 	private void deselectJustified(Set<Report> periods) {

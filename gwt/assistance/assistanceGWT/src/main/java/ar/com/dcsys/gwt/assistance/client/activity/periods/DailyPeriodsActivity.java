@@ -22,6 +22,7 @@ import ar.com.dcsys.gwt.assistance.client.ui.period.daily.DailyPeriodsView;
 import ar.com.dcsys.gwt.assistance.client.ui.period.daily.DailyPeriodsViewCss;
 import ar.com.dcsys.gwt.assistance.client.ui.period.daily.DailyPeriodsViewResources;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
+import ar.com.dcsys.gwt.person.client.manager.GroupsManager;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
@@ -38,6 +39,7 @@ public class DailyPeriodsActivity extends AbstractActivity implements DailyPerio
 	
 	private final PeriodsManager periodsManager;
 	private final JustificationsManager justificationsManager;
+	private final GroupsManager groupsManager;
 	private final DailyPeriodsView view;
 	
 	//PERIODFILTER
@@ -57,9 +59,6 @@ public class DailyPeriodsActivity extends AbstractActivity implements DailyPerio
 	//GRUPO
 	private final SingleSelectionModel<Group> groupSelection;
 	
-	//PERSONS
-	private final List<Person> personsCache = new ArrayList<Person>();
-
 	//Justification
 	private final SingleSelectionModel<Justification> justificationSelection;
 	
@@ -67,8 +66,9 @@ public class DailyPeriodsActivity extends AbstractActivity implements DailyPerio
 	private EventBus eventBus;
 	
 	@Inject
-	public DailyPeriodsActivity(DailyPeriodsView view, JustificationsManager justificationsManager, PeriodsManager periodsManager) {
+	public DailyPeriodsActivity(DailyPeriodsView view, GroupsManager groupsManager, JustificationsManager justificationsManager, PeriodsManager periodsManager) {
 		this.view = view;
+		this.groupsManager = groupsManager;
 		this.periodsManager = periodsManager;
 		this.justificationsManager = justificationsManager;
 		
@@ -169,37 +169,28 @@ public class DailyPeriodsActivity extends AbstractActivity implements DailyPerio
 	}
 	
 	private void findGroups() {
-		/**
-		 * TODO: falta implementar el GroupsManager
-		 */
-		Group g = groupSelection.getSelectedObject();
-		updatePersons(g);
-	}
-	
-		private void updatePersons(Group g) {
-		this.periodsManager.findPersonsWithPeriodAssignation(g, new Receiver<List<Person>>() {
-
+		groupsManager.findAll(new Receiver<List<Group>>() {
 			@Override
-			public void onSuccess(List<Person> persons) {
-				personsCache.clear();
-				personsCache.addAll(persons);
+			public void onSuccess(List<Group> groups) {
+				if (groups == null || view == null) {
+					return;
+				}
+				groupSelection.clear();
+				view.setGroups(groups);
 			}
-
 			@Override
 			public void onError(String error) {
-				logger.log(Level.WARNING,error);
+				showMessage(error);
 			}
-			
 		});
-	}	
+	}
+	
 
 	@Override
 	public void onStop() {
 		view.setPresenter(null);
 		view.clear();
-		
-		personsCache.clear();
-		
+				
 		view.setPeriodFilterSelectionModel(null);
 		view.setGroupSelectionModel(null);		
 		view.setJustificationSelectionModel(null);
@@ -236,18 +227,38 @@ public class DailyPeriodsActivity extends AbstractActivity implements DailyPerio
 	
 	@Override
 	public void findPeriods() {
-		Date start = getStart();
-		Date end = getEnd();	
-		
+
 		view.clearJustificationData();
 		view.clearPeriodData();
 		periodSelection.clear();
 		
+
+		Group g = groupSelection.getSelectedObject();
+		
+		this.periodsManager.findPersonsWithPeriodAssignation(g, new Receiver<List<Person>>() {
+
+			@Override
+			public void onSuccess(List<Person> persons) {
+				findPeriods(persons);
+			}
+
+			@Override
+			public void onError(String error) {
+				logger.log(Level.WARNING,error);
+			}
+				
+		});		
+	}
+	
+	private void findPeriods(List<Person> persons) {
+		Date start = getStart();
+		Date end = getEnd();	
+				
 		PERIODFILTER periodFilter = periodFilterSelectionModel.getSelectedObject();
 		if (periodFilter == null) {
 			showMessage("Debe seleccionar un tipo de períodos a mostrar");
 			return;			
-		}
+		}		
 		
 		Receiver<ReportSummary> rec = new Receiver<ReportSummary>() {
 			@Override
@@ -262,11 +273,11 @@ public class DailyPeriodsActivity extends AbstractActivity implements DailyPerio
 		};
 		
 		switch (periodFilter) {
-		case ALL: periodsManager.findAllPeriods(start, end, personsCache, false, rec); break;
-		case WORKING: periodsManager.findAllPeriods(start, end, personsCache, true, rec); break;
-		case ABSENT: periodsManager.findAllAbsences(start, end, personsCache, rec);
-		default: showMessage("No se ha seleccionado el tipo de período a buscar");
-	}		
+			case ALL: periodsManager.findAllPeriods(start, end, persons, false, rec); break;
+			case WORKING: periodsManager.findAllPeriods(start, end, persons, true, rec); break;
+			case ABSENT: periodsManager.findAllAbsences(start, end, persons, rec);
+			default: showMessage("No se ha seleccionado el tipo de período a buscar");
+		}		
 	}
 
 	
