@@ -89,6 +89,18 @@
 
     <dependency>
       <groupId>ar.com.dcsys.data</groupId>
+      <artifactId>groupDAO</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.data</groupId>
+      <artifactId>mailChangeDAO</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>ar.com.dcsys.data</groupId>
       <artifactId>personEntities</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>

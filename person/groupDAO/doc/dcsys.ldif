@@ -1,0 +1,16 @@
+dn: cn=dcsys,cn=schema,cn=config
+objectClass: olcSchemaConfig
+cn: dcsys
+olcAttributeTypes: {0}( 2.25.56309950806840367165843754398824165867.2.1.1 NAME 'x-dcsys-uuid' DESC 'uuid del objeto dentro de los sistemas' EQUALITY UUIDMatch ORDERING UUIDOrderingMatch SYNTAX 1.3.6.1.1.16.1 SINGLE-VALUE )
+olcAttributeTypes: {1}( 2.25.56309950806840367165843754398824165867.2.1.2 NAME 'x-dcsys-legajo'	DESC 'Legajo del alumno dentro de la facultad' EQUALITY octetStringMatch ORDERING octetStringOrderingMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.40	SINGLE-VALUE )
+olcAttributeTypes: {2}( 2.25.56309950806840367165843754398824165867.2.1.3 NAME 'x-dcsys-dni' DESC 'DNI de una persona' EQUALITY octetStringMatch ORDERING octetStringOrderingMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.40	SINGLE-VALUE )
+olcAttributeTypes: {3}( 2.25.56309950806840367165843754398824165867.2.1.4 NAME 'x-dcsys-gender' DESC 'Genero de una persona' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcAttributeTypes: {4}( 2.25.56309950806840367165843754398824165867.2.1.5 NAME 'x-dcsys-birth' DESC 'Fecha de nacimiento de una persona' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+olcObjectClasses: {0}( 2.25.56309950806840367165843754398824165867.2.2.1 NAME 'x-dcsys-entidad'	DESC 'Entidad de dcsys' AUXILIARY MUST x-dcsys-uuid )
+olcObjectClasses: {1}( 2.25.56309950806840367165843754398824165867.2.2.2 NAME 'x-dcsys-persona'	DESC 'una persona dentro de los sistemas' AUXILIARY MUST x-dcsys-dni MAY ( x-dcsys-gender $ x-dcsys-birth ) )
+olcObjectClasses: {2}( 2.25.56309950806840367165843754398824165867.2.2.3 NAME 'x-dcsys-estudiante' DESC 'Estudiante' AUXILIARY MUST ( x-dcsys-legajo $ x-dcsys-dni ) )
+olcObjectClasses: {3}( 2.25.56309950806840367165843754398824165867.2.2.4 NAME 'x-dcsys-docente'	DESC 'docente de la facultad' AUXILIARY )
+olcObjectClasses: {4}( 2.25.56309950806840367165843754398824165867.2.2.5 NAME 'x-dcsys-no-docente' DESC 'no docente de la facultad' AUXILIARY )
+olcObjectClasses: {5}( 2.25.56309950806840367165843754398824165867.2.2.6 NAME 'x-dcsys-moodle' DESC 'habilitado para el moodle' AUXILIARY )
+
+

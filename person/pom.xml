@@ -20,8 +20,12 @@
 	<module>personEntities</module>
 	<module>personServerSerializers</module>
 	<module>personDAO</module>
+	<module>groupDAO</module>
+	<module>mailChangeDAO</module>
 	<module>personHsqlDAO</module>
 	<module>personPostgreSqlDAO</module>
+	<module>groupPostgreSqlDAO</module>
+	<module>mailChangePostgreSqlDAO</module>
 	<module>personLdapDAO</module>
 	<module>personModel</module>
 	<module>personLdapParams</module>

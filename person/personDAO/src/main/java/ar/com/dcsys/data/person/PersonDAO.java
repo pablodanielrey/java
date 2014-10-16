@@ -19,8 +19,13 @@ public interface PersonDAO {
 	public void remove(Person p) throws PersonException;
 	public String persist(Person p) throws PersonException;
 	
+
+	////////// solo llamado desde el MailChangeDAO ////////////////
+	
 	public void addMail(String personId, Mail mail) throws PersonException;
 	public void removeMail(String personId, Mail mail) throws PersonException;
 	public List<Mail> findAllMails(String personId) throws PersonException;
+	
+	//////////////
 	
 }

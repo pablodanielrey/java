@@ -2,7 +2,6 @@ package ar.com.dcsys.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
 

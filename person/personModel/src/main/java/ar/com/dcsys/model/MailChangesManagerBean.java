@@ -6,9 +6,9 @@ import java.util.UUID;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import ar.com.dcsys.data.mail.MailChangeDAO;
 import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.MailChange;
-import ar.com.dcsys.data.person.MailChangeDAO;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.exceptions.PersonException;
 
@@ -47,7 +47,7 @@ public class MailChangesManagerBean implements MailChangesManager {
 		mailChange.setToken(uuid);
 		mailChange.setConfirmed(false);
 		
-		mailChangeDAO.persist(person, mailChange);
+		mailChangeDAO.persist(mailChange);
 	}
 	
 	
@@ -66,7 +66,7 @@ public class MailChangesManagerBean implements MailChangesManager {
 	
 	@Override
 	public List<MailChange> findAllBy(Person person) throws PersonException {
-		return mailChangeDAO.findAllBy(person);
+		return mailChangeDAO.findAllBy(person.getId());
 	}
 
 	

@@ -1,0 +1,62 @@
+
+attributeType (
+	.2.1.1	NAME 'x-dcsys-uuid'
+	DESC 'uuid del objeto dentro de los sistemas'
+	EQUALITY UUIDMatch
+	ORDERING UUIDOrderingMatch
+	SYNTAX 1.3.6.1.1.16.1
+	SINGLE-VALUE
+)
+
+attributeType (
+	.2.1.2	NAME 'x-dcsys-legajo'
+	DESC 'Legajo del alumno dentro de la facultad'
+	EQUALITY octetStringMatch
+	ORDERING octetStringOrderingMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.40
+	SINGLE-VALUE
+)
+
+attributeType (
+	.2.1.3	NAME 'x-dcsys-dni'
+	DESC 'DNI de una persona'
+	EQUALITY octetStringMatch
+	ORDERING octetStringOrderingMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.40
+	SINGLE-VALUE
+)
+
+
+objectClass (
+	.2.2.1 NAME 'x-dcsys-entidad'
+	DESC 'superclase de todas las entidades'
+	AUXILIARY
+	MUST x-dcsys-uuid
+)
+
+objectClass (
+	.2.2.2 NAME 'x-dcsys-persona'
+	DESC 'una persona dentro de los sistemas'
+	SUP x-dcsys-entidad
+	MUST x-dcsys-dni
+)
+
+objectClass (
+	.2.2.3 NAME 'x-dcsys-estudiante'
+	DESC 'Estudiante'
+	SUP x-dcsys-persona
+	MUST ( x-dcsys-legajo $ x-dcsys-dni )
+)
+
+objectClass (
+	.2.2.4 NAME 'x-dcsys-docente'
+	DESC 'docente de la facultad'
+	SUP x-dcsys-persona
+)
+
+objectClass (
+	.2.2.4 NAME 'x-dcsys-no-docente'
+	DESC 'no docente de la facultad'
+	SUP x-dcsys-persona
+)
+
