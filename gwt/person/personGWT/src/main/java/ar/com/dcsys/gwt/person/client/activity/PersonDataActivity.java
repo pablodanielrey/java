@@ -3,9 +3,12 @@ package ar.com.dcsys.gwt.person.client.activity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.data.person.PersonTypeEnum;
@@ -18,9 +21,12 @@ import ar.com.dcsys.data.person.Telephone;
 import ar.com.dcsys.gwt.auth.client.manager.AuthManager;
 import ar.com.dcsys.gwt.clientMessages.client.MessageDialogEvent;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
+import ar.com.dcsys.gwt.person.client.manager.MailChangesManager;
 import ar.com.dcsys.gwt.person.client.manager.PersonsManager;
 import ar.com.dcsys.gwt.person.client.place.UpdatePersonDataPlace;
 import ar.com.dcsys.gwt.person.client.ui.basicData.PersonDataView;
+import ar.com.dcsys.gwt.person.client.ui.basicData.PersonDataViewCss;
+import ar.com.dcsys.gwt.person.client.ui.basicData.PersonDataViewResources;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
@@ -36,30 +42,36 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 	
 	private final PersonDataView view;
 	private final PersonsManager personsManager;
+	private final MailChangesManager mailsManager;
 	private final AuthManager authManager;
 	
 	private MultiSelectionModel<PersonTypeEnum> typesSelection;
 	private SingleSelectionModel<Person> selection;
 	private EventBus eventBus = null;
+		
+	private Map<Mail,String> mailsCache = new HashMap<Mail,String>();
 	
 	private final Handler changeHandler = new Handler() {
 		@Override
 		public void onSelectionChange(SelectionChangeEvent event) {
+
+			view.clear();
 			
 			if (selection == null) {
 				return;
 			}
+
 			
 			Person person = selection.getSelectedObject();
 			if (person == null) {
 				// no hay nadie seleccionado asi que no puedo modificar nada.
-				view.clear();
 				view.getPersonTypesView().clear();
 				typesSelection.clear();
 				return;
-			}
+			}			
 			setPersonInView(person);
 			setPersonTypesInView(person.getTypes());
+			setMailInView(person);
 		}
 	};
 	
@@ -78,10 +90,11 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 	
 	
 	@Inject
-	public PersonDataActivity(PersonsManager personsManager, AuthManager authManager, PersonDataView view, @Assisted UpdatePersonDataPlace place) {
+	public PersonDataActivity(PersonsManager personsManager, MailChangesManager mailsManager, AuthManager authManager, PersonDataView view, @Assisted UpdatePersonDataPlace place) {
 		this.personsManager = personsManager;
 		this.authManager = authManager;
-		this.view = view;
+		this.mailsManager = mailsManager;
+		this.view = view;		
 		
 		typesSelection = new MultiSelectionModel<PersonTypeEnum>();
 		typesSelection.addSelectionChangeHandler(typesHandler);
@@ -89,10 +102,33 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 		checkStudentData();
 	}
 	
+	private void setMailInView(Person person) {
+		this.mailsCache.clear();
+		this.mailsDeleted.clear();
+		this.mailsManager.findMails(person, new Receiver<List<Mail>>() {
+			@Override
+			public void onSuccess(List<Mail> mails) {
+				mailsCache.clear();
+				if (mails == null) {
+					mails = new ArrayList<Mail>();
+				}
+				
+				for (Mail m : mails) {
+					mailsCache.put(m,m.getMail());
+				}
+				view.setMails(mails);
+								
+ 			}
+			@Override
+			public void onError(String error) {
+				showMessage(error);
+			}
+
+		});
+	}
+	
 	private void setPersonInView(Person person) {
-		
-		view.clear();
-		
+				
 		view.setName(person.getName());
 		view.setLastName(person.getLastName());
 		view.setDni(person.getDni());
@@ -108,11 +144,6 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 			}
 		}
 
-		/**
-		 * TODO: Hasta que implemente el manager de studentData del lado del cliente.
-		 * ahora lo pongo en false.
-		 */
-				
 		view.setStudentDataVisible(false);
 		
 		
@@ -126,7 +157,6 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 
 	private void checkStudentData() {
 		view.setStudentDataVisible(false);
-//		List<PersonType> types = view.getSelectedTypes();
 		Set<PersonTypeEnum> types = typesSelection.getSelectedSet();
 		if (types == null) {
 			return;
@@ -141,11 +171,7 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 	}
 	
 	private void setPersonTypesInView(List<PersonType> types) {
-		/**
-		 * TODO: tengo que modificar esto
-		 */
 		
-		//view.setSelectedTypes(types);
 		typesSelection.clear();
 		
 		if (types == null || types.size() <= 0) {
@@ -300,6 +326,9 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 		
 		determineUserRole();
 		
+		PersonDataViewCss style = PersonDataViewResources.INSTANCE.style();
+		style.ensureInjected();
+		
 		List<PersonTypeEnum> types = Arrays.asList(PersonTypeEnum.values());
 		setAllTypesInView(types);
 		
@@ -309,6 +338,7 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 	public void onStop() {
 		view.setPresenter(null);
 		selection = null;
+		mailsCache.clear();
 		super.onStop();
 	}
 
@@ -391,7 +421,6 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 	 */
 	private void updateUser(Person eP, final PersonDataView view) {
 		setData(eP, view);
-		//List<PersonType> types = view.getSelectedTypes();
 		Set<PersonTypeEnum> stypes = typesSelection.getSelectedSet();
 		List<PersonTypeEnum> types = (stypes == null) ? new ArrayList<PersonTypeEnum>() : new ArrayList<PersonTypeEnum>(typesSelection.getSelectedSet());
 		
@@ -402,23 +431,9 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 			@Override
 			public void onSuccess(String id) {
 				
+				persistMail(id);
 				showMessage("Datos actualizados con éxito");
-				
-				/*
-				// busco de nuevo para asignarle el mail.
-				rf.personRequest().findById(id).with("mails","telephones","types").fire(new Receiver<Person>() {
-					@Override
-					public void onSuccess(Person person) {
-						//String alternativeMail = view.getAlternativeMail();
-						replacePerson(originalPerson,person);
-						//persistMail(person, alternativeMail, view);
-					}
-					@Override
-					public void onFailure(Throwable error) {
-						super.onFailure(error);
-					}
-				});
-				*/
+								
 			}
 			@Override
 			public void onError(String error) {
@@ -426,6 +441,94 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 			}
 		});
 	}	
+	
+	private List<Mail> mailsDeleted = new ArrayList<Mail>();
+	@Override
+	public void remove(Mail m) {
+		if (m == null) {
+			return;
+		}	
+		
+		String mStr = this.mailsCache.get(m);
+		if (!mStr.equals("new")) {
+			m.setMail(mStr);
+			mailsDeleted.add(m);
+		}
+		
+		this.mailsCache.remove(m);
+		
+		view.setMails(new ArrayList<Mail>(mailsCache.keySet()));
+	}
+	
+	@Override
+	public void update(Mail m, String value) {
+		if (value == null || value.trim().equals("")) {
+			return;
+		}
+		String val = value.trim().toLowerCase();
+		
+		for (Mail mail : mailsCache.keySet()) {
+			if (mail.getMail().equals(val)) {
+				return;
+			}
+		}
+		
+		if (m == null) {
+			m = new Mail();
+			mailsCache.put(m,"new");
+		}
+		
+		m.setMail(val);
+
+		view.setMails(new ArrayList<Mail>(mailsCache.keySet()));
+	}
+	
+	private void persistMail(final String idPerson) {
+		
+		for (Mail m : mailsCache.keySet()) {
+			if (!mailsCache.get(m).equals("new")) {
+				Mail mOld = new Mail();
+				mOld.setMail(mailsCache.get(m));
+				mailsDeleted.add(mOld);
+			}
+		}
+		
+		if (mailsDeleted.size() <= 0) {
+			addMails(idPerson);
+			return;
+		}
+		
+		mailsManager.removeMails(idPerson, mailsDeleted,new Receiver<Void>() {
+			@Override
+			public void onSuccess(Void t) {
+				addMails(idPerson);
+			}
+			
+			@Override
+			public void onError(String error) {
+				showMessage(error);
+			}
+		});
+	}
+	
+	private void addMails(String personId) {
+		if (mailsCache == null || mailsCache.size() <= 0) {
+			return;
+		}
+		
+		mailsManager.addMails(personId, new ArrayList<Mail>(mailsCache.keySet()), new Receiver<Void>() {
+			@Override
+			public void onSuccess(Void t) {
+				mailsDeleted.clear();
+			}
+			
+			@Override
+			public void onError(String error) {
+				mailsDeleted.clear();
+				showMessage(error);
+			}
+		});
+	}
 	
 	
 	private void setData(Person eP, PersonDataView view) {
@@ -436,13 +539,7 @@ public class PersonDataActivity extends AbstractActivity implements PersonDataVi
 		eP.setAddress(view.getAddress());
 		eP.setCity(view.getCity());
 		eP.setCountry(view.getCountry());
-		eP.setGender(view.getGender());
-		
-		/**
-		 * TODO: Hasta que tenga el manager e studentDataManager del lado del cliente loc comento.
-		 * 
-		 */
-		//eP.setStudentNumber(view.getStudentNumber());
+		eP.setGender(view.getGender());		
 		
 		String tel = view.getTelephone();
 		if (tel != null && (!tel.trim().equals(""))) {

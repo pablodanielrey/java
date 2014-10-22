@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.document.Document;
-import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonTypeEnum;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
@@ -47,12 +46,6 @@ public class PersonsManagerBean implements PersonsManager {
 	}
 	
 	
-	@Override
-	public void addMail(Person p, Mail m, final Receiver<Void> rec) {
-		pm.addMail(p, m, rec);		
-	}
-	
-	
 	
 	@Override
 	public void getLoggedPerson(final Receiver<Person> rec) {
@@ -62,11 +55,6 @@ public class PersonsManagerBean implements PersonsManager {
 	@Override
 	public void findByDni(String dni, final Receiver<Person> rec) {
 		pm.findByDni(dni, rec);
-	}
-	
-	@Override
-	public void findMails(Person p, final Receiver<List<Mail>> rec) {
-		pm.findMails(p, rec);
 	}
 	
 	

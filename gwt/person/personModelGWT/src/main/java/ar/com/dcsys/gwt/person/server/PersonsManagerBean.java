@@ -8,7 +8,6 @@ import javax.inject.Inject;
 import ar.com.dcsys.data.document.Document;
 import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.messages.shared.Transport;
@@ -42,7 +41,8 @@ public class PersonsManagerBean implements PersonsManager {
 	@Override
 	public void persist(Person person, Receiver<String> receiver) {
 		try {
-			personsManager.persist(person);
+			String id = personsManager.persist(person);
+			receiver.onSuccess(id);
 		} catch (PersonException e) {
 			receiver.onError(e.getMessage());
 		}
@@ -67,23 +67,7 @@ public class PersonsManagerBean implements PersonsManager {
 			rec.onError(e.getMessage());
 		}
 	}
-
-	@Override
-	public void findMails(Person p, Receiver<List<Mail>> rec) {
-		Mail m = new Mail();
-		m.setMail("prueba@generar-codigo-en-el-dominio.com");
-		
-		List<Mail> mails = new ArrayList<>();							// todavía no esta en el modelo asi que lo dejo por ahora para implementarlo despues.
-		mails.add(m);
-		
-		rec.onSuccess(mails);
-	}
-
-	@Override
-	public void addMail(Person p, Mail m, Receiver<Void> rec) {
-		// no esta implementado asi que llamo al rec sin nada
-		rec.onSuccess(null);
-	}
+	
 
 	@Override
 	public void findByDni(String dni, Receiver<Person> rec) {

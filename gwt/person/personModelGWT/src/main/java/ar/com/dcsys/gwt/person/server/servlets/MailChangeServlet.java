@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ar.com.dcsys.model.MailChangesManager;
+import ar.com.dcsys.mail.MailsManager;
 
 @WebServlet("/mailChanges/*")
 public class MailChangeServlet extends HttpServlet {
@@ -32,16 +32,16 @@ public class MailChangeServlet extends HttpServlet {
 	
 	private static final Logger logger = Logger.getLogger(MailChangeServlet.class.getName());
 	
-	private final MailChangesManager changesManager;
+	private final MailsManager mailsManager;
 	private final BeanManager beanManager;
 	private String changeMailTemplate; 
 	private String changeMailErrorTemplate;
 	
 	
 	@Inject
-	public MailChangeServlet(MailChangesManager changesManager, BeanManager beanManager) {
+	public MailChangeServlet(MailsManager mailsManager, BeanManager beanManager) {
 		super();
-		this.changesManager = changesManager;
+		this.mailsManager = mailsManager;
 		this.beanManager = beanManager;
 
 		changeMailTemplate = "<html><head></head><body>operación procesada correctamente</body></html>";
@@ -86,7 +86,7 @@ public class MailChangeServlet extends HttpServlet {
 			}
 			
 			String sToken = (String)t;
-			changesManager.processByToken(sToken);
+			mailsManager.processByToken(sToken);
 			
 			publishResponse(req,resp);
 			

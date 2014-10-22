@@ -3,7 +3,11 @@
 .name { readOnly: true; visibility: visible }
 .lastName { readOnly: true; visibility: visible }
 .dni { readOnly: true; visibility: visible }
-.mail { readOnly: false; visibility: visible }
+.mails { readOnly: false; visibility: visible }
+.labelAddMail { readOnly: false; visibility: visible }
+.panelNewMail { readOnly: false; visibility: visible }
+.inputNewMail { readOnly: false; visibility: visible }
+.submitNewMail { readOnly: false; visibility: visible }
 .alternativeMail { readOnly: true; visibility: visible }
 .gender { readOnly: false; visible : true }
 .country { readOnly: false; visibility: visible }

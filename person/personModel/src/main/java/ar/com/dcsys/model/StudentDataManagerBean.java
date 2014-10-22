@@ -13,7 +13,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 
-public class StudentDataManagerBean implements StudentDataManager {
+public class StudentDataManagerBean  implements StudentDataManager {
 
 	@Inject @Config String cacheLoad;
 	
@@ -79,6 +79,5 @@ public class StudentDataManagerBean implements StudentDataManager {
 			throw new PersonException(e);
 		}
 	}
-	
-	
+
 }

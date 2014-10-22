@@ -1,6 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:d="urn:import:com.google.gwt.user.cellview.client"
 	xmlns:pt="urn:import:ar.com.dcsys.gwt.person.client.ui.types">
 	
 	<ui:with field="res" type="ar.com.dcsys.gwt.person.client.ui.basicData.PersonDataViewResources"/>
@@ -54,8 +55,12 @@
 		   	        </g:FlowPanel>
 		   	        
 		   	        <g:FlowPanel ui:field="mailData" styleName="{res.style.mailPanel}">
-		   	            <g:Label styleName="{res.style.mailLabel}" text="Correo :"/>
-		   	            <g:TextBox styleName="{res.style.mail}" ui:field="mail"/>
+		   	            <d:DataGrid ui:field="mails" styleName="{res.style.mails}"/>
+		   	            <g:Label text="Agregar nuevo mail" ui:field="labelAddMail" styleName="{res.style.labelAddMail}"/>
+		   	            <g:FlowPanel ui:field="panelNewMail" styleName="{res.style.panelNewMail}">
+		   	            	<g:TextBox ui:field="newMail" styleName="{res.style.inputNewMail}"/>
+		   	            	<g:Label text="Aceptar" styleName="{res.style.submitNewMail}" ui:field="submitNewMail"/>
+		   	            </g:FlowPanel>
 		   	        </g:FlowPanel>
 		   	        
 			    </g:FlowPanel>

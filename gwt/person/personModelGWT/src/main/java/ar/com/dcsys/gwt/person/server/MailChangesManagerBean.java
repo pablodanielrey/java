@@ -6,22 +6,22 @@ import javax.inject.Inject;
 
 import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.MailChange;
-import ar.com.dcsys.data.person.MailChange;
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.messages.shared.Transport;
 import ar.com.dcsys.gwt.person.shared.MailChangesManager;
+import ar.com.dcsys.mail.MailException;
+import ar.com.dcsys.mail.MailsManager;
 
 public class MailChangesManagerBean implements MailChangesManager {
 
-	private final ar.com.dcsys.model.MailChangesManager mailChangesManager;
+	private final MailsManager mailManager;
 	private final ar.com.dcsys.model.PersonsManager personsManager;
 	
 	@Inject
-	public MailChangesManagerBean(ar.com.dcsys.model.MailChangesManager mcm, 
+	public MailChangesManagerBean(MailsManager mm, 
 								  ar.com.dcsys.model.PersonsManager personsManager) {
-		this.mailChangesManager = mcm;
+		this.mailManager = mm;
 		this.personsManager = personsManager;
 	}
 	
@@ -34,9 +34,9 @@ public class MailChangesManagerBean implements MailChangesManager {
 	@Override
 	public void persist(MailChange mail, Person person,	Receiver<Void> receiver) {
 		try {
-			mailChangesManager.persist(person, mail);
+			mailManager.persist(person, mail);
 			receiver.onSuccess(null);
-		} catch (PersonException e) {
+		} catch (MailException e) {
 			receiver.onError(e.getMessage());
 		}
 		
@@ -47,13 +47,13 @@ public class MailChangesManagerBean implements MailChangesManager {
 		
 		try {
 			if (mail.getToken() == null) {
-				mailChangesManager.remove(mail.getMail().getMail());
+				mailManager.remove(mail.getMail().getMail());
 				receiver.onSuccess(null);
 			} else {
-				mailChangesManager.remove(mail);
+				mailManager.remove(mail);
 				receiver.onSuccess(null);
 			}
-		} catch (PersonException e) {
+		} catch (MailException e) {
 			receiver.onError(e.getMessage());
 		}
 	}
@@ -63,11 +63,11 @@ public class MailChangesManagerBean implements MailChangesManager {
 
 		try {
 			// obtengo todos los cambios pendientes de mails
-			List<MailChange> changes = mailChangesManager.findAllBy(person);
+			List<MailChange> changes = mailManager.findAllMailChangeBy(person);
 			
 			// obtengo todos los mails confirmados.
 			String personId = person.getId();
-			List<Mail> mails = personsManager.findAllMails(personId);
+			List<Mail> mails = mailManager.findAllMails(personId);
 			for (Mail m : mails) {
 				MailChange mc = new MailChange();
 				mc.setMail(m);
@@ -76,10 +76,65 @@ public class MailChangesManagerBean implements MailChangesManager {
 				changes.add(mc);
 			}
 			
-		} catch (PersonException e) {
+		} catch (MailException e) {
 			receiver.onError(e.getMessage());
 		}
 		
+	}
+	
+	
+	@Override
+	public void findMails(Person p, Receiver<List<Mail>> rec) {
+		try {
+			List<Mail> mails = mailManager.findAllMails(p.getId());
+			rec.onSuccess(mails);
+		} catch (MailException e) {
+			rec.onError(e.getMessage());
+		}
+	}
+	
+	@Override
+	public void addMail(String personId, Mail m, Receiver<Void> rec) {
+		try {
+			mailManager.addMail(personId, m);
+			rec.onSuccess(null);
+		} catch (MailException e) {
+			rec.onError(e.getMessage());
+		}
+	}
+	
+	@Override
+	public void addMails(String personId, List<Mail> mails, Receiver<Void> rec) {
+		try {
+			for (Mail m : mails) {
+				mailManager.addMail(personId, m);
+			}
+			rec.onSuccess(null);
+		} catch (MailException e) {
+			rec.onError(e.getMessage());
+		}
+	}
+	
+	@Override
+	public void removeMail(String personId, Mail m, Receiver<Void> rec) {
+		try {
+			mailManager.removeMail(personId, m);
+			rec.onSuccess(null);
+		} catch (MailException e) {
+			rec.onError(e.getMessage());
+		}
+	}
+	
+	@Override
+	public void removeMails(String personId, List<Mail> mails,Receiver<Void> rec) {
+		try {
+			for (Mail m : mails) {
+				mailManager.removeMail(personId,m);				
+			}
+			rec.onSuccess(null);
+		} catch (MailException e) {
+			rec.onError(e.getMessage());
+		}
 	}
 
 }

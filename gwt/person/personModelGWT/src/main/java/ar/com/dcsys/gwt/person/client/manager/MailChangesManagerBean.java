@@ -3,6 +3,7 @@ package ar.com.dcsys.gwt.person.client.manager;
 import java.util.List;
 import java.util.logging.Logger;
 
+import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.MailChange;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
@@ -83,6 +84,32 @@ public class MailChangesManagerBean implements MailChangesManager {
 	@Override
 	public void findAllBy(Person person, Receiver<List<MailChange>> receiver) {
 		mcm.findAllBy(person, receiver);
+	}
+	
+	
+	@Override
+	public void addMail(String personId, Mail m, Receiver<Void> rec) {
+		mcm.addMail(personId, m, rec);
+	}
+	
+	@Override
+	public void addMails(String personId, List<Mail> mails, Receiver<Void> rec) {
+		mcm.addMails(personId, mails, rec);
+	}
+	
+	@Override
+	public void findMails(Person p, Receiver<List<Mail>> rec) {
+		mcm.findMails(p, rec);
+	}
+	
+	@Override
+	public void removeMail(String personId, Mail m, Receiver<Void> rec) {
+		mcm.removeMail(personId,m, rec);
+	}
+	
+	@Override
+	public void removeMails(String personId, List<Mail> mails,Receiver<Void> rec) {
+		mcm.removeMails(personId, mails, rec);
 	}
 
 }

@@ -24,8 +24,10 @@ public class MailListSerializer implements CSD<List<Mail>> {
 			return "";
 		}
 		
-		JSONArray mailsObj = MailUtilsSerializer.toJsonArray(o);
-		return mailsObj.toString();
+		JSONArray array = MailUtilsSerializer.toJsonArray(o);
+		JSONObject obj = new JSONObject();
+		obj.put("list", array);
+		return obj.toString();
 	}
 	
 	@Override

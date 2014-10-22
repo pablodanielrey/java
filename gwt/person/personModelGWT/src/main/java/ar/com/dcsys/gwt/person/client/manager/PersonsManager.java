@@ -3,7 +3,6 @@ package ar.com.dcsys.gwt.person.client.manager;
 import java.util.List;
 
 import ar.com.dcsys.data.document.Document;
-import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonTypeEnum;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
@@ -25,11 +24,7 @@ public interface PersonsManager {
 	 */
 	public void findAll(Receiver<List<Person>> receiver);
 	public void findAll(List<PersonTypeEnum> types, Receiver<List<Person>> rec);
-	
-	
-	public void findMails(Person p, Receiver<List<Mail>> rec);
-	public void addMail(Person p, Mail m, Receiver<Void> rec);
-	
+		
 	public void findByDni(String dni, Receiver<Person> rec);								// PersonDAtaActvity
 	public void findById(String id, Receiver<Person> rec);
 	

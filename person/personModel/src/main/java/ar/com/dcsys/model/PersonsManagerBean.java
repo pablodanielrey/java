@@ -231,22 +231,6 @@ public class PersonsManagerBean implements PersonsManager {
 		throw new PersonException("No implementado");
 	}
 	
-	@Override
-	public void addMail(String personId, Mail mail) throws PersonException {
-		personDAO.addMail(personId, mail);
-	}
-
-	@Override
-	public void removeMail(String personId, Mail mail) throws PersonException {
-		personDAO.removeMail(personId, mail);
-	}
-	
-	@Override
-	public List<Mail> findAllMails(String personId) throws PersonException {
-		return personDAO.findAllMails(personId);
-	}
-	
-	
 	
 	@Override
 	public Person getLoggedPerson() throws PersonException {

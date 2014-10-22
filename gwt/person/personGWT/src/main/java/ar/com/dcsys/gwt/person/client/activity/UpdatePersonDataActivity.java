@@ -2,6 +2,7 @@ package ar.com.dcsys.gwt.person.client.activity;
 
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.gwt.auth.client.manager.AuthManager;
+import ar.com.dcsys.gwt.person.client.manager.MailChangesManager;
 import ar.com.dcsys.gwt.person.client.manager.PersonsManager;
 import ar.com.dcsys.gwt.person.client.modules.PersonModule;
 import ar.com.dcsys.gwt.person.client.modules.PersonPortal;
@@ -23,7 +24,8 @@ public class UpdatePersonDataActivity extends AbstractActivity implements Update
 	private final UpdatePersonDataView updatePersonDataView;
 	
 	@Inject
-	public UpdatePersonDataActivity(PersonsManager personsManager,  
+	public UpdatePersonDataActivity(PersonsManager personsManager,
+									MailChangesManager mailManager,
 									AuthManager authManager,
 									UpdatePersonDataView updatePersonDataView,
 									PersonDataView personDataView, 
@@ -31,7 +33,7 @@ public class UpdatePersonDataActivity extends AbstractActivity implements Update
 		
 		this.updatePersonDataView = updatePersonDataView;
 		
-		personDataActivity = new PersonDataActivity(personsManager, authManager, personDataView, place);
+		personDataActivity = new PersonDataActivity(personsManager, mailManager, authManager, personDataView, place);
 		
 	}
 	

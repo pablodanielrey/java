@@ -1,6 +1,9 @@
 package ar.com.dcsys.gwt.person.client.ui.basicData;
 
+import java.util.List;
+
 import ar.com.dcsys.data.person.Gender;
+import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.gwt.person.client.ui.types.PersonTypesView;
 
 import com.google.gwt.user.client.ui.IsWidget;
@@ -24,6 +27,11 @@ public interface PersonDataView extends IsWidget {
 	public void setMailReadOnly(boolean v);
 	public String getMail();
 	public void setMail(String mail);
+	
+
+
+	public List<Mail> getMails();
+	public void setMails(List<Mail> mails);
 	
 	public Gender getGender();
 	public void setGender(Gender gender);
@@ -55,6 +63,11 @@ public interface PersonDataView extends IsWidget {
 	
 	public interface Presenter {
 		public void persist();
+
+		public void remove(Mail m);
+		public void update(Mail m, String value);
 	}
+
+
 	
 }

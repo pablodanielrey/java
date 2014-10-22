@@ -3,7 +3,6 @@ package ar.com.dcsys.model;
 import java.security.Principal;
 import java.util.List;
 
-import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.exceptions.PersonException;
 
@@ -23,8 +22,5 @@ public interface PersonsManager {
 	public String persist(Person p) throws PersonException;
 	public void remove(Person p) throws PersonException;	
 	
-	void addMail(String personId, Mail mail) throws PersonException;
-	void removeMail(String personId, Mail mail) throws PersonException;
-	List<Mail> findAllMails(String personId) throws PersonException;
 	
 }

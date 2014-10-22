@@ -7,12 +7,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.data.person.PersonTypeEnum;
 import ar.com.dcsys.gwt.auth.client.manager.AuthManager;
 import ar.com.dcsys.gwt.clientMessages.client.MessageDialogEvent;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.gwt.person.client.activity.UpdatePersonDataActivity;
+import ar.com.dcsys.gwt.person.client.manager.MailChangesManager;
 import ar.com.dcsys.gwt.person.client.manager.PersonsManager;
 import ar.com.dcsys.gwt.person.client.manager.events.PersonModifiedEvent;
 import ar.com.dcsys.gwt.person.client.manager.events.PersonModifiedEventHandler;
@@ -38,6 +38,7 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 	
 	private final EventBus eventBus;
 	private final PersonsManager personsManager;
+	private final MailChangesManager mailsManager;
 	private final ManagePersonsView view;
 	private final PersonDataView personDataView;
 	private final UpdatePersonDataView updatePersonDataView;
@@ -92,6 +93,7 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 	@Inject
 	public ManagePersonsActivity(EventBus eventBus, 
 								 PersonsManager personsManager, 
+								 MailChangesManager mailsManager,
 								 AuthManager authManager,
 								 ManagePersonsView view, 
 								 UpdatePersonDataView updatePersonDataView, 
@@ -100,6 +102,7 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 //								 GroupDataView groupDataView,
 								 @Assisted ManagePersonsPlace place) {
 		this.personsManager = personsManager;
+		this.mailsManager = mailsManager;
 		this.view = view;
 		this.updatePersonDataView = updatePersonDataView;
 		this.personDataView = personDataView;
@@ -111,7 +114,7 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 		selection.addSelectionChangeHandler(selectionChange);
 		
 		
-		updatePersonDataActivity = new UpdatePersonDataActivity(personsManager, authManager, updatePersonDataView, personDataView, null);
+		updatePersonDataActivity = new UpdatePersonDataActivity(personsManager, mailsManager,authManager, updatePersonDataView, personDataView, null);
 		updatePersonDataActivity.setSelectionModel(personSelection);
 		
 		
@@ -195,7 +198,7 @@ public class ManagePersonsActivity extends AbstractActivity implements ManagePer
 	}
 	
 	/**
-	 * Obtiene todas las personas como PersonValueProxy que tengan determinado types.
+	 * Obtiene todas las personas que tengan determinado types.
 	 * @param types
 	 */
 	private void update(List<PersonTypeEnum> types) {

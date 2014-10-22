@@ -3,9 +3,7 @@ package ar.com.dcsys.gwt.person.shared;
 import java.util.List;
 
 import ar.com.dcsys.data.document.Document;
-import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Person;
-import ar.com.dcsys.data.person.PersonType;
 import ar.com.dcsys.gwt.manager.shared.Manager;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
 import ar.com.dcsys.pr.ClientManager;
@@ -24,10 +22,6 @@ import ar.com.dcsys.pr.SerializerType;
 		@Serializer(serializer="ar.com.dcsys.gwt.person.client.PersonTypeSerializer", clazz="ar.com.dcsys.data.person.PersonType", type=SerializerType.CLIENT),
 		@Serializer(serializer="ar.com.dcsys.gwt.person.client.PersonTypeListSerializer", clazz="java.util.List<ar.com.dcsys.data.person.PersonType>", type=SerializerType.CLIENT),
 		@Serializer(serializer="ar.com.dcsys.person.server.PersonTypeListSerializer", clazz="java.util.List<ar.com.dcsys.data.person.PersonType>", type=SerializerType.SERVER),
-		@Serializer(serializer="ar.com.dcsys.gwt.person.client.MailSerializer", clazz="ar.com.dcsys.data.person.Mail", type=SerializerType.CLIENT),
-		@Serializer(serializer="ar.com.dcsys.person.server.MailSerializer", clazz="ar.com.dcsys.data.person.Mail", type=SerializerType.SERVER),	
-		@Serializer(serializer="ar.com.dcsys.gwt.person.client.MailListSerializer", clazz="java.util.List<ar.com.dcsys.data.person.Mail>", type=SerializerType.CLIENT),
-		@Serializer(serializer="ar.com.dcsys.person.server.MailListSerializer", clazz="java.util.List<ar.com.dcsys.data.person.Mail>", type=SerializerType.SERVER),	
 		@Serializer(serializer="ar.com.dcsys.gwt.data.document.client.DocumentSerializer", clazz="ar.com.dcsys.data.document.Document", type=SerializerType.CLIENT),
 		@Serializer(serializer="ar.com.dcsys.gwt.data.document.server.DocumentSerializer", clazz="ar.com.dcsys.data.document.Document", type=SerializerType.SERVER),
 		@Serializer(serializer="ar.com.dcsys.gwt.data.document.client.DocumentListSerializer", clazz="java.util.List<ar.com.dcsys.data.document.Document>", type=SerializerType.CLIENT),
@@ -50,10 +44,6 @@ public interface PersonsManager extends Manager {
 	 */
 	public void findAll(Receiver<List<Person>> receiver);
 	public void findAll(List<String> types, Receiver<List<Person>> rec);
-	
-	
-	public void findMails(Person p, Receiver<List<Mail>> rec);
-	public void addMail(Person p, Mail m, Receiver<Void> rec);
 	
 	
 	public void findByDni(String dni, Receiver<Person> rec);								// PersonDAtaActvity

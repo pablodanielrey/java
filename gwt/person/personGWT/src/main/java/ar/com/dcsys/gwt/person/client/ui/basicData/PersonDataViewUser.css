@@ -68,17 +68,29 @@
 	margin:0.5em;
 	height:2em;	
 }
-.mailLabel {
-	float:left;
-	font-weight: bold;
-	color: #47698A;
-	width:8em;
-}	
-.mail {
-	width: 15em;
-	background-color: #FFF;
-	text-align:center;
-	float:left;
+
+.mails {
+	width:150px;
+	height:20px;
+	margin-top:1em;
+	margin-left:0.5em;
+}
+
+.labelAddMail {
+	display:block;
+}
+
+.panelNewMail {
+	display:block;
+}
+
+.inputNewMail {
+	display:inline;
+}
+
+.submitNewMail {
+	display:inline;
+	margin-left:1em;
 }
 
 .genderPanel {
