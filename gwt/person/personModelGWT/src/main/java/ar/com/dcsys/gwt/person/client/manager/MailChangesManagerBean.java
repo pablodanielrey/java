@@ -55,6 +55,7 @@ public class MailChangesManagerBean implements MailChangesManager {
 	@Inject
 	public MailChangesManagerBean(WebSocket ws) {
 		socket = ws;
+		mcm.setTransport(ws);
 		
 //		eventBus.addHandler(SocketMessageEvent.TYPE, eventHandler);
 	}

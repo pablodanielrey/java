@@ -10,6 +10,7 @@ import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.exceptions.DeviceException;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.model.PersonsManager;
+import ar.com.dcsys.model.device.DevicesManager;
 
 public class AssistanceParams implements PeriodDAO.Params, JustificationDAO.Params, AttLogDAO.Params  {
 
@@ -26,8 +27,7 @@ public class AssistanceParams implements PeriodDAO.Params, JustificationDAO.Para
 	}
 
 	@Override
-	public Device findDeviceById(String device_id) throws DeviceException {
-		// TODO Auto-generated method stub
+	public Device findDeviceById(String device_id) throws DeviceException {	
 		return null;
 	}
 }
