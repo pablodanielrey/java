@@ -1,33 +1,39 @@
 package ar.com.dcsys.gwt.assistance.server;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
 import ar.com.dcsys.data.person.AssistancePersonData;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.exceptions.DeviceException;
+import ar.com.dcsys.exceptions.PeriodException;
 import ar.com.dcsys.exceptions.PersonException;
 import ar.com.dcsys.gwt.assistance.shared.PersonDataManagerTransfer;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
-import ar.com.dcsys.gwt.messages.shared.MessageEncoderDecoder;
 import ar.com.dcsys.gwt.messages.shared.Transport;
 import ar.com.dcsys.gwt.messages.shared.TransportEvent;
 import ar.com.dcsys.gwt.messages.shared.TransportReceiver;
 import ar.com.dcsys.model.device.DevicesManager;
 import ar.com.dcsys.model.device.EnrollAction;
 import ar.com.dcsys.model.device.EnrollManager;
+import ar.com.dcsys.model.period.PeriodsManager;
 import ar.com.dcsys.model.person.AssistancePersonDataManager;
 import ar.com.dcsys.security.Fingerprint;
 
 public class PersonDataManagerTransferBean implements PersonDataManagerTransfer {
 
 	private final AssistancePersonDataManager personDataManager;
+	private final PeriodsManager periodsManager;
 	private final DevicesManager devicesManager;
 	
 	@Inject
-	public PersonDataManagerTransferBean(AssistancePersonDataManager personDataManager, DevicesManager devicesManager) {
+	public PersonDataManagerTransferBean(PeriodsManager periodsManager,AssistancePersonDataManager personDataManager, DevicesManager devicesManager) {
 		this.personDataManager = personDataManager;
 		this.devicesManager = devicesManager;
+		this.periodsManager = periodsManager;
 	}
 		
 	@Override
@@ -90,6 +96,23 @@ public class PersonDataManagerTransferBean implements PersonDataManagerTransfer 
 		} catch (PersonException | DeviceException e) {
 			e.printStackTrace();
 			rec.onError(e.getMessage());
+		}
+	}
+	
+	@Override
+	public void syncPersons(Receiver<List<String>> rec) {
+		try {
+			List<Person> persons = periodsManager.findPersonsWithPeriodAssignations();
+			List<String> personIds = new ArrayList<String>();
+			
+			for (Person p : persons) {
+				devicesManager.persist(p);
+				personIds.add(p.getId());
+			}
+			
+			rec.onSuccess(personIds);
+		} catch (DeviceException | PeriodException | PersonException e) {
+			e.printStackTrace();rec.onError(e.getMessage());
 		}
 	}
 

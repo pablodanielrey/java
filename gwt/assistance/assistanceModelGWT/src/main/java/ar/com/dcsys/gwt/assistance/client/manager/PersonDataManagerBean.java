@@ -1,6 +1,8 @@
 package ar.com.dcsys.gwt.assistance.client.manager;
 
 
+import java.util.List;
+
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.gwt.assistance.shared.PersonDataManagerTransfer;
 import ar.com.dcsys.gwt.manager.shared.Receiver;
@@ -28,6 +30,11 @@ public class PersonDataManagerBean implements PersonDataManager {
 	@Override
 	public void enroll(String personId, Receiver<String> rec) {
 		personDataManagerTransfer.enroll(personId, rec);
+	}
+	
+	@Override
+	public void syncPersons(Receiver<List<String>> persons) {
+		personDataManagerTransfer.syncPersons(persons);
 	}
 	
 	@Override

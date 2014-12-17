@@ -12,6 +12,7 @@ import ar.com.dcsys.gwt.assistance.client.place.PeriodsAssignationPersonPlace;
 import ar.com.dcsys.gwt.assistance.client.place.PeriodsPlace;
 import ar.com.dcsys.gwt.assistance.client.place.PinAuthDataPlace;
 import ar.com.dcsys.gwt.assistance.client.place.SyncLogsPlace;
+import ar.com.dcsys.gwt.assistance.client.place.SyncPersonsPlace;
 
 import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
@@ -31,6 +32,10 @@ public class AssistanceActivityMapper implements ActivityMapper {
 		
 		if (place instanceof SyncLogsPlace) {
 			return factory.syncLogsActivity((SyncLogsPlace)place);
+		}
+		
+		if (place instanceof SyncPersonsPlace) {
+			return factory.syncPersonsActivity((SyncPersonsPlace)place);
 		}
 		
 		if (place instanceof PinAuthDataPlace) {
