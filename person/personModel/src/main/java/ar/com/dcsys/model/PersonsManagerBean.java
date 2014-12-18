@@ -15,7 +15,6 @@ import javax.inject.Singleton;
 
 import ar.com.dcsys.data.auth.principals.DniPrincipal;
 import ar.com.dcsys.data.auth.principals.IdPrincipal;
-import ar.com.dcsys.data.person.Mail;
 import ar.com.dcsys.data.person.Person;
 import ar.com.dcsys.data.person.PersonDAO;
 import ar.com.dcsys.exceptions.AuthenticationException;
@@ -228,7 +227,7 @@ public class PersonsManagerBean implements PersonsManager {
 
 	@Override
 	public void remove(Person p) throws PersonException {
-		throw new PersonException("No implementado");
+		personDAO.remove(p);
 	}
 	
 	

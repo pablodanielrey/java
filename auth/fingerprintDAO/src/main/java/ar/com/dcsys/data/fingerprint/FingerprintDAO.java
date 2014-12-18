@@ -13,5 +13,6 @@ public interface FingerprintDAO {
 	public List<Fingerprint> findByPerson(String personId) throws FingerprintException;
 	
 	public String persist(Fingerprint fp) throws FingerprintException;
+	public void remove(Fingerprint fp) throws FingerprintException;
 	
 }

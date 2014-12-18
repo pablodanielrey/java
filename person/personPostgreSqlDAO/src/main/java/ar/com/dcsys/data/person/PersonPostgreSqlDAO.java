@@ -501,9 +501,51 @@ public class PersonPostgreSqlDAO implements PersonDAO {
 		}
 	}
 
+	private void deleteAllTelephones(Connection con, String personId) throws SQLException {
+		String query = "delete from persons_telephones where person_id = ?";
+		PreparedStatement st = con.prepareStatement(query);
+		try {
+			st.setString(1, personId);
+			st.executeUpdate();
+		} finally {
+			st.close();
+		}
+	}
+	
 	@Override
 	public void remove(Person p) throws PersonException {
-		throw new PersonException("not implemented");
+		if (p == null || p.getId() == null) {
+			return;
+		}
+		try {
+			Connection con = cp.getConnection();
+			
+			try {
+				String id = p.getId();
+				
+				deleteAllPersonTypes(con, id);
+				deleteAllTelephones(con, id);
+				
+				//elimino los mails que posee
+				List<Mail> mails = findAllMails(id);
+				for (Mail m : mails) {
+					removeMail(id, m);
+				}
+				//elimino la persona
+				String query = "delete from persons where id = ?";
+				PreparedStatement st = con.prepareStatement(query);
+				try {
+					st.setString(1, id);
+					st.executeUpdate();
+				} finally {
+					st.close();
+				}
+			} finally {
+				cp.closeConnection(con);
+			}
+		} catch (SQLException e) {
+			throw new PersonException(e);
+		}
 	}
 
 	@Override
