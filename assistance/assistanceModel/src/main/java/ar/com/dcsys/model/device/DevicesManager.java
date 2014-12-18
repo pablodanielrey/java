@@ -24,6 +24,7 @@ public interface DevicesManager {
 	public void cancel() throws DeviceException;
 	
 	public void persist(Person p) throws PersonException, DeviceException;
+	public void changePersonId(Person p) throws PersonException, DeviceException;
 	public void transferFingerprints(String personId) throws PersonException, DeviceException;
 	
 	public List<String> syncLogs() throws AttLogException, DeviceException;

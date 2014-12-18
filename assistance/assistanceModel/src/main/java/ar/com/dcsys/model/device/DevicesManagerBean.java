@@ -27,6 +27,7 @@ import ar.com.dcsys.exceptions.AttLogException;
 import ar.com.dcsys.exceptions.DeviceException;
 import ar.com.dcsys.exceptions.FingerprintException;
 import ar.com.dcsys.exceptions.PersonException;
+import ar.com.dcsys.model.PersonsManager;
 import ar.com.dcsys.model.device.GenericWebsocketClient.WebsocketClient;
 import ar.com.dcsys.model.log.AttLogsManager;
 import ar.com.dcsys.person.server.PersonSerializer;
@@ -38,6 +39,8 @@ public class DevicesManagerBean implements DevicesManager {
 	
 	private final FingerprintDAO fingerprintDAO;
 	private final DeviceDAO deviceDAO;
+	
+	private final PersonsManager personsManager;
 	
 	private final AttLogsManager attLogsManager;
 	private final AttLogSerializer attLogsSerializer;
@@ -81,11 +84,12 @@ public class DevicesManagerBean implements DevicesManager {
 	}
 	
 	@Inject
-	public DevicesManagerBean(DeviceDAO deviceDAO, FingerprintDAO fingerprintDAO, AttLogsManager attLogsManager, AttLogSerializer attLogSerializer) {
+	public DevicesManagerBean(PersonsManager personsManager, DeviceDAO deviceDAO, FingerprintDAO fingerprintDAO, AttLogsManager attLogsManager, AttLogSerializer attLogSerializer) {
 		this.deviceDAO = deviceDAO;
 		this.fingerprintDAO = fingerprintDAO;
 		this.attLogsManager = attLogsManager;
 		this.attLogsSerializer = attLogSerializer;
+		this.personsManager = personsManager;
 	}
 	
 	@Override
@@ -133,7 +137,21 @@ public class DevicesManagerBean implements DevicesManager {
 					
 					try {
 						String json = m.replace("ok ", "");
-						AttLog log = attLogsSerializer.read(json);
+						AttLog log = attLogsSerializer.read(json);	
+						Person personLog = log.getPerson();
+						
+						//busco por dni de la persona que posee el log
+						Person person = personsManager.findByDni(personLog.getDni());
+						if (person == null) {
+							personsManager.persist(personLog);
+						} else {
+							if (!person.getId().equals(personLog.getId())) {
+								log.setPerson(person);
+								changePersonId(person);
+								return;
+							}
+						}
+						
 						logs.add(log);
 						
 					} catch (Exception e) {
@@ -356,6 +374,66 @@ public class DevicesManagerBean implements DevicesManager {
 			
 		}
 
+	}
+	
+	@Override
+	public void changePersonId(Person p) throws PersonException,DeviceException {
+		if (p == null) {
+			throw new PersonException("person == null");
+		}
+		
+		if (p.getId() == null) {
+			throw new PersonException("person.id == null");
+		}
+		
+		URI uri = getConnectionUri();
+		
+		PersonSerializer ps = new PersonSerializer();
+		String json = ps.toJson(p);
+		final String cmd = "model;changePersonId;" + json;
+		
+		GenericWebsocketClient gwc = new GenericWebsocketClient(new WebsocketClient() {
+			@Override
+			public void onClose(Session s, CloseReason reason) {
+				
+			}
+			
+			@Override
+			public void onMessage(String m, Session s) {
+				if ("OK".equals(m)) {
+					logger.fine("changePersonId - OK");
+
+				} else if ("ERROR".equals(m)) {
+					logger.log(Level.SEVERE,"Error enviado desde el reloj");
+					
+				} else {
+					logger.log(Level.SEVERE,"changePersonId unknown response : " + m);
+
+				}
+			}
+			
+			@Override
+			public void onOpen(Session s, EndpointConfig config) {
+				try {
+					s.getBasicRemote().sendText(cmd);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		try {
+			ContainerProvider.getWebSocketContainer().connectToServer(gwc, uri);
+			
+		} catch (DeploymentException e) {
+			e.printStackTrace();
+			throw new DeviceException(e);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new DeviceException(e);
+			
+		}		
 	}
 	
 	@Override
