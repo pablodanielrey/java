@@ -18,6 +18,8 @@ import ar.com.dcsys.assistance.server.AttLogSerializer;
 import ar.com.dcsys.assistance.server.DeviceSerializer;
 import ar.com.dcsys.data.device.Device;
 import ar.com.dcsys.data.log.AttLog;
+import ar.com.dcsys.data.person.Person;
+import ar.com.dcsys.model.PersonsManager;
 import ar.com.dcsys.model.device.DevicesManager;
 import ar.com.dcsys.model.log.AttLogsManager;
 
@@ -31,15 +33,18 @@ public class FirmwareEndpoint {
 	
 	private final AttLogSerializer attLogSerializer;
 	private final AttLogsManager attLogsManager;
+	private final PersonsManager personsManager;
 	
 	@Inject
 	public FirmwareEndpoint(AttLogSerializer attLogSerializer, DeviceSerializer deviceSerializer, 
+															   PersonsManager personsManager,
 															   AttLogsManager attLogsManager, 
 															   DevicesManager devicesManager) {
 		this.deviceSerializer = deviceSerializer;
 		this.attLogSerializer = attLogSerializer;
 		this.attLogsManager = attLogsManager;
 		this.devicesManager = devicesManager;
+		this.personsManager = personsManager;
 	}
 	
 	@OnOpen
@@ -63,6 +68,21 @@ public class FirmwareEndpoint {
 			} else if (m.startsWith("attLog;")) {
 				String attLogJson = m.replace("attLog;", "");
 				AttLog attLog = attLogSerializer.read(attLogJson);
+				Person personLog = attLog.getPerson();
+				
+				//busco por dni la persona que posee el log
+				Person person = personsManager.findByDni(personLog.getDni());
+				if (person == null) {
+					personsManager.persist(personLog);
+				} else {
+					if (!person.getId().equals(personLog.getId())) {
+						devicesManager.changePersonId(person);
+						logger.log(Level.SEVERE,"changePersonId");
+						session.getBasicRemote().sendText("ERROR");
+						return;
+					}
+				}
+				
 				attLogsManager.persist(attLog);
 				
 				session.getBasicRemote().sendText("OK;delete;" + attLog.getId());

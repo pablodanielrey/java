@@ -146,7 +146,7 @@ public class DevicesManagerBean implements DevicesManager {
 							personsManager.persist(personLog);
 						} else {
 							if (!person.getId().equals(personLog.getId())) {
-								log.setPerson(person);
+								//log.setPerson(person);
 								changePersonId(person);
 								return;
 							}
