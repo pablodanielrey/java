@@ -227,5 +227,30 @@ public class FingerprintPostgresSqlDAO implements FingerprintDAO {
 		}
 	}
 	
+	@Override
+	public void remove(Fingerprint fp) throws FingerprintException {
+		if (fp == null || fp.getId() == null) {
+			return;
+		}
+		
+		try {
+			Connection con = cp.getConnection();
+			try {
+				String query = "delete from fingerprints where id = ?";
+				PreparedStatement st = con.prepareStatement(query);
+				try {
+					st.setString(1, fp.getId());
+					st.executeUpdate();
+				} finally {
+					st.close();
+				}
+			} finally {
+				cp.closeConnection(con);
+			}
+		} catch (SQLException e) {
+			throw new FingerprintException(e);
+		}
+	}
+	
 	
 }
