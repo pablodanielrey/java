@@ -66,6 +66,7 @@ public class FirmwareEndpoint {
 				session.getBasicRemote().sendText("OK");
 				
 			} else if (m.startsWith("attLog;")) {
+				
 				String attLogJson = m.replace("attLog;", "");
 				AttLog attLog = attLogSerializer.read(attLogJson);
 				Person personLog = attLog.getPerson();
@@ -84,9 +85,8 @@ public class FirmwareEndpoint {
 				}
 				
 				attLogsManager.persist(attLog);
-				
 				session.getBasicRemote().sendText("OK;delete;" + attLog.getId());
-				
+
 			} else {
 				logger.log(Level.SEVERE,"comando desconocido");
 				session.getBasicRemote().sendText("ERROR");
