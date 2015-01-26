@@ -30,6 +30,7 @@ import ar.com.dcsys.gwt.person.client.common.filter.FilterPersonDni;
 import ar.com.dcsys.gwt.person.client.common.filter.FilterPersonName;
 import ar.com.dcsys.utils.PersonSort;
 
+import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
@@ -44,6 +45,8 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.text.shared.Renderer;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -418,6 +421,40 @@ public class Periods extends Composite implements PeriodsView {
 	
 	private void createPeriods() {
 		
+		
+		
+		class SafeHtmlString implements SafeHtml {
+			private final String s;
+			public SafeHtmlString(String s) {
+				this.s = s;
+			}
+			@Override
+			public String asString() {
+				return s;
+			}
+		};
+		
+		/**
+		 * Para enviar directamente html a la tabla.
+		 * @author pablo
+		 *
+		 * @param <T>
+		 */
+		abstract class TTextColumn<T> extends Column<T, String> {
+			public TTextColumn() {
+				super(new AbstractCell<String>() {
+					@Override
+					public void render(com.google.gwt.cell.client.Cell.Context context, String value, SafeHtmlBuilder sb) {
+						sb.append(new SafeHtmlString(value));
+					}
+				});
+			}
+		}		
+		
+		
+		
+		
+		
 		final DateTimeFormat dateF = DateTimeFormat.getFormat(PredefinedFormat.DATE_SHORT);
 		final DateTimeFormat timeF = DateTimeFormat.getFormat(PredefinedFormat.TIME_SHORT);
 		
@@ -460,7 +497,7 @@ public class Periods extends Composite implements PeriodsView {
 			}
 		};
 		
-		final TextColumn<Report> hourS = new TextColumn<Report>() {
+		final TTextColumn<Report> hourS = new TTextColumn<Report>() {
 			@Override
 			public String getValue(Report object) {
 				try {
@@ -473,12 +510,29 @@ public class Periods extends Composite implements PeriodsView {
 						return "no tiene";
 					}
 					
+					/*
 					WorkedHours wh = whs.get(0);
 					if (wh.getLogs() != null && wh.getInLog().getDate() != null) {
 						return timeF.format(wh.getInLog().getDate());
 					}
-					
 					return "no tiene";
+					*/
+					
+					StringBuilder htmlToShow = new StringBuilder();
+					htmlToShow.append("<div>");
+					for (WorkedHours wh : whs) {
+						if (wh.getInLog() == null) {
+							htmlToShow.append("<div>no tiene</div>");
+						} else {
+							htmlToShow.append("<div>");
+							htmlToShow.append(timeF.format(wh.getInLog().getDate()));
+							htmlToShow.append("</div>");
+						}
+					}
+					htmlToShow.append("</div>");
+					return htmlToShow.toString();
+					
+					
 				} catch (Exception e) {
 					logger.log(Level.SEVERE,e.getMessage());
 					return "";
@@ -506,7 +560,7 @@ public class Periods extends Composite implements PeriodsView {
 			}
 		};
 		
-		final TextColumn<Report> hourE = new TextColumn<Report>() {
+		final TTextColumn<Report> hourE = new TTextColumn<Report>() {
 			@Override
 			public String getValue(Report object) {
 				try {
@@ -520,12 +574,30 @@ public class Periods extends Composite implements PeriodsView {
 						return"no tiene";
 					}
 					
+					/*
 					Date last = WorkedHoursUtil.getLastDate(whs);
 					if (last == null) {
 						return "no tiene";
 					}
 					
 					return timeF.format(last);
+					*/
+					
+					StringBuilder htmlToShow = new StringBuilder();
+					htmlToShow.append("<div>");
+					for (WorkedHours wh : whs) {
+						if (wh.getOutLog() == null) {
+							htmlToShow.append("<div>no tiene</div>");
+						} else {
+							htmlToShow.append("<div>");
+							htmlToShow.append(timeF.format(wh.getOutLog().getDate()));
+							htmlToShow.append("</div>");
+						}
+					}
+					htmlToShow.append("</div>");
+					return htmlToShow.toString();
+					
+					
 				} catch (Exception e) {
 					logger.log(Level.SEVERE,e.getMessage());
 					return "";
